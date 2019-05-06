@@ -1,0 +1,11 @@
+﻿---
+applications:
+- name: InitializrApi
+  buildpacks:
+   - dotnet_core_buildpack
+  memory: 512M
+  command: cd ${HOME} && ./InitializrApi
+  env:
+    ASPNETCORE_ENVIRONMENT: Development
+  services:
+   
