@@ -276,7 +276,7 @@ div.radios div.radio {
             color: #000
         }
 
-.control-text {
+.control-text, .rbt-input-main {
     display: block;
     border: 0;
     outline: none;
@@ -296,7 +296,7 @@ div.radios div.radio {
     color: #000
 }
 
-    .control-text:focus {
+    .control-text:focus, .control-text:focus-within, .rbt-input:focus {
         -webkit-transition: border-color .15s;
         -moz-transition: border-color .15s;
         -ms-transition: border-color .15s;
@@ -305,7 +305,7 @@ div.radios div.radio {
         border-color: #2d74d1
     }
 
-    .control-text::placeholder {
+    .control-text::placeholder, .rbt-input-main::placeholder {
         font-style: italic;
         color: #888
     }
@@ -357,7 +357,7 @@ div.radios div.radio {
     min-height: 200px
 }
 
-    .list .item {
+    .list .item, .control-text li {
         border: 2px solid #f7f7f7;
         background: #f7f7f7;
         line-height: 24px;
@@ -365,9 +365,20 @@ div.radios div.radio {
         margin: 8px 0;
         border-radius: 4px;
         position: relative;
-        cursor: pointer
+        cursor: pointer;
     }
 
+.control-text li {
+    list-style-type: none;
+}
+
+.control-text a {
+    text-decoration: none;
+    color: black;
+}
+.control-text .title{
+    font-weight: 700
+}
         .list .item .title {
             font-weight: 700
         }
@@ -377,7 +388,7 @@ div.radios div.radio {
                 font-weight: 400
             }
 
-        .list .item .desc {
+        .list .item .desc, .control-text .desc {
             color: #706c69;
             font-size: .9rem
         }
@@ -486,8 +497,8 @@ button.btn {
 
         a.btn.btn-primary:hover,
         button.btn.btn-primary:hover {
-            background: #62a038;
-            border-color: #62a038
+            background: #2d74b0;
+            border-color: #097db0;
         }
 
 a.btn-ico {

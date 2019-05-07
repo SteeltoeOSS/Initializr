@@ -1,10 +1,16 @@
 ﻿import React, { Component } from 'react'; 
-import 'react-bootstrap-typeahead/css/Typeahead-bs4.css';
 import { FormRow } from './FormRow';
-import { Typeahead } from 'react-bootstrap-typeahead'
+//import { Suggestions } from './Suggestions';
+import { Highlighter, Typeahead } from 'react-bootstrap-typeahead'; 
 import './Home.css'
+
 const hidden = {
     display: "none"
+}
+const border = {
+    borderBottom: "3px solid #e4e4e4",
+    lineHeight: "16px",
+    padding: ".35rem 0 .55rem"
 }
 export class Home extends Component {
     static displayName = Home.name;
@@ -12,9 +18,11 @@ export class Home extends Component {
         super(props);
         this.state = {
             project: 'gradle-project',
-            dependencies: ['Hystrix', 'Actuator', 'MySql', 'Serilog']
+            dependencies: ['Hystrix', 'Actuator', 'MySql', 'Serilog'],
+            selected_deps: []
         }
         this.handleChange = this.handleChange.bind(this);
+        this.handleSelection = this.handleSelection.bind(this);
     }
     handleChange(e) {
 
@@ -24,14 +32,35 @@ export class Home extends Component {
         });
         console.log('to ' + this.state.project);
     }
+    handleSelection(e) {
+        console.log("selection " + e);
+        //this.state.selected_deps.push(e);
+        this.setState(prevState => ({ selected_deps: [...prevState.selected_deps, e ]}))
+        this._typeahead._instance.clear();
+
+        console.log('typeahead' , this._typeahead);
+
+    }
+    _renderMenuItemChildren = (option, props, index) => {
+        console.log(props)
+        return [
+           <div className="title">
+                {option}
+            </div>,
+            <div className="desc">
+                    {'This is the description for ' + option}
+              </div>
+        ];
+    }
 
 
   render () {
     return (
         <div>
-            <form name="form" action="/starter.zip" method="get" autocomplete="off">
+            <form name="form" action="/starter.zip" method="post"  autocomplete="off">
                 <input type="text" style={hidden} name="fakeusernameremembered" />
                 <input type="password" style={hidden} name="fakepasswordremembered" />
+                <input type="text" style={hidden} name="type" value="Console" />
                 <FormRow title='Project' values={ ["Visual Studio"]}/>
                 <FormRow title='Language' values={["C#", "F#", "VB.NET"]} />
                 <FormRow title='Steeltoe' values={["2.1", "2.2", "3.0"]} />
@@ -84,27 +113,48 @@ export class Home extends Component {
                                                                         <div class="right">
                                                                             <div class="colset">
                                                                                 <div class="col">Search dependencies to add
-<div class="control"><input id="inputSearch" name="inputSearch" class="control-text" autocomplete="disabled" type="text" tabindex="3" placeholder="Web, Security, JPA, Actuator, Devtools..." value="" />
+                                <div class="control">
+                                    <Typeahead
+                                        className={'control-text'}
+                                        labelKey="name"
+                                        multiple={true}
+                                        options={this.state.dependencies}
+                                        renderMenuItemChildren={this._renderMenuItemChildren}
+                                        placeholder="Hystrix, Actuator ..."
+                                        onChange={this.handleSelection}
+                                        ref={(ref) => this._typeahead = ref}
+                                    />
 </div>
                                                                                         <div class="no-result" id="noresult-to-add"><em>No result.</em></div>
-                                                                                        <div class="list" id="list-to-add"></div>
+                                <div class="list" id="list-to-add">
+                                  
+                                </div>
                             </div>
-                            <Typeahead
-                                labelKey="dependencies"
-                                multiple={true}
-                                options={this.state.dependencies}
-                                placeholder="Actuators, Hystrix, etc"
-                            />
-                                                                                    <div class="col hide" id="col-dep">
+                          
+                                                                                    <div class="col" id="col-dep">
                                                                                         <strong>Selected dependencies</strong>
-                                                                                        <div class="list light" id="list-added"></div>
+                                <div class="list light" id="list-added">
+                                    {
+                                        this.state.selected_deps.map((item) => {
+                                            return <div class="item" >
+                                                <div class="title">
+                                                    {item}
+                                                </div>
+                                                <div class="description">
+                                                    Some description about {item}
+                                                </div>
+                                            </div>
+                                        })
+
+                                    }
+                                </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="line row-action">
                                                                             <div class="left">
-                                                                                <div class="footer">© 2013-2019 Pivotal Software<br/>start.spring.io is powered by<br/><a href="https://github.com/spring-io/initializr/" tabindex="998">Spring Initializr</a> and <a href="https://run.pivotal.io/" tabindex="999">Pivotal Web Services</a></div>
+                                                                                <div class="footer">© 2013-2019 Pivotal Software<br/>start.steeltoe.io is powered by<br/>  <a href="">.NET foundation</a> and <a href="https://run.pivotal.io/" tabindex="999">Pivotal Web Services</a></div>
 </div>
                                                                                     <div class="right">
                                                                                         <div class="submit">

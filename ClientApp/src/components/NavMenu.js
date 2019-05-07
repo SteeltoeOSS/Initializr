@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 //import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import SVG from './SVG';
 import './NavMenu.css';
 const styles = {
     position: "relative",
@@ -40,14 +39,10 @@ export class NavMenu extends Component {
 
           <header style={styles}>
               <h1 style={logoStyles}>
-               <a>
-                      <img src="logo-inline.svg" width="200px" />
+                      <img src="logo-inline.svg" width="180px" height="50px" />
                       <br/>
-                      <strong>Steeltoe <span>Initializr</span></strong>
-                      <br/>
-                  A toehold for your application
-               </a>    
-            </h1>
+                  Kick start your application
+</h1>   
          </header>
     );
   }
