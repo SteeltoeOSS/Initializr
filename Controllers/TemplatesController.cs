@@ -36,11 +36,18 @@ namespace InitializrApi.Controllers
 
         // GET api/Template
         [Route("/starter.zip")]
-        public ActionResult GenerateProject([FromForm] GeneratorModel model)
+        [HttpPost]
+        public ActionResult GenerateProjectPost([FromForm] GeneratorModel model)
         {
+            return GenerateProject(model);
+        }
+
+        private ActionResult GenerateProject(GeneratorModel model)
+        {
+            var form = Request.Form;
             var list = _templateService.GetAvailableTemplates();
 
-            if (!list.Any(x => x.ShortName == model.type))
+            if (!list.Any(x => x.ShortName.ToLower() == model.type.ToLower()))
             {
                 return NotFound($"Type {model.type} was not found");
             }
