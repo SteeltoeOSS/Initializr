@@ -1,10 +1,10 @@
 ﻿import React, { Component } from 'react';
-export class FormRow extends Component {
-    //    static displayName = Home.name;
+export class RightInputSelector extends Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.state = { selectedValue: props.values[0] };
+
     }
     handleChange(e) {
         console.log('setting state from ' + this.state.selectedValue);
@@ -16,22 +16,20 @@ export class FormRow extends Component {
 
 
     render() {
+        let hrefLink = '#';
         return (
-            <div class="line">
-                <div class="left">{this.props.title}</div>
-                <div class="right">
-                    <div class="radios">
+            <div class="control"><label>{this.props.title}</label>
+            <div class="radios">
                         {
                             this.props.values.map((item, i ) => {
-                                return <div class={'radio ' + (this.state.selectedValue == item ? 'active' : '')} onClick={this.handleChange} >
-                                    <a href="#" data-value={item}>{item}</a>
+                                return <div class={'radio ' + (this.state.selectedValue === item ? 'active' : '')} onClick={this.handleChange} >
+                                    <a href={hrefLink} data-value={item}>{item}</a>
                                 </div>
                             })
                         }
                    
                     </div>
                 </div>
-            </div>
         );
     }
 }
