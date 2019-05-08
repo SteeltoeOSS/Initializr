@@ -1,5 +1,5 @@
 {
-  "name": "testDir",
+  "name": "steeltoestartui",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -32,6 +32,10 @@
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint ./src/"
+  },
+  "engines": {
+    "node": "10.15.x",
+    "npm": "6.4.x"
   },
   "browserslist": {
     "production": [
