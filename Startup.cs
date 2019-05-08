@@ -59,7 +59,8 @@ namespace InitializrApi
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
+                    // spa.UseReactDevelopmentServer("");
+                    spa.UseProxyToSpaDevelopmentServer("https://startui.apps.pcfone.io");
                 }
             });
         }
