@@ -1,17 +1,18 @@
 ﻿import React, { Component } from 'react'; 
-import { FormRow } from './FormRow';
+import { InputSelector } from './InputSelector';
+import { RightInputSelector } from './RightInputSelector';
 //import { Suggestions } from './Suggestions';
-import { Highlighter, Typeahead } from 'react-bootstrap-typeahead'; 
+import { Typeahead } from 'react-bootstrap-typeahead'; 
 import './Home.css'
 
-const hidden = {
-    display: "none"
-}
-const border = {
-    borderBottom: "3px solid #e4e4e4",
-    lineHeight: "16px",
-    padding: ".35rem 0 .55rem"
-}
+// const hidden = {
+//     display: "none"
+// }
+// const border = {
+//     borderBottom: "3px solid #e4e4e4",
+//     lineHeight: "16px",
+//     padding: ".35rem 0 .55rem"
+// }
 export class Home extends Component {
     static displayName = Home.name;
     constructor(props) {
@@ -19,27 +20,24 @@ export class Home extends Component {
         this.state = {
             project: 'gradle-project',
             dependencies: ['Hystrix', 'Actuator', 'MySql', 'Serilog'],
+            showMore: false,
             selected_deps: []
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSelection = this.handleSelection.bind(this);
+         this.handleSelection = this.handleSelection.bind(this);
+         this.toggleMore = this.toggleMore.bind(this);
     }
-    handleChange(e) {
-
-        console.log('setting state from ' + this.state.project );
-        this.setState({
-            project: e.target.attributes['data-value'].value
-        });
-        console.log('to ' + this.state.project);
-    }
+    
     handleSelection(e) {
         console.log("selection " + e);
         //this.state.selected_deps.push(e);
         this.setState(prevState => ({ selected_deps: [...prevState.selected_deps, e ]}))
-        this._typeahead._instance.clear();
+        this._typeAhead._instance.clear();
 
-        console.log('typeahead' , this._typeahead);
+        console.log('typeahead' , this._typeAhead);
 
+    }
+    toggleMore(e){
+        this.setState(prevState => ({showMore: !prevState.showMore}))
     }
     _renderMenuItemChildren = (option, props, index) => {
         console.log(props)
@@ -55,66 +53,54 @@ export class Home extends Component {
 
 
   render () {
+    let hrefLink = "#";
     return (
         <div>
-            <form name="form" action="/starter.zip" method="post"  autocomplete="off">
-                <input type="text" style={hidden} name="fakeusernameremembered" />
-                <input type="password" style={hidden} name="fakepasswordremembered" />
-                <input type="text" style={hidden} name="type" value="Console" />
-                <FormRow title='Project' values={ ["Visual Studio"]}/>
-                <FormRow title='Language' values={["C#", "F#", "VB.NET"]} />
-                <FormRow title='Steeltoe' values={["2.1", "2.2", "3.0"]} />
-                                 <div class="line">
-                                        <div class="left">Project Metadata</div>
-                                        <div class="right">
-                                            <div class="project-metadata">
-                                                <input id="baseDir" name="baseDir" type="hidden" value="demo" />
-                                                    <div class="control"><label>Project Name</label>
-                                                        <input class="control-text" name="projectName" value="SteeltoeExample" tabindex="1" />
-</div>
-                                                             <div class="more-block">
-                                                                <div id="more-block">
-                                                                    <div class="control"><label>Name</label>
-                                                                        <input class="control-text" name="name" value="demo" />
-</div>
-                                                                        <div class="control"><label>Description</label>
-                                                                            <input class="control-text" name="description" value="Demo project for Steeltoe" />
-</div>
-                                                 
-                                                                                    <div class="control"><label>.NET Core Version</label>
-                                                                                        <div class="radios">
-                                                                                            <div class="radio active">
-                                                                                                <a href="#" data-value="2.2">2.2</a>
-                                                                                            </div>
-                                                                                            <div class="radio">
-                                                                                                <a href="#" data-value="3.0">3.0</a>
-                                                                                            </div>
-                                                                                          
-                                                                                            <input type="hidden" name="netCoreVersuib" value="2.2" />
-</div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="control control-submit">
-                                                                                    <p id="more-options">
-                                                                                        <button type="button" class="btn">More options</button>
-                                                                                    </p>
-                                                                                    <p id="fewer-options" class="hide">
-                                                                                        <button type="button" class="btn">Fewer options</button>
-                                                                                    </p>
-                                                                                </div>
+            <form name="form" action="/starter.zip" method="post"  autoComplete="off">
+                <InputSelector title='Project' values={ ["Visual Studio"]}/>
+                <InputSelector title='Language' values={["C#", "F#", "VB.NET"]} />
+                <InputSelector title='Steeltoe' values={["2.1", "2.2", "3.0"]} />
+                                 <div className="line">
+                                        <div className="left">Project Metadata</div>
+                                        <div className="right">
+                                            <div className="project-metadata">
+
+                                                        <div className="control">
+                                                        <label>Project Name</label>
+                                                        <input className="control-text" name="projectName" placeholder="SteeltoeExample1" tabIndex="1" />
+                                                        </div>
+                                                        
+                                                        {this.state.showMore && 
+                                                            <div className="more-block">
+                                                            <div id="more-block">
+                                                                        <div class="control">
+                                                                            <label>Description</label>
+                                                                                <input className="control-text" name="description" placeholder="Demo project for Steeltoe" />
+                                                                        </div>
+                                                                        <RightInputSelector title='.NET Core Version' values={["2.2", "3.0"]} />
+            
+                                                            </div> 
+                                                            </div>
+                                                    }
+                                                    <div className="control control-submit">
+                                                        <p id="more-options">
+                                                            <button type="button" onClick={this.toggleMore} className="btn">{this.state.showMore? 'Fewer Options' : 'More options'}</button>
+                                                        </p>
+                                                        
+                                                    </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="line">
-                                                                        <div class="left">
-                                                                            <div class="dependencies-label">Dependencies <a id="see-all">See all</a></div>
+                                                                    <div className="line">
+                                                                        <div className="left">
+                                                                            <div className="dependencies-label">Dependencies <a href={hrefLink} id="see-all">See all</a></div>
                                                                         </div>
-                                                                        <div class="right">
-                                                                            <div class="colset">
-                                                                                <div class="col">Search dependencies to add
-                                <div class="control">
+                                                                        <div className="right">
+                                                                            <div className="colset">
+                                                                                <div className="col">Search dependencies to add
+                                <div className="control">
                                     <Typeahead
+                                        id="typeahead"
                                         className={'control-text'}
                                         labelKey="name"
                                         multiple={true}
@@ -122,25 +108,25 @@ export class Home extends Component {
                                         renderMenuItemChildren={this._renderMenuItemChildren}
                                         placeholder="Hystrix, Actuator ..."
                                         onChange={this.handleSelection}
-                                        ref={(ref) => this._typeahead = ref}
+                                        ref={(ref) => this._typeAhead = ref}
                                     />
 </div>
-                                                                                        <div class="no-result" id="noresult-to-add"><em>No result.</em></div>
-                                <div class="list" id="list-to-add">
+                                                                                        <div className="no-result" id="noresult-to-add"><em>No result.</em></div>
+                                <div className="list" id="list-to-add">
                                   
                                 </div>
                             </div>
                           
-                                                                                    <div class="col" id="col-dep">
+                                                                                    <div className="col" id="col-dep">
                                                                                         <strong>Selected dependencies</strong>
-                                <div class="list light" id="list-added">
+                                <div className="list light" id="list-added">
                                     {
                                         this.state.selected_deps.map((item) => {
-                                            return <div class="item" >
-                                                <div class="title">
+                                            return <div className="item" >
+                                                <div className="title">
                                                     {item}
                                                 </div>
-                                                <div class="description">
+                                                <div className="description">
                                                     Some description about {item}
                                                 </div>
                                             </div>
@@ -152,15 +138,16 @@ export class Home extends Component {
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="line row-action">
-                                                                            <div class="left">
-                                                                                <div class="footer">© 2013-2019 Pivotal Software<br/>start.steeltoe.io is powered by<br/>  <a href="">.NET foundation</a> and <a href="https://run.pivotal.io/" tabindex="999">Pivotal Web Services</a></div>
+                                                                        <div className="line row-action">
+                                                                            <div className="left">
+                                                                                <div className="footer">© 2013-2019 Pivotal Software<br/>start.steeltoe.io is powered by<br/>  
+                                                                                <a href="https://dotnetfoundation.org/">.NET foundation</a> and <a href="https://run.pivotal.io/" tabIndex="999">Pivotal Web Services</a></div>
 </div>
-                                                                                    <div class="right">
-                                                                                        <div class="submit">
-                                                                                            <button id="btn-generate" type="submit" class="btn btn-primary" tabindex="4">
-                                                                                                <span class="text">Generate Project</span> -
-<span class="shortcut"> alt + ⏎</span>
+                                                                                    <div className="right">
+                                                                                        <div className="submit">
+                                                                                            <button id="btn-generate" type="submit" className="btn btn-primary" tabIndex="4">
+                                                                                                <span className="text">Generate Project</span> -
+<span className="shortcut"> alt + ⏎</span>
                                                                                             </button>
                                                                                         </div>
                                                                                     </div>
