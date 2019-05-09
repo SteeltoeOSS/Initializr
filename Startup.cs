@@ -6,14 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace InitializrApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private ILogger<Startup> _logger;
+        public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
             Configuration = configuration;
+            _logger = logger;
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -59,9 +63,8 @@ namespace InitializrApi
 
                 if (env.IsDevelopment())
                 {
-                    // spa.UseReactDevelopmentServer("");
                     spa.UseReactDevelopmentServer(npmScript: "start");
-                   // spa.UseProxyToSpaDevelopmentServer("https://startui.apps.pcfone.io");
+                   // spa.UseProxyToSpaDevelopmentServer("https://startui.apps.pcfone.io");  
                 }
             });
         }
