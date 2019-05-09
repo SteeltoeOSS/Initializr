@@ -67,7 +67,7 @@ namespace InitializrApi.Controllers
         {
             return _templateService.DebugReinstall();
         }
-       // [Route("/")]
+        [Route("all")]
         public ActionResult<IEnumerable<TemplateViewModel>> GetTemplates()
         {
             return _templateService.GetAvailableTemplates();

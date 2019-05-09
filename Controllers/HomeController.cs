@@ -17,5 +17,20 @@ namespace InitializrApi.Controllers
         {
             _templateService = templateService;
         }
+        //[Route("/all")]
+        //public IActionResult Index()
+        //{
+        //    var templates = _templateService.GetAvailableTemplates();
+        //    if (Request.Headers["Accept"].Any(x => x.Contains("text/html")))
+        //    {
+        //        ViewData.Model = templates;
+        //        return View();
+        //    }
+
+        //    else
+        //    {
+        //        return Content("Hi result");
+        //    }
+        //}
     }
 }
