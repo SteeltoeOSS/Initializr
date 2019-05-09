@@ -309,6 +309,9 @@ div.radios div.radio {
         font-style: italic;
         color: #888
     }
+    .control-text ul{
+        padding-inline-start: 0px;
+    }
 
 .control {
     line-height: 16px;
