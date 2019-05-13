@@ -12,12 +12,16 @@ export class AutoSuggestSelector extends Component {
     }
        
     handleSelection(e) {
-        console.log("selection " + e);
+        //console.log("selection " + e);
         //this.state.selected_deps.push(e);
+        var deps = [...this.state.selected_deps, e] 
         this.setState(prevState => ({ selected_deps: [...prevState.selected_deps, e ]}))
         this._typeAhead._instance.clear();
 
-        console.log('typeahead' , this._typeAhead);
+        console.log('childn state', deps, e)
+      //  this.props.onChange(this.props.id, deps);
+
+       // console.log('typeahead' , this._typeAhead);
 
     }
     _renderMenuItemChildren = (option, props, index) => {
@@ -58,7 +62,9 @@ export class AutoSuggestSelector extends Component {
                         </div>
                         <div className="col" id="col-dep">
                             <strong>Selected dependencies</strong>
-                            <div className="list light" id="list-added">
+                             <div className="list light" id="list-added">
+                             <input name="dependencies" type="hidden"  defaultValue={this.state.selected_deps}  />
+                                                      
                                 {
                                     this.state.selected_deps.map((item) => {
                                         return <div className="item" >
