@@ -9,11 +9,13 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
 
   </PropertyGroup>
-
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="SteeltoeTemplates\templates\**" />
     <Content Remove="$(SpaRoot)**" />
+    <EmbeddedResource Remove="SteeltoeTemplates\templates\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="SteeltoeTemplates\templates\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
@@ -26,11 +28,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.TemplateEngine.Abstractions" Version="1.0.2-beta4-20181001-2078020" />
     <PackageReference Include="Microsoft.TemplateEngine.Cli" Version="1.0.2-beta4-20181001-2078020" />
     <PackageReference Include="Microsoft.TemplateEngine.Orchestrator.RunnableProjects" Version="1.0.2-beta4-20181001-2078020" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Stubble.Core" Version="1.2.7" />
+    <PackageReference Include="Stubble.Extensions.JsonNet" Version="1.0.18" />
   </ItemGroup>
   
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

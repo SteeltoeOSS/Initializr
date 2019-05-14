@@ -28,10 +28,12 @@ namespace InitializrApi.Controllers
     public class TemplatesController : ControllerBase
     {
         private ITemplateService _templateService;
+        private ISteeltoeTemplateService _sttemplateService;
 
-        public TemplatesController(ITemplateService service)
+        public TemplatesController(ITemplateService service, ISteeltoeTemplateService stTemplateService)
         {
             _templateService = service;
+            _sttemplateService = stTemplateService;
         }
 
         // GET api/Template
@@ -39,7 +41,10 @@ namespace InitializrApi.Controllers
         [HttpPost]
         public ActionResult GenerateProjectPost([FromForm] GeneratorModel model)
         {
-            return GenerateProject(model);
+            //  return GenerateProject(model);
+
+            var bytes = _sttemplateService.GenerateProject(model);
+            return File(bytes, "application/zip");
         }
 
         private ActionResult GenerateProject(GeneratorModel model)
@@ -71,6 +76,11 @@ namespace InitializrApi.Controllers
         public ActionResult<IEnumerable<TemplateViewModel>> GetTemplates()
         {
             return _templateService.GetAvailableTemplates();
+        }
+        [Route("stall")]
+        public ActionResult<IEnumerable<string>> GetSteeltoeTemplates()
+        {
+            return _sttemplateService.GetAvailableTemplates();
         }
 
         [Route("paths")]

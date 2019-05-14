@@ -342,6 +342,11 @@ div.radios div.radio {
         width: 120px
     }
 
+.react-autosuggest__suggestions-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
 .colset {
     display: flex;
     flex-flow: wrap
@@ -371,6 +376,9 @@ div.radios div.radio {
         cursor: pointer;
     }
 
+    .control-inner-text {
+        border: none;
+    }
 .control-text li {
     list-style-type: none;
 }
@@ -1133,4 +1141,8 @@ body.dependencies {
             max-width: 400px;
             margin: 0 auto
         }
+
+ 
+
+
 }

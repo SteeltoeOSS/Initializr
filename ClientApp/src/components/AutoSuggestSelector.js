@@ -5,7 +5,7 @@ export class AutoSuggestSelector extends Component {
         super(props);
         this.handleSelection = this.handleSelection.bind(this);
         this.state = {
-            dependencies: ['Hystrix', 'Actuator', 'MySql', 'Serilog'],
+            dependencies: this.props.available_deps,
             selected_deps: []
         }
         
@@ -25,12 +25,12 @@ export class AutoSuggestSelector extends Component {
 
     }
     _renderMenuItemChildren = (option, props, index) => {
-        console.log(props)
+       // console.log(props)
         return [
            <div className="title">
                 {option}
             </div>,
-            <div className="desc">
+            <div key={index} className="desc">
                     {'This is the description for ' + option}
               </div>
         ];
@@ -42,7 +42,7 @@ export class AutoSuggestSelector extends Component {
         return (
             <div className="line">
                 <div className="left">
-                    <div className="dependencies-label">Dependencies <a href={hrefLink} id="see-all">See all</a></div>
+                    <div className="dependencies-label">Dependencies</div>
                 </div>
                 <div className="right">
                     <div className="colset">

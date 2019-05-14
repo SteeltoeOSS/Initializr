@@ -12,8 +12,8 @@ namespace InitializrApi.Controllers
 {
     public class HomeController : Controller
     {
-        ITemplateService _templateService;
-        public HomeController(ITemplateService templateService)
+        ISteeltoeTemplateService _templateService;
+        public HomeController(ISteeltoeTemplateService templateService)
         {
             _templateService = templateService;
         }

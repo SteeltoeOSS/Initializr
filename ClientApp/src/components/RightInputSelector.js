@@ -18,11 +18,11 @@ export class RightInputSelector extends Component {
     render() {
         let hrefLink = '#';
         return (
-            <div class="control"><label>{this.props.title}</label>
-            <div class="radios">
+            <div className="control"><label>{this.props.title}</label>
+            <div className="radios">
                         {
                             this.props.values.map((item, i ) => {
-                                return <div class={'radio ' + (this.state.selectedValue === item ? 'active' : '')} onClick={this.handleChange} >
+                                return <div id={"rdio" + i} key= { "rdio"+i }  className={'radio ' + (this.state.selectedValue === item ? 'active' : '')} onClick={this.handleChange} >
                                     <a href={hrefLink} data-value={item}>{item}</a>
                                 </div>
                             })
