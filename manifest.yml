@@ -1,6 +1,6 @@
 ﻿---
 applications:
-- name: start.steeltoe.io
+- name: startsteeltoe
   buildpacks:
    - dotnet_core_buildpack
   memory: 512M

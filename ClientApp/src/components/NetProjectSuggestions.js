@@ -84,6 +84,7 @@ export class NetProjectSuggestions extends Component {
     render() {
         const { value, suggestions } = this.state;
         const inputProps = {
+            name: "projectType",
             placeholder: "Web, Api etc",
             value,
             onChange: this.onChange,
@@ -106,7 +107,10 @@ export class NetProjectSuggestions extends Component {
                         renderSuggestion={renderSuggestion}
                         inputProps={inputProps}
                             />
-                    </div>
+
+                   
+                 </div>
+
                 </div>
                 </div>
             </div>

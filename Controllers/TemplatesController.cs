@@ -41,10 +41,15 @@ namespace InitializrApi.Controllers
         [HttpPost]
         public ActionResult GenerateProjectPost([FromForm] GeneratorModel model)
         {
-            //  return GenerateProject(model);
-
-            var bytes = _sttemplateService.GenerateProject(model);
-            return File(bytes, "application/zip");
+            if (model.templateType == ".NET Templates")
+            {
+                return GenerateProject(model);
+            }
+            else
+            {
+                var bytes = _sttemplateService.GenerateProject(model);
+                return File(bytes, "application/zip");
+            }
         }
 
         private ActionResult GenerateProject(GeneratorModel model)
@@ -52,9 +57,9 @@ namespace InitializrApi.Controllers
             var form = Request.Form;
             var list = _templateService.GetAvailableTemplates();
 
-            if (!list.Any(x => x.ShortName.ToLower() == model.type.ToLower()))
+            if (!list.Any(x => x.Name.ToLower() == model.projectType.ToLower()))
             {
-                return NotFound($"Type {model.type} was not found");
+                return NotFound($"Type {model.projectType} was not found");
             }
             string zipFile = _templateService.GenerateProject(model);
             var cd = new ContentDispositionHeaderValue("attachment")

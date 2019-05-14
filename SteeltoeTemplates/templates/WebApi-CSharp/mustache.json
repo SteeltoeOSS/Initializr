@@ -6,7 +6,9 @@
     "OrganizationalAuth": false,
     "IndividualB2CAuth": false,                
     "RequiresHttps": true,                    
-    "Auth": false,                 
-    "CloudFoundry": true, 
+    "Auth": false,
+    "CloudFoundry": false,
+    "Hystrix": false,
+    "MySql": false,
     "WindowsAuth":false
 }     

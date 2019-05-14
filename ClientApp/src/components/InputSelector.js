@@ -30,11 +30,11 @@ export class InputSelector extends Component {
                             this.props.values.map((item, i ) => {
                                 return <div key={ 'option'+i }  className={'radio ' + (this.state.selectedValue === item ? 'active' : '')} onClick={this.handleChange} >
                                     <a href={hrefLink} data-value={item}>{item}</a>
-                                    <input type="hidden" name={this.props.name} value={this.state.selectedValue} />
-                                </div>
+                                    </div>
                             })
                         }
-                   
+                        <input type="hidden" name={this.props.name} value={this.state.selectedValue} />
+                  
                     </div>
                 </div>
             </div>
