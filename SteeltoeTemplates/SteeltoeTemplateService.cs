@@ -32,7 +32,14 @@ namespace InitializrApi.Services
             string current = Directory.GetCurrentDirectory();
             var templatePath = Path.Combine(current, "SteeltoeTemplates", "templates", name);
             var json = File.ReadAllText(Path.Combine(templatePath, "mustache.json"));
-            object dataView = JsonConvert.DeserializeObject(json);
+            var dataView = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            foreach(var dependency in model.dependencies)
+            {
+                if(dataView.ContainsKey(dependency))
+                {
+                    dataView[dependency] = "true";
+                }
+            }
             var listoffiles = new List<KeyValuePair<string, string>>();
             byte[] archiveBytes;
 
@@ -71,7 +78,7 @@ namespace InitializrApi.Services
                         _logger.LogDebug(entry.Key);
                         var ef = archive.CreateEntry(entry.Key, CompressionLevel.Optimal);
                         using (var entryStream = ef.Open())
-                        using (var fileToCompress = new MemoryStream(Encoding.UTF8.GetBytes("entry.Value")))
+                        using (var fileToCompress = new MemoryStream(Encoding.UTF8.GetBytes(entry.Value)))
                         {
                             fileToCompress.CopyTo(entryStream);
                         }

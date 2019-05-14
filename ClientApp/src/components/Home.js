@@ -59,8 +59,8 @@ export class Home extends Component {
 
                 {this.state.level2SelectorType != "net" &&
                     <div>
-                    <InputSelector id="stVersion" title="Steeltoe" name="stVersion" values={["2.1", "2.2", "3.0"]} defaultValue="2.2" onChange={this.handleInputChange} />
-                    <AutoSuggestSelector id="deps" available_deps={["Hystrix", "Actuator"]} />
+                    <InputSelector id="steeltoeVersion" title="Steeltoe" name="steeltoeVersion" values={["2.1", "2.2", "3.0"]} defaultValue="2.2" onChange={this.handleInputChange} />
+                    <AutoSuggestSelector id="deps" available_deps={["CloudFoundry", "Hystrix", "Actuator", "MySql"]} />
                     </div>
 
                 }

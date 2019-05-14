@@ -45,7 +45,7 @@ namespace InitializrApi.Services
             //}
             var output = Path.Combine("/", "output");
             var outFolder = Path.Combine(output, "generated");
-            var zipfile = Path.Combine(output, $"{model.name}project.zip");
+            var zipfile = Path.Combine(output, $"{model.projectName}project.zip");
 
             if (Directory.Exists(outFolder))
             {
@@ -58,12 +58,13 @@ namespace InitializrApi.Services
 
 
             var argsList = new List<string>();
-            argsList.Add(model.type); // Type of project mvc, console etc
-            if (!string.IsNullOrEmpty(model.name))
+            argsList.Add(model.projectType); // Type of project mvc, console etc
+            if (!string.IsNullOrEmpty(model.projectName))
             {
                 argsList.Add("-n");
-                argsList.Add($"{model.name}");
+                argsList.Add($"{model.projectName}");
             }
+            //Todo: Add language
             //finally
             argsList.AddRange(new[] { "--output", outFolder });
 
