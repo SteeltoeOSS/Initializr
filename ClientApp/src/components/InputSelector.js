@@ -5,6 +5,7 @@ export class InputSelector extends Component {
         
         this.handleChange = this.handleChange.bind(this);
         this.state = { selectedValue: this.props.defaultValue };
+        console.log("in constructor ", this.props.name)
     }
     handleChange(e) {
         console.log('setting state from ' + this.state.selectedValue);
@@ -14,13 +15,12 @@ export class InputSelector extends Component {
             selectedValue: selection
         });
         this.props.onChange(this.props.name, selection)
-        console.log('to ' + this.state.selectedValue);
+        console.log('to ' + this.selection);
     }
 
 
     render() {
         let hrefLink = '#';
-        
         return (
             <div className="line">
                 <div className="left">{this.props.title}</div>

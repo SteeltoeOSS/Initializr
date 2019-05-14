@@ -12,7 +12,7 @@ namespace InitializrApi.Models
         public string[] dependencies
         {
             get => _dependencies;
-            set => _dependencies = (value == null || value.Length == 0) ? value : value[0].Split(',');
+            set => _dependencies = (value == null || value.Length == 0 || value[0] == null) ? value : value[0].Split(',');
         }
         public string name { get; set; }
         public string type { get; set; }

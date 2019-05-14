@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework >{{TargetFramework}}</TargetFramework>
+    {{#Auth}}
+    <UserSecretsId >{{UserSecretsId}}</UserSecretsId>
+    {{/Auth}}
+    {{#ExcludeLaunchSettings}}
+    <NoDefaultLaunchSettingsFile>True</NoDefaultLaunchSettingsFile>
+    {{/ExcludeLaunchSettings}}
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    </PropertyGroup>
+
+  <ItemGroup >
+    <PackageReference Include="Microsoft.AspNetCore" Version="{{Version}}"/>
+    {{#OrganizationalAuth}}
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="{{Version}}" />
+    {{/OrganizationalAuth}}
+    {{#IndividualB2CAuth}}
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureADB2C.UI" Version="{{Version}}" />
+    {{/IndividualB2CAuth}}
+    {{#RequiresHttps}}
+    <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="{{Version}}" />
+    {{/RequiresHttps}}
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="{{Version}}" />
+    {{#CloudFoundry}}
+    <PackageReference Include="Steeltoe.CloudFoundry.ConnectorCore" Version="{{Version}}"/>
+    <PackageReference Include="Steeltoe.Management.CloudFoundryCore"  Version="{{Version}}" />
+    <PackageReference Include="Steeltoe.Management.ExporterCore"  Version="{{Version}}"/>
+    {{/CloudFoundry}}
+  </ItemGroup>
+
+</Project>
