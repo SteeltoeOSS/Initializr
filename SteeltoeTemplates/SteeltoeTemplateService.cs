@@ -9,6 +9,7 @@ using Stubble.Extensions.JsonNet;
 using System.IO.Compression;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace InitializrApi.Services
 {
@@ -16,6 +17,12 @@ namespace InitializrApi.Services
     {
         StubbleVisitorRenderer _stubble;
         ILogger<SteeltoeTemplateService> _logger;
+        class Account
+        {
+            public string Email { get; set; }
+            public Func<string, object> MyLambda { get; set; }
+
+        }
 
         public SteeltoeTemplateService(ILogger<SteeltoeTemplateService> logger)
         {
@@ -100,6 +107,18 @@ namespace InitializrApi.Services
         }
         public List<string> GetAvailableTemplates()
         {
+            Account acc = new Account
+            {
+                Email = "foo@bar.com",
+                MyLambda = new Func<string, string>((str) => { return str; })
+        };
+
+            var json = JsonConvert.SerializeObject(acc, Formatting.Indented, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            Console.WriteLine(json);
+
             string current = Directory.GetCurrentDirectory();
             var templatesPath =Path.Combine(current, "SteeltoeTemplates", "templates");
             return Directory.GetDirectories(templatesPath).Select(path => new DirectoryInfo(path).Name).ToList();

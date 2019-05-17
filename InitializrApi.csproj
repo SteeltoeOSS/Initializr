@@ -11,10 +11,14 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="Services\templates\**" />
     <Compile Remove="SteeltoeTemplates\templates\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="Services\templates\**" />
+    <EmbeddedResource Remove="Services\templates\**" />
     <EmbeddedResource Remove="SteeltoeTemplates\templates\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="Services\templates\**" />
     <None Remove="SteeltoeTemplates\templates\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
