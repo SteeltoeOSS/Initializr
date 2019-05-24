@@ -68,8 +68,4 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
-
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="XCOPY &quot;$(SolutionDir)templates&quot; &quot;$(TargetDir)templates\&quot; /E /Y" />
-  </Target>
 </Project>
