@@ -7,6 +7,10 @@
     <IsPackable>false</IsPackable>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+ <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+  
 
   </PropertyGroup>
   <ItemGroup>
@@ -33,9 +37,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.TemplateEngine.Abstractions" Version="1.0.2-beta4-20181001-2078020" />
-    <PackageReference Include="Microsoft.TemplateEngine.Cli" Version="1.0.2-beta4-20181001-2078020" />
-    <PackageReference Include="Microsoft.TemplateEngine.Orchestrator.RunnableProjects" Version="1.0.2-beta4-20181001-2078020" />
+    <PackageReference Include="Microsoft.TemplateEngine.Cli" Version="0.2.2-alpha" />
+    <PackageReference Include="Microsoft.TemplateEngine.Orchestrator.RunnableProjects" Version="0.2.1-alpha" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Stubble.Core" Version="1.2.7" />
     <PackageReference Include="Stubble.Extensions.JsonNet" Version="1.0.18" />
@@ -64,5 +67,9 @@
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </ResolvedFileToPublish>
     </ItemGroup>
+  </Target>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="XCOPY &quot;$(SolutionDir)templates&quot; &quot;$(TargetDir)templates\&quot; /E /Y" />
   </Target>
 </Project>
