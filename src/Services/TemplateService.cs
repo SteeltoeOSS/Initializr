@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
@@ -21,29 +22,34 @@ namespace InitializrApi.Services
 {
     public class TemplateService : ITemplateService
     {
-        private const string HostIdentifier = "dotnetcli";
-        //private const string HostVersion = "v2.2.203";
-        private const string HostVersion = "v2.2.101";
+        private const string HostIdentifier = "initializr";
+     //   private const string HostVersion = "v2.2.203";
+        private const string HostVersion = "v1.0.0";
         private const string CommandName = "new3";
         private StringWriter stringWriter = new StringWriter();
 
-        IHostingEnvironment _env;
-        public TemplateService(IHostingEnvironment env)
+        private string hivePath;//= @"C:\Users\Hananiel\projects\InitializrApi\templates\";
+        //private string outFolder = "";
+
+        //    IHostingEnvironment _env;
+        public TemplateService()
         {
-            _env = env;
+          hivePath = AppDomain.CurrentDomain.BaseDirectory+"templates";
+            Console.WriteLine("hivePath " + hivePath);
+            // _env = env;
         }
         public string GenerateProject(GeneratorModel model)
         {
             var host = CreateHost(false);
 
             StringWriter stringWriter = new StringWriter();
-            Console.SetOut(stringWriter);
+          //  Console.SetOut(stringWriter);
             //var str = "";
             //using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
             //{
             //    str =  reader.ReadToEndAsync().Result;
             //}
-            var output = Path.Combine("/", "output");
+            var output = Path.Combine(@"\", "output");
             var outFolder = Path.Combine(output, "generated");
             var zipfile = Path.Combine(output, $"{model.projectName}project.zip");
 
@@ -58,6 +64,8 @@ namespace InitializrApi.Services
 
 
             var argsList = new List<string>();
+            //  argsList.Add("-l");
+
             argsList.Add(model.projectType); // Type of project mvc, console etc
             if (!string.IsNullOrEmpty(model.projectName))
             {
@@ -68,22 +76,21 @@ namespace InitializrApi.Services
             //finally
             argsList.AddRange(new[] { "--output", outFolder });
 
-            New3Command.Run(CommandName, host, new TelemetryLogger(null, true), FirstRun, argsList.ToArray());
+            New3Command.Run(CommandName, host, new TelemetryLogger(null, false), FirstRun, argsList.ToArray(),hivePath);
 
-
+            var logs = stringWriter.ToString();
+            stringWriter.Flush();
             ZipFile.CreateFromDirectory(outFolder, zipfile);
             return zipfile;
 
         }
-        private static IReadOnlyCollection<ITemplateMatchInfo> GetAllTemplates()
+        private IReadOnlyCollection<ITemplateMatchInfo> GetAllTemplates()
         {
             var host = CreateHost(true);
-
-            string hivePath = null;
             var EnvironmentSettings = new EngineEnvironmentSettings(host, x => new SettingsLoader(x), hivePath);
             var _settingsLoader = (SettingsLoader)EnvironmentSettings.SettingsLoader;
             var _hostDataLoader = new HostSpecificDataLoader(EnvironmentSettings.SettingsLoader);
-            var list = TemplateListResolver.PerformAllTemplatesQuery(_settingsLoader.UserTemplateCache.TemplateInfo, _hostDataLoader);
+                var list = TemplateListResolver.PerformAllTemplatesQuery(_settingsLoader.UserTemplateCache.TemplateInfo, _hostDataLoader);
             return list;
         }
 
@@ -129,16 +136,7 @@ namespace InitializrApi.Services
 
         private static void FirstRun(IEngineEnvironmentSettings environmentSettings, IInstaller installer)
         {
-            string baseDir = Environment.ExpandEnvironmentVariables("%DN3%");
-
-            if (baseDir.Contains('%'))
-            {
-                Assembly a = typeof(Program).GetTypeInfo().Assembly;
-                string path = new Uri(a.CodeBase, UriKind.Absolute).LocalPath;
-                path = Path.GetDirectoryName(path);
-                Environment.SetEnvironmentVariable("DN3", path);
-            }
-
+        
             List<string> toInstallList = new List<string>();
             Paths paths = new Paths(environmentSettings);
 
@@ -168,7 +166,7 @@ namespace InitializrApi.Services
         {
             var host = CreateHost(true);
 
-            string hivePath = null;
+            string hivePath = AppDomain.CurrentDomain.BaseDirectory;
             var EnvironmentSettings = new EngineEnvironmentSettings(host, x => new SettingsLoader(x), hivePath);
             var _settingsLoader = (SettingsLoader)EnvironmentSettings.SettingsLoader;
             var _hostDataLoader = new HostSpecificDataLoader(EnvironmentSettings.SettingsLoader);

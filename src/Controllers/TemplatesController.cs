@@ -52,12 +52,19 @@ namespace InitializrApi.Controllers
             }
         }
 
+        [Route("/createtest")]
+        public ActionResult GenerateProjectTest([FromQuery(Name ="projectType")] string projectType)
+        {
+            return GenerateProject(new GeneratorModel { projectType = projectType ?? "steeltoe", projectName = "mytest" });
+
+        }
+
         private ActionResult GenerateProject(GeneratorModel model)
         {
-            var form = Request.Form;
+            //var form = Request.Form;
             var list = _templateService.GetAvailableTemplates();
 
-            if (!list.Any(x => x.Name.ToLower() == model.projectType.ToLower()))
+            if (!list.Any(x => x.ShortName.ToLower() == model.projectType.ToLower()))
             {
                 return NotFound($"Type {model.projectType} was not found");
             }
