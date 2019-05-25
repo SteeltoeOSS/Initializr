@@ -16,5 +16,15 @@
   <ItemGroup>
     <ProjectReference Include="..\src\InitializrApi.csproj" />
   </ItemGroup>
-
+  
+  <Target Name="CopyTemplates" BeforeTargets="PreBuildEvent">
+    <ItemGroup>
+      <Templates Include="$(SolutionDir)\templates\**\*.*" />
+    </ItemGroup>
+    <Copy
+      SourceFiles="@(Templates)"
+      DestinationFolder="$(TargetDir)\templates\%(RecursiveDir)"
+      SkipUnchangedFiles="true" 
+    />
+   </Target> 
 </Project>
