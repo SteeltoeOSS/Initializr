@@ -68,4 +68,15 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
+  <Target Name="CopyTemplates" BeforeTargets="PreBuildEvent">
+    <ItemGroup>
+      <Templates Include="$(SolutionDir)\templates\**\*.*" />
+    </ItemGroup>
+    <Copy
+      SourceFiles="@(Templates)"
+      DestinationFolder="$(TargetDir)\templates\%(RecursiveDir)"
+      SkipUnchangedFiles="true" 
+    />
+
+  </Target> 
 </Project>
