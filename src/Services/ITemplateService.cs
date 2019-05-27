@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using InitializrApi.Models;
 
 namespace InitializrApi.Services
 {
     public interface ITemplateService
     {
-        string DebugReinstall();
-        string GenerateProject(GeneratorModel model);
+      
+        Task<string> GenerateProject();
         List<TemplateViewModel> GetAvailableTemplates();
-        List<string> GetPaths();
+      
     }
 }
