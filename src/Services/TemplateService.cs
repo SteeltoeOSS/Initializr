@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using InitializrApi.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.TemplateEngine.Abstractions;
@@ -17,73 +18,123 @@ using Microsoft.TemplateEngine.Edge.Template;
 using Microsoft.TemplateEngine.Edge.TemplateUpdates;
 using Microsoft.TemplateEngine.Orchestrator.RunnableProjects;
 using Microsoft.TemplateEngine.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace InitializrApi.Services
 {
     public class TemplateService : ITemplateService
     {
-        private const string HostIdentifier = "initializr";
-     //   private const string HostVersion = "v2.2.203";
-        private const string HostVersion = "v1.0.0";
-        private const string CommandName = "new3";
-        private StringWriter stringWriter = new StringWriter();
-
-        private string hivePath;//= @"C:\Users\Hananiel\projects\InitializrApi\templates\";
+   
+        private string hivePath;
         //private string outFolder = "";
 
         //    IHostingEnvironment _env;
         public TemplateService()
         {
-          hivePath = AppDomain.CurrentDomain.BaseDirectory+"templates";
+            hivePath = AppDomain.CurrentDomain.BaseDirectory+"templates";
             Console.WriteLine("hivePath " + hivePath);
             // _env = env;
         }
-        public string GenerateProject(GeneratorModel model)
+        public async Task<string> GenerateProject()
         {
-            var host = CreateHost(false);
 
-            StringWriter stringWriter = new StringWriter();
-          //  Console.SetOut(stringWriter);
-            //var str = "";
-            //using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
-            //{
-            //    str =  reader.ReadToEndAsync().Result;
-            //}
-            var output = Path.Combine(@"\", "output");
+            var output = Path.Combine("\\", "output", Guid.NewGuid().ToString() + DateTime.Now.Millisecond);
             var outFolder = Path.Combine(output, "generated");
-            var zipfile = Path.Combine(output, $"{model.projectName}project.zip");
 
-            if (Directory.Exists(outFolder))
+            ITemplateEngineHost host = new DefaultTemplateEngineHost("Initializr", "v1.0", "");
+            string hivePath = @"C:\Users\Hananiel\projects\InitializrApi\templates\"; //null;
+
+            var cachePath = Path.Combine(hivePath, "templateCache.json");
+
+            Func<IEngineEnvironmentSettings, ISettingsLoader> settingsLoaderFactory = (IEngineEnvironmentSettings settings) =>
             {
-                Directory.Delete(outFolder, true);
-            }
-            if (File.Exists(zipfile))
+                var loader = new SettingsLoader(settings);
+                if (!System.IO.File.Exists(cachePath))
+                {
+                    loader.RebuildCacheFromSettingsIfNotCurrent(true);
+                }
+                return loader;
+            };
+
+            var envSettings = new EngineEnvironmentSettings(host, settingsLoaderFactory, hivePath);
+
+            TemplateCreator creator = new TemplateCreator(envSettings);
+
+
+
+            string usrTemplateCache = System.IO.File.ReadAllText(cachePath);
+            JObject parsedCache = JObject.Parse(usrTemplateCache);
+            var tc = new TemplateCache(envSettings, parsedCache, "");
+            var myTemplateInfo = tc.TemplateInfo[0];
+
+            //ITemplateInfo templateInfo = TemplateInfo.FromJObject()
+            //{
+
+            //}
+            var iParams = new Dictionary<string, string>
             {
-                File.Delete(zipfile);
-            }
+                { "Name", "SteProject" },
+                {"Actuators", "false"}
+            };
 
-
-            var argsList = new List<string>();
-            //  argsList.Add("-l");
-
-            argsList.Add(model.projectType); // Type of project mvc, console etc
-            if (!string.IsNullOrEmpty(model.projectName))
+            TemplateCreationResult instantiateResult;
+            try
             {
-                argsList.Add("-n");
-                argsList.Add($"{model.projectName}");
+                instantiateResult = await creator.InstantiateAsync(myTemplateInfo, "myName", "noIdea", outFolder, iParams, true, false, "baseLine");
             }
-            //Todo: Add language
-            //finally
-            argsList.AddRange(new[] { "--output", outFolder });
-
-            New3Command.Run(CommandName, host, new TelemetryLogger(null, false), FirstRun, argsList.ToArray(),hivePath);
-
-            var logs = stringWriter.ToString();
-            stringWriter.Flush();
-            ZipFile.CreateFromDirectory(outFolder, zipfile);
-            return zipfile;
-
+            catch (Exception ex)
+            {
+                instantiateResult = new TemplateCreationResult(ex.Message + ex.StackTrace, CreationResultStatus.CreateFailed, outFolder);
+            }
+            return instantiateResult.Message + " " + instantiateResult.OutputBaseDirectory;
         }
+    
+        //public string GenerateProject(GeneratorModel model)
+        //{
+        //    var host = CreateHost(false);
+
+        //    StringWriter stringWriter = new StringWriter();
+        //  //  Console.SetOut(stringWriter);
+        //    //var str = "";
+        //    //using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+        //    //{
+        //    //    str =  reader.ReadToEndAsync().Result;
+        //    //}
+        //    var output = Path.Combine(@"\", "output");
+        //    var outFolder = Path.Combine(output, "generated");
+        //    var zipfile = Path.Combine(output, $"{model.projectName}project.zip");
+
+        //    if (Directory.Exists(outFolder))
+        //    {
+        //        Directory.Delete(outFolder, true);
+        //    }
+        //    if (File.Exists(zipfile))
+        //    {
+        //        File.Delete(zipfile);
+        //    }
+
+
+        //    var argsList = new List<string>();
+        //    //  argsList.Add("-l");
+
+        //    argsList.Add(model.projectType); // Type of project mvc, console etc
+        //    if (!string.IsNullOrEmpty(model.projectName))
+        //    {
+        //        argsList.Add("-n");
+        //        argsList.Add($"{model.projectName}");
+        //    }
+        //    //Todo: Add language
+        //    //finally
+        //    argsList.AddRange(new[] { "--output", outFolder });
+
+        //    New3Command.Run(CommandName, host, new TelemetryLogger(null, false), FirstRun, argsList.ToArray(),hivePath);
+
+        //    var logs = stringWriter.ToString();
+        //    stringWriter.Flush();
+        //    ZipFile.CreateFromDirectory(outFolder, zipfile);
+        //    return zipfile;
+
+        //}
         private IReadOnlyCollection<ITemplateMatchInfo> GetAllTemplates()
         {
             var host = CreateHost(true);
@@ -119,7 +170,7 @@ namespace InitializrApi.Services
                 typeof(DotnetRestorePostActionProcessor).GetTypeInfo().Assembly     // for assembly: Microsoft.TemplateEngine.Cli
             });
 
-            DefaultTemplateEngineHost host = new DefaultTemplateEngineHost(HostIdentifier, HostVersion, CultureInfo.CurrentCulture.Name, preferences, builtIns, new[] { "dotnetcli" });
+            DefaultTemplateEngineHost host = new DefaultTemplateEngineHost("Initializr", "1.0", CultureInfo.CurrentCulture.Name, preferences, builtIns, new[] { "dotnetcli" });
 
             if (emitTimings)
             {
@@ -134,51 +185,51 @@ namespace InitializrApi.Services
             return host;
         }
 
-        private static void FirstRun(IEngineEnvironmentSettings environmentSettings, IInstaller installer)
-        {
-        
-            List<string> toInstallList = new List<string>();
-            Paths paths = new Paths(environmentSettings);
+        //private static void FirstRun(IEngineEnvironmentSettings environmentSettings, IInstaller installer)
+        //{
 
-            if (paths.FileExists(paths.Global.DefaultInstallPackageList))
-            {
-                toInstallList.AddRange(paths.ReadAllText(paths.Global.DefaultInstallPackageList).Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
-            }
+        //    List<string> toInstallList = new List<string>();
+        //    Paths paths = new Paths(environmentSettings);
 
-            if (paths.FileExists(paths.Global.DefaultInstallTemplateList))
-            {
-                toInstallList.AddRange(paths.ReadAllText(paths.Global.DefaultInstallTemplateList).Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
-            }
+        //    if (paths.FileExists(paths.Global.DefaultInstallPackageList))
+        //    {
+        //        toInstallList.AddRange(paths.ReadAllText(paths.Global.DefaultInstallPackageList).Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
+        //    }
 
-            if (toInstallList.Count > 0)
-            {
-                for (int i = 0; i < toInstallList.Count; i++)
-                {
-                    toInstallList[i] = toInstallList[i].Replace("\r", "")
-                        .Replace('\\', Path.DirectorySeparatorChar);
-                }
+        //    if (paths.FileExists(paths.Global.DefaultInstallTemplateList))
+        //    {
+        //        toInstallList.AddRange(paths.ReadAllText(paths.Global.DefaultInstallTemplateList).Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
+        //    }
 
-                installer.InstallPackages(toInstallList);
-            }
-        }
+        //    if (toInstallList.Count > 0)
+        //    {
+        //        for (int i = 0; i < toInstallList.Count; i++)
+        //        {
+        //            toInstallList[i] = toInstallList[i].Replace("\r", "")
+        //                .Replace('\\', Path.DirectorySeparatorChar);
+        //        }
 
-        public List<string> GetPaths()
-        {
-            var host = CreateHost(true);
+        //        installer.InstallPackages(toInstallList);
+        //    }
+        //}
 
-            string hivePath = AppDomain.CurrentDomain.BaseDirectory;
-            var EnvironmentSettings = new EngineEnvironmentSettings(host, x => new SettingsLoader(x), hivePath);
-            var _settingsLoader = (SettingsLoader)EnvironmentSettings.SettingsLoader;
-            var _hostDataLoader = new HostSpecificDataLoader(EnvironmentSettings.SettingsLoader);
-            var list = new List<string>();
-            list.Add(_settingsLoader.EnvironmentSettings.Paths.BaseDir);
-            list.Add(_settingsLoader.EnvironmentSettings.Paths.UserProfileDir);
+        //public List<string> GetPaths()
+        //{
+        //    var host = CreateHost(true);
 
-            var output = Path.Combine("/", "output");
-            var outFolder = Path.Combine(output, "generated");
-            list.Add(outFolder);
-            return list; 
-        }
+        //    string hivePath = AppDomain.CurrentDomain.BaseDirectory;
+        //    var EnvironmentSettings = new EngineEnvironmentSettings(host, x => new SettingsLoader(x), hivePath);
+        //    var _settingsLoader = (SettingsLoader)EnvironmentSettings.SettingsLoader;
+        //    var _hostDataLoader = new HostSpecificDataLoader(EnvironmentSettings.SettingsLoader);
+        //    var list = new List<string>();
+        //    list.Add(_settingsLoader.EnvironmentSettings.Paths.BaseDir);
+        //    list.Add(_settingsLoader.EnvironmentSettings.Paths.UserProfileDir);
+
+        //    var output = Path.Combine("/", "output");
+        //    var outFolder = Path.Combine(output, "generated");
+        //    list.Add(outFolder);
+        //    return list; 
+        //}
 
         public List<TemplateViewModel> GetAvailableTemplates()
         {
@@ -193,19 +244,19 @@ namespace InitializrApi.Services
             return items.ToList();
         }
 
-        public string DebugReinstall()
-        {
-            var host = CreateHost(false);
-            var response = "";
-            using (StringWriter stringWriter = new StringWriter())
-            {
-                Console.SetOut(stringWriter);
+        //public string DebugReinstall()
+        //{
+        //    var host = CreateHost(false);
+        //    var response = "";
+        //    using (StringWriter stringWriter = new StringWriter())
+        //    {
+        //        Console.SetOut(stringWriter);
 
-                New3Command.Run(CommandName, host, new TelemetryLogger(null, true), FirstRun, new[] { "--debug:reinit" });
-              //  stringWriter.read
-            }
-            return "";
-        }
+        //        New3Command.Run(CommandName, host, new TelemetryLogger(null, true), FirstRun, new[] { "--debug:reinit" });
+        //      //  stringWriter.read
+        //    }
+        //    return "";
+        //}
           
 
     }

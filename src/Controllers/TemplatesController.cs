@@ -68,7 +68,7 @@ namespace InitializrApi.Controllers
             {
                 return NotFound($"Type {model.projectType} was not found");
             }
-            string zipFile = _templateService.GenerateProject(model);
+            string zipFile =  _templateService.GenerateProject().Result;
             var cd = new ContentDispositionHeaderValue("attachment")
             {
                 FileNameStar = zipFile
@@ -79,11 +79,7 @@ namespace InitializrApi.Controllers
         }
         // GET api/templates
 
-        [Route("debug-reinstall")]
-        public ActionResult<string> DebugReinstall()
-        {
-            return _templateService.DebugReinstall();
-        }
+       
         [Route("all")]
         public ActionResult<IEnumerable<TemplateViewModel>> GetTemplates()
         {
@@ -95,12 +91,7 @@ namespace InitializrApi.Controllers
             return _sttemplateService.GetAvailableTemplates();
         }
 
-        [Route("paths")]
-        public ActionResult<IEnumerable<string>> GetAllPaths()
-        {
-
-            return _templateService.GetPaths();
-        }
+       
 
     }
  

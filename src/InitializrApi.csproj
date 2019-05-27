@@ -68,15 +68,23 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
-  <Target Name="CopyTemplates" BeforeTargets="PreBuildEvent">
+  <Target Name="CopyTemplates" AfterTargets="Build">
     <ItemGroup>
-      <Templates Include="$(SolutionDir)\templates\**\*.*" />
+      <Templates Include="$(SolutionDir)templates\**\*.*" />
+    </ItemGroup>
+    <ItemGroup >
+      <SettingsFile Include="$(SolutionDir)templates\settings-windows.json" />
     </ItemGroup>
     <Copy
-      SourceFiles="@(Templates)"
-      DestinationFolder="$(TargetDir)\templates\%(RecursiveDir)"
-      SkipUnchangedFiles="true" 
+     SourceFiles="@(Templates)"
+     DestinationFolder="$(TargetDir)\templates\%(RecursiveDir)"
+     SkipUnchangedFiles="true"
+     /> 
+    <Copy Condition="$(OS.Contains('Win'))"
+         SourceFiles="@(SettingsFile)"
+         DestinationFiles="$(TargetDir)\templates\settings.json"
+        
     />
-
+    <Message Importance="high" Text="hello $(SolutionDir) settings files @(SettingsFile)  $(OS)" ></Message>
   </Target> 
 </Project>

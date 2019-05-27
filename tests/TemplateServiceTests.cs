@@ -38,7 +38,7 @@ namespace InitializrApiTests
                 projectType = "steeltoe"
 
             };
-            var zipPath = templateService.GenerateProject(model);
+            var zipPath = templateService.GenerateProject();
             Assert.NotNull(zipPath);
 
         }
