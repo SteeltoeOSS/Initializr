@@ -31,8 +31,15 @@ namespace InitializrApi.Services
         //    IHostingEnvironment _env;
         public TemplateService()
         {
-            hivePath = AppDomain.CurrentDomain.BaseDirectory+"templates";
+            hivePath = AppDomain.CurrentDomain.BaseDirectory + "templates" + Path.DirectorySeparatorChar;
             Console.WriteLine("hivePath " + hivePath);
+            var settingsPath = Path.Combine(hivePath, "settings.json");
+            var settingsContent = File.ReadAllText(settingsPath);
+
+            var escapedPath = hivePath.Replace(@"\", @"\\");
+            var newContent = settingsContent.Replace("__Path__", (Path.DirectorySeparatorChar == '\\')? escapedPath: hivePath);
+            File.WriteAllText(settingsPath, newContent);
+
             // _env = env;
         }
         public async Task<string> GenerateProject()
@@ -42,13 +49,12 @@ namespace InitializrApi.Services
             var outFolder = Path.Combine(output, "generated");
 
             ITemplateEngineHost host = new DefaultTemplateEngineHost("Initializr", "v1.0", "");
-            string hivePath = @"C:\Users\Hananiel\projects\InitializrApi\templates\"; //null;
 
             var cachePath = Path.Combine(hivePath, "templateCache.json");
 
             Func<IEngineEnvironmentSettings, ISettingsLoader> settingsLoaderFactory = (IEngineEnvironmentSettings settings) =>
             {
-                var loader = new SettingsLoader(settings);
+                var loader = new InitializrSettingsLoader(settings, hivePath);
                 if (!System.IO.File.Exists(cachePath))
                 {
                     loader.RebuildCacheFromSettingsIfNotCurrent(true);
@@ -57,6 +63,7 @@ namespace InitializrApi.Services
             };
 
             var envSettings = new EngineEnvironmentSettings(host, settingsLoaderFactory, hivePath);
+          
 
             TemplateCreator creator = new TemplateCreator(envSettings);
 
