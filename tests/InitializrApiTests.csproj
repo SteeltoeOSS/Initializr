@@ -21,10 +21,6 @@
     <ItemGroup>
       <Templates Include="$(SolutionDir)\templates\**\*.*" />
     </ItemGroup>
-    <Copy
-      SourceFiles="@(Templates)"
-      DestinationFolder="$(TargetDir)\templates\%(RecursiveDir)"
-      SkipUnchangedFiles="true" 
-    />
+    <Copy SourceFiles="@(Templates)" DestinationFolder="$(TargetDir)\templates\%(RecursiveDir)" SkipUnchangedFiles="false" />
    </Target> 
 </Project>

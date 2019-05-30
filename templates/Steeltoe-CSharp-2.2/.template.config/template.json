@@ -246,7 +246,7 @@
     "Actuators": {
       "type": "parameter",
       "datatype": "bool",
-      "defaultValue": "true",
+      "defaultValue": "false",
       "description": "Add management endpoints for your application"
     },
     "CloudFoundry": {
@@ -258,13 +258,19 @@
     "MSSql": {
       "type": "parameter",
       "datatype": "bool",
-      "defaultValue": "true",
+      "defaultValue": "false",
       "description": "Add Sql server connnectors"
     },
     "DynamicLogger": {
       "type": "parameter",
       "datatype": "bool",
-      "defaultValue": "true",
+      "defaultValue": "false",
+      "description": "Add Sql server connnectors"
+    },
+    "Hystrix":{
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
       "description": "Add Sql server connnectors"
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using InitializrApi.Models;
 using InitializrApi.Services;
 using Xunit;
@@ -8,10 +9,10 @@ namespace InitializrApiTests
 {
     public class TemplateServiceTests: XunitLoggingBase
     {
-        ITestOutputHelper _testOutputHelper;
         public TemplateServiceTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
         }
+        
 
         [Fact]
         public void GetAvailableTemplates_returnsTemplates()
@@ -38,8 +39,36 @@ namespace InitializrApiTests
                 projectType = "steeltoe"
 
             };
-            var zipPath = templateService.GenerateProject();
-            Assert.NotNull(zipPath);
+            var outFolder = templateService.GenerateProject("steeltoe", "testProject", new[]{ "Actuators"}).Result;
+            Console.WriteLine("outFolder " + outFolder);
+            Assert.NotNull(outFolder);
+            Assert.True(Directory.Exists(outFolder));
+            var startupPath = Path.Combine(outFolder, "Startup.cs");
+            Assert.True(File.Exists(startupPath));
+            string startUpContents = File.ReadAllText(startupPath);
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);", startUpContents);
+
+        }
+        [Fact]
+        public void CreateTemplate_NoActuators()
+        {
+            var templateService = new TemplateService();
+
+            Assert.NotNull(templateService);
+
+            var model = new GeneratorModel
+            {
+                projectType = "steeltoe"
+
+            };
+            var outFolder = templateService.GenerateProject("steeltoe", "testProject", new string [0]).Result;
+            Console.WriteLine("outFolder " + outFolder);
+            Assert.NotNull(outFolder);
+            Assert.True(Directory.Exists(outFolder));
+            var startupPath = Path.Combine(outFolder, "Startup.cs");
+            Assert.True(File.Exists(startupPath));
+            string startUpContents = File.ReadAllText(startupPath);
+            Assert.DoesNotContain("AddCloudFoundryActuators", startUpContents);
 
         }
 

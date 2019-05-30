@@ -53,10 +53,9 @@ namespace InitializrApi.Controllers
         }
 
         [Route("/createtest")]
-        public ActionResult GenerateProjectTest([FromQuery(Name ="projectType")] string projectType)
+        public ActionResult GenerateProjectTest([FromQuery(Name = "projectType")] string projectType)
         {
-            return GenerateProject(new GeneratorModel { projectType = projectType ?? "steeltoe", projectName = "mytest" });
-
+            return GenerateProject(new GeneratorModel { projectType = projectType ?? "steeltoe", projectName = "mytest", dependencies = new[] { "actuators,mysql" } }); ;
         }
 
         private ActionResult GenerateProject(GeneratorModel model)
@@ -68,7 +67,11 @@ namespace InitializrApi.Controllers
             {
                 return NotFound($"Type {model.projectType} was not found");
             }
-            string zipFile =  _templateService.GenerateProject().Result;
+            string outFolder =  _templateService.GenerateProject(model.templateType ?? "steeltoe", model.projectName, model.dependencies).Result;
+
+            var zipFile = Path.GetDirectoryName(outFolder) + ".zip";
+            ZipFile.CreateFromDirectory(outFolder, zipFile);
+
             var cd = new ContentDispositionHeaderValue("attachment")
             {
                 FileNameStar = zipFile

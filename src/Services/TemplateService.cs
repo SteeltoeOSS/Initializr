@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using InitializrApi.Models;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.TemplateEngine.Abstractions;
 using Microsoft.TemplateEngine.Cli;
 using Microsoft.TemplateEngine.Cli.PostActionProcessors;
@@ -18,134 +15,85 @@ using Microsoft.TemplateEngine.Edge.Template;
 using Microsoft.TemplateEngine.Edge.TemplateUpdates;
 using Microsoft.TemplateEngine.Orchestrator.RunnableProjects;
 using Microsoft.TemplateEngine.Utils;
-using Newtonsoft.Json.Linq;
 
 namespace InitializrApi.Services
 {
     public class TemplateService : ITemplateService
     {
    
-        private string hivePath;
-        //private string outFolder = "";
-
-        //    IHostingEnvironment _env;
+        private string _hivePath;
+        private string _outPath;
         public TemplateService()
         {
-            hivePath = AppDomain.CurrentDomain.BaseDirectory + "templates" + Path.DirectorySeparatorChar;
-            Console.WriteLine("hivePath " + hivePath);
-            var settingsPath = Path.Combine(hivePath, "settings.json");
+            _hivePath = AppDomain.CurrentDomain.BaseDirectory + "templates" + Path.DirectorySeparatorChar;
+            _outPath = AppDomain.CurrentDomain.BaseDirectory + "output" + Path.DirectorySeparatorChar;
+
+            Console.WriteLine("hivePath " + _hivePath);
+            var settingsPath = Path.Combine(_hivePath, "settings.json");
             var settingsContent = File.ReadAllText(settingsPath);
 
-            var escapedPath = hivePath.Replace(@"\", @"\\");
-            var newContent = settingsContent.Replace("__Path__", (Path.DirectorySeparatorChar == '\\')? escapedPath: hivePath);
+            var escapedPath = _hivePath.Replace(@"\", @"\\");
+            var newContent = settingsContent.Replace("__Path__", (Path.DirectorySeparatorChar == '\\')? escapedPath: _hivePath);
             File.WriteAllText(settingsPath, newContent);
 
             // _env = env;
         }
-        public async Task<string> GenerateProject()
+        public async Task<string> GenerateProject(string templateShortName, string ProjectName, string[] TemplateParameters)
         {
-
-            var output = Path.Combine("\\", "output", Guid.NewGuid().ToString() + DateTime.Now.Millisecond);
-            var outFolder = Path.Combine(output, "generated");
-
+            var randomString = Guid.NewGuid().ToString() + DateTime.Now.Millisecond;
+            var outFolder = Path.Combine(_outPath, randomString);
+     
             ITemplateEngineHost host = new DefaultTemplateEngineHost("Initializr", "v1.0", "");
 
-            var cachePath = Path.Combine(hivePath, "templateCache.json");
+            var cachePath = Path.Combine(_hivePath, "templatecache.json");
 
             Func<IEngineEnvironmentSettings, ISettingsLoader> settingsLoaderFactory = (IEngineEnvironmentSettings settings) =>
             {
-                var loader = new InitializrSettingsLoader(settings, hivePath);
-                if (!System.IO.File.Exists(cachePath))
+                var loader = new InitializrSettingsLoader(settings, _hivePath);
+
+                if (!File.Exists(cachePath))
                 {
+                    Console.WriteLine("File doesnt exist " + cachePath);
                     loader.RebuildCacheFromSettingsIfNotCurrent(true);
                 }
                 return loader;
             };
 
-            var envSettings = new EngineEnvironmentSettings(host, settingsLoaderFactory, hivePath);
-          
+            var envSettings = new EngineEnvironmentSettings(host, settingsLoaderFactory, _hivePath);
 
             TemplateCreator creator = new TemplateCreator(envSettings);
 
 
 
-            string usrTemplateCache = System.IO.File.ReadAllText(cachePath);
-            JObject parsedCache = JObject.Parse(usrTemplateCache);
-            var tc = new TemplateCache(envSettings, parsedCache, "");
-            var myTemplateInfo = tc.TemplateInfo[0];
 
-            //ITemplateInfo templateInfo = TemplateInfo.FromJObject()
-            //{
-
-            //}
-            var iParams = new Dictionary<string, string>
+          
+            var iParams = new Dictionary<string, string> { { "Name", ProjectName } };
+            foreach (var p in TemplateParameters)
             {
-                { "Name", "SteProject" },
-                {"Actuators", "false"}
-            };
-
-            TemplateCreationResult instantiateResult;
-            try
-            {
-                instantiateResult = await creator.InstantiateAsync(myTemplateInfo, "myName", "noIdea", outFolder, iParams, true, false, "baseLine");
+                iParams.Add(p, "true");
             }
-            catch (Exception ex)
+
+            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName,  envSettings);
+            if(templateInfo == null)
             {
-                instantiateResult = new TemplateCreationResult(ex.Message + ex.StackTrace, CreationResultStatus.CreateFailed, outFolder);
+                throw new Exception($"Could not find template with shortName: {templateShortName} ");
             }
-            return instantiateResult.Message + " " + instantiateResult.OutputBaseDirectory;
+            await creator.InstantiateAsync(templateInfo, ProjectName, "SteeltoeProject", outFolder, iParams, true, false, "baseLine");
+
+            return outFolder;
+            
         }
-    
-        //public string GenerateProject(GeneratorModel model)
-        //{
-        //    var host = CreateHost(false);
 
-        //    StringWriter stringWriter = new StringWriter();
-        //  //  Console.SetOut(stringWriter);
-        //    //var str = "";
-        //    //using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
-        //    //{
-        //    //    str =  reader.ReadToEndAsync().Result;
-        //    //}
-        //    var output = Path.Combine(@"\", "output");
-        //    var outFolder = Path.Combine(output, "generated");
-        //    var zipfile = Path.Combine(output, $"{model.projectName}project.zip");
+        private TemplateInfo FindTemplateByShortName(string shortName, IEngineEnvironmentSettings envSettings)
+        {
+            return ((InitializrSettingsLoader)envSettings.SettingsLoader).UserTemplateCache.TemplateInfo.Where(ti => (bool)(ti.ShortNameList?.Contains(shortName))).FirstOrDefault();
+            
+        }
 
-        //    if (Directory.Exists(outFolder))
-        //    {
-        //        Directory.Delete(outFolder, true);
-        //    }
-        //    if (File.Exists(zipfile))
-        //    {
-        //        File.Delete(zipfile);
-        //    }
-
-
-        //    var argsList = new List<string>();
-        //    //  argsList.Add("-l");
-
-        //    argsList.Add(model.projectType); // Type of project mvc, console etc
-        //    if (!string.IsNullOrEmpty(model.projectName))
-        //    {
-        //        argsList.Add("-n");
-        //        argsList.Add($"{model.projectName}");
-        //    }
-        //    //Todo: Add language
-        //    //finally
-        //    argsList.AddRange(new[] { "--output", outFolder });
-
-        //    New3Command.Run(CommandName, host, new TelemetryLogger(null, false), FirstRun, argsList.ToArray(),hivePath);
-
-        //    var logs = stringWriter.ToString();
-        //    stringWriter.Flush();
-        //    ZipFile.CreateFromDirectory(outFolder, zipfile);
-        //    return zipfile;
-
-        //}
         private IReadOnlyCollection<ITemplateMatchInfo> GetAllTemplates()
         {
             var host = CreateHost(true);
-            var EnvironmentSettings = new EngineEnvironmentSettings(host, x => new SettingsLoader(x), hivePath);
+            var EnvironmentSettings = new EngineEnvironmentSettings(host, x => new SettingsLoader(x), _hivePath);
             var _settingsLoader = (SettingsLoader)EnvironmentSettings.SettingsLoader;
             var _hostDataLoader = new HostSpecificDataLoader(EnvironmentSettings.SettingsLoader);
                 var list = TemplateListResolver.PerformAllTemplatesQuery(_settingsLoader.UserTemplateCache.TemplateInfo, _hostDataLoader);
@@ -191,53 +139,6 @@ namespace InitializrApi.Services
 
             return host;
         }
-
-        //private static void FirstRun(IEngineEnvironmentSettings environmentSettings, IInstaller installer)
-        //{
-
-        //    List<string> toInstallList = new List<string>();
-        //    Paths paths = new Paths(environmentSettings);
-
-        //    if (paths.FileExists(paths.Global.DefaultInstallPackageList))
-        //    {
-        //        toInstallList.AddRange(paths.ReadAllText(paths.Global.DefaultInstallPackageList).Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
-        //    }
-
-        //    if (paths.FileExists(paths.Global.DefaultInstallTemplateList))
-        //    {
-        //        toInstallList.AddRange(paths.ReadAllText(paths.Global.DefaultInstallTemplateList).Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
-        //    }
-
-        //    if (toInstallList.Count > 0)
-        //    {
-        //        for (int i = 0; i < toInstallList.Count; i++)
-        //        {
-        //            toInstallList[i] = toInstallList[i].Replace("\r", "")
-        //                .Replace('\\', Path.DirectorySeparatorChar);
-        //        }
-
-        //        installer.InstallPackages(toInstallList);
-        //    }
-        //}
-
-        //public List<string> GetPaths()
-        //{
-        //    var host = CreateHost(true);
-
-        //    string hivePath = AppDomain.CurrentDomain.BaseDirectory;
-        //    var EnvironmentSettings = new EngineEnvironmentSettings(host, x => new SettingsLoader(x), hivePath);
-        //    var _settingsLoader = (SettingsLoader)EnvironmentSettings.SettingsLoader;
-        //    var _hostDataLoader = new HostSpecificDataLoader(EnvironmentSettings.SettingsLoader);
-        //    var list = new List<string>();
-        //    list.Add(_settingsLoader.EnvironmentSettings.Paths.BaseDir);
-        //    list.Add(_settingsLoader.EnvironmentSettings.Paths.UserProfileDir);
-
-        //    var output = Path.Combine("/", "output");
-        //    var outFolder = Path.Combine(output, "generated");
-        //    list.Add(outFolder);
-        //    return list; 
-        //}
-
         public List<TemplateViewModel> GetAvailableTemplates()
         {
             var list = GetAllTemplates();
@@ -250,21 +151,6 @@ namespace InitializrApi.Services
             });
             return items.ToList();
         }
-
-        //public string DebugReinstall()
-        //{
-        //    var host = CreateHost(false);
-        //    var response = "";
-        //    using (StringWriter stringWriter = new StringWriter())
-        //    {
-        //        Console.SetOut(stringWriter);
-
-        //        New3Command.Run(CommandName, host, new TelemetryLogger(null, true), FirstRun, new[] { "--debug:reinit" });
-        //      //  stringWriter.read
-        //    }
-        //    return "";
-        //}
-          
 
     }
 }
