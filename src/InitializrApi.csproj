@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="15.3" Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -10,15 +10,19 @@
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
      <StartupObject />
+     <UserSecretsId>.zip</UserSecretsId>
   
 
   </PropertyGroup>
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    <Compile Remove="Services\templates\**" />
     <Compile Remove="SteeltoeTemplates\templates\**" />
     <Content Remove="$(SpaRoot)**" />
-    <Content Remove="Services\templates\**" />
+    <Content Include="$(ProjectDir)..\templates\**\*.*">
+      <Link>templates\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <EmbeddedResource Remove="Services\templates\**" />
     <EmbeddedResource Remove="SteeltoeTemplates\templates\**" />
     <None Remove="$(SpaRoot)**" />
@@ -43,6 +47,7 @@
     <PackageReference Include="Stubble.Core" Version="1.2.7" />
     <PackageReference Include="Stubble.Extensions.JsonNet" Version="1.0.18" />
   </ItemGroup>
+
 
   
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
@@ -71,7 +76,7 @@
   </Target>
 
 
-    <Target Name="CopyTemplates" AfterTargets="Build">
+  <!--Target Name="CopyTemplates" AfterTargets="Build">
     <ItemGroup>
       <Templates Include="$(SolutionDir)templates\**\*.*" />
     </ItemGroup>
@@ -79,7 +84,7 @@
  
 
     <Message Importance="high" Text="MsBuild dir $(MSBuildThisFileDirectory)"></Message>
-  </Target>
+  </Target-->
 
 </Project>
   

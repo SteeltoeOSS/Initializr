@@ -5,7 +5,7 @@
       "ParentMountPointId": "00000000-0000-0000-0000-000000000000",                              
       "MountPointFactoryId": "8c19221b-dea3-4250-86fe-2d4e189a11d2",                             
       "MountPointId": "1815274a-f735-4189-9f1c-cbc16a31dd3a",                                    
-      "Place": "/Users/hananielsarella/projects/start.steeltoe.io/templates/Steeltoe-CSharp-2.2" 
+      "Place": "__Path__Steeltoe-CSharp-2.2" 
     }
   ],
   "ComponentGuidToAssemblyQualifiedName": {
