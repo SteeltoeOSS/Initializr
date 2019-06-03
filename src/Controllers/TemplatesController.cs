@@ -41,15 +41,13 @@ namespace InitializrApi.Controllers
         [HttpPost]
         public ActionResult GenerateProjectPost([FromForm] GeneratorModel model)
         {
-            if (model.templateType == ".NET Templates")
-            {
-                return GenerateProject(model);
-            }
-            else
-            {
-                var bytes = _sttemplateService.GenerateProject(model);
-                return File(bytes, "application/zip");
-            }
+          
+             return GenerateProject(model);
+            //else
+            //{
+            //    var bytes = _sttemplateService.GenerateProject(model);
+            //    return File(bytes, "application/zip");
+            //}
         }
 
         [Route("/createtest")]

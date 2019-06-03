@@ -24,7 +24,7 @@ namespace InitializrApi.Services
             public static readonly string HostTemplateFileConfigBaseName = ".host.json";
 
             private SettingsStore _userSettings;
-            private TemplateCache _userTemplateCache;
+            private InitializrTemplateCache _userTemplateCache;
             private IMountPointManager _mountPointManager;
             private IComponentManager _componentManager;
             private bool _isLoaded;
@@ -39,7 +39,7 @@ namespace InitializrApi.Services
             {
                 EnvironmentSettings = environmentSettings;
                 _paths = new Paths(environmentSettings);
-                _userTemplateCache = new TemplateCache(environmentSettings);
+                _userTemplateCache = new InitializrTemplateCache(environmentSettings);
                 _installUnitDescriptorCache = new InstallUnitDescriptorCache(environmentSettings);
                 _hivePath = hivePath;
             }
@@ -49,27 +49,28 @@ namespace InitializrApi.Services
                 Save(_userTemplateCache);
             }
 
-            private void Save(TemplateCache cacheToSave)
+        private void Save(InitializrTemplateCache cacheToSave)
+        {
+            // When writing the template caches, we need the existing cache version to read the existing caches for before updating.
+            // so don't update it until after the template caches are written.
+
+            cacheToSave.WriteTemplateCaches(_userSettings.Version);
+
+            // now it's safe to update the cache version, which is written in the settings file.
+            _userSettings.SetVersionToCurrent();
+            JObject serialized = JObject.FromObject(_userSettings);
+            _paths.WriteAllText(_paths.User.SettingsFile, serialized.ToString());
+
+            WriteInstallDescriptorCache();
+
+            if (_userTemplateCache != cacheToSave)  // object equals
             {
-                // When writing the template caches, we need the existing cache version to read the existing caches for before updating.
-                // so don't update it until after the template caches are written.
-
-             //   cacheToSave.WriteTemplateCaches(_userSettings.Version);
-
-                // now it's safe to update the cache version, which is written in the settings file.
-                _userSettings.SetVersionToCurrent();
-                JObject serialized = JObject.FromObject(_userSettings);
-                _paths.WriteAllText(_paths.User.SettingsFile, serialized.ToString());
-
-                WriteInstallDescriptorCache();
-
-                if (_userTemplateCache != cacheToSave)  // object equals
-                {
-                    ReloadTemplates();
-                }
+                ReloadTemplates();
             }
+        }
 
-            public TemplateCache UserTemplateCache
+
+            public InitializrTemplateCache UserTemplateCache
             {
                 get
                 {
@@ -212,8 +213,10 @@ namespace InitializrApi.Services
                         _paths.WriteAllText(_paths.User.CurrentLocaleTemplateCacheFile, userTemplateCache);
                     }
                 }
+                
                 else
                 {
+                //Create Cache here ... 
                     userTemplateCache = "{}";
                 }
 
@@ -221,7 +224,7 @@ namespace InitializrApi.Services
                 using (Timing.Over(EnvironmentSettings.Host, "Parse template cache"))
                     parsed = JObject.Parse(userTemplateCache);
                 using (Timing.Over(EnvironmentSettings.Host, "Init template cache"))
-                    _userTemplateCache = new TemplateCache(EnvironmentSettings, parsed, _userSettings.Version);
+                    _userTemplateCache = new InitializrTemplateCache(EnvironmentSettings, parsed, _userSettings.Version);
 
                 _templatesLoaded = true;
             }
@@ -232,7 +235,7 @@ namespace InitializrApi.Services
                 EnsureLoaded();
             }
 
-            private void UpdateTemplateListFromCache(TemplateCache cache, ISet<ITemplateInfo> templates)
+            private void UpdateTemplateListFromCache(InitializrTemplateCache cache, ISet<ITemplateInfo> templates)
             {
                 using (Timing.Over(EnvironmentSettings.Host, "Enumerate infos"))
                     templates.UnionWith(cache.TemplateInfo);
@@ -250,7 +253,7 @@ namespace InitializrApi.Services
                     return;
                 }
 
-                TemplateCache workingCache = new TemplateCache(EnvironmentSettings);
+                var workingCache = new InitializrTemplateCache(EnvironmentSettings);
                 foreach (MountPointInfo mountPoint in mountPointsToScan)
                 {
                     workingCache.Scan(mountPoint.Place);
@@ -268,52 +271,54 @@ namespace InitializrApi.Services
                 // we need to scan everything
                 bool forceScanAll = !IsVersionCurrent || forceRebuild;
 
-                // load up the culture neutral cache
-                // and get the mount points for templates from the culture neutral cache
-                HashSet<TemplateInfo> allTemplates = new HashSet<TemplateInfo>(_userTemplateCache.GetTemplatesForLocale(null, _userSettings.Version));
+            // load up the culture neutral cache
+            // and get the mount points for templates from the culture neutral cache
+            return _mountPoints.Select(m => m.Value).ToList();
 
-                // loop through the localized caches and get all the locale mount points
-                foreach (string locale in _userTemplateCache.AllLocalesWithCacheFiles)
-                {
-                    allTemplates.UnionWith(_userTemplateCache.GetTemplatesForLocale(locale, _userSettings.Version));
-                }
+                //HashSet<TemplateInfo> allTemplates = new HashSet<TemplateInfo>(_userTemplateCache.GetTemplatesForLocale(null, _userSettings.Version));
 
-                foreach (TemplateInfo template in allTemplates)
-                {
-                    if (!_mountPoints.TryGetValue(template.ConfigMountPointId, out MountPointInfo mountPoint))
-                    {
-                        // TODO: This should never happen - throw an error?
-                        continue;
-                    }
-                    if (forceScanAll)
-                    {
-                        yield return mountPoint;
-                        continue;
-                    }
+                //// loop through the localized caches and get all the locale mount points
+                //foreach (string locale in _userTemplateCache.AllLocalesWithCacheFiles)
+                //{
+                //    allTemplates.UnionWith(_userTemplateCache.GetTemplatesForLocale(locale, _userSettings.Version));
+                //}
 
-                    // For MountPoints using FileSystemMountPointFactories
-                    // we scan the file system to see if the template
-                    // is more recent than our cached version
-                    if (mountPoint.MountPointFactoryId != InitializrSettingsLoader.FactoryId)
-                    {
-                        continue;
-                    }
+                //foreach (TemplateInfo template in allTemplates)
+                //{
+                //    if (!_mountPoints.TryGetValue(template.ConfigMountPointId, out MountPointInfo mountPoint))
+                //    {
+                //        // TODO: This should never happen - throw an error?
+                //        continue;
+                //    }
+                //    if (forceScanAll)
+                //    {
+                //        yield return mountPoint;
+                //        continue;
+                //    }
 
-                    string pathToTemplateFile = Path.Combine(mountPoint.Place, template.ConfigPlace.TrimStart('/'));
+                //    // For MountPoints using FileSystemMountPointFactories
+                //    // we scan the file system to see if the template
+                //    // is more recent than our cached version
+                //    if (mountPoint.MountPointFactoryId != InitializrSettingsLoader.FactoryId)
+                //    {
+                //        continue;
+                //    }
 
-                    DateTime? timestampOnDisk = null;
-                    if (EnvironmentSettings.Host.FileSystem is IFileLastWriteTimeSource timeSource)
-                    {
-                        timestampOnDisk = timeSource.GetLastWriteTimeUtc(pathToTemplateFile);
-                    }
+                //    string pathToTemplateFile = Path.Combine(mountPoint.Place, template.ConfigPlace.TrimStart('/'));
 
-                    if (!template.ConfigTimestampUtc.HasValue
-                        || (timestampOnDisk.HasValue && template.ConfigTimestampUtc.Value < timestampOnDisk))
-                    {
-                        // Template on disk is more recent
-                        yield return mountPoint;
-                    }
-                }
+                //    DateTime? timestampOnDisk = null;
+                //    if (EnvironmentSettings.Host.FileSystem is IFileLastWriteTimeSource timeSource)
+                //    {
+                //        timestampOnDisk = timeSource.GetLastWriteTimeUtc(pathToTemplateFile);
+                //    }
+
+                //    if (!template.ConfigTimestampUtc.HasValue
+                //        || (timestampOnDisk.HasValue && template.ConfigTimestampUtc.Value < timestampOnDisk))
+                //    {
+                //        // Template on disk is more recent
+                //        yield return mountPoint;
+                //    }
+                //}
             }
 
             private void ReloadTemplates()

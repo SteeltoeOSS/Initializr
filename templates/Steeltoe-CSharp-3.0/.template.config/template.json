@@ -241,26 +241,38 @@
     "Actuators": {
       "type": "parameter",
       "datatype": "bool",
-      "defaultValue": "true",
-      "description": "Add management endpoints for your application"
+      "defaultValue": "false",
+      "description": "Steeltoe: Add management endpoints for your application"
     },
     "CloudFoundry": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "true",
-      "description": "Target Cloudfoundry"
+      "description": "Steeltoe: Target Cloudfoundry Hosting"
     },
     "MSSql": {
       "type": "parameter",
       "datatype": "bool",
-      "defaultValue": "true",
-      "description": "Add Sql server connnectors"
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Sql server connnectors"
     },
     "DynamicLogger": {
       "type": "parameter",
       "datatype": "bool",
-      "defaultValue": "true",
-      "description": "Add Sql server connnectors"
+      "defaultValue": "false",
+      "description": "Steeltoe: Enable Dynamic Logging"
+    },
+    "Hystrix":{
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Circuit Breakers"
+    },
+    "MicrosoftHealthChecks":{
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Support Community HealthChecks"
     }
 
   },
@@ -269,7 +281,7 @@
       "path": "Company.WebApplication1.csproj"
     }
   ],
-  "defaultName": "WebApplication1",
+  "defaultName": "SteeltoeService1",
   "postActions": [
     {
       "condition": "(!skipRestore)",
