@@ -138,26 +138,38 @@
         },
         "Actuators": {
           "DataType": "bool",
-          "DefaultValue": "true",
-          "Description": "Add management endpoints for your application",
+          "DefaultValue": "false",
+          "Description": "Steeltoe: Add management endpoints for your application"
           "DefaultIfOptionWithoutValue": "true"
         },
         "CloudFoundry": {
           "DataType": "bool",
-          "DefaultValue": "true",
-          "Description": "Target Cloudfoundry",
+          "DefaultValue": "false",
+          "Description":  "Steeltoe: Target Cloudfoundry Hosting"
           "DefaultIfOptionWithoutValue": "true"
         },
         "MSSql": {
           "DataType": "bool",
-          "DefaultValue": "true",
-          "Description": "Add Sql server connnectors",
+          "DefaultValue": "false",
+          "Description": "Steeltoe: Add Sql server connnectors"
           "DefaultIfOptionWithoutValue": "true"
         },
         "DynamicLogger": {
           "DataType": "bool",
-          "DefaultValue": "true",
-          "Description": "Add Sql server connnectors",
+          "DefaultValue": "false",
+          "Description":  "Steeltoe: Enable Dynamic Logging"
+          "DefaultIfOptionWithoutValue": "true"
+        },
+        "Hystrix":{
+          "DataType": "bool",
+          "DefaultValue": "false",
+          "Description": "Steeltoe: Add Circuit Breakers"
+          "DefaultIfOptionWithoutValue": "true"
+        },
+        "MicrosoftHealthChecks":{
+          "DataType": "bool",
+          "DefaultValue": "false",
+          "Description":  "Steeltoe: Support Community HealthChecks"
           "DefaultIfOptionWithoutValue": "true"
         }
       },

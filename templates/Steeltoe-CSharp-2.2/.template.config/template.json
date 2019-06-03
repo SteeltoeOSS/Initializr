@@ -247,31 +247,37 @@
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Add management endpoints for your application"
+      "description": "Steeltoe: Add management endpoints for your application"
     },
     "CloudFoundry": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "true",
-      "description": "Target Cloudfoundry"
+      "description": "Steeltoe: Target Cloudfoundry Hosting"
     },
     "MSSql": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Add Sql server connnectors"
+      "description": "Steeltoe: Add Sql server connnectors"
     },
     "DynamicLogger": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Add Sql server connnectors"
+      "description": "Steeltoe: Enable Dynamic Logging"
     },
     "Hystrix":{
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Add Sql server connnectors"
+      "description": "Steeltoe: Add Circuit Breakers"
+    },
+    "MicrosoftHealthChecks":{
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Support Community HealthChecks"
     }
 
   },

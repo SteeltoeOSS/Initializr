@@ -48,22 +48,11 @@ export class Home extends Component {
     return (
         <div>
             <form name="form" action="/starter.zip" method="post" autoComplete="off">
-                <InputSelector title='Template' name="templateType" values={[".NET Templates", "Steeltoe Templates"]} defaultValue=".NET Templates" onChange={this.handleInputChange} />
-                {this.state.level2SelectorType == "net" &&
                     <div>
-                    <InputSelector id="lang" title="Language" name="lang" values={["C#", "F#", "VB.NET"]} defaultValue="C#" onChange={this.handleInputChange} />
-
-                    <NetProjectSuggestions lang={this.state.lang} />
-                    </div>
-                    }
-
-                {this.state.level2SelectorType != "net" &&
-                    <div>
-                    <InputSelector id="steeltoeVersion" title="Steeltoe" name="steeltoeVersion" values={["2.1", "2.2", "3.0"]} defaultValue="2.2" onChange={this.handleInputChange} />
-                    <AutoSuggestSelector id="deps" available_deps={["CloudFoundry", "Hystrix", "Actuator", "MySql"]} />
+                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.1", "2.2", "3.0"]} defaultValue="2.2" onChange={this.handleInputChange} />
+                    <AutoSuggestSelector id="deps" available_deps={["CloudFoundry", "Hystrix", "Actuator", "MySql", "Dynamic Logger"]} />
                     </div>
 
-                }
                 <div className="line">
                     <div className="left">Project Metadata</div>
                     <div className="right">

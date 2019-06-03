@@ -1,37 +1,52 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Typeahead } from 'react-bootstrap-typeahead'; 
 export class AutoSuggestSelector extends Component {
     constructor(props) {
         super(props);
         this.handleSelection = this.handleSelection.bind(this);
+        console.log('in constructor AutoSuggest');
         this.state = {
-            dependencies: this.props.available_deps,
+            dependencies:[],
             selected_deps: []
         }
         
     }
-       
-    handleSelection(e) {
-        //console.log("selection " + e);
-        //this.state.selected_deps.push(e);
-        var deps = [...this.state.selected_deps, e] 
-        this.setState(prevState => ({ selected_deps: [...prevState.selected_deps, e ]}))
-        this._typeAhead._instance.clear();
-
-        console.log('childn state', deps, e)
-      //  this.props.onChange(this.props.id, deps);
-
-       // console.log('typeahead' , this._typeAhead);
+    componentDidMount() {
+        fetch('/dependencies')
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ dependencies: data })
+                console.log('data returned', data, this.state.dependencies)
+            })
 
     }
+       
+    handleSelection(e) {
+        var currentSelection = e[0];
+        var selected_deps = [...this.state.selected_deps, currentSelection];
+        this.setState(prevState => ({
+            selected_deps: selected_deps,
+            dependencies: [...prevState.dependencies.filter(d => !selected_deps.some(sd => sd.name == d.name))]
+
+        }))
+        this._typeAhead._instance.clear();
+
+        console.log('childn state', selected_deps, this.state.selected_deps)
+    }
+    removeDependency(dependency) {
+        var selected_deps = [...this.state.selected_deps.filter(d => d.name != dependency.name)]
+        this.setState(prevState => ({
+            selected_deps: selected_deps,
+            dependencies: [...prevState.dependencies, dependency].sort((a, b) => a.name > b.name)
+        }))
+    }
     _renderMenuItemChildren = (option, props, index) => {
-       // console.log(props)
-        return [
-           <div className="title">
-                {option}
+         return [
+            <div className="title">
+                {option.name}
             </div>,
             <div key={index} className="desc">
-                    {'This is the description for ' + option}
+                    {option.description}
               </div>
         ];
     }
@@ -62,14 +77,15 @@ export class AutoSuggestSelector extends Component {
                         </div>
                         <div className="col" id="col-dep">
                             <strong>Selected dependencies</strong>
-                             <div className="list light" id="list-added">
-                             <input name="dependencies" type="hidden"  defaultValue={this.state.selected_deps}  />
+                            <div className="list light" id="list-added">
+                                <input name="dependencies" type="hidden" defaultValue={this.state.selected_deps.map(d => d.name)} />
                                                       
                                 {
                                     this.state.selected_deps.map((item) => {
                                         return <div className="item" >
-                                                    <div className="title"> {item} </div>
-                                                    <div className="description"> Some description about {item} </div>
+                                                    <div className="title"> {item.name} </div>
+                                            <div className="description"> {item.description} </div>
+                                            <a class="btn-ico" onClick={() => { this.removeDependency(item) } }><i class="fas fa-times"></i></a>
                                                 </div>
                                         })
 
