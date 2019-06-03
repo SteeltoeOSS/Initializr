@@ -10,8 +10,8 @@
   "description": "A project template for creating a steeltoe microservice ",
   "groupIdentity": "Steeltoe.Microservice",
   "precedence": "4000",
-  "identity": "Steeltoe.Microservice.CSharp.3.0",
-  "shortName": "steeltoe",
+  "identity": "Steeltoe.Microservice.CSharp.2.2",
+  "shortName": "steeltoe2",
   "tags": {
     "language": "C#",
     "type": "project"

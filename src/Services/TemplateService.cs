@@ -45,21 +45,25 @@ namespace InitializrApi.Services
      
             ITemplateEngineHost host = new DefaultTemplateEngineHost("Initializr", "v1.0", "");
 
-            var cachePath = Path.Combine(_hivePath, "templatecache.json");
 
             Func<IEngineEnvironmentSettings, ISettingsLoader> settingsLoaderFactory = (IEngineEnvironmentSettings settings) =>
             {
                 var loader = new InitializrSettingsLoader(settings, _hivePath);
 
-                if (!File.Exists(cachePath))
-                {
-                    Console.WriteLine("File doesnt exist " + cachePath);
-                    loader.RebuildCacheFromSettingsIfNotCurrent(true);
-                }
+              
                 return loader;
             };
 
             var envSettings = new EngineEnvironmentSettings(host, settingsLoaderFactory, _hivePath);
+            var cachePath = Path.Combine(_hivePath, "templatecache.json");
+
+            if (!File.Exists(cachePath))
+            {
+                Console.WriteLine("File doesnt exist " + cachePath);
+                ((InitializrSettingsLoader)envSettings.SettingsLoader).RebuildCacheFromSettingsIfNotCurrent(true);
+            }
+
+
 
             TemplateCreator creator = new TemplateCreator(envSettings);
 
