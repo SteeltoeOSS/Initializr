@@ -81,8 +81,12 @@ namespace InitializrApi.Controllers
 
         }
         // GET api/templates
+        [Route("/dependencies")]
+        public ActionResult GetDependencies()
+        {
+            return Ok( _templateService.GetDependencies("steeltoe"));
+        }
 
-       
         [Route("all")]
         public ActionResult<IEnumerable<TemplateViewModel>> GetTemplates()
         {

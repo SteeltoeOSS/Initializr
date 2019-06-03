@@ -8,6 +8,8 @@ namespace InitializrApi.Services
     {
         Task<string> GenerateProject(string TemplateShortName, string ProjectName, string [] TemplateParameters);
         List<TemplateViewModel> GetAvailableTemplates();
+
+        List<ProjectDependency> GetDependencies(string shortName);
       
     }
 }

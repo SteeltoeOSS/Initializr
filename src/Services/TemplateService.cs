@@ -144,6 +144,7 @@ namespace InitializrApi.Services
             var list = GetAllTemplates();
             var items = list.Select(x => new TemplateViewModel
             {
+                Id = x.Info.Identity,
                 Name = x.Info.Name,
                 ShortName = x.Info.ShortName,
                 Language = x.Info.Parameters?.FirstOrDefault(p => p.Name == "language")?.DefaultValue,
@@ -152,5 +153,19 @@ namespace InitializrApi.Services
             return items.ToList();
         }
 
+        public List<ProjectDependency> GetDependencies(string shortName = "steeltoe")
+        {
+
+            var list = GetAllTemplates();
+            var selectedTemplate =  list.Where(x => x.Info.ShortName == shortName).FirstOrDefault();
+            return selectedTemplate.Info.Parameters
+                .Where(p=> p.Documentation != null && p.Documentation.ToLower().Contains("steeltoe"))
+                .Select(p => new ProjectDependency
+                {
+                    Name = p.Name,
+                    Description = p.Documentation
+                }).ToList();
+            
+        }
     }
 }
