@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <SteeltoeCircuitBreakerVersion>SteeltoeVersion</SteeltoeCircuitBreakerVersion>
+    <SteeltoeCommonVersion>SteeltoeVersion</SteeltoeCommonVersion>
+    <SteeltoeConfigVersion>SteeltoeVersion</SteeltoeConfigVersion>
+    <SteeltoeConnectorVersion>SteeltoeVersion</SteeltoeConnectorVersion>
+    <SteeltoeDiscoveryVersion>SteeltoeVersion</SteeltoeDiscoveryVersion>
+    <SteeltoeLoggingVersion>SteeltoeVersion</SteeltoeLoggingVersion>
+    <SteeltoeManagementVersion>SteeltoeVersion</SteeltoeManagementVersion>
+    <SteeltoeSecurityVersion>SteeltoeVersion</SteeltoeSecurityVersion>
+  </PropertyGroup>
+</Project>

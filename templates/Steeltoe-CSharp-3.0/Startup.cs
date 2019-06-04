@@ -22,6 +22,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+#if (MSSql)
+using Steeltoe.CloudFoundry.Connector.MySql;
+#endif
+#if(Actuators)
+using Steeltoe.Management.CloudFoundry;
+#endif
+#if (Actuators && CloudFoundry)
+using Steeltoe.Management.Endpoint;
+using Steeltoe.Management.Hypermedia;
+#endif
 
 namespace Company.WebApplication1
 {
@@ -48,9 +58,9 @@ namespace Company.WebApplication1
             services.AddMySqlConnection(Configuration);
 #endif
 #if (Actuators && CloudFoundry)
-	        services.AddActuatorAndCloudFoundry()
+	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)
-	        services.AddActuators()
+	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);
 #endif
 
             services.AddMvc()
@@ -83,9 +93,9 @@ namespace Company.WebApplication1
             app.UseAuthentication();
 #endif
 #if (Actuators && CloudFoundry)
-	    services.UseActuatorAndCloudFoundry()
+            app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)
-	    services.UseActuators()
+	    app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.Actuator);
 #endif
             app.UseAuthorization();
 

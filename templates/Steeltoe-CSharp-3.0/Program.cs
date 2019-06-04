@@ -23,7 +23,6 @@ namespace Company.WebApplication1
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.ADd
                 });
     }
 }

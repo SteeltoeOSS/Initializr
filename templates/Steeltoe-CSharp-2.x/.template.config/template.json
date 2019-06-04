@@ -278,6 +278,23 @@
       "datatype": "bool",
       "defaultValue": "false",
       "description": "Steeltoe: Support Community HealthChecks"
+    },
+    "SteeltoeVersion":{
+      "type": "parameter",
+      "datatype": "choice",
+      "defaultValue": "2.2.0",
+      "description": "Steeltoe: Support Community HealthChecks",
+      "replaces": "SteeltoeVersion",
+      "choices": [
+        {
+          "choice": "2.1.0",
+          "description": "Target Steeltoe version 2.1.0"
+        },
+        {
+          "choice": "2.2.0",
+          "description": "Target Steeltoe version 2.2.0"
+        }
+      ]
     }
 
   },
