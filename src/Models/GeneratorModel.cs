@@ -15,8 +15,8 @@ namespace InitializrApi.Models
             set => _dependencies = (value == null || value.Length == 0 || value[0] == null) ? value : value[0].ToLower().Split(',');
         }
         public string projectName { get; set; }
-        public string templateType { get; set; }
-        public string projectType { get; set; }
+        public string templateShortName { get; set; }
+        
         public string description { get; set; }
         public string steeltoeVersion { get; set; }
     }

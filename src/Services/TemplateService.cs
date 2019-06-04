@@ -41,8 +41,42 @@ namespace InitializrApi.Services
         public async Task<string> GenerateProject(string templateShortName, string ProjectName, string[] TemplateParameters)
         {
             var randomString = Guid.NewGuid().ToString() + DateTime.Now.Millisecond;
-            var outFolder = Path.Combine(_outPath, randomString);
-     
+            var outFolder = Path.Combine(_outPath, randomString, ProjectName);
+
+            var envSettings = GetEngineEnvironmentSettings();
+
+            TemplateCreator creator = new TemplateCreator(envSettings);
+
+            var iParams = new Dictionary<string, string> { { "Name", ProjectName } };
+            foreach (var p in TemplateParameters)
+            {
+                if (p.Contains('='))
+                {
+                    var paramkvp = p.Split('=');
+                    if (paramkvp.Length == 2)
+                    {
+                        iParams.Add(paramkvp[0], paramkvp[1]);
+                    }
+                }
+                else
+                {
+                    iParams.Add(p, "true");
+                }
+            }
+
+            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, envSettings);
+            if (templateInfo == null)
+            {
+                throw new Exception($"Could not find template with shortName: {templateShortName} ");
+            }
+            await creator.InstantiateAsync(templateInfo, ProjectName, "SteeltoeProject", outFolder, iParams, true, false, "baseLine");
+
+            return outFolder;
+
+        }
+
+        private EngineEnvironmentSettings GetEngineEnvironmentSettings()
+        {
             var envSettings = new EngineEnvironmentSettings(
                  new DefaultTemplateEngineHost("Initializr", "v1.0", ""),
                  (IEngineEnvironmentSettings settings) => new InitializrSettingsLoader(settings, _hivePath),
@@ -55,34 +89,7 @@ namespace InitializrApi.Services
                 ((InitializrSettingsLoader)envSettings.SettingsLoader).RebuildCacheFromSettingsIfNotCurrent(true);
             }
 
-            TemplateCreator creator = new TemplateCreator(envSettings);
-
-            var iParams = new Dictionary<string, string> { { "Name", ProjectName } };
-            foreach (var p in TemplateParameters)
-            {
-                if (p.Contains('='))
-                {
-                    var paramkvp = p.Split('=');
-                    if(paramkvp.Length == 2 )
-                    {
-                        iParams.Add(paramkvp[0], paramkvp[1]);
-                    }
-                }
-                else
-                {
-                    iParams.Add(p, "true");
-                }
-            }
-
-            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName,  envSettings);
-            if(templateInfo == null)
-            {
-                throw new Exception($"Could not find template with shortName: {templateShortName} ");
-            }
-            await creator.InstantiateAsync(templateInfo, ProjectName, "SteeltoeProject", outFolder, iParams, true, false, "baseLine");
-
-            return outFolder;
-            
+            return envSettings;
         }
 
         private TemplateInfo FindTemplateByShortName(string shortName, IEngineEnvironmentSettings envSettings)
@@ -91,14 +98,11 @@ namespace InitializrApi.Services
             
         }
 
-        private IReadOnlyCollection<ITemplateMatchInfo> GetAllTemplates()
+        private IReadOnlyList<TemplateInfo> GetAllTemplates()
         {
-            var host = CreateHost(true);
-            var EnvironmentSettings = new EngineEnvironmentSettings(host, x => new SettingsLoader(x), _hivePath);
-            var _settingsLoader = (SettingsLoader)EnvironmentSettings.SettingsLoader;
-            var _hostDataLoader = new HostSpecificDataLoader(EnvironmentSettings.SettingsLoader);
-                var list = TemplateListResolver.PerformAllTemplatesQuery(_settingsLoader.UserTemplateCache.TemplateInfo, _hostDataLoader);
-            return list;
+            var envSettings = GetEngineEnvironmentSettings();
+
+            return ((InitializrSettingsLoader)envSettings.SettingsLoader).UserTemplateCache.TemplateInfo;
         }
 
         private static DefaultTemplateEngineHost CreateHost(bool emitTimings)
@@ -145,21 +149,21 @@ namespace InitializrApi.Services
             var list = GetAllTemplates();
             var items = list.Select(x => new TemplateViewModel
             {
-                Id = x.Info.Identity,
-                Name = x.Info.Name,
-                ShortName = x.Info.ShortName,
-                Language = x.Info.Parameters?.FirstOrDefault(p => p.Name == "language")?.DefaultValue,
-                Tags = x.Info.Classifications.Aggregate((current, next) => current + "/" + next)
+                
+                Name = x.Name,
+                ShortName = x.ShortName,
+                Language = x.Parameters?.FirstOrDefault(p => p.Name == "language")?.DefaultValue,
+                Tags = x.Classifications.Aggregate((current, next) => current + "/" + next)
             });
             return items.ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(string shortName = "steeltoe")
+        public List<ProjectDependency> GetDependencies(string shortName = "steeltoe2")
         {
 
             var list = GetAllTemplates();
-            var selectedTemplate =  list.Where(x => x.Info.ShortName == shortName).FirstOrDefault();
-            return selectedTemplate.Info.Parameters
+            var selectedTemplate =  list.Where(x => x.ShortName == shortName).FirstOrDefault();
+            return selectedTemplate.Parameters
                 .Where(p=> p.Documentation != null && p.Documentation.ToLower().Contains("steeltoe"))
                 .Select(p => new ProjectDependency
                 {

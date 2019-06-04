@@ -26,6 +26,21 @@ namespace InitializrApiTests
             Assert.NotEmpty(templates);
 
             Assert.Contains(templates, x => x.ShortName == "steeltoe");
+            Assert.Contains(templates, x => x.ShortName == "steeltoe2");
+        }
+
+        [Fact]
+        public void GetDependencies ()
+        {
+            var templateService = new TemplateService();
+
+            Assert.NotNull(templateService);
+
+            var deps = templateService.GetDependencies();
+            Assert.NotNull(deps);
+            Assert.NotEmpty(deps);
+
+            Assert.Contains(deps, x => x.Name == "Actuators");
         }
         [Fact]
         public void CreateTemplate_actuators()
@@ -40,6 +55,10 @@ namespace InitializrApiTests
             var startupPath = Path.Combine(outFolder, "Startup.cs");
             Assert.True(File.Exists(startupPath));
             string startUpContents = File.ReadAllText(startupPath);
+
+            Assert.Contains("using Steeltoe.Management.Hypermedia;", startUpContents);
+            Assert.Contains("using Steeltoe.Management.Endpoint;", startUpContents);
+            Assert.Contains("using Steeltoe.Management.CloudFoundry;", startUpContents);
             Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
 
         }
@@ -106,11 +125,6 @@ namespace InitializrApiTests
 
             Assert.NotNull(templateService);
 
-            var model = new GeneratorModel
-            {
-                projectType = "steeltoe"
-
-            };
             var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "Actuators", "SteeltoeVersion=2.1.0" }).Result;
             Console.WriteLine("outFolder " + outFolder);
             Assert.NotNull(outFolder);
@@ -129,11 +143,6 @@ namespace InitializrApiTests
 
             Assert.NotNull(templateService);
 
-            var model = new GeneratorModel
-            {
-                projectType = "steeltoe"
-
-            };
             var outFolder = templateService.GenerateProject("steeltoe", "testProject", new string [0]).Result;
             Console.WriteLine("outFolder " + outFolder);
             Assert.NotNull(outFolder);
