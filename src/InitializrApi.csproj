@@ -76,15 +76,6 @@
   </Target>
 
 
-  <!--Target Name="CopyTemplates" AfterTargets="Build">
-    <ItemGroup>
-      <Templates Include="$(SolutionDir)templates\**\*.*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(Templates)" DestinationFolder="$(TargetDir)\templates\%(RecursiveDir)" SkipUnchangedFiles="false" /> 
- 
-
-    <Message Importance="high" Text="MsBuild dir $(MSBuildThisFileDirectory)"></Message>
-  </Target-->
 
 </Project>
   

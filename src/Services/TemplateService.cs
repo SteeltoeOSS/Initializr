@@ -43,18 +43,10 @@ namespace InitializrApi.Services
             var randomString = Guid.NewGuid().ToString() + DateTime.Now.Millisecond;
             var outFolder = Path.Combine(_outPath, randomString);
      
-            ITemplateEngineHost host = new DefaultTemplateEngineHost("Initializr", "v1.0", "");
-
-
-            Func<IEngineEnvironmentSettings, ISettingsLoader> settingsLoaderFactory = (IEngineEnvironmentSettings settings) =>
-            {
-                var loader = new InitializrSettingsLoader(settings, _hivePath);
-
-              
-                return loader;
-            };
-
-            var envSettings = new EngineEnvironmentSettings(host, settingsLoaderFactory, _hivePath);
+            var envSettings = new EngineEnvironmentSettings(
+                 new DefaultTemplateEngineHost("Initializr", "v1.0", ""),
+                 (IEngineEnvironmentSettings settings) => new InitializrSettingsLoader(settings, _hivePath),
+                 _hivePath);
             var cachePath = Path.Combine(_hivePath, "templatecache.json");
 
             if (!File.Exists(cachePath))
@@ -63,18 +55,23 @@ namespace InitializrApi.Services
                 ((InitializrSettingsLoader)envSettings.SettingsLoader).RebuildCacheFromSettingsIfNotCurrent(true);
             }
 
-
-
             TemplateCreator creator = new TemplateCreator(envSettings);
 
-
-
-
-          
             var iParams = new Dictionary<string, string> { { "Name", ProjectName } };
             foreach (var p in TemplateParameters)
             {
-                iParams.Add(p, "true");
+                if (p.Contains('='))
+                {
+                    var paramkvp = p.Split('=');
+                    if(paramkvp.Length == 2 )
+                    {
+                        iParams.Add(paramkvp[0], paramkvp[1]);
+                    }
+                }
+                else
+                {
+                    iParams.Add(p, "true");
+                }
             }
 
             TemplateInfo templateInfo = FindTemplateByShortName(templateShortName,  envSettings);
