@@ -24,14 +24,12 @@ using Microsoft.Extensions.Options;
 #if (MSSql)
 using Steeltoe.CloudFoundry.Connector.MySql;
 #endif
-#if(Actuators)
+#if(Actuators || CloudFoundry)
 using Steeltoe.Management.CloudFoundry;
-#endif
-#if (Actuators && CloudFoundry)
 using Steeltoe.Management.Endpoint;
-#if(SteeltoeVersion == "2.2.0")
+    #if(SteeltoeVersion == "2.2.0")
 using Steeltoe.Management.Hypermedia;
-#endif
+    #endif
 #endif
 #if(Hystrix)
 using Steeltoe.CircuitBreaker.Hystrix;

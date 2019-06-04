@@ -29,6 +29,7 @@ namespace InitializrApi.Controllers
     {
         private ITemplateService _templateService;
         private ISteeltoeTemplateService _sttemplateService;
+        private const string DEFAULT_TEMPLATE = "steeltoe2";
 
         public TemplatesController(ITemplateService service, ISteeltoeTemplateService stTemplateService)
         {
@@ -51,28 +52,36 @@ namespace InitializrApi.Controllers
         }
 
         [Route("/createtest")]
-        public ActionResult GenerateProjectTest([FromQuery(Name = "projectType")] string projectType)
+        public ActionResult GenerateProjectTest([FromQuery(Name = "templateShortName")] string templateShortName)
         {
-            return GenerateProject(new GeneratorModel { projectType = projectType ?? "steeltoe", projectName = "mytest", dependencies = new[] { "actuators,mysql" } }); ;
+            return GenerateProject(new GeneratorModel { templateShortName = templateShortName ?? DEFAULT_TEMPLATE, projectName = "mytest", dependencies = new[] { "actuators,mysql" } }); ;
         }
 
         private ActionResult GenerateProject(GeneratorModel model)
         {
             //var form = Request.Form;
             var list = _templateService.GetAvailableTemplates();
+            var currentTemplate = (model.templateShortName ?? DEFAULT_TEMPLATE).ToLower();
 
-            if (!list.Any(x => x.ShortName.ToLower() == model.projectType.ToLower()))
+
+            if (list == null || !list.Any(x => x.ShortName.ToLower() == currentTemplate))
             {
-                return NotFound($"Type {model.projectType} was not found");
+                return NotFound($"Template {currentTemplate} was not found");
             }
-            string outFolder =  _templateService.GenerateProject(model.templateType ?? "steeltoe", model.projectName, model.dependencies).Result;
+            var templateParameters = model.dependencies.ToList();
+            if(!string.IsNullOrEmpty(model.steeltoeVersion))
+            {
+                templateParameters.Add($"SteeltoeVersion={model.steeltoeVersion}");
+            }
+            string outFolder =  _templateService.GenerateProject(currentTemplate, model.projectName, templateParameters.ToArray() ).Result;
+            var zipName = (model.projectName ?? "steeltoeProject")+".zip";
 
-            var zipFile = Path.GetDirectoryName(outFolder) + ".zip";
+            var zipFile = Path.Combine(outFolder,"..", zipName);
             ZipFile.CreateFromDirectory(outFolder, zipFile);
 
             var cd = new ContentDispositionHeaderValue("attachment")
             {
-                FileNameStar = zipFile
+                FileNameStar = zipName
             };
             Response.Headers.Add("Content-Disposition", cd.ToString());
             return File(System.IO.File.ReadAllBytes(zipFile), "application/zip");
