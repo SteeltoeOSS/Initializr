@@ -29,7 +29,9 @@ using Steeltoe.Management.CloudFoundry;
 #endif
 #if (Actuators && CloudFoundry)
 using Steeltoe.Management.Endpoint;
+#if(SteeltoeVersion == "2.2.0")
 using Steeltoe.Management.Hypermedia;
+#endif
 #endif
 
 namespace Company.WebApplication1
@@ -56,12 +58,20 @@ namespace Company.WebApplication1
 #if (MSSql)
             services.AddMySqlConnection(Configuration);
 #endif
+#if(SteeltoeVersion == "2.2.0")
 #if (Actuators && CloudFoundry)
 	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)
 	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);
 #endif
+#else
+#if (Actuators && CloudFoundry)
+	        services.AddCloudFoundryActuators(Configuration);
+#elif (Actuators)
+	        services.AddCloudFoundryActuators(Configuration);
+#endif
 
+#endif
             services.AddMvc();
         }
 
@@ -84,12 +94,27 @@ namespace Company.WebApplication1
 #if (OrganizationalAuth || IndividualAuth)
             app.UseAuthentication();
 #endif
+#if(SteeltoeVersion == "2.2.0")
 #if (Actuators && CloudFoundry)
             app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)
 	    app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.Actuator);
 #endif
+#else
+#if (Actuators && CloudFoundry)
+            app.UseCloudFoundryActuators();
+#elif (Actuators)
+	    app.UseCloudFoundryActuators();
+#endif
 
+#endif
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
         }
     }

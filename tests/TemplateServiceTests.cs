@@ -39,7 +39,7 @@ namespace InitializrApiTests
                 projectType = "steeltoe"
 
             };
-            var outFolder = templateService.GenerateProject("steeltoe", "testProject", new[]{ "Actuators"}).Result;
+            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[]{ "Actuators"}).Result;
             Console.WriteLine("outFolder " + outFolder);
             Assert.NotNull(outFolder);
             Assert.True(Directory.Exists(outFolder));
