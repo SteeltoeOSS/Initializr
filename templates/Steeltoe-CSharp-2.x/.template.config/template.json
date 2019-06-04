@@ -252,32 +252,20 @@
     "CloudFoundry": {
       "type": "parameter",
       "datatype": "bool",
-      "defaultValue": "true",
+      "defaultValue": "false",
       "description": "Steeltoe: Target Cloudfoundry Hosting"
     },
-    "MSSql": {
+    "MySql": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Steeltoe: Add Sql server connnectors"
-    },
-    "DynamicLogger": {
-      "type": "parameter",
-      "datatype": "bool",
-      "defaultValue": "false",
-      "description": "Steeltoe: Enable Dynamic Logging"
+      "description": "Steeltoe: Add MySql connnectors"
     },
     "Hystrix":{
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
       "description": "Steeltoe: Add Circuit Breakers"
-    },
-    "MicrosoftHealthChecks":{
-      "type": "parameter",
-      "datatype": "bool",
-      "defaultValue": "false",
-      "description": "Steeltoe: Support Community HealthChecks"
     },
     "SteeltoeVersion":{
       "type": "parameter",

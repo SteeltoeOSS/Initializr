@@ -10,6 +10,10 @@ using Microsoft.Extensions.Logging;
 #if (Actuators)
 using Steeltoe.Extensions.Logging;
 #endif
+#if (CloudFoundry)
+using Steeltoe.Extensions.Configuration;
+using Steeltoe.Extensions.Configuration.CloudFoundry;
+#endif
 
 namespace Company.WebApplication1
 {
@@ -24,6 +28,10 @@ namespace Company.WebApplication1
         {
             var builder = WebHost.CreateDefaultBuilder(args)
                 .UseDefaultServiceProvider(configure => configure.ValidateScopes = false)
+#if (CloudFoundry)
+                .UseCloudFoundryHosting(5555) //Enable listening on a Env provided port
+                .AddCloudFoundry() //Add cloudfoundry environment variables as a configuration source
+#endif
                 .UseStartup<Startup>();
 #if (Actuators)
             builder.ConfigureLogging((hostingContext, loggingBuilder) =>

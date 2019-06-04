@@ -33,6 +33,12 @@ using Steeltoe.Management.Endpoint;
 using Steeltoe.Management.Hypermedia;
 #endif
 #endif
+#if(Hystrix)
+using Steeltoe.CircuitBreaker.Hystrix;
+#endif
+#if(MySql)
+using Steeltoe.CloudFoundry.Connector.MySql;
+#endif
 
 namespace Company.WebApplication1
 {
@@ -55,7 +61,7 @@ namespace Company.WebApplication1
             services.AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
                 .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
 #endif
-#if (MSSql)
+#if (MySql)
             services.AddMySqlConnection(Configuration);
 #endif
 #if(SteeltoeVersion == "2.2.0")
@@ -94,7 +100,8 @@ namespace Company.WebApplication1
 #if (OrganizationalAuth || IndividualAuth)
             app.UseAuthentication();
 #endif
-#if(SteeltoeVersion == "2.2.0")
+
+#if (SteeltoeVersion == "2.2.0")
 #if (Actuators && CloudFoundry)
             app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)

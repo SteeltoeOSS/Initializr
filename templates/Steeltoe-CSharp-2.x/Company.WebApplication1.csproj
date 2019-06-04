@@ -28,9 +28,19 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Steeltoe.CloudFoundry.ConnectorCore" Version="$(SteeltoeManagementVersion)"/>
-    <PackageReference Include="Steeltoe.Management.CloudFoundryCore"  Version="$(SteeltoeManagementVersion)" />
+    <PackageReference Include="Steeltoe.Management.CloudFoundryCore" Condition="'$(Actuators)' == 'True' OR '$(CloudFoundry)' == 'True'"  Version="$(SteeltoeManagementVersion)" />
     <PackageReference Include="Steeltoe.Management.ExporterCore"  Version="$(SteeltoeManagementVersion)"/>
+    <PackageReference Include="Steeltoe.CircuitBreaker.HystrixCore"  Condition="'$(Hystrix)'" Version="$(SteeltoeCircuitBreakerVersion)" />
+    <PackageReference Include="Steeltoe.Extensions.Configuration.CloudFoundryCore"  Condition="'$(CloudFoundry)'" Version="$(SteeltoeConfigVersion)" />
+    <PackageReference Include="MySql.Data" Condition="'$(MySql)'" Version="8.0.16" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
-
+  <ItemGroup Condition="'$(Hystrix)' == 'True'" Condition="'$(BUILD)' == ''">
+    <PackageReference Include="Steeltoe.CircuitBreaker.Hystrix.MetricsStreamCore" Version="$(SteeltoeCircuitBreakerVersion)" />
+    <PackageReference Include="RabbitMQ.Client" Version="$(RabbitMQVersion)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Hystrix)' == 'True'" Condition="'$(BUILD)' == 'LOCAL'">
+    <PackageReference Include="Steeltoe.CircuitBreaker.Hystrix.MetricsEventsCore" Version="$(SteeltoeCircuitBreakerVersion)" />
+    <PackageReference Include="System.Threading.ThreadPool" Version="4.3.0" />
+  </ItemGroup>
 </Project>
