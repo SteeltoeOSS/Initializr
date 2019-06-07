@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "InitializrApi": {
+    "Steeltoe.Initializr": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "https://localhost:5001/api/templates/all",

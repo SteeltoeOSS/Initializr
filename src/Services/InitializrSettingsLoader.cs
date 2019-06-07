@@ -13,7 +13,7 @@ using Microsoft.TemplateEngine.Utils;
 using Newtonsoft.Json.Linq;
 
 
-namespace InitializrApi.Services
+namespace Steeltoe.Initializr.Services
 {
      public class InitializrSettingsLoader : ISettingsLoader
         {

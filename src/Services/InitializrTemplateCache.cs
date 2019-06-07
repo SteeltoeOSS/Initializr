@@ -11,7 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace InitializrApi.Services
+namespace Steeltoe.Initializr.Services
 {
     public class InitializrTemplateCache
     {

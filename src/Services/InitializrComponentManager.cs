@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +11,7 @@ using Microsoft.TemplateEngine.Edge.Mount.Archive;
 using Microsoft.TemplateEngine.Edge.Mount.FileSystem;
 using Microsoft.TemplateEngine.Edge.Settings;
 
-namespace InitializrApi.Services
+namespace Steeltoe.Initializr.Services
 {
     internal class InitializrComponentManager : IComponentManager
     {

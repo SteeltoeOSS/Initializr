@@ -21,9 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-#if (MSSql)
-using Steeltoe.CloudFoundry.Connector.MySql;
-#endif
+
 #if(Actuators || CloudFoundry)
 using Steeltoe.Management.CloudFoundry;
 using Steeltoe.Management.Endpoint;

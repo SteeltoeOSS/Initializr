@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using InitializrApi.Models;
+using Steeltoe.Initializr.Models;
 using Microsoft.TemplateEngine.Abstractions;
 using Microsoft.TemplateEngine.Cli;
 using Microsoft.TemplateEngine.Cli.PostActionProcessors;
@@ -16,7 +16,7 @@ using Microsoft.TemplateEngine.Edge.TemplateUpdates;
 using Microsoft.TemplateEngine.Orchestrator.RunnableProjects;
 using Microsoft.TemplateEngine.Utils;
 
-namespace InitializrApi.Services
+namespace Steeltoe.Initializr.Services
 {
     public class TemplateService : ITemplateService
     {

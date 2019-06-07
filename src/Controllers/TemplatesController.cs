@@ -1,3 +1,17 @@
+// Copyright 2017 the original author or authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,10 +32,10 @@ using Microsoft.TemplateEngine.Edge.Settings;
 using Microsoft.TemplateEngine.Edge.Template;
 using Microsoft.AspNetCore.Hosting;
 using System.Text;
-using InitializrApi.Models;
-using InitializrApi.Services;
+using Steeltoe.Initializr.Models;
+using Steeltoe.Initializr.Services;
 
-namespace InitializrApi.Controllers
+namespace Steeltoe.Initializr.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -54,39 +68,10 @@ namespace InitializrApi.Controllers
         [Route("/createtest")]
         public ActionResult GenerateProjectTest([FromQuery(Name = "templateShortName")] string templateShortName)
         {
-            return GenerateProject(new GeneratorModel { templateShortName = templateShortName ?? DEFAULT_TEMPLATE, projectName = "mytest", dependencies = new[] { "actuators,mysql" } }); ;
+            return GenerateProject(new GeneratorModel { TemplateShortName = templateShortName ?? DEFAULT_TEMPLATE, ProjectName = "mytest", Dependencies = new[] { "actuators,mysql" } }); ;
         }
 
-        private ActionResult GenerateProject(GeneratorModel model)
-        {
-            //var form = Request.Form;
-            var list = _templateService.GetAvailableTemplates();
-            var currentTemplate = (model.templateShortName ?? DEFAULT_TEMPLATE).ToLower();
-
-
-            if (list == null || !list.Any(x => x.ShortName.ToLower() == currentTemplate))
-            {
-                return NotFound($"Template {currentTemplate} was not found");
-            }
-            var templateParameters = model.dependencies.ToList();
-            if(!string.IsNullOrEmpty(model.steeltoeVersion))
-            {
-                templateParameters.Add($"SteeltoeVersion={model.steeltoeVersion}");
-            }
-            string outFolder =  _templateService.GenerateProject(currentTemplate, model.projectName, templateParameters.ToArray() ).Result;
-            var zipName = (model.projectName ?? "steeltoeProject")+".zip";
-
-            var zipFile = Path.Combine(outFolder,"..", zipName);
-            ZipFile.CreateFromDirectory(outFolder, zipFile);
-
-            var cd = new ContentDispositionHeaderValue("attachment")
-            {
-                FileNameStar = zipName
-            };
-            Response.Headers.Add("Content-Disposition", cd.ToString());
-            return File(System.IO.File.ReadAllBytes(zipFile), "application/zip");
-
-        }
+     
         // GET api/templates
         [Route("/dependencies")]
         public ActionResult GetDependencies()
@@ -99,14 +84,52 @@ namespace InitializrApi.Controllers
         {
             return _templateService.GetAvailableTemplates();
         }
+
         [Route("stall")]
         public ActionResult<IEnumerable<string>> GetSteeltoeTemplates()
         {
             return _sttemplateService.GetAvailableTemplates();
         }
 
-       
+        private ActionResult GenerateProject(GeneratorModel model)
+        {
+            //var form = Request.Form;
+            var list = _templateService.GetAvailableTemplates();
+            var currentTemplate = (model.TemplateShortName ?? DEFAULT_TEMPLATE).ToLower();
 
-    }
- 
+
+            if (list == null || !list.Any(x => x.ShortName.ToLower() == currentTemplate))
+            {
+                return NotFound($"Template {currentTemplate} was not found");
+            }
+            var templateParameters = model.Dependencies.ToList();
+
+            if (!string.IsNullOrEmpty(model.SteeltoeVersion))
+            {
+                if (model.SteeltoeVersion == "3.0")
+                {
+                    currentTemplate = "steeltoe";
+                }
+                else
+                {
+                    templateParameters.Add($"SteeltoeVersion={model.SteeltoeVersion}");
+                }
+            }
+
+            string outFolder = _templateService.GenerateProject(currentTemplate, model.ProjectName, templateParameters.ToArray()).Result;
+            var zipName = (model.ProjectName ?? "steeltoeProject") + ".zip";
+
+            var zipFile = Path.Combine(outFolder, "..", zipName);
+            ZipFile.CreateFromDirectory(outFolder, zipFile);
+
+            var cd = new ContentDispositionHeaderValue("attachment")
+            {
+                FileNameStar = zipName
+            };
+            Response.Headers.Add("Content-Disposition", cd.ToString());
+            return File(System.IO.File.ReadAllBytes(zipFile), "application/zip");
+
+        }
+
+    } 
 }

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\InitializrApi.csproj" />
+    <ProjectReference Include="..\src\Steeltoe.Initializr.csproj" />
   </ItemGroup>
   
   <Target Name="CopyTemplates" BeforeTargets="PreBuildEvent">

@@ -5,7 +5,7 @@ using Microsoft.TemplateEngine.Abstractions.Mount;
 using Microsoft.TemplateEngine.Utils;
 
 
-namespace InitializrApi.Services
+namespace Steeltoe.Initializr.Services
 {
     internal class InitializrMountPointManager : IMountPointManager
     {
