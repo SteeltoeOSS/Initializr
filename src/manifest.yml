@@ -4,7 +4,7 @@ applications:
   buildpacks:
    - dotnet_core_buildpack
   memory: 512M
-  command: cd ${HOME} && ./InitializrApi
+  command: cd ${HOME} && ./Steeltoe.Initializr
   env:
     ASPNETCORE_ENVIRONMENT: Production
   services:

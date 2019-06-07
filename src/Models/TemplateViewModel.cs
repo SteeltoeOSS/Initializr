@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace InitializrApi.Models
+namespace Steeltoe.Initializr.Models
 {
     public class TemplateViewModel
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using InitializrApi.Models;
+using Steeltoe.Initializr.Models;
 using Newtonsoft.Json;
 using Stubble.Core;
 using Stubble.Core.Builders;
@@ -11,7 +11,7 @@ using System.Text;
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace InitializrApi.Services
+namespace Steeltoe.Initializr.Services
 {
     public class SteeltoeTemplateService : ISteeltoeTemplateService
     {
@@ -40,7 +40,7 @@ namespace InitializrApi.Services
             var templatePath = Path.Combine(current, "SteeltoeTemplates", "templates", name);
             var json = File.ReadAllText(Path.Combine(templatePath, "mustache.json"));
             var dataView = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-            foreach(var dependency in model.dependencies)
+            foreach(var dependency in model.Dependencies)
             {
                 if(dataView.ContainsKey(dependency))
                 {

@@ -1,11 +1,11 @@
 using System;
 using System.IO;
-using InitializrApi.Models;
-using InitializrApi.Services;
+using Steeltoe.Initializr.Models;
+using Steeltoe.Initializr.Services;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace InitializrApiTests
+namespace Steeltoe.InitializrTests
 {
     public class TemplateServiceTests: XunitLoggingBase
     {
@@ -134,6 +134,25 @@ namespace InitializrApiTests
             string startUpContents = File.ReadAllText(startupPath);
             Assert.DoesNotContain("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);", startUpContents);
             Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
+
+        }
+
+        [Fact]
+        public void CreateTemplate_actuators_v3()
+        {
+            var templateService = new TemplateService();
+
+            Assert.NotNull(templateService);
+
+            var outFolder = templateService.GenerateProject("steeltoe", "testProject", new[] { "Actuators", "SteeltoeVersion=2.1.0" }).Result;
+            Console.WriteLine("outFolder " + outFolder);
+            Assert.NotNull(outFolder);
+            Assert.True(Directory.Exists(outFolder));
+            var startupPath = Path.Combine(outFolder, "Startup.cs");
+            Assert.True(File.Exists(startupPath));
+            string startUpContents = File.ReadAllText(startupPath);
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);", startUpContents);
+            Assert.DoesNotContain("services.AddCloudFoundryActuators(Configuration);", startUpContents);
 
         }
         [Fact]

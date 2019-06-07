@@ -46,7 +46,7 @@
     "ac33c6a1-52ca-4215-b72d-2dce7f6a1d2f": "Microsoft.TemplateEngine.Edge.TemplateUpdates.NupkgInstallUnitDescriptorFactory, Microsoft.TemplateEngine.Edge, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
   },
   "ProbingPaths": [
-    "C:\\Users\\Hananiel\\projects\\InitializrApi\\templates\\content"
+    "C:\\Users\\Hananiel\\projects\\Steeltoe.Initializr\\templates\\content"
   ],
   "ComponentTypeToGuidList": {
     "Microsoft.TemplateEngine.Abstractions.IGenerator, Microsoft.TemplateEngine.Abstractions, Version=1.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60": [

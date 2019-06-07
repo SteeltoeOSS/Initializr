@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using InitializrApi.Models;
+using Steeltoe.Initializr.Models;
 
-namespace InitializrApi.Services
+namespace Steeltoe.Initializr.Services
 {
     public interface ITemplateService
     {

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 
-namespace InitializrApi
+namespace Steeltoe.Initializr
 {
     public class Program
     {

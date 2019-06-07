@@ -5,7 +5,7 @@
       "ParentMountPointId": "00000000-0000-0000-0000-000000000000",
       "MountPointFactoryId": "8c19221b-dea3-4250-86fe-2d4e189a11d2",
       "MountPointId": "1815274a-f735-4189-9f1c-cbc16a31dd3a",
-      "Place": "C:\\Users\\Hananiel\\projects\\InitializrApi\\templates\\Steeltoe-CSharp-2.2"
+      "Place": "C:\\Users\\Hananiel\\projects\\Steeltoe.Initializr\\templates\\Steeltoe-CSharp-2.2"
     }
   ],
   "ComponentGuidToAssemblyQualifiedName": {
@@ -39,7 +39,7 @@
     "ac33c6a1-52ca-4215-b72d-2dce7f6a1d2f": "Microsoft.TemplateEngine.Edge.TemplateUpdates.NupkgInstallUnitDescriptorFactory, Microsoft.TemplateEngine.Edge, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
   },
   "ProbingPaths": [
-    "C:\\Users\\Hananiel\\projects\\InitializrApi\\templates\\content"
+    "C:\\Users\\Hananiel\\projects\\Steeltoe.Initializr\\templates\\content"
   ],
   "ComponentTypeToGuidList": {
     "Microsoft.TemplateEngine.Abstractions.IGenerator, Microsoft.TemplateEngine.Abstractions, Version=1.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60": [
