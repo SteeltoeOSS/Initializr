@@ -1,23 +1,36 @@
-using Steeltoe.Initializr.Services;
+// Copyright 2017 the original author or authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Steeltoe.Initializr.Services;
 
 namespace Steeltoe.Initializr
 {
     public class Startup
     {
         private ILogger<Startup> _logger;
+
         public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
             Configuration = configuration;
             _logger = logger;
-            
         }
 
         public IConfiguration Configuration { get; }
@@ -34,7 +47,6 @@ namespace Steeltoe.Initializr
             });
             services.AddSingleton<ITemplateService, TemplateService>();
             services.AddSingleton<ISteeltoeTemplateService, SteeltoeTemplateService>();
-            //   services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +59,7 @@ namespace Steeltoe.Initializr
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -64,7 +77,8 @@ namespace Steeltoe.Initializr
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
-                   // spa.UseProxyToSpaDevelopmentServer("https://startui.apps.pcfone.io");  
+
+                    // spa.UseProxyToSpaDevelopmentServer("https://startui.apps.pcfone.io");
                 }
             });
         }

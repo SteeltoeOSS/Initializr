@@ -19,27 +19,16 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    <Compile Remove="SteeltoeTemplates\templates\**" />
     <Content Remove="$(SpaRoot)**" />
     <Content Include="$(ProjectDir)..\templates\**\*.*">
       <Link>templates\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <EmbeddedResource Remove="Services\templates\**" />
-    <EmbeddedResource Remove="SteeltoeTemplates\templates\**" />
     <None Remove="$(SpaRoot)**" />
-    <None Remove="SteeltoeTemplates\templates\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="ClientApp\src\components\FormRow.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="ClientApp\src\components\FormRow.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
