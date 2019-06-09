@@ -12,28 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.TemplateEngine.Abstractions;
-using Microsoft.TemplateEngine.Cli;
-using Microsoft.TemplateEngine.Cli.PostActionProcessors;
-using Microsoft.TemplateEngine.Edge;
-using Microsoft.TemplateEngine.Edge.TemplateUpdates;
-using Microsoft.TemplateEngine.Orchestrator.RunnableProjects;
-using Microsoft.TemplateEngine.Utils;
-using System.IO.Compression;
-using System.Net.Http.Headers;
-using Microsoft.TemplateEngine.Edge.Settings;
-using Microsoft.TemplateEngine.Edge.Template;
-using Microsoft.AspNetCore.Hosting;
-using System.Text;
 using Steeltoe.Initializr.Models;
 using Steeltoe.Initializr.Services;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Net.Http.Headers;
 
 namespace Steeltoe.Initializr.Controllers
 {
@@ -41,9 +27,9 @@ namespace Steeltoe.Initializr.Controllers
     [ApiController]
     public class TemplatesController : ControllerBase
     {
+        private const string DEFAULT_TEMPLATE = "steeltoe2";
         private ITemplateService _templateService;
         private ISteeltoeTemplateService _sttemplateService;
-        private const string DEFAULT_TEMPLATE = "steeltoe2";
 
         public TemplatesController(ITemplateService service, ISteeltoeTemplateService stTemplateService)
         {
@@ -51,32 +37,29 @@ namespace Steeltoe.Initializr.Controllers
             _sttemplateService = stTemplateService;
         }
 
-        // GET api/Template
         [Route("/starter.zip")]
         [HttpPost]
         public ActionResult GenerateProjectPost([FromForm] GeneratorModel model)
         {
-          
              return GenerateProject(model);
-            //else
-            //{
-            //    var bytes = _sttemplateService.GenerateProject(model);
-            //    return File(bytes, "application/zip");
-            //}
         }
 
         [Route("/createtest")]
         public ActionResult GenerateProjectTest([FromQuery(Name = "templateShortName")] string templateShortName)
         {
-            return GenerateProject(new GeneratorModel { TemplateShortName = templateShortName ?? DEFAULT_TEMPLATE, ProjectName = "mytest", Dependencies = new[] { "actuators,mysql" } }); ;
+            var testModel = new GeneratorModel
+            {
+                TemplateShortName = templateShortName ?? DEFAULT_TEMPLATE,
+                ProjectName = "mytest",
+                Dependencies = new[] { "actuators,mysql" },
+            };
+            return GenerateProject(testModel);
         }
 
-     
-        // GET api/templates
         [Route("/dependencies")]
         public ActionResult GetDependencies()
         {
-            return Ok( _templateService.GetDependencies("steeltoe"));
+            return Ok(_templateService.GetDependencies("steeltoe"));
         }
 
         [Route("all")]
@@ -93,15 +76,14 @@ namespace Steeltoe.Initializr.Controllers
 
         private ActionResult GenerateProject(GeneratorModel model)
         {
-            //var form = Request.Form;
             var list = _templateService.GetAvailableTemplates();
             var currentTemplate = (model.TemplateShortName ?? DEFAULT_TEMPLATE).ToLower();
-
 
             if (list == null || !list.Any(x => x.ShortName.ToLower() == currentTemplate))
             {
                 return NotFound($"Template {currentTemplate} was not found");
             }
+
             var templateParameters = model.Dependencies.ToList();
 
             if (!string.IsNullOrEmpty(model.SteeltoeVersion))
@@ -124,12 +106,10 @@ namespace Steeltoe.Initializr.Controllers
 
             var cd = new ContentDispositionHeaderValue("attachment")
             {
-                FileNameStar = zipName
+                FileNameStar = zipName,
             };
             Response.Headers.Add("Content-Disposition", cd.ToString());
             return File(System.IO.File.ReadAllBytes(zipFile), "application/zip");
-
         }
-
-    } 
+    }
 }
