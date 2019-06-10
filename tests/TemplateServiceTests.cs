@@ -19,8 +19,6 @@ namespace Steeltoe.InitializrTests
         {
             var templateService = new TemplateService();
 
-            Assert.NotNull(templateService);
-
             var templates = templateService.GetAvailableTemplates();
             Assert.NotNull(templates);
             Assert.NotEmpty(templates);
@@ -34,8 +32,6 @@ namespace Steeltoe.InitializrTests
         {
             var templateService = new TemplateService();
 
-            Assert.NotNull(templateService);
-
             var deps = templateService.GetDependencies();
             Assert.NotNull(deps);
             Assert.NotEmpty(deps);
@@ -46,8 +42,6 @@ namespace Steeltoe.InitializrTests
         public void CreateTemplate_actuators()
         {
             var templateService = new TemplateService();
-
-            Assert.NotNull(templateService);
 
             var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[]{ "Actuators"}).Result;
             Assert.NotNull(outFolder);
@@ -63,11 +57,26 @@ namespace Steeltoe.InitializrTests
 
         }
         [Fact]
-        public void CreateTemplate_actuators_hystrix()
+        public void CreateTemplate_discovery()
         {
             var templateService = new TemplateService();
 
-            Assert.NotNull(templateService);
+            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "Discovery" }).Result;
+            Assert.NotNull(outFolder);
+            Assert.True(Directory.Exists(outFolder));
+            var startupPath = Path.Combine(outFolder, "Startup.cs");
+            Assert.True(File.Exists(startupPath));
+            string startUpContents = File.ReadAllText(startupPath);
+
+            Assert.Contains("using Steeltoe.Discovery.Client;", startUpContents);
+            Assert.Contains("services.AddDiscoveryClient(Configuration);", startUpContents);
+            Assert.Contains("app.UseDiscoveryClient();", startUpContents);
+
+        }
+        [Fact]
+        public void CreateTemplate_actuators_hystrix()
+        {
+            var templateService = new TemplateService();
 
             var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "Actuators", "Hystrix" }).Result;
             Assert.NotNull(outFolder);
@@ -81,11 +90,9 @@ namespace Steeltoe.InitializrTests
 
         }
         [Fact]
-        public void CreateTemplate_mysql()
+        public void CreateTemplate_MySql()
         {
             var templateService = new TemplateService();
-
-            Assert.NotNull(templateService);
 
             var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "MySql" }).Result;
             Assert.NotNull(outFolder);
@@ -93,12 +100,136 @@ namespace Steeltoe.InitializrTests
             var startupPath = Path.Combine(outFolder, "Startup.cs");
             Assert.True(File.Exists(startupPath));
             string startUpContents = File.ReadAllText(startupPath);
-            Assert.Contains("using Steeltoe.CloudFoundry.Connector.MySql", startUpContents);
+            Assert.Contains("using Steeltoe.CloudFoundry.Connector.MySql;", startUpContents);
+
+            Assert.Contains(".AddMySqlConnection(", startUpContents);
+        }
+        [Fact]
+        public void CreateTemplate_MySql_EFCore()
+        {
+            var templateService = new TemplateService();
+
+            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "MySqlEFCore" }).Result;
+            Assert.NotNull(outFolder);
+            Assert.True(Directory.Exists(outFolder));
+            var startupPath = Path.Combine(outFolder, "Startup.cs");
+            Assert.True(File.Exists(startupPath));
+            string startUpContents = File.ReadAllText(startupPath);
+            Assert.Contains("using Steeltoe.CloudFoundry.Connector.MySql;", startUpContents);
 
             Assert.Contains(".AddMySqlConnection(", startUpContents);
 
 
         }
+        [Fact]
+        public void CreateTemplate_postgresql()
+        {
+            var templateService = new TemplateService();
+
+            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "Postgres" }).Result;
+            Assert.NotNull(outFolder);
+            Assert.True(Directory.Exists(outFolder));
+            var startupPath = Path.Combine(outFolder, "Startup.cs");
+            Assert.True(File.Exists(startupPath));
+            string startUpContents = File.ReadAllText(startupPath);
+            Assert.Contains("using Steeltoe.CloudFoundry.Connector.PostgreSql;", startUpContents);
+
+            Assert.Contains("services.AddPostgresConnection(Configuration);", startUpContents);
+
+        }
+        [Fact]
+        public void CreateTemplate_postgresEFCore()
+        {
+            var templateService = new TemplateService();
+
+            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "PostgresEFCore" }).Result;
+            Assert.NotNull(outFolder);
+            Assert.True(Directory.Exists(outFolder));
+            var startupPath = Path.Combine(outFolder, "Startup.cs");
+            Assert.True(File.Exists(startupPath));
+            string startUpContents = File.ReadAllText(startupPath);
+            Assert.Contains("using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;", startUpContents);
+
+            Assert.Contains("services.AddDbContext<MyDbContext>(options => options.UseNpgsql(Configuration));", startUpContents);
+
+        }
+
+        [Fact]
+        public void CreateTemplate_RabbitMQ()
+        {
+            var templateService = new TemplateService();
+            
+            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "RabbitMQ" }).Result;
+            Assert.NotNull(outFolder);
+            Assert.True(Directory.Exists(outFolder));
+            var startupPath = Path.Combine(outFolder, "Startup.cs");
+            Assert.True(File.Exists(startupPath));
+            string startUpContents = File.ReadAllText(startupPath);
+            Assert.Contains("using Steeltoe.CloudFoundry.Connector.RabbitMQ;", startUpContents);
+
+            Assert.Contains("services.AddRabbitMQConnection(Configuration);", startUpContents);
+        }
+
+        [Fact]
+        public void CreateTemplate_Redis()
+        {
+            var templateService = new TemplateService();
+
+            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "Redis" }).Result;
+            Assert.NotNull(outFolder);
+            Assert.True(Directory.Exists(outFolder));
+            var startupPath = Path.Combine(outFolder, "Startup.cs");
+            Assert.True(File.Exists(startupPath));
+            string startUpContents = File.ReadAllText(startupPath);
+            Assert.Contains("using Steeltoe.CloudFoundry.Connector.Redis", startUpContents);
+            Assert.Contains("services.AddDistributedRedisCache(Configuration);", startUpContents);
+        }
+
+        [Fact]
+        public void CreateTemplate_MongoDB()
+        {
+            var templateService = new TemplateService();
+
+            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "MongoDB" }).Result;
+            Assert.NotNull(outFolder);
+            Assert.True(Directory.Exists(outFolder));
+            var startupPath = Path.Combine(outFolder, "Startup.cs");
+            Assert.True(File.Exists(startupPath));
+            string startUpContents = File.ReadAllText(startupPath);
+            Assert.Contains("using Steeltoe.CloudFoundry.Connector.MongoDb;", startUpContents);
+            Assert.Contains("services.AddMongoClient(Configuration);", startUpContents);
+        }
+
+        [Fact]
+        public void CreateTemplate_OauthConnector()
+        {
+            var templateService = new TemplateService();
+
+            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "OAuthConnector" }).Result;
+            Assert.NotNull(outFolder);
+            Assert.True(Directory.Exists(outFolder));
+            var startupPath = Path.Combine(outFolder, "Startup.cs");
+            Assert.True(File.Exists(startupPath));
+            string startUpContents = File.ReadAllText(startupPath);
+            Assert.Contains("using Steeltoe.CloudFoundry.Connector.OAuth;", startUpContents);
+            Assert.Contains("services.AddOAuthServiceOptions(Configuration);", startUpContents);
+        }
+        [Fact]
+        public void CreateTemplate_SqlServer()
+        {
+            var templateService = new TemplateService();
+
+            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "SqlServer" }).Result;
+            Assert.NotNull(outFolder);
+            Assert.True(Directory.Exists(outFolder));
+            var filePath = Path.Combine(outFolder, "testProject.csproj");
+            Assert.True(File.Exists(filePath));
+            string fileContents = File.ReadAllText(filePath);
+            Assert.Contains(@"<PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""$(AspNetCoreVersion)"" />", fileContents);
+            Assert.Contains(@"<PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""$(AspNetCoreVersion)"" />", fileContents);
+            Assert.Contains(@"<PackageReference Include=""Steeltoe.CloudFoundry.Connector.EFCore"" Version=""$(SteeltoeConnectorVersion)"" />", fileContents);
+        }
+
         [Fact]
         public void CreateTemplate_actuators_cloudFoundry()
         {
