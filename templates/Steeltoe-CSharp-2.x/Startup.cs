@@ -22,20 +22,40 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-#if(Actuators || CloudFoundry)
+#if (Actuators || CloudFoundry)
 using Steeltoe.Management.CloudFoundry;
 using Steeltoe.Management.Endpoint;
-    #if(SteeltoeVersion == "2.2.0")
+#if (SteeltoeVersion == "2.2.0")
 using Steeltoe.Management.Hypermedia;
-    #endif
 #endif
-#if(Hystrix)
+#endif
+#if (Hystrix)
 using Steeltoe.CircuitBreaker.Hystrix;
 #endif
-#if(MySql)
+#if (MySql)
 using Steeltoe.CloudFoundry.Connector.MySql;
 #endif
-
+#if (Discovery)
+using Steeltoe.Discovery.Client;
+#endif
+#if (Postgres)
+using Steeltoe.CloudFoundry.Connector.PostgreSql;
+#endif
+#if (RabbitMQ)
+using Steeltoe.CloudFoundry.Connector.RabbitMQ;
+#endif
+#if (Redis)
+using Steeltoe.CloudFoundry.Connector.Redis;
+#endif
+#if (MongoDB)
+using Steeltoe.CloudFoundry.Connector.MongoDb;
+#endif
+#if (OAuthConnector)
+using Steeltoe.CloudFoundry.Connector.OAuth;
+#endif
+#if (PostgresEFCore)
+using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
+#endif
 namespace Company.WebApplication1
 {
     public class Startup
@@ -60,7 +80,7 @@ namespace Company.WebApplication1
 #if (MySql)
             services.AddMySqlConnection(Configuration);
 #endif
-#if(SteeltoeVersion == "2.2.0")
+#if (SteeltoeVersion == "2.2.0")
 #if (Actuators && CloudFoundry)
 	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)
@@ -73,6 +93,36 @@ namespace Company.WebApplication1
 	        services.AddCloudFoundryActuators(Configuration);
 #endif
 
+#endif
+#if (Discovery)
+            services.AddDiscoveryClient(Configuration);
+#endif
+#if (Postgres)
+            services.AddPostgresConnection(Configuration);
+#endif
+#if (RabbitMQ)
+            services.AddRabbitMQConnection(Configuration);
+#endif
+#if (Redis)
+            // Add the Redis distributed cache.
+
+            // We are using the Steeltoe Redis Connector to pickup the CloudFoundry
+            // Redis Service binding and use it to configure the underlying RedisCache
+            // This adds a IDistributedCache to the container
+            services.AddDistributedRedisCache(Configuration);
+
+            // This works like the above, but adds a IConnectionMultiplexer to the container
+            services.AddRedisConnectionMultiplexer(Configuration);
+#endif
+#if (MongoDB)
+             services.AddMongoClient(Configuration);
+#endif
+#if (OAuthConnector)
+             services.AddOAuthServiceOptions(Configuration);
+#endif
+#if (PostgresEFCore)
+              // Add Context and use Postgres as provider ... provider will be configured from VCAP_ info
+              // services.AddDbContext<MyDbContext>(options => options.UseNpgsql(Configuration));
 #endif
             services.AddMvc();
         }
@@ -111,7 +161,9 @@ namespace Company.WebApplication1
 #endif
 
 #endif
-
+#if (Discovery)
+        app.UseDiscoveryClient(););
+#endif
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

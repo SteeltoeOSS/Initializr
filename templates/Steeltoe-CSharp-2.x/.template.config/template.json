@@ -261,13 +261,77 @@
       "defaultValue": "false",
       "description": "Steeltoe: Add MySql connnectors"
     },
-    "Hystrix":{
+    "Postgres": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Postgres connnectors"
+    },
+    "SqlServer": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add SqlServer connnectors"
+    },
+    "RabbitMQ": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add RabbitMQ connnectors"
+    },
+    "Redis": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Redis connnectors"
+    },
+    "MongoDB": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add MongoDB connnectors"
+    },
+    "OAuthConnector": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Oauth connnectors"
+    },
+    "PostgresEFCore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add PostGresEFCore connnectors"
+    },
+    "MySqlEFCore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add MySqlEFCore connnectors"
+    },
+    "MySqlEF6": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add MySqlEF6 connnectors"
+    },
+    "AnyConnector": {
+      "type": "computed",
+      "value": "(MySql || PostGres || MSSql || Redis || MongoDB || OauthConnector)"
+    },
+    "Hystrix": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
       "description": "Steeltoe: Add Circuit Breakers"
     },
-    "SteeltoeVersion":{
+    "Discovery": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Discovery Client"
+    },
+    "SteeltoeVersion": {
       "type": "parameter",
       "datatype": "choice",
       "defaultValue": "2.2.0",
