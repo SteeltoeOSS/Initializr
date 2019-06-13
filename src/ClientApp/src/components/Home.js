@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react'; 
 import { InputSelector } from './InputSelector';
 import { RightInputSelector } from './RightInputSelector';
-import { AutoSuggestSelector } from './AutoSuggestSelector';
+import { DependenciesSelector } from './DependenciesSelector';
 import { BottomLinks } from './BottomLinks';
 import { InputText } from './InputText';
 import { NetProjectSuggestions } from './NetProjectSuggestions';
@@ -50,24 +50,25 @@ export class Home extends Component {
             <form name="form" action="/starter.zip" method="post" autoComplete="off">
                     <div>
                     <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.1", "2.2", "3.0"]} defaultValue="2.2" onChange={this.handleInputChange} />
-                    <AutoSuggestSelector id="deps" available_deps={["CloudFoundry", "Hystrix", "Actuator", "MySql", "Dynamic Logger"]} />
-                    </div>
+                   
 
                 <div className="line">
                     <div className="left">Project Metadata</div>
-                    <div className="right">
-                        <div className="project-metadata">
+                        <div className="right">
+                            <div className="project-metadata">
 
-                            <InputText title="Project Name" name="projectName" defaultValue="SteeltoeExample" tabIndex="1" />
-                                      <div id="more-block">
-                                        <InputText title="Description" name="description" defaultValue="Demo project for Steeltoe" tabIndex="2" />
-                                <RightInputSelector title='.NET Core Version' values={["2.2", "3.0"]} />
-                            </div>
+                                <InputText title="Project Name" name="projectName" defaultValue="SteeltoeExample" tabIndex="1" />
+                                <div id="more-block">
+                                    <InputText title="Description" name="description" defaultValue="Demo project for Steeltoe" tabIndex="2" />
+                                    <RightInputSelector title='.NET Core Version' values={["2.2", "3.0"]} />
+                                </div>
                            
-                         </div>
-                    </div>
-                </div>                     
-                                                
+                             </div>
+                        </div>
+                    </div>      
+                <DependenciesSelector id="deps" available_deps={["CloudFoundry", "Hystrix", "Actuator", "MySql", "Dynamic Logger"]} />
+                    <br/>
+                </div>          
                 <div className="line row-action">
                     <BottomLinks />
                     <div className="right">

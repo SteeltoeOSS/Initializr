@@ -247,20 +247,66 @@
     "CloudFoundry": {
       "type": "parameter",
       "datatype": "bool",
-      "defaultValue": "true",
+      "defaultValue": "false",
       "description": "Steeltoe: Target Cloudfoundry Hosting"
     },
-    "MSSql": {
+    "MySql": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Steeltoe: Add Sql server connnectors"
+      "description": "Steeltoe: Add MySql connnectors"
     },
-    "DynamicLogger": {
+    "Postgres": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Steeltoe: Enable Dynamic Logging"
+      "description": "Steeltoe: Add Postgres connnectors"
+    },
+    "SqlServer": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add SqlServer connnectors"
+    },
+    "RabbitMQ": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add RabbitMQ connnectors"
+    },
+    "Redis": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Redis connnectors"
+    },
+    "MongoDB": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add MongoDB connnectors"
+    },
+    "PostgresEFCore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add PostGresEFCore connnectors"
+    },
+    "MySqlEFCore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add MySqlEFCore connnectors"
+    },
+    "MySqlEF6": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add MySqlEF6 connnectors"
+    },
+    "AnyConnector": {
+      "type": "computed",
+      "value": "(MySql || PostGres || MSSql || Redis || MongoDB || OauthConnector)"
     },
     "Hystrix":{
       "type": "parameter",
@@ -268,11 +314,24 @@
       "defaultValue": "false",
       "description": "Steeltoe: Add Circuit Breakers"
     },
-    "MicrosoftHealthChecks":{
+    "Discovery": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Steeltoe: Support Community HealthChecks"
+      "description": "Steeltoe: Add Discovery Client"
+    },
+    "SteeltoeVersion": {
+      "type": "parameter",
+      "datatype": "choice",
+      "defaultValue": "3.0",
+      "description": "Steeltoe: Support Community HealthChecks",
+      "replaces": "SteeltoeVersion",
+      "choices": [
+        {
+          "choice": "3.0",
+          "description": "Target Steeltoe version 3.0"
+        }
+      ]
     }
 
   },

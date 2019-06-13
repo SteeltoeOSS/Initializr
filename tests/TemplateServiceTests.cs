@@ -36,7 +36,13 @@ namespace Steeltoe.InitializrTests
             Assert.NotNull(deps);
             Assert.NotEmpty(deps);
 
-            Assert.Contains(deps, x => x.Name == "Actuators");
+            Assert.Contains(deps, x => x.Name == "OAuthConnector");
+
+            deps = templateService.GetDependencies("steeltoe");
+            Assert.NotNull(deps);
+            Assert.NotEmpty(deps);
+
+            Assert.DoesNotContain(deps, x => x.Name == "OAuthConnector");
         }
         [Fact]
         public void CreateTemplate_actuators()

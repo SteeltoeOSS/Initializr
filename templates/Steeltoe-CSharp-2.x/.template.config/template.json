@@ -335,7 +335,7 @@
       "type": "parameter",
       "datatype": "choice",
       "defaultValue": "2.2.0",
-      "description": "Steeltoe: Support Community HealthChecks",
+      "description": "Target the appropriate version",
       "replaces": "SteeltoeVersion",
       "choices": [
         {
