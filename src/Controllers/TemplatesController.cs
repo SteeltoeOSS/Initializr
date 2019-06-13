@@ -57,9 +57,9 @@ namespace Steeltoe.Initializr.Controllers
         }
 
         [Route("/dependencies")]
-        public ActionResult GetDependencies()
+        public ActionResult GetDependencies([FromQuery(Name = "templateShortName")] string templateShortName)
         {
-            return Ok(_templateService.GetDependencies("steeltoe"));
+            return Ok(_templateService.GetDependencies(templateShortName??"steeltoe2"));
         }
 
         [Route("all")]

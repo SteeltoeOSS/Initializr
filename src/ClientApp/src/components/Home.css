@@ -356,29 +356,29 @@ div.radios div.radio {
     flex-flow: wrap
 }
 
-    .colset .col {
-        flex: 1;
-        max-width: 350px
-    }
+.colset .col {
+    flex: 1;
+    max-width: 350px
+}
 
-        .colset .col + .col {
-            padding-left: 24px
-        }
+.colset .col + .col {
+    padding-left: 24px
+}
 
-.list {
+.selectedDeps {
     min-height: 200px
 }
 
-    .list .item, .control-text li {
-        border: 2px solid #f7f7f7;
-        background: #f7f7f7;
-        line-height: 24px;
-        padding: 8px 40px 8px 16px;
-        margin: 8px 0;
-        border-radius: 4px;
-        position: relative;
-        cursor: pointer;
-    }
+.selectedDeps .item, .control-text li {
+    border: 2px solid #f7f7f7;
+    background: #f7f7f7;
+    line-height: 24px;
+    padding: 8px 40px 8px 16px;
+    margin: 8px 0;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+}
 
     .control-inner-text {
         border: none;
@@ -394,84 +394,84 @@ div.radios div.radio {
 .control-text .title{
     font-weight: 700
 }
-        .list .item .title {
-            font-weight: 700
-        }
+.selectedDeps .item .title {
+    font-weight: 700
+}
 
-            .list .item .title .cat {
-                color: #2d74d1;
-                font-weight: 400
-            }
+.selectedDeps .item .title .cat {
+    color: #2d74d1;
+    font-weight: 400
+}
 
-        .list .item .desc, .control-text .desc {
-            color: #706c69;
-            font-size: .9rem
-        }
+.selectedDeps .item .desc, .control-text .desc {
+    color: #706c69;
+    font-size: .9rem
+}
 
-        .list .item .incompatible {
-            display: none;
-            color: #f30808;
-            font-weight: 700
-        }
+.selectedDeps .item .incompatible {
+    display: none;
+    color: #f30808;
+    font-weight: 700
+}
 
-        .list .item a.btn-ico {
-            position: absolute;
-            right: 2px;
-            top: 50%;
-            margin-top: -16px;
-            display: none
-        }
+.selectedDeps .item a.btn-ico {
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    margin-top: -16px;
+    display: none
+}
 
-            .list .item a.btn-ico:hover {
-                color: #000
-            }
-
-        .list .item.active {
-            background-color: #e7f1f4;
-            border-color: #e7f1f4
-        }
-
-            .list .item.active a.btn-ico {
-                display: block
-            }
-
-        .list .item.invalid {
-            cursor: not-allowed
-        }
-
-            .list .item.invalid a.btn-ico {
-                display: none
-            }
-
-            .list .item.invalid .incompatible {
-                display: block
-            }
-
-            .list .item.invalid.active {
-                background-color: #ffe2e2;
-                border-color: #ffe2e2
-            }
-
-    .list.light .item {
-        background: #fff
+    .selectedDeps .item a.btn-ico:hover {
+        color: #000
     }
 
-        .list.light .item.active {
-            background-color: #e7f1f4;
-            border-color: #e7f1f4
-        }
+.selectedDeps .item.active {
+    background-color: #e7f1f4;
+    border-color: #e7f1f4
+}
 
-        .list.light .item.invalid {
-            cursor: not-allowed
-        }
+    .selectedDeps .item.active a.btn-ico {
+        display: block
+    }
 
-            .list.light .item.invalid a.btn-ico {
-                display: block
-            }
+.selectedDeps .item.invalid {
+    cursor: not-allowed
+}
 
-        .list.light .item:hover a.btn-ico {
+    .selectedDeps .item.invalid a.btn-ico {
+        display: none
+    }
+
+    .selectedDeps .item.invalid .incompatible {
+        display: block
+    }
+
+    .selectedDeps .item.invalid.active {
+        background-color: #ffe2e2;
+        border-color: #ffe2e2
+    }
+
+.selectedDeps.light .item {
+    background: #fff
+}
+
+    .selectedDeps.light .item.active {
+        background-color: #e7f1f4;
+        border-color: #e7f1f4
+    }
+
+    .selectedDeps.light .item.invalid {
+        cursor: not-allowed
+    }
+
+        .selectedDeps.light .item.invalid a.btn-ico {
             display: block
         }
+
+    .selectedDeps.light .item:hover a.btn-ico {
+        display: block
+    }
 
 a.btn,
 button.btn {

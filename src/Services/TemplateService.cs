@@ -13,21 +13,14 @@
 // limitations under the License.
 
 using Microsoft.TemplateEngine.Abstractions;
-using Microsoft.TemplateEngine.Cli;
-using Microsoft.TemplateEngine.Cli.PostActionProcessors;
-using Microsoft.TemplateEngine.Edge;
 using Microsoft.TemplateEngine.Edge.Settings;
 using Microsoft.TemplateEngine.Edge.Template;
-using Microsoft.TemplateEngine.Edge.TemplateUpdates;
-using Microsoft.TemplateEngine.Orchestrator.RunnableProjects;
 using Microsoft.TemplateEngine.Utils;
 using Steeltoe.Initializr.Models;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Steeltoe.Initializr.Services
@@ -112,46 +105,6 @@ namespace Steeltoe.Initializr.Services
                     Name = p.Name,
                     Description = p.Documentation,
                 }).ToList();
-        }
-
-        private static DefaultTemplateEngineHost CreateHost(bool emitTimings)
-        {
-            var preferences = new Dictionary<string, string>
-            {
-                { "prefs:language", "C#" },
-            };
-
-            try
-            {
-                string versionString = Dotnet.Version().CaptureStdOut().Execute().StdOut;
-                if (!string.IsNullOrWhiteSpace(versionString))
-                {
-                    preferences["dotnet-cli-version"] = versionString.Trim();
-                }
-            }
-            catch
-            {
-            }
-
-            var builtIns = new AssemblyComponentCatalog(new[]
-            {
-                typeof(RunnableProjectGenerator).GetTypeInfo().Assembly,            // for assembly: Microsoft.TemplateEngine.Orchestrator.RunnableProjects
-                typeof(NupkgInstallUnitDescriptorFactory).GetTypeInfo().Assembly,   // for assembly: Microsoft.TemplateEngine.Edge
-                typeof(DotnetRestorePostActionProcessor).GetTypeInfo().Assembly,     // for assembly: Microsoft.TemplateEngine.Cli
-            });
-
-            DefaultTemplateEngineHost host = new DefaultTemplateEngineHost("Initializr", "1.0", CultureInfo.CurrentCulture.Name, preferences, builtIns, new[] { "dotnetcli" });
-
-            if (emitTimings)
-            {
-                host.OnLogTiming = (label, duration, depth) =>
-                {
-                    string indent = string.Join(string.Empty, Enumerable.Repeat("  ", depth));
-                    Console.WriteLine($"{indent} {label} {duration.TotalMilliseconds}");
-                };
-            }
-
-            return host;
         }
 
         private EngineEnvironmentSettings GetEngineEnvironmentSettings()
