@@ -34,6 +34,7 @@ export class Home extends Component {
         this.setState(prevState => ({showMore: !prevState.showMore}))
     }
     handleInputChange(name, selectedValue) {
+
         if (name == "templateType") {
              this.setState({ level2SelectorType: selectedValue == ".NET Templates" ? "net" : "steeltoe"})
         }
@@ -50,7 +51,7 @@ export class Home extends Component {
         <div>
             <form name="form" action="/starter.zip" method="post" autoComplete="off">
                     <div>
-                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.1", "2.2", "3.0"]} defaultValue="2.2" onChange={this.handleInputChange} />
+                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.2", "2.3", "3.0"]} defaultValue="2.2" /*onChange={this.handleInputChange} *//>
                    
 
                 <div className="line">
@@ -61,7 +62,7 @@ export class Home extends Component {
                                 <InputText title="Project Name" name="projectName" defaultValue="SteeltoeExample" tabIndex="1" />
                                 <div id="more-block">
                                     <InputText title="Description" name="description" defaultValue="Demo project for Steeltoe" tabIndex="2" />
-                                    <RightInputSelector title='.NET Core Version' values={["2.2", "3.0"]} />
+                                    <RightInputSelector title='Target Framework' values={["netcoreapp2.1", "netcoreapp2.2", "net461"]} defaultValue="netcoreapp2.2" />
                                 </div>
                            
                              </div>

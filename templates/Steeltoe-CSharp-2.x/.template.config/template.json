@@ -335,6 +335,13 @@
       "defaultValue": "false",
       "description": "Steeltoe: Add Discovery Client"
     },
+    "DynamicLogger": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Dynamic Logger"
+    },
+
     "SteeltoeVersion": {
       "type": "parameter",
       "datatype": "choice",

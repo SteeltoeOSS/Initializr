@@ -237,6 +237,27 @@ namespace Steeltoe.InitializrTests
         }
 
         [Fact]
+        public void CreateTemplate_DynamicLogger()
+        {
+            var templateService = new TemplateService();
+
+            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "DynamicLogger" }).Result;
+            Assert.NotNull(outFolder);
+            Assert.True(Directory.Exists(outFolder));
+            var filePath = Path.Combine(outFolder, "testProject.csproj");
+            Assert.True(File.Exists(filePath));
+            string fileContents = File.ReadAllText(filePath);
+            Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=""$(SteeltoeLoggingVersion)""/>", fileContents);
+
+            var programFilePath = Path.Combine(outFolder, "Program.cs");
+            Assert.True(File.Exists(programFilePath));
+            string programFileContents = File.ReadAllText(programFilePath);
+            Assert.Contains(@"using Steeltoe.Extensions.Logging;", programFileContents);
+            Assert.Contains(@"loggingBuilder.AddConfiguration(hostingContext.Configuration.GetSection(""Logging""));", programFileContents);
+            Assert.Contains(@"loggingBuilder.AddDynamicConsole();", programFileContents);
+        }
+
+        [Fact]
         public void CreateTemplate_actuators_cloudFoundry()
         {
             var templateService = new TemplateService();

@@ -4,7 +4,6 @@
   <PropertyGroup>
     <TargetFramework Condition="'$(TargetFrameworkOverride)' == ''">netcoreapp2.2</TargetFramework>
     <TargetFramework Condition="'$(TargetFrameworkOverride)' != ''">TargetFrameworkOverride</TargetFramework>
-    <SteeltoeCircuitBreakerVersion>SteeltoeVersion</SteeltoeCircuitBreakerVersion>
     <UserSecretsId Condition="'$(IndividualAuth)' == 'True' OR '$(OrganizationalAuth)' == 'True'">aspnet-Company.WebApplication1-53bc9b9d-9d6a-45d4-8429-2a2761773502</UserSecretsId>
     <WebProject_DirectoryAccessLevelKey Condition="'$(OrganizationalAuth)' == 'True' AND '$(OrgReadAccess)' != 'True'">0</WebProject_DirectoryAccessLevelKey>
     <WebProject_DirectoryAccessLevelKey Condition="'$(OrganizationalAuth)' == 'True' AND '$(OrgReadAccess)' == 'True'">1</WebProject_DirectoryAccessLevelKey>
@@ -26,14 +25,14 @@
     <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" Condition="'$(RequiresHttps)' == 'True'" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Steeltoe.CloudFoundry.ConnectorCore" Condition="'$(AnyConnector)'" Version="$(SteeltoeManagementVersion)"/>
     <PackageReference Include="Steeltoe.Management.CloudFoundryCore" Condition="'$(Actuators)' == 'True' OR '$(CloudFoundry)' == 'True'"  Version="$(SteeltoeManagementVersion)" />
     <PackageReference Include="Steeltoe.Management.ExporterCore"  Version="$(SteeltoeManagementVersion)"/>
     <PackageReference Include="Steeltoe.CircuitBreaker.HystrixCore"  Condition="'$(Hystrix)'" Version="$(SteeltoeCircuitBreakerVersion)" />
     <PackageReference Include="Steeltoe.Extensions.Configuration.CloudFoundryCore"  Condition="'$(CloudFoundry)'" Version="$(SteeltoeConfigVersion)" />
-    <PackageReference Include="MySql.Data" Condition="'$(MySql)'" Version="8.0.16" />
-    <PackageReference Include="Npgsql" Condition="'$(Postgres)'" Version="4.0.2" />
+    <PackageReference Include="MySql.Data" Condition="'$(MySql)'" Version="$(MySqlVersion)" />
+    <PackageReference Include="Npgsql" Condition="'$(Postgres)'" Version="$(NpgSqlVersion)" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Steeltoe.Discovery.ClientCore" Condition="'$(Discovery)'" Version="$(SteeltoeConfigVersion)"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Condition="'$(SqlServer)'" Version="$(AspNetCoreVersion)" />
@@ -43,8 +42,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Condition="$(AnyEFCore)'" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Steeltoe.CloudFoundry.Connector.EFCore" Condition="'$(AnyEFCore)'"  Version="$(SteeltoeConnectorVersion)" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"  Condition="'$(PostgresEFCore)'" Version="$(AspNetCoreVersion)" />
-    <PackageReference Include="MongoDB.Driver" Condition="$(MongoDB)" Version="2.8.1" />
-    <PackageReference Include="RabbitMQ.Client"  Condition="'$(RabbitMQ)'" Version="$(RabbitMQVersion)" />    
+    <PackageReference Include="MongoDB.Driver" Condition="$(MongoDB)" Version="$(MongoDBVersion)" />
+    <PackageReference Include="RabbitMQ.Client"  Condition="'$(RabbitMQ)'" Version="$(RabbitMQVersion)" />
+    <PackageReference Include="Steeltoe.Extensions.Logging.DynamicLogger" Condition="'$(DynamicLogger)'" Version="$(SteeltoeLoggingVersion)"/>
   </ItemGroup>
   <ItemGroup Condition="'$(Hystrix)' == 'True'" Condition="'$(BUILD)' == ''">
     <PackageReference Include="Steeltoe.CircuitBreaker.Hystrix.MetricsStreamCore" Version="$(SteeltoeCircuitBreakerVersion)" />
