@@ -387,6 +387,11 @@ div.radios div.radio {
     list-style-type: none;
 }
 
+li.rbt-menu-pagination-option {
+    background-color: white;
+    padding: 0px 10px 0px 16px;
+}
+
 .control-text a {
     text-decoration: none;
     color: black;

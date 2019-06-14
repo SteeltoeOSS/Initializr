@@ -8,6 +8,7 @@
     <SteeltoeLoggingVersion>SteeltoeVersion</SteeltoeLoggingVersion>
     <SteeltoeManagementVersion>SteeltoeVersion</SteeltoeManagementVersion>
     <SteeltoeSecurityVersion>SteeltoeVersion</SteeltoeSecurityVersion>
+    <AspNetCoreVersion>2.1.1</AspNetCoreVersion>
     <RabbitMQVersion>5.1.0</RabbitMQVersion>
   </PropertyGroup>
 </Project>

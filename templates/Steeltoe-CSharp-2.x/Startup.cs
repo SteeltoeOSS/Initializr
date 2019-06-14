@@ -162,7 +162,7 @@ namespace Company.WebApplication1
 
 #endif
 #if (Discovery)
-        app.UseDiscoveryClient(););
+        app.UseDiscoveryClient();
 #endif
             app.UseMvc(routes =>
             {

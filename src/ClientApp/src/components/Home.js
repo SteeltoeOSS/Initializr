@@ -1,11 +1,12 @@
-﻿import React, { Component } from 'react'; 
+﻿import './Home.css'
+
+import React, { Component } from 'react'; 
 import { InputSelector } from './InputSelector';
 import { RightInputSelector } from './RightInputSelector';
 import { DependenciesSelector } from './DependenciesSelector';
 import { BottomLinks } from './BottomLinks';
 import { InputText } from './InputText';
 import { NetProjectSuggestions } from './NetProjectSuggestions';
-import './Home.css'
 
 
 export class Home extends Component {
