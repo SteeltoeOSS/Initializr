@@ -304,3 +304,159 @@
         grid-template-rows: repeat(auto-fill,minmax(85,.75fr));
         grid-gap: 8px 10px
     }
+
+
+.dependencies-list .dependency-item {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    padding: 16px 60px 16px 16px;
+    color: rgba(34,34,34,.8);
+    background: #f7f7f7;
+    cursor: pointer;
+    font-size: 14px;
+    align-items: center;
+    line-height: 24px;
+    margin: 4px 0;
+    border-radius: 5px;
+}
+.dependencies-list .dependency-item-notice {
+    background: #ffffff;
+    padding: 1px 60px 16px 16px;
+}
+    .dependencies-list .dependency-item:focus {
+        outline: 1px dotted rgba(0,0,0,.2)
+    }
+
+    .dependencies-list .dependency-item strong {
+        color: #222
+    }
+
+    .dependencies-list .dependency-item input {
+        display: none
+    }
+
+    .dependencies-list .dependency-item div {
+        padding: 0;
+        margin: 0
+    }
+
+    .dependencies-list .dependency-item span {
+        font-size: 13px
+    }
+
+    .dependencies-list .dependency-item .icon {
+        position: absolute;
+        display: block;
+        border: 2px solid #e4e4e4;
+        height: 24px;
+        width: 24px;
+        margin-top: -12px;
+        top: 50%;
+        right: 16px;
+        border-radius: 14px;
+        color: #222
+    }
+
+    .dependencies-list .dependency-item .icon-check,
+    .dependencies-list .dependency-item .icon-plus,
+    .dependencies-list .dependency-item .icon-times {
+        display: block;
+        opacity: 0;
+        width: 12px;
+        margin: 0 auto;
+        position: absolute;
+        top: 5px;
+        left: 6px
+    }
+
+    .dependencies-list .dependency-item .icon-times {
+        left: 7px;
+        width: 10px;
+        color: #d20000
+    }
+
+    .dependencies-list .dependency-item .icon-check {
+        top: 6px
+    }
+
+    .dependencies-list .dependency-item.selected {
+        background: #e7f1f4
+    }
+
+        .dependencies-list .dependency-item.selected .icon {
+            border-color: rgba(161,200,212,.6);
+            color: #356574
+        }
+
+        .dependencies-list .dependency-item.selected .icon-plus {
+            opacity: 1
+        }
+
+    .dependencies-list .dependency-item.checked,
+    .dependencies-list .dependency-item .selected {
+        background: #fff;
+        box-shadow: 0 2px 3px 1px rgba(0,0,0,.1)
+    }
+
+        .dependencies-list .dependency-item.checked .icon,
+        .dependencies-list .dependency-item .selected .icon {
+            border-color: rgba(0,0,0,.1);
+            color: #6db33f
+        }
+
+        .dependencies-list .dependency-item.checked .icon-check,
+        .dependencies-list .dependency-item .selected .icon-check {
+            opacity: 1
+        }
+
+        .dependencies-list .dependency-item.checked:hover .icon-check,
+        .dependencies-list .dependency-item.checked:hover .icon-plus {
+            opacity: 0
+        }
+
+        .dependencies-list .dependency-item.checked:hover .icon-times {
+            opacity: 1
+        }
+
+        .dependencies-list .dependency-item.checked.invalid,
+        .dependencies-list .dependency-item.invalid {
+            opacity: .6;
+            cursor: not-allowed;
+            background: #f7f7f7
+        }
+
+            .dependencies-list .dependency-item.checked.invalid:hover,
+            .dependencies-list .dependency-item.invalid:hover {
+                background: #f7f7f7
+            }
+
+            .dependencies-list .dependency-item.checked.invalid .warning,
+            .dependencies-list .dependency-item.invalid .warning {
+                color: #f30808
+            }
+
+            .dependencies-list .dependency-item.invalid .icon {
+                display: none
+            }
+
+        .dependencies-list .dependency-item.checked.invalid {
+            cursor: pointer
+        }
+
+            .dependencies-list .dependency-item.checked.invalid .icon {
+                display: block
+            }
+
+            .dependencies-list .dependency-item.checked.invalid .icon-check {
+                opacity: 0
+            }
+
+            .dependencies-list .dependency-item.checked.invalid .icon-times {
+                opacity: 1
+            }
+
+.dependencies-list.dependencies-list-checked .dependency-item {
+    margin: 16px 0
+}
+

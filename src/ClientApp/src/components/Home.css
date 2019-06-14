@@ -297,7 +297,7 @@ div.radios div.radio {
     -moz-appearance: none;
     -webkit-border-radius: 0;
     background: #fff;
-    color: #000
+    color: #000;
 }
 
     .control-text:focus, .control-text:focus-within, .rbt-input:focus {
@@ -313,8 +313,9 @@ div.radios div.radio {
         font-style: italic;
         color: #888
     }
-    .control-text ul{
+    .control-text ul {
         padding-inline-start: 0px;
+        overflow: visible;
     }
 
 .control {
@@ -370,10 +371,9 @@ div.radios div.radio {
 }
 
 .selectedDeps .item, .control-text li {
-    border: 2px solid #f7f7f7;
+    
     background: #f7f7f7;
     line-height: 24px;
-    padding: 8px 40px 8px 16px;
     margin: 8px 0;
     border-radius: 4px;
     position: relative;
