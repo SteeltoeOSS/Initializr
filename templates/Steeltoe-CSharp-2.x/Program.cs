@@ -7,13 +7,14 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-#if (Actuators)
+#if (Actuators || DynamicLogger)
 using Steeltoe.Extensions.Logging;
 #endif
 #if (CloudFoundry)
 using Steeltoe.Extensions.Configuration;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 #endif
+
 
 namespace Company.WebApplication1
 {
@@ -33,7 +34,7 @@ namespace Company.WebApplication1
                 .AddCloudFoundry() //Add cloudfoundry environment variables as a configuration source
 #endif
                 .UseStartup<Startup>();
-#if (Actuators)
+#if (Actuators || DynamicLogger)
             builder.ConfigureLogging((hostingContext, loggingBuilder) =>
             {
                 loggingBuilder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));

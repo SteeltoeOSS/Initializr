@@ -100,7 +100,7 @@ export class DependenciesSelector extends Component {
                                     maxResults={4}
                                     paginationText={'More than 4 results found. Refine your search if necessary'}
                                     multiple={true}
-                                    options={this.state.dependencies}
+                                    options={this.state.dependencies.filter(x => !x.selected)}
                                     renderMenuItemChildren={this._renderMenuItemChildren}
                                     placeholder="Circuit Breaker, Actuator ..."
                                     onChange={(e) => { this.handleSelection(e[0]) }}

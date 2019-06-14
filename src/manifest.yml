@@ -3,7 +3,7 @@ applications:
 - name: startsteeltoe
   buildpacks:
    - dotnet_core_buildpack
-  memory: 512M
+  memory: 1024M
   command: cd ${HOME} && ./Steeltoe.Initializr
   env:
     ASPNETCORE_ENVIRONMENT: Production

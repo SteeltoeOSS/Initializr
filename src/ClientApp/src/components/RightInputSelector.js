@@ -3,7 +3,7 @@ export class RightInputSelector extends Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.state = { selectedValue: props.values[0] };
+        this.state = { selectedValue: props.defaultValue };
 
     }
     handleChange(e) {
@@ -22,7 +22,7 @@ export class RightInputSelector extends Component {
             <div className="radios">
                         {
                             this.props.values.map((item, i ) => {
-                                return <div id={"rdio" + i} key= { "rdio"+i }  className={'radio ' + (this.state.selectedValue === item ? 'active' : '')} onClick={this.handleChange} >
+                                return <div id={"rdio" + i} key= { "rdio"+i }  className={'radio ' + (this.state.selectedValue === item ? 'active' : '')} /*onClick={this.handleChange}*/ >
                                     <a href={hrefLink} data-value={item}>{item}</a>
                                 </div>
                             })
