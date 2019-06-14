@@ -12,12 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Steeltoe.Initializr.Models
 {
     public class GeneratorModel
     {
         private string[] _dependencies;
 
+        [Required]
         public string[] Dependencies
         {
             get => _dependencies;

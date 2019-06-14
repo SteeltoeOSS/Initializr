@@ -320,10 +320,8 @@
     margin: 4px 0;
     border-radius: 5px;
 }
-.dependencies-list .dependency-item-notice {
-    background: #ffffff;
-    padding: 1px 60px 16px 16px;
-}
+    
+    
     .dependencies-list .dependency-item:focus {
         outline: 1px dotted rgba(0,0,0,.2)
     }

@@ -57,51 +57,26 @@ export class DependenciesSelector extends Component {
     var newState = new Array(this.#MAX_ITEMS);
         newState[index] = true;
         this.setState({ hover: newState });
-        console.log(this.state.hover, index, this.state.hover[index]);
     }
 
     _renderMenuItemChildren = (option, props, index) => {
-        const MAX_ITEMS = 5;
-        if (index < MAX_ITEMS) {
-            if (option.description.startsWith("Too many results found")) {
-                return [
-                    <div className="dependencies-list">
-                        <a className="dependency-item dependency-item-notice" href="/">
-                            <span className="description" key={index} className="desc">
-                                {option.description}
-                            </span>
-                        </a>
-                    </div>
-                ];
-            }
-            else {
-                return [
-                    <div className="dependencies-list">
-                        <a className={'dependency-item dependency-item-gray ' + (this.state.hover[index]? 'selected': '')} onMouseEnter={() => this.toggleHover(index)}  href="/">
-                            <strong className="title">
-                                {option.name}
-                            </strong>
-                            <br />
-                            <span className="description" key={index} className="desc">
-                                {option.description}
-                            </span>
-                            <span class="icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon-plus"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></span>
-                        </a>
-                    </div>
-                ];
-            }
-        }
-    }
-    getAvailableDeps(deps) {
-        
-        var available = deps.filter(d => !d.selected);
-        if (available.length > 4) {
-            available = available.slice(0, 4);
-            available.push({name: '', description: 'Too many results found. Start typing to refine your search.' })
-        }
-        return available;
-    }
 
+        return [
+            <div className="dependencies-list">
+                <a className={'dependency-item dependency-item-gray ' + (this.state.hover[index] ? 'selected' : '')} onMouseEnter={() => this.toggleHover(index)} href="/">
+                    <strong className="title">
+                        {option.name}
+                    </strong>
+                    <br />
+                    <span className="description" key={index} className="desc">
+                        {option.description}
+                    </span>
+                    <span class="icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon-plus"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></span>
+                </a>
+            </div>
+        ];
+    }
+ 
     render() {
         let hrefLink = '#';
         return (
@@ -111,6 +86,8 @@ export class DependenciesSelector extends Component {
                 </div>
                 <div className="dependencies-box">
                     <DependencyViewSelector onChange={this.handleViewChange} />
+                    <input name="dependencies" type="hidden" defaultValue={this.state.dependencies.filter(d => d.selected === true).map(d => d.name)} />
+
                     {this.state.activeView == 'quicksearch' &&
                         <div className="colset">
                             <div className="col">Search dependencies to add
@@ -120,8 +97,10 @@ export class DependenciesSelector extends Component {
                                     className={'control-text'}
                                     labelKey="name"
                                     maxHeight={'500px'}
+                                    maxResults={4}
+                                    paginationText={'More than 4 results found. Refine your search if necessary'}
                                     multiple={true}
-                                    options={this.getAvailableDeps(this.state.dependencies)}
+                                    options={this.state.dependencies}
                                     renderMenuItemChildren={this._renderMenuItemChildren}
                                     placeholder="Circuit Breaker, Actuator ..."
                                     onChange={(e) => { this.handleSelection(e[0]) }}
@@ -132,8 +111,7 @@ export class DependenciesSelector extends Component {
                             <div className="col" id="col-dep" >
                                Selected dependencies
                             <div className="dependencies-list dependencies-list-checked" id="list-added">
-                                <input name="dependencies" type="hidden" defaultValue={this.state.dependencies.filter(d => d.selected === true).map(d => d.name)} />
-
+                               
                                 {
                                     this.state.dependencies.filter(d => d.selected === true).map((item) => {
                                         return <a className="dependency-item checked" onClick={() => { this.handleSelection(item) }}>

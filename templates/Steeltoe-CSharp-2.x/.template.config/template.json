@@ -317,7 +317,11 @@
     },
     "AnyConnector": {
       "type": "computed",
-      "value": "(MySql || PostGres || MSSql || Redis || MongoDB || OauthConnector)"
+      "value": "(MySql || Postgres || MySql || Redis || MongoDB || OAuthConnector)"
+    },
+    "AnyEFCore": {
+      "type": "computed",
+      "value": "(PostgresEFCore || MySqlEFCore)"
     },
     "Hystrix": {
       "type": "parameter",
