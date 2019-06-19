@@ -19,6 +19,7 @@ steps:
 
 - task: NuGetCommand@2
   inputs:
+    feedsToUse: config
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
