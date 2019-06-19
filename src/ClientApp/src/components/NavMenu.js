@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './NavMenu.css';
 const styles = {
     position: "relative",
-    padding: "8px 16px 8px 24px"
+    padding: "8px 16px 8px 35px"
 };
 const logoStyles = {
     margin: "0",
@@ -13,7 +13,10 @@ const logoStyles = {
     textDecoration: "none",
     fontSize:"1rem",
     lineHeight: "1.6rem",
-    }
+}
+const imageStyles = {
+    paddingLeft: "20px"
+}
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
    
@@ -37,10 +40,10 @@ export class NavMenu extends Component {
 
           <header style={styles}>
               <h1 style={logoStyles}>
-                      <img src="logo-inline.svg" width="180px" height="50px" alt="" />
+                  <img src="logo-inline.svg" width="180px" height="50px" alt="" style={imageStyles} />
                       <br/>
-                  Kick start your .NET application
-</h1>   
+                  Kick start your .NET app
+              </h1>
          </header>
     );
   }

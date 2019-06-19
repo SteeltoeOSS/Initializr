@@ -35,13 +35,13 @@
     "3fae1942-7257-4247-b44d-2dde07cb4a4a": "Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Config.IncludeConfig, Microsoft.TemplateEngine.Orchestrator.RunnableProjects, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
     "3d33b3bf-f40e-43eb-a14d-f40516f880cd": "Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Config.RegionConfig, Microsoft.TemplateEngine.Orchestrator.RunnableProjects, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
     "62db7f1f-a10e-46f0-953f-a28a03a81cd1": "Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Config.ReplacementConfig, Microsoft.TemplateEngine.Orchestrator.RunnableProjects, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
-    "db5bf8d8-6181-496a-97da-58616e135701": "Microsoft.TemplateEngine.Cli.NupkgUpdater, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
-    "d396686c-de0e-4de6-906d-291cd29fc5de": "Microsoft.TemplateEngine.Cli.PostActionProcessors.AddProjectsToSolutionPostAction, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
-    "b17581d1-c5c9-4489-8f0a-004be667b814": "Microsoft.TemplateEngine.Cli.PostActionProcessors.AddReferencePostActionProcessor, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
-    "cb9a6cf3-4f5c-4860-b9d2-03a574959774": "Microsoft.TemplateEngine.Cli.PostActionProcessors.ChmodPostActionProcessor, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
-    "210d431b-a78b-4d2f-b762-4ed3e3ea9025": "Microsoft.TemplateEngine.Cli.PostActionProcessors.DotnetRestorePostActionProcessor, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
-    "ac1156f7-bb77-4db8-b28f-24eebcca1e5c": "Microsoft.TemplateEngine.Cli.PostActionProcessors.InstructionDisplayPostActionProcessor, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
-    "3a7c4b45-1f5d-4a30-959a-51b88e82b5d2": "Microsoft.TemplateEngine.Cli.PostActionProcessors.ProcessStartPostActionProcessor, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+    //"db5bf8d8-6181-496a-97da-58616e135701": "Microsoft.TemplateEngine.Cli.NupkgUpdater, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+    //"d396686c-de0e-4de6-906d-291cd29fc5de": "Microsoft.TemplateEngine.Cli.PostActionProcessors.AddProjectsToSolutionPostAction, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+    //"b17581d1-c5c9-4489-8f0a-004be667b814": "Microsoft.TemplateEngine.Cli.PostActionProcessors.AddReferencePostActionProcessor, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+    //"cb9a6cf3-4f5c-4860-b9d2-03a574959774": "Microsoft.TemplateEngine.Cli.PostActionProcessors.ChmodPostActionProcessor, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+    //"210d431b-a78b-4d2f-b762-4ed3e3ea9025": "Microsoft.TemplateEngine.Cli.PostActionProcessors.DotnetRestorePostActionProcessor, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+    //"ac1156f7-bb77-4db8-b28f-24eebcca1e5c": "Microsoft.TemplateEngine.Cli.PostActionProcessors.InstructionDisplayPostActionProcessor, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+    //"3a7c4b45-1f5d-4a30-959a-51b88e82b5d2": "Microsoft.TemplateEngine.Cli.PostActionProcessors.ProcessStartPostActionProcessor, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
     "6a2c58e5-8743-484b-af3c-536770d31cee": "Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros.JoinMacro, Microsoft.TemplateEngine.Orchestrator.RunnableProjects, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
     "ac33c6a1-52ca-4215-b72d-2dce7f6a1d2f": "Microsoft.TemplateEngine.Edge.TemplateUpdates.NupkgInstallUnitDescriptorFactory, Microsoft.TemplateEngine.Edge, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
   },
@@ -88,22 +88,22 @@
       "3d33b3bf-f40e-43eb-a14d-f40516f880cd",
       "62db7f1f-a10e-46f0-953f-a28a03a81cd1"
     ],
-    "Microsoft.TemplateEngine.Cli.IUpdater, Microsoft.TemplateEngine.Cli, Version=1.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60": [
-      "db5bf8d8-6181-496a-97da-58616e135701"
-    ],
-    "Microsoft.TemplateEngine.Cli.PostActionProcessors.IPostActionProcessor, Microsoft.TemplateEngine.Cli, Version=1.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60": [
-      "d396686c-de0e-4de6-906d-291cd29fc5de",
-      "b17581d1-c5c9-4489-8f0a-004be667b814",
-      "cb9a6cf3-4f5c-4860-b9d2-03a574959774",
-      "210d431b-a78b-4d2f-b762-4ed3e3ea9025",
-      "ac1156f7-bb77-4db8-b28f-24eebcca1e5c",
-      "3a7c4b45-1f5d-4a30-959a-51b88e82b5d2"
-    ],
-    "Microsoft.TemplateEngine.Cli.PostActionProcessors.IPostActionProcessor2, Microsoft.TemplateEngine.Cli, Version=1.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60": [
-      "d396686c-de0e-4de6-906d-291cd29fc5de",
-      "b17581d1-c5c9-4489-8f0a-004be667b814",
-      "210d431b-a78b-4d2f-b762-4ed3e3ea9025"
-    ],
+    //"Microsoft.TemplateEngine.Cli.IUpdater, Microsoft.TemplateEngine.Cli, Version=1.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60": [
+    //  "db5bf8d8-6181-496a-97da-58616e135701"
+    //],
+    //"Microsoft.TemplateEngine.Cli.PostActionProcessors.IPostActionProcessor, Microsoft.TemplateEngine.Cli, Version=1.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60": [
+    //  "d396686c-de0e-4de6-906d-291cd29fc5de",
+    //  "b17581d1-c5c9-4489-8f0a-004be667b814",
+    //  "cb9a6cf3-4f5c-4860-b9d2-03a574959774",
+    //  "210d431b-a78b-4d2f-b762-4ed3e3ea9025",
+    //  "ac1156f7-bb77-4db8-b28f-24eebcca1e5c",
+    //  "3a7c4b45-1f5d-4a30-959a-51b88e82b5d2"
+    //],
+    //"Microsoft.TemplateEngine.Cli.PostActionProcessors.IPostActionProcessor2, Microsoft.TemplateEngine.Cli, Version=1.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60": [
+    //  "d396686c-de0e-4de6-906d-291cd29fc5de",
+    //  "b17581d1-c5c9-4489-8f0a-004be667b814",
+    //  "210d431b-a78b-4d2f-b762-4ed3e3ea9025"
+    //],
     "Microsoft.TemplateEngine.Abstractions.IGenerator, Microsoft.TemplateEngine.Abstractions, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35": [
       "0c434df7-e2cb-4dee-b216-d7c58c8eb4b3"
     ],
@@ -145,22 +145,23 @@
     ],
     "Microsoft.TemplateEngine.Abstractions.TemplateUpdates.IInstallUnitDescriptorFactory, Microsoft.TemplateEngine.Abstractions, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35": [
       "ac33c6a1-52ca-4215-b72d-2dce7f6a1d2f"
-    ],
-    "Microsoft.TemplateEngine.Cli.IUpdater, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35": [
-      "db5bf8d8-6181-496a-97da-58616e135701"
-    ],
-    "Microsoft.TemplateEngine.Cli.PostActionProcessors.IPostActionProcessor, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35": [
-      "d396686c-de0e-4de6-906d-291cd29fc5de",
-      "b17581d1-c5c9-4489-8f0a-004be667b814",
-      "cb9a6cf3-4f5c-4860-b9d2-03a574959774",
-      "210d431b-a78b-4d2f-b762-4ed3e3ea9025",
-      "ac1156f7-bb77-4db8-b28f-24eebcca1e5c",
-      "3a7c4b45-1f5d-4a30-959a-51b88e82b5d2"
-    ],
-    "Microsoft.TemplateEngine.Cli.PostActionProcessors.IPostActionProcessor2, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35": [
-      "d396686c-de0e-4de6-906d-291cd29fc5de",
-      "b17581d1-c5c9-4489-8f0a-004be667b814",
-      "210d431b-a78b-4d2f-b762-4ed3e3ea9025"
     ]
+    //,
+    //"Microsoft.TemplateEngine.Cli.IUpdater, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35": [
+    //  "db5bf8d8-6181-496a-97da-58616e135701"
+    //],
+    //"Microsoft.TemplateEngine.Cli.PostActionProcessors.IPostActionProcessor, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35": [
+    //  "d396686c-de0e-4de6-906d-291cd29fc5de",
+    //  "b17581d1-c5c9-4489-8f0a-004be667b814",
+    //  "cb9a6cf3-4f5c-4860-b9d2-03a574959774",
+    //  "210d431b-a78b-4d2f-b762-4ed3e3ea9025",
+    //  "ac1156f7-bb77-4db8-b28f-24eebcca1e5c",
+    //  "3a7c4b45-1f5d-4a30-959a-51b88e82b5d2"
+    //],
+    //"Microsoft.TemplateEngine.Cli.PostActionProcessors.IPostActionProcessor2, Microsoft.TemplateEngine.Cli, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35": [
+    //  "d396686c-de0e-4de6-906d-291cd29fc5de",
+    //  "b17581d1-c5c9-4489-8f0a-004be667b814",
+    //  "210d431b-a78b-4d2f-b762-4ed3e3ea9025"
+    //]
   }
 }

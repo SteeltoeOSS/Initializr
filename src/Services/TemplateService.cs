@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.TemplateEngine.Abstractions;
 using Microsoft.TemplateEngine.Edge.Settings;
@@ -30,12 +31,49 @@ namespace Steeltoe.Initializr.Services
     {
         public Dictionary<string, string> FriendlyNames { get; set; }
 
-        private string _hivePath;
-        private string _outPath;
+        private static readonly string ENV_SETTINGS_KEY = "Environment_Settings";
+        private static readonly string TEMPLATE_CACHE_KEY = "Template_Cache";
 
-        public TemplateService(IConfiguration configuration)
+        private EngineEnvironmentSettings EnvSettings
+        {
+            get
+            {
+                EngineEnvironmentSettings settings;
+
+                if (_memoryCache == null || !_memoryCache.TryGetValue(ENV_SETTINGS_KEY, out settings))
+                {
+                    settings = GetEngineEnvironmentSettings();
+                    _memoryCache?.Set(ENV_SETTINGS_KEY, settings, new TimeSpan(24, 0, 0));
+                }
+
+                return settings;
+            }
+        }
+
+        private InitializrTemplateCache TemplateCache
+        {
+            get
+            {
+                InitializrTemplateCache templateCache;
+
+                if (_memoryCache == null || !_memoryCache.TryGetValue(ENV_SETTINGS_KEY, out templateCache))
+                {
+                    templateCache = ((InitializrSettingsLoader)EnvSettings.SettingsLoader).UserTemplateCache;
+                    _memoryCache?.Set(TEMPLATE_CACHE_KEY, templateCache, new TimeSpan(24, 0, 0));
+                }
+
+                return templateCache;
+            }
+        }
+
+        private readonly string _hivePath;
+        private readonly string _outPath;
+        private IMemoryCache _memoryCache;
+
+        public TemplateService(IConfiguration configuration, IMemoryCache memoryCache)
             : this()
         {
+            _memoryCache = memoryCache;
             configuration.Bind(this); // Get friendlyNames
         }
 
@@ -54,14 +92,15 @@ namespace Steeltoe.Initializr.Services
             File.WriteAllText(settingsPath, newContent);
         }
 
+        public void ClearCache()
+        {
+            _memoryCache?.Remove(ENV_SETTINGS_KEY);
+        }
+
         public async Task<string> GenerateProject(string templateShortName, string projectName, string[] templateParameters)
         {
             var randomString = Guid.NewGuid().ToString() + DateTime.Now.Millisecond;
             var outFolder = Path.Combine(_outPath, randomString, projectName);
-
-            var envSettings = GetEngineEnvironmentSettings();
-
-            TemplateCreator creator = new TemplateCreator(envSettings);
 
             var iParams = new Dictionary<string, string> { { "Name", projectName } };
             foreach (var p in templateParameters)
@@ -80,14 +119,14 @@ namespace Steeltoe.Initializr.Services
                 }
             }
 
-            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, envSettings);
+            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, EnvSettings);
             if (templateInfo == null)
             {
                 throw new Exception($"Could not find template with shortName: {templateShortName} ");
             }
 
+            TemplateCreator creator = new TemplateCreator(EnvSettings);
             await creator.InstantiateAsync(templateInfo, projectName, "SteeltoeProject", outFolder, iParams, true, false, "baseLine");
-
             return outFolder;
         }
 
@@ -143,9 +182,7 @@ namespace Steeltoe.Initializr.Services
 
         private IReadOnlyList<TemplateInfo> GetAllTemplates()
         {
-            var envSettings = GetEngineEnvironmentSettings();
-
-            return ((InitializrSettingsLoader)envSettings.SettingsLoader).UserTemplateCache.TemplateInfo;
+            return TemplateCache.TemplateInfo;
         }
 
         private string GetFriendlyName(string name)

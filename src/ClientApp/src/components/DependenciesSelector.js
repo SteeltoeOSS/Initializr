@@ -4,10 +4,11 @@ import './DependenciesSelector.css'
 import { DependencyViewSelector } from './DependencyViewSelector';
 
 export class DependenciesSelector extends Component {
-    #MAX_ITEMS = 5;
+   
     constructor(props) {
         
         super(props);
+        this.MAX_ITEMS = 5;
         this.handleSelection = this.handleSelection.bind(this);
         this.handleViewChange = this.handleViewChange.bind(this);
         this.toggleHover = this.toggleHover.bind(this);
@@ -49,8 +50,9 @@ export class DependenciesSelector extends Component {
         }
 
     }
+
     toggleHover(index) {
-    var newState = new Array(this.#MAX_ITEMS);
+        var newState = new Array(this.MAX_ITEMS);
         newState[index] = true;
         this.setState({ hover: newState });
     }
@@ -74,8 +76,7 @@ export class DependenciesSelector extends Component {
     }
  
     render() {
-        let hrefLink = '#';
-        return (
+       return (
             <div className="line">
                 <div className="left">
                     <div className="dependencies-label">Dependencies</div>

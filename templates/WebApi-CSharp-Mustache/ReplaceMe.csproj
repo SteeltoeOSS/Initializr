@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <Import Project="versions.props" />
   <PropertyGroup>
     <TargetFramework >{{TargetFramework}}</TargetFramework>
     {{#Auth}}
@@ -28,6 +29,52 @@
     <PackageReference Include="Steeltoe.Management.CloudFoundryCore"  Version="{{Version}}" />
     <PackageReference Include="Steeltoe.Management.ExporterCore"  Version="{{Version}}"/>
     {{/CloudFoundry}}
+    {{#AnyConnector}}
+    <PackageReference Include="Steeltoe.CloudFoundry.ConnectorCore"  Version="{{Version}}"/>
+    {{/AnyConnector}}
+    {{#ActuatorsOrCloudFoundry}}
+    <PackageReference Include="Steeltoe.Management.CloudFoundryCore" Version="{{Version}}" />
+    {{/ActuatorsOrCloudFoundry}}
+    
+    <PackageReference Include="Steeltoe.Management.ExporterCore" Version="{{Version}}"/>
+    {{#CircuitBreaker}}
+    <PackageReference Include="Steeltoe.CircuitBreaker.HystrixCore" Version="{{Version}}" />
+    {{/CircuitBreaker}}
+    {{#MySql}}
+    <PackageReference Include="MySql.Data" Version="$(MySqlVersion)" />
+    {{/MySql}}
+    {{#Postgres}}
+    <PackageReference Include="Npgsql" Version="$(NpgSqlVersion)" />
+    {{/Postgres}}
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    {{#Discovery}}
+    <PackageReference Include="Steeltoe.Discovery.ClientCore" Version="{{Version}}"/>
+    {{/Discovery}}
+    {{#SQLServer}}
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Steeltoe.CloudFoundry.Connector.EFCore" Version="$(SteeltoeConnectorVersion)" />
+    {{/SQLServer}}
+    {{#Redis}}
+    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="$(AspNetCoreVersion)" />
+    {{/Redis}}
+    {{#AnyEFCore}}
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Steeltoe.CloudFoundry.Connector.EFCore"  Version="{{Version}}" />
+    {{/AnyEFCore}}
+
+    {{#PostgresEFCore}}
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"  Version="$(AspNetCoreVersion)" />
+    {{/PostgresEFCore}}
+    {{#MongoDB}}
+    <PackageReference Include="MongoDB.Driver" Version="$(MongoDBVersion)" />
+    {{/MongoDB}}
+    {{#RabbitMQ}}
+    <PackageReference Include="RabbitMQ.Client"  Version="$(RabbitMQVersion)" />
+    {{/RabbitMQ}}
+    {{#DynamicLogger}}
+    <PackageReference Include="Steeltoe.Extensions.Logging.DynamicLogger" Version="$(SteeltoeLoggingVersion)"/>
+    {{/DynamicLogger}}
   </ItemGroup>
 
 </Project>

@@ -14,18 +14,15 @@
 
 using Steeltoe.Initializr.Models;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Steeltoe.Initializr.Services
 {
-    public interface ITemplateService
+    public interface IMustacheTemplateService
     {
-        Task<string> GenerateProject(string templateShortName, string projectName, string[] templateParameters);
+        List<KeyValuePair<string,string>> GenerateProject(GeneratorModel model);
 
-        List<TemplateViewModel> GetAvailableTemplates();
+        byte [] GenerateProjectZip(GeneratorModel model);
 
-        List<ProjectDependency> GetDependencies(string shortName);
-
-        void ClearCache();
+        List<string> GetAvailableTemplates();
     }
 }

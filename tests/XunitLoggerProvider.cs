@@ -12,15 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Steeltoe.Initializr.Models;
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using Xunit.Abstractions;
 
-namespace Steeltoe.Initializr.Services
+namespace Steeltoe.InitializrTests
 {
-    public interface ISteeltoeTemplateService
+    public class XunitLoggerProvider : ILoggerProvider
     {
-        byte[] GenerateProject(GeneratorModel model);
+        private readonly ITestOutputHelper _testOutputHelper;
 
-        List<string> GetAvailableTemplates();
+        public XunitLoggerProvider(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
+
+        public ILogger CreateLogger(string categoryName)
+            => new XunitLogger(_testOutputHelper, categoryName);
+
+        public void Dispose()
+        { }
     }
 }
