@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.TemplateEngine.Abstractions;
 using Microsoft.TemplateEngine.Edge.Settings;
 using Microsoft.TemplateEngine.Edge.Template;
@@ -27,8 +28,16 @@ namespace Steeltoe.Initializr.Services
 {
     public class TemplateService : ITemplateService
     {
+        public Dictionary<string, string> FriendlyNames { get; set; }
+
         private string _hivePath;
         private string _outPath;
+
+        public TemplateService(IConfiguration configuration)
+            : this()
+        {
+            configuration.Bind(this); // Get friendlyNames
+        }
 
         public TemplateService()
         {
@@ -41,6 +50,7 @@ namespace Steeltoe.Initializr.Services
 
             var escapedPath = _hivePath.Replace(@"\", @"\\");
             var newContent = settingsContent.Replace("__Path__", (Path.DirectorySeparatorChar == '\\') ? escapedPath : _hivePath);
+
             File.WriteAllText(settingsPath, newContent);
         }
 
@@ -102,7 +112,8 @@ namespace Steeltoe.Initializr.Services
                 .Where(p => p.Documentation != null && p.Documentation.ToLower().Contains("steeltoe"))
                 .Select(p => new ProjectDependency
                 {
-                    Name = p.Name,
+                    Name = GetFriendlyName(p.Name),
+                    ShortName = p.Name,
                     Description = p.Documentation,
                 }).ToList();
         }
@@ -135,6 +146,11 @@ namespace Steeltoe.Initializr.Services
             var envSettings = GetEngineEnvironmentSettings();
 
             return ((InitializrSettingsLoader)envSettings.SettingsLoader).UserTemplateCache.TemplateInfo;
+        }
+
+        private string GetFriendlyName(string name)
+        {
+            return FriendlyNames?.ContainsKey(name) == true ? FriendlyNames[name] : name;
         }
     }
 }

@@ -44,9 +44,9 @@ namespace Company.WebApplication1
             services.AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
                 .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
 {{/IndividualB2CAuth}}
-{{#Cloudfoundry}}
+{{#CloudFoundry}}
 
-{{/Cloudfoundry}}
+{{/CloudFoundry}}
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

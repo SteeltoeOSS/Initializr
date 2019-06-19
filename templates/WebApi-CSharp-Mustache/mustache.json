@@ -8,7 +8,7 @@
     "RequiresHttps": true,                    
     "Auth": false,
     "CloudFoundry": false,
-    "Hystrix": false,
+    "CircuitBreaker": false,
     "MySql": false,
     "WindowsAuth":false
 }     

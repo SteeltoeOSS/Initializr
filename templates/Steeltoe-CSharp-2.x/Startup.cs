@@ -29,11 +29,14 @@ using Steeltoe.Management.Endpoint;
 using Steeltoe.Management.Hypermedia;
 #endif
 #endif
-#if (Hystrix)
+#if (CircuitBreaker)
 using Steeltoe.CircuitBreaker.Hystrix;
 #endif
-#if (MySql)
+#if (MySql || MySqlEFCore)
 using Steeltoe.CloudFoundry.Connector.MySql;
+#endif
+#if(MySqlEFCore)
+using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 #endif
 #if (Discovery)
 using Steeltoe.Discovery.Client;

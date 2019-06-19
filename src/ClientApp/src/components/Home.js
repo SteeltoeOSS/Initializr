@@ -6,8 +6,8 @@ import { RightInputSelector } from './RightInputSelector';
 import { DependenciesSelector } from './DependenciesSelector';
 import { BottomLinks } from './BottomLinks';
 import { InputText } from './InputText';
-import { NetProjectSuggestions } from './NetProjectSuggestions';
-
+import ReactGA from 'react-ga';
+import serialize from 'form-serialize';
 
 export class Home extends Component {
     static displayName = Home.name;
@@ -22,14 +22,22 @@ export class Home extends Component {
             level2SelectorType: "net",
             lang: "C#"
 
-
         }
             
          this.toggleMore = this.toggleMore.bind(this);
-         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.trackSubmitEvent = this.trackSubmitEvent.bind(this);
          
     }
-   
+    trackSubmitEvent(e) {
+        var formValues = serialize(e.target);
+        console.log(formValues);
+        ReactGA.event({
+            category: 'Submit',
+            action: 'Clicked Submit',
+            label: formValues
+        });
+    }
     toggleMore(e){
         this.setState(prevState => ({showMore: !prevState.showMore}))
     }
@@ -49,7 +57,7 @@ export class Home extends Component {
     
     return (
         <div>
-            <form name="form" action="/starter.zip" method="post" autoComplete="off">
+            <form name="form" action="/starter.zip" method="post" autoComplete="off" onSubmit={this.trackSubmitEvent} >
                     <div>
                     <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.2", "2.3", "3.0"]} defaultValue="2.2" /*onChange={this.handleInputChange} *//>
                    
@@ -68,7 +76,7 @@ export class Home extends Component {
                              </div>
                         </div>
                     </div>      
-                <DependenciesSelector id="deps" available_deps={["CloudFoundry", "Hystrix", "Actuator", "MySql", "Dynamic Logger"]} />
+                <DependenciesSelector id="deps" />
                     <br/>
                 </div>          
                 <div className="line row-action">
