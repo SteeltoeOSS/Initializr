@@ -30,8 +30,8 @@ namespace Steeltoe.Initializr.Services
     {
         public Dictionary<string, string> FriendlyNames { get; set; }
 
-        private string _hivePath;
-        private string _outPath;
+        private readonly string _hivePath;
+        private readonly string _outPath;
 
         public TemplateService(IConfiguration configuration)
             : this()

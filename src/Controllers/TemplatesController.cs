@@ -28,8 +28,8 @@ namespace Steeltoe.Initializr.Controllers
     public class TemplatesController : ControllerBase
     {
         private const string DEFAULT_TEMPLATE = "steeltoe2";
-        private ITemplateService _templateService;
-        private ISteeltoeTemplateService _sttemplateService;
+        private readonly ITemplateService _templateService;
+        private readonly ISteeltoeTemplateService _sttemplateService;
 
         public TemplatesController(ITemplateService service, ISteeltoeTemplateService stTemplateService)
         {
@@ -41,7 +41,7 @@ namespace Steeltoe.Initializr.Controllers
         [HttpPost]
         public ActionResult GenerateProjectPost([FromForm] GeneratorModel model)
         {
-             return GenerateProject(model);
+            return GenerateProject(model);
         }
 
         [Route("/createtest")]
