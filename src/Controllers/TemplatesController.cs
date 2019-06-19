@@ -59,7 +59,7 @@ namespace Steeltoe.Initializr.Controllers
         [Route("/dependencies")]
         public ActionResult GetDependencies([FromQuery(Name = "templateShortName")] string templateShortName)
         {
-            return Ok(_templateService.GetDependencies(templateShortName??"steeltoe2"));
+            return Ok(_templateService.GetDependencies(templateShortName ?? "steeltoe2"));
         }
 
         [Route("all")]
@@ -84,7 +84,7 @@ namespace Steeltoe.Initializr.Controllers
                 return NotFound($"Template {currentTemplate} was not found");
             }
 
-            var templateParameters = model.Dependencies.ToList();
+            var templateParameters = model.Dependencies.Where(d => d != null).ToList();
 
             if (!string.IsNullOrEmpty(model.SteeltoeVersion))
             {

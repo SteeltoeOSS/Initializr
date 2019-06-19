@@ -1,6 +1,6 @@
 {
-  "short_name": "testDir",
-  "name": "testDir",
+  "short_name": "Steeltoe Initializr",
+  "name": "Steeltoe Initializr",
   "icons": [
     {
       "src": "favicon.ico",

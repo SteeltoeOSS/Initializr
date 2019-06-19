@@ -253,7 +253,7 @@
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Steeltoe: Target Cloudfoundry Hosting"
+      "description": "Steeltoe: Target CloudFoundry Hosting"
     },
     "MySql": {
       "type": "parameter",
@@ -267,11 +267,13 @@
       "defaultValue": "false",
       "description": "Steeltoe: Add Postgres connnectors"
     },
-    "SqlServer": {
+    "SQLServer": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Steeltoe: Add SqlServer connnectors"
+      "description": "Steeltoe: Add Microsoft SQL Server connnectors",
+      "friendlyName":  "SQL Server"
+       
     },
     "RabbitMQ": {
       "type": "parameter",
@@ -295,25 +297,25 @@
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Steeltoe: Add Oauth connnectors"
+      "description": "Steeltoe: Add OAuth connnectors"
     },
     "PostgresEFCore": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Steeltoe: Add PostGresEFCore connnectors"
+      "description": "Steeltoe: Add PostgresEFCore connnectors"
     },
     "MySqlEFCore": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Steeltoe: Add MySqlEFCore connnectors"
+      "description": "Steeltoe: Add MySQL EFCore connnectors"
     },
     "MySqlEF6": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Steeltoe: Add MySqlEF6 connnectors"
+      "description": "Steeltoe: Add MySQL EF6 connnectors"
     },
     "AnyConnector": {
       "type": "computed",
@@ -323,7 +325,7 @@
       "type": "computed",
       "value": "(PostgresEFCore || MySqlEFCore)"
     },
-    "Hystrix": {
+    "CircuitBreaker": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",

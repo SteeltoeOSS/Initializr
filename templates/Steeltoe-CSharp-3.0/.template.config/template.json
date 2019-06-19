@@ -92,7 +92,6 @@
       "replaces": "https:////login.microsoftonline.com/",
       "description": "The Azure Active Directory instance to connect to (use with SingleOrg auth)."
     },
-    "nshsarecvc": null,
     "Domain": {
       "type": "parameter",
       "datatype": "string",
@@ -248,7 +247,7 @@
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Steeltoe: Target Cloudfoundry Hosting"
+      "description": "Steeltoe: Target CloudFoundry Hosting"
     },
     "MySql": {
       "type": "parameter",
@@ -262,11 +261,11 @@
       "defaultValue": "false",
       "description": "Steeltoe: Add Postgres connnectors"
     },
-    "SqlServer": {
+    "SQLServer": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
-      "description": "Steeltoe: Add SqlServer connnectors"
+      "description": "Steeltoe: Add Microsoft SQL Server connnectors"
     },
     "RabbitMQ": {
       "type": "parameter",
@@ -306,9 +305,9 @@
     },
     "AnyConnector": {
       "type": "computed",
-      "value": "(MySql || PostGres || MSSql || Redis || MongoDB || OauthConnector)"
+      "value": "(MySql || PostGres || MSSql || Redis || MongoDB || OAuthConnector)"
     },
-    "Hystrix":{
+    "CircuitBreaker": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",

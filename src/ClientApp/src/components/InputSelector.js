@@ -15,7 +15,7 @@ export class InputSelector extends Component {
             selectedValue: selection
         });
         this.props.onChange(this.props.name, selection)
-        console.log('to ' + this.selection);
+        //console.log('to ' + this.selection);
     }
 
 
@@ -28,7 +28,7 @@ export class InputSelector extends Component {
                     <div className="radios">
                         {
                             this.props.values.map((item, i ) => {
-                                return <div key={ 'option'+i }  className={'radio ' + (this.state.selectedValue === item ? 'active' : '')} onClick={this.handleChange} >
+                                return <div key={ 'option'+i }  className={'radio ' + (this.state.selectedValue === item ? 'active' : '')} /*onClick={this.handleChange}*/ >
                                     <a href={hrefLink} data-value={item}>{item}</a>
                                     </div>
                             })

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 using Steeltoe.Initializr.Models;
 using Steeltoe.Initializr.Services;
 using Xunit;
@@ -11,6 +13,7 @@ namespace Steeltoe.InitializrTests
     {
         public TemplateServiceTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
+
         }
         
 
@@ -43,6 +46,29 @@ namespace Steeltoe.InitializrTests
             Assert.NotEmpty(deps);
 
             Assert.DoesNotContain(deps, x => x.Name == "OAuthConnector");
+        }
+        [Fact]
+        public void GetDependencies_WithFriendlyNames()
+        {
+            var settings = new Dictionary<string, string>()
+            {
+                ["FriendlyNames:CloudFoundry"] = "Cloud Foundry",
+
+            };
+            var configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(settings)
+                .Build();
+            
+
+             //   .Add()
+            var templateService = new TemplateService(configuration);
+
+            var deps = templateService.GetDependencies();
+            Assert.NotNull(deps);
+            Assert.NotEmpty(deps);
+
+            Assert.Contains(deps, x => x.Name == "Cloud Foundry");
+
         }
         [Fact]
         public void CreateTemplate_actuators()
@@ -80,11 +106,11 @@ namespace Steeltoe.InitializrTests
 
         }
         [Fact]
-        public void CreateTemplate_actuators_hystrix()
+        public void CreateTemplate_actuators_circuitbreakers()
         {
             var templateService = new TemplateService();
 
-            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "Actuators", "Hystrix" }).Result;
+            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "Actuators", "CircuitBreaker" }).Result;
             Assert.NotNull(outFolder);
             Assert.True(Directory.Exists(outFolder));
             var startupPath = Path.Combine(outFolder, "Startup.cs");
@@ -122,9 +148,7 @@ namespace Steeltoe.InitializrTests
             Assert.True(File.Exists(startupPath));
             string startUpContents = File.ReadAllText(startupPath);
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.MySql;", startUpContents);
-
-            Assert.Contains(".AddMySqlConnection(", startUpContents);
-
+            Assert.Contains("using Steeltoe.CloudFoundry.Connector.MySql.EFCore;", startUpContents);
 
         }
         [Fact]
@@ -225,7 +249,7 @@ namespace Steeltoe.InitializrTests
         {
             var templateService = new TemplateService();
 
-            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "SqlServer" }).Result;
+            var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "SQLServer" }).Result;
             Assert.NotNull(outFolder);
             Assert.True(Directory.Exists(outFolder));
             var filePath = Path.Combine(outFolder, "testProject.csproj");
@@ -290,7 +314,7 @@ namespace Steeltoe.InitializrTests
             var startupPath = Path.Combine(outFolder, "Startup.cs");
             Assert.True(File.Exists(startupPath));
             string startUpContents = File.ReadAllText(startupPath);
-            Assert.DoesNotContain("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);", startUpContents);
+            Assert.DoesNotContain("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
             Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
 
         }
@@ -302,14 +326,14 @@ namespace Steeltoe.InitializrTests
 
             Assert.NotNull(templateService);
 
-            var outFolder = templateService.GenerateProject("steeltoe", "testProject", new[] { "Actuators", "SteeltoeVersion=2.1.0" }).Result;
+            var outFolder = templateService.GenerateProject("steeltoe", "testProject", new[] { "Actuators"}).Result;
             Console.WriteLine("outFolder " + outFolder);
             Assert.NotNull(outFolder);
             Assert.True(Directory.Exists(outFolder));
             var startupPath = Path.Combine(outFolder, "Startup.cs");
             Assert.True(File.Exists(startupPath));
             string startUpContents = File.ReadAllText(startupPath);
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);", startUpContents);
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
             Assert.DoesNotContain("services.AddCloudFoundryActuators(Configuration);", startUpContents);
 
         }
