@@ -22,11 +22,14 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
-
 - task: CloudFoundry@1
   inputs:
     cfEndpoint: 'PWS'
+    skipSSLValidation: true
+    org: 'steeltoe.io'
+    space: 'development'
     deploymentOptions: 'manifest'
-    cfManifest: 'src/manifest.yml'
+    cfManifest: 'manifest.yml'
     createServices: false
     bindServices: false
+    workingDirectory: src
