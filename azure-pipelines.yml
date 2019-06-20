@@ -27,6 +27,6 @@ steps:
   inputs:
     cfEndpoint: 'PWS'
     deploymentOptions: 'manifest'
-    cfManifest: 'src\manifest.yml'
+    cfManifest: 'src/manifest.yml'
     createServices: false
     bindServices: false
