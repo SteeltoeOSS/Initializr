@@ -16,7 +16,10 @@ variables:
 
 steps:
 
-
+- task: CloudFoundryCLIInstall@0
+  inputs:
+    cfVersion: '6.43.0'
+    
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
