@@ -22,7 +22,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
-    publishWebProjects: true
+    publishWebProjects: false
     arguments: '-f netcoreapp2.2 -r ubuntu.14.04-x64'
     workingDirectory: 'src'
 
