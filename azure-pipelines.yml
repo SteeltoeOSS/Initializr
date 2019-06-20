@@ -21,4 +21,20 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'test'
+    command: 'publish'
+    publishWebProjects: false
+    arguments: '-f netcoreapp2.2 -r ubuntu.14.04-x64'
+    workingDirectory: 'src'
+
+- task: CloudFoundry@1
+  inputs:
+    cfEndpoint: 'PWS'
+    skipSSLValidation: true
+    org: 'steeltoe.io'
+    space: 'development'
+    deploymentOptions: 'manifest'
+    cfManifest: 'src/manifest.yml'
+    additionalDeployArgs: '-p -p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
+    createServices: false
+    bindServices: false
+    workingDirectory: 'src'
