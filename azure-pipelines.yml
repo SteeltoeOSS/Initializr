@@ -29,7 +29,7 @@ steps:
     org: 'steeltoe.io'
     space: 'development'
     deploymentOptions: 'manifest'
-    cfManifest: 'manifest.yml'
+    cfManifest: 'src/manifest.yml'
     createServices: false
     bindServices: false
     workingDirectory: src
