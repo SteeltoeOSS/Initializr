@@ -26,6 +26,7 @@ namespace Steeltoe.Initializr
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+            .UseUrls("http://*:5000", "https://*:5001")
+            .UseStartup<Startup>();
     }
 }

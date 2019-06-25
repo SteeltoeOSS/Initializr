@@ -71,7 +71,7 @@ namespace Steeltoe.InitializrTests
                 .AddInMemoryCollection(settings)
                 .Build();
 
-            var templateService = new TemplateService(configuration);
+            var templateService = new TemplateService(configuration, null);
 
             var deps = templateService.GetDependencies();
             Assert.NotNull(deps);
