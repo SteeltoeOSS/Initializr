@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-16.04'
 
 variables:
   solution: '**/*.sln'
@@ -15,20 +15,18 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '2.2.101'
-    
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
 
+- task: CloudFoundryCLIInstall@0
+  inputs:
+    cfVersion: '6.43.0'
+    
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
     publishWebProjects: false
     arguments: '-f netcoreapp2.2 -r ubuntu.14.04-x64'
+    zipAfterPublish: false
+    modifyOutputPath: false
     workingDirectory: 'src'
 
 - task: CloudFoundry@1
@@ -39,7 +37,7 @@ steps:
     space: 'development'
     deploymentOptions: 'manifest'
     cfManifest: 'src/manifest.yml'
-    additionalDeployArgs: '-p -p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
+    additionalDeployArgs: '-p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
     createServices: false
     bindServices: false
     workingDirectory: 'src'
