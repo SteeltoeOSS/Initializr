@@ -42,7 +42,6 @@ namespace Steeltoe.Initializr
             services.AddMemoryCache();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -68,12 +67,12 @@ namespace Steeltoe.Initializr
                 app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
             app.UseMvc();
-            
+
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
@@ -81,8 +80,6 @@ namespace Steeltoe.Initializr
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
-
-                    // spa.UseProxyToSpaDevelopmentServer("https://startui.apps.pcfone.io");
                 }
             });
         }

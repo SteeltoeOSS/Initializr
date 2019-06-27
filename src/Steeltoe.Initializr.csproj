@@ -30,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Remove="C:\Users\Hananiel\projects\start.steeltoe.io\src\..\templates\WebApi-CSharp-Mustache\config.cs" />
+    <Content Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\WebApi-CSharp-Mustache\config.cs" />
   </ItemGroup>
 
 
