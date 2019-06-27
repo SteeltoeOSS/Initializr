@@ -28,6 +28,9 @@
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Hananiel\projects\start.steeltoe.io\src\..\templates\WebApi-CSharp-Mustache\config.cs" />
+  </ItemGroup>
 
 
   <ItemGroup>
@@ -80,6 +83,9 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
+  
+
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 
 

@@ -29,14 +29,13 @@ namespace Steeltoe.Initializr.Controllers
     [ApiController]
     public class TemplatesController : ControllerBase
     {
-        private const string DEFAULT_TEMPLATE = "steeltoe2";
-        private readonly ITemplateService _templateService;
-        private readonly IMustacheTemplateService _sttemplateService;
+    //    private readonly TemplateService _templateService;
+        private readonly MustacheTemplateService _sttemplateService;
 
-        public TemplatesController(ITemplateService service, IMustacheTemplateService stTemplateService)
+        public TemplatesController(IEnumerable<ITemplateService> services)
         {
-            _templateService = service;
-            _sttemplateService = stTemplateService;
+          // _templateService = services.OfType<TemplateService>().FirstOrDefault();
+            _sttemplateService = services.OfType<MustacheTemplateService>().FirstOrDefault(); ;
         }
 
         [Route("/starter.zip")]
@@ -51,7 +50,6 @@ namespace Steeltoe.Initializr.Controllers
         {
             var testModel = new GeneratorModel
             {
-                TemplateShortName = templateShortName ?? DEFAULT_TEMPLATE,
                 ProjectName = "mytest",
                 Dependencies = new[] { "actuators,mysql" },
             };
@@ -63,7 +61,6 @@ namespace Steeltoe.Initializr.Controllers
         {
             var testModel = new GeneratorModel
             {
-                TemplateShortName = templateShortName ?? DEFAULT_TEMPLATE,
                 ProjectName = "mytest",
                 Dependencies = new[] { "actuators,mysql" },
             };
@@ -73,66 +70,39 @@ namespace Steeltoe.Initializr.Controllers
         [Route("/dependencies")]
         public ActionResult GetDependencies([FromQuery(Name = "templateShortName")] string templateShortName)
         {
-            return Ok(_templateService.GetDependencies(templateShortName ?? "steeltoe2"));
+            return Ok(_sttemplateService.GetDependencies(templateShortName));
         }
 
         [Route("all")]
-        public ActionResult<IEnumerable<TemplateViewModel>> GetTemplates()
-        {
-            return _templateService.GetAvailableTemplates();
-        }
-
-        [Route("stall")]
-        public ActionResult<IEnumerable<string>> GetSteeltoeTemplates()
+        public ActionResult<IEnumerable<TemplateViewModel>> GetTemplates([FromQuery(Name = "Mustache")] bool useMustache)
         {
             return _sttemplateService.GetAvailableTemplates();
+                //: _templateService.GetAvailableTemplates();
         }
 
         private async Task<ActionResult> GenerateProject(GeneratorModel model)
         {
-            var list = _templateService.GetAvailableTemplates();
-            var currentTemplate = (model.TemplateShortName ?? DEFAULT_TEMPLATE).ToLower();
+            //var list = _sttemplateService.GetAvailableTemplates();
 
-            if (list == null || !list.Any(x => x.ShortName.ToLower() == currentTemplate))
-            {
-                return NotFound($"Template {currentTemplate} was not found");
-            }
-
-            var templateParameters = model.Dependencies.Where(d => d != null).ToList();
-
-            if (!string.IsNullOrEmpty(model.SteeltoeVersion))
-            {
-                if (model.SteeltoeVersion == "3.0")
-                {
-                    currentTemplate = "steeltoe";
-                }
-                else
-                {
-                    templateParameters.Add($"SteeltoeVersion={model.SteeltoeVersion}");
-                }
-            }
-
-            var outFolder = await _templateService.GenerateProject(currentTemplate, model.ProjectName, templateParameters.ToArray());
-
-            var zipName = (model.ProjectName ?? "steeltoeProject") + ".zip";
-            var zipFile = Path.Combine(outFolder, "..", zipName);
-
-            await Task.Run(() => ZipFile.CreateFromDirectory(outFolder, zipFile));
-            var fileBytes = await System.IO.File.ReadAllBytesAsync(zipFile);
-            await Task.Run(() => Delete(outFolder, zipFile));
+            //if (list == null || !list.Any(x => x.ShortName.ToLower() == model.TemplateShortName.ToLower()))
+            //{
+            //    return NotFound($"Template {model.TemplateShortName} was not found");
+            //}
+            //model.TemplateShortName = string.Empty;
+            var archiveBytes = await _sttemplateService.GenerateProjectArchive(model);
 
             var cd = new ContentDispositionHeaderValue("attachment")
             {
-                FileNameStar = zipName,
+                FileNameStar = model.ArchiveName,
             };
             Response.Headers.Add("Content-Disposition", cd.ToString());
 
-            return File(fileBytes, "application/zip");
+            return File(archiveBytes, "application/zip");
         }
 
         private ActionResult GenerateProject2(GeneratorModel model)
         {
-            var fileBytes = _sttemplateService.GenerateProjectZip(model);
+            var fileBytes = _sttemplateService.GenerateProjectArchive(model).Result;
             var cd = new ContentDispositionHeaderValue("attachment")
             {
                 FileNameStar = (model.ProjectName ?? "SteeltoeProject") + ".zip",
@@ -140,20 +110,6 @@ namespace Steeltoe.Initializr.Controllers
             Response.Headers.Add("Content-Disposition", cd.ToString());
 
             return File(fileBytes, "application/zip");
-        }
-
-        private void Delete(string outFolder, string zipFile)
-        {
-            try
-            {
-                System.IO.File.Delete(zipFile);
-                Directory.Delete(Path.Combine(outFolder, ".."), true);
-            }
-            catch (Exception ex)
-            {
-                // Todo: log exception
-                // Console.WriteLine("Delete Error: " + ex.Message);
-            }
         }
     }
 }

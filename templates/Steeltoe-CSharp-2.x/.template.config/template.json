@@ -42,6 +42,12 @@
           "exclude": [
             "Properties/launchSettings.json"
           ]
+        },
+        {
+          "condition": "(!AnyEFCore)",
+          "exclude": [
+            "Models/**"
+          ]
         }
       ]
     }
@@ -323,7 +329,7 @@
     },
     "AnyEFCore": {
       "type": "computed",
-      "value": "(PostgresEFCore || MySqlEFCore)"
+      "value": "(PostgresEFCore || MySqlEFCore || SQLServer)"
     },
     "CircuitBreaker": {
       "type": "parameter",
@@ -348,7 +354,7 @@
       "type": "parameter",
       "datatype": "choice",
       "defaultValue": "2.2.0",
-      "description": "Target the appropriate version",
+      "description": "Target the appropriate Steeltoe version",
       "replaces": "SteeltoeVersion",
       "choices": [
         {

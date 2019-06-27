@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 {{/Auth}}
 using Microsoft.AspNetCore.Mvc;
 
-namespace Company.WebApplication1.Controllers
+namespace {{ProjectNameSpace }}.Controllers
 {
     
 {{#Auth}}
@@ -19,11 +19,21 @@ namespace Company.WebApplication1.Controllers
     public class ValuesController : ControllerBase
     {
         private readonly ILogger _logger;
+       // {{#AnyEFCore}}
+        private readonly TestContext _context;
+        public ValuesController(ILogger<ValuesController> logger, [FromServices] TestContext context)
+        {
+            _context = context;
+            _logger = logger;
+        }
+        {{/AnyEFCore}}
+        {{^AnyEFCore}}
         public ValuesController(ILogger<ValuesController> logger)
         {
             _logger = logger;
         }
-
+        {{/AnyEFCore}}
+        
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
@@ -35,7 +45,13 @@ namespace Company.WebApplication1.Controllers
             _logger.LogDebug("Test Debug message");
             _logger.LogTrace("Test Trace message");
 
+            {{#AnyEFCore}}
+            return Ok(_context.TestData.Select(x => $"{x.Id}:{x.Data}"));
+            {{/AnyEFCore}}
+            {{^AnyEFCore}}
             return new string[] { "value1", "value2" };
+            {{/AnyEFCore}}
+
         }
 
         // GET api/values/5

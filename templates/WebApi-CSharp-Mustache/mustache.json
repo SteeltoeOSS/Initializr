@@ -1,26 +1,95 @@
 {
-  "TargetFramework": "netcoreapp2.2",
-  "UserSecretsId": "<<RandomGuid>>",
-  "ExcludeLaunchSettings": true,
-  "Version": "2.2.0",
-  "OrganizationalAuth": false,
-  "IndividualB2CAuth": false,
-  "RequiresHttps": true,
-  "Auth": false,
-  "CloudFoundry": false,
-  "CircuitBreaker": false,
-  "MySql": false,
-  "MySqlEFCore": false,
-  "Actuators": false,
-  "Discovery": false,
-  "WindowsAuth": false,
-  "SteeltoeVersion22": true,
-  "DynamicLogger": false,
-  "MongoDB": false,
-  "OAuthConnector": false,
-  "RabbitMQ": false,
-  "Redis": false,
-  "SQLServer": false,
-  "PostgresEFCore": false,
-  "Postgres":  false
-}     
+  "Actuators": {
+    "defaultValue": false,
+    "description": "Steeltoe: Add management endpoints for your application"
+  },
+  "Auth": {
+    "defaultValue": false,
+    "description": "Add Authentication"
+  },
+  "CircuitBreaker": {
+    "defaultValue": false,
+    "description": "Steeltoe: Add Circuit Breakers",
+    "friendlyName": "Circuit Breakers"
+  },
+  "CloudFoundry": {
+    "defaultValue": false,
+    "description": "Steeltoe: Target CloudFoundry Hosting"
+
+  },
+  "Discovery": {
+    "defaultValue": false,
+    "description": "Steeltoe: Add Discovery Client"
+  },
+  "DynamicLogger": {
+    "defaultValue": false,
+    "description": "Steeltoe: Add Dynamic Logger"
+
+  },
+  "MongoDB": {
+    "defaultValue": false,
+    "description": "Steeltoe: Add MongoDB connnectors"
+  },
+  "MySql": {
+    "defaultValue": "false",
+    "description": "Steeltoe: Add MySql connnectors"
+  },
+  "MySqlEFCore": {
+    "defaultValue": false,
+    "description": "Steeltoe: Add MySQL EFCore connnectors"
+  },
+  "OAuthConnector": {
+    "defaultValue": false,
+    "description": "Steeltoe: Add OAuth connnectors"
+  },
+  "Postgres": {
+    "defaultValue": false,
+    "description": "Steeltoe: Add Postgres connnectors"
+  },
+  "PostgresEFCore": {
+    "defaultValue": false,
+    "description": "Steeltoe: Add PostgresEFCore connnectors"
+  },
+  "RabbitMQ": {
+    "defaultValue": false,
+    "description": "Steeltoe: Add RabbitMQ connnectors"
+  },
+  "Redis": {
+    "defaultValue": false,
+    "description": "Steeltoe: Add Redis connnectors"
+  },
+  "SQLServer": {
+    "defaultValue": false,
+    "description": "Steeltoe: Add Microsoft SQL Server connnectors",
+    "friendlyName": "SQL Server"
+  },
+  "SteeltoeVersion22": {
+    "defaultValue": "2.2.0",
+    "description": "Target the appropriate Steeltoe version",
+    "choices": [
+      {
+        "choice": "2.1.0",
+        "description": "Target Steeltoe version 2.1.0"
+      },
+      {
+        "choice": "2.2.0",
+        "description": "Target Steeltoe version 2.2.0"
+      }
+    ]
+  },
+  "TargetFramework": {
+    "defaultValue": "netcoreapp2.2"
+  },
+  "UserSecretsId": {
+    "defaultValue": "<<RandomGuid>>"
+  },
+  "Version": {
+    "defaultValue": "2.2.0"
+  },
+  "WindowsAuth": {
+    "defaultValue": false
+  },
+  "RequiresHttps": {
+    "defaultValue":  false
+  }
+}

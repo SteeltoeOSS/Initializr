@@ -11,19 +11,22 @@ using Microsoft.Extensions.Logging;
 {{#ActuatorsOrDynamicLogger}}
 using Steeltoe.Extensions.Logging;
 {{/ActuatorsOrDynamicLogger}}
-#endif
 {{#CloudFoundry}}
 using Steeltoe.Extensions.Configuration;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 {{/CloudFoundry}}
-namespace Company.WebApplication1
+namespace {{ProjectNameSpace}}
 {
     public class Program
     {
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args)
-          
+            .Build()
+            {{#AnyEFCore}}
+            .InitializeDbContexts()
+            {{/AnyEFCore}}
+            .Run();
              
         }
 
@@ -46,3 +49,4 @@ namespace Company.WebApplication1
             return builder;
         }
     }
+}

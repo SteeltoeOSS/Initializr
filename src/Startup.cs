@@ -20,6 +20,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.Services;
+using System.Collections.Generic;
 
 namespace Steeltoe.Initializr
 {
@@ -40,16 +41,16 @@ namespace Steeltoe.Initializr
         {
             services.AddMemoryCache();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
-            
+
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
             });
             services.AddSingleton<ITemplateService, TemplateService>();
-            services.AddSingleton<IMustacheTemplateService, MustacheTemplateService>();
-           
+            services.AddSingleton<ITemplateService, MustacheTemplateService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

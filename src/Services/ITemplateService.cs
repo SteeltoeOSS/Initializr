@@ -20,11 +20,13 @@ namespace Steeltoe.Initializr.Services
 {
     public interface ITemplateService
     {
-        Task<string> GenerateProject(string templateShortName, string projectName, string[] templateParameters);
+        List<KeyValuePair<string, string>> GenerateProjectFiles(GeneratorModel model);
+
+        Task<byte[]> GenerateProjectArchive(GeneratorModel model);
 
         List<TemplateViewModel> GetAvailableTemplates();
 
-        List<ProjectDependency> GetDependencies(string shortName);
+        List<ProjectDependency> GetDependencies(string shortName = null);
 
         void ClearCache();
     }
