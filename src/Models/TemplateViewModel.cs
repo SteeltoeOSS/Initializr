@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace Steeltoe.Initializr.Models
 {
     public class TemplateViewModel
@@ -25,5 +27,10 @@ namespace Steeltoe.Initializr.Models
         public string Language { get; set; }
 
         public string Tags { get; set; }
+
+        internal TemplateViewModel ToList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

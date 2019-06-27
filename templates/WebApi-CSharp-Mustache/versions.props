@@ -8,7 +8,7 @@
     <SteeltoeLoggingVersion>SteeltoeVersion</SteeltoeLoggingVersion>
     <SteeltoeManagementVersion>SteeltoeVersion</SteeltoeManagementVersion>
     <SteeltoeSecurityVersion>SteeltoeVersion</SteeltoeSecurityVersion>
-    <AspNetCoreVersion>2.1.1</AspNetCoreVersion>
+    <AspNetCoreVersion>2.2.0</AspNetCoreVersion>
     <RabbitMQVersion>5.1.0</RabbitMQVersion>
     <MongoDBVersion>2.8.1</MongoDBVersion>
     <NpgSqlVersion>4.0.4</NpgSqlVersion>

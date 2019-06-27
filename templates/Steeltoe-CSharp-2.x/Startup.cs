@@ -59,6 +59,9 @@ using Steeltoe.CloudFoundry.Connector.OAuth;
 #if (PostgresEFCore)
 using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
 #endif
+#if (SQLServerEFCore)
+using Steeltoe.CloudFoundry.Connector.SqlServer.EFCore;
+#endif
 namespace Company.WebApplication1
 {
     public class Startup
@@ -126,6 +129,9 @@ namespace Company.WebApplication1
 #if (PostgresEFCore)
               // Add Context and use Postgres as provider ... provider will be configured from VCAP_ info
               // services.AddDbContext<MyDbContext>(options => options.UseNpgsql(Configuration));
+#endif
+#if (SQLServerEFCore)
+               services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));
 #endif
             services.AddMvc();
         }

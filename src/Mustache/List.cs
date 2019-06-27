@@ -12,17 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Steeltoe.Initializr.Models;
-using System.Collections.Generic;
-
 namespace Steeltoe.Initializr.Services
 {
-    public interface IMustacheTemplateService
+    internal class IEnumerable<T1, T2>
     {
-        List<KeyValuePair<string,string>> GenerateProject(GeneratorModel model);
-
-        byte [] GenerateProjectZip(GeneratorModel model);
-
-        List<string> GetAvailableTemplates();
     }
 }

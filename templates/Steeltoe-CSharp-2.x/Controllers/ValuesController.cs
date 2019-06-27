@@ -16,11 +16,39 @@ namespace Company.WebApplication1.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly ILogger _logger;
+#if (AnyEFCore)
+        private readonly TestContext _context;
+        public ValuesController(ILogger<ValuesController> logger, [FromServices] TestContext context)
+        {
+            _context = context;
+            _logger = logger;
+        }
+#else
+        public ValuesController(ILogger<ValuesController> logger)
+        {
+            _logger = logger;
+        }
+
+#endif
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+
+            _logger.LogCritical("Test Critical message");
+            _logger.LogError("Test Error message");
+            _logger.LogWarning("Test Warning message");
+            _logger.LogInformation("Test Informational message");
+            _logger.LogDebug("Test Debug message");
+            _logger.LogTrace("Test Trace message");
+
+
+#if(AnyEFCore)
+               return Ok(_context.TestData.Select(x => $"{x.Id}:{x.Data}"));
+ else
+               return new string[] { "value1", "value2" };
+#endif
         }
 
         // GET api/values/5

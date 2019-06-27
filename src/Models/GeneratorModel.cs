@@ -12,13 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Steeltoe.Initializr.Models
 {
     public class GeneratorModel
     {
+
+       // private const string DEFAULT_TEMPLATE = "WebApi-CSharp-Mustache";
         private string[] _dependencies;
+        private string _templateShortName;
+        private string _projectName;
 
         [Required]
         public string[] Dependencies
@@ -27,12 +33,42 @@ namespace Steeltoe.Initializr.Models
             set => _dependencies = (value == null || value.Length == 0 || value[0] == null) ? value : value[0].ToLower().Split(',');
         }
 
-        public string ProjectName { get; set; }
+        public string ProjectName { get => _projectName ?? "steeltoeProject" ; set => _projectName = value; }
 
-        public string TemplateShortName { get; set; }
+        public string TemplateShortName
+        {
+            get
+            {
+               // _templateShortName = _templateShortName ?? DEFAULT_TEMPLATE;
+                //if (SteeltoeVersion == "3.0")
+                //{
+                //    _templateShortName = "steeltoe";
+                //}
+
+                return _templateShortName;
+            }
+            set => _templateShortName = value;
+        }
 
         public string Description { get; set; }
 
         public string SteeltoeVersion { get; set; }
+
+        public string ArchiveName
+        {
+            get => ProjectName  + ".zip";
+        }
+
+        public IEnumerable<string> GetTemplateParameters()
+        {
+            var templateParameters = Dependencies?.Where(d => d != null).ToList();
+
+            if (!string.IsNullOrEmpty(SteeltoeVersion) && SteeltoeVersion != "3.0")
+            {
+                templateParameters.Add($"SteeltoeVersion={SteeltoeVersion}");
+            }
+
+            return templateParameters ?? new List<string>();
+        }
     }
 }

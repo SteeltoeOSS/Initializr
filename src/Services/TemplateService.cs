@@ -22,6 +22,7 @@ using Steeltoe.Initializr.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,7 +34,7 @@ namespace Steeltoe.Initializr.Services
 
         private static readonly string ENV_SETTINGS_KEY = "Environment_Settings";
         private static readonly string TEMPLATE_CACHE_KEY = "Template_Cache";
-
+        private static readonly string DEFAULT_TEMPLATE = "steeltoe2";
         private EngineEnvironmentSettings EnvSettings
         {
             get
@@ -97,13 +98,13 @@ namespace Steeltoe.Initializr.Services
             _memoryCache?.Remove(ENV_SETTINGS_KEY);
         }
 
-        public async Task<string> GenerateProject(string templateShortName, string projectName, string[] templateParameters)
+        public string GenerateProject(GeneratorModel model)
         {
             var randomString = Guid.NewGuid().ToString() + DateTime.Now.Millisecond;
-            var outFolder = Path.Combine(_outPath, randomString, projectName);
+            var outFolder = Path.Combine(_outPath, randomString, model.ProjectName);
 
-            var iParams = new Dictionary<string, string> { { "Name", projectName } };
-            foreach (var p in templateParameters)
+            var iParams = new Dictionary<string, string> { { "Name", model.ProjectName } };
+            foreach (var p in model.GetTemplateParameters())
             {
                 if (p.Contains('='))
                 {
@@ -119,15 +120,57 @@ namespace Steeltoe.Initializr.Services
                 }
             }
 
-            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, EnvSettings);
+            TemplateInfo templateInfo = FindTemplateByShortName(model.TemplateShortName ?? DEFAULT_TEMPLATE, EnvSettings);
             if (templateInfo == null)
             {
-                throw new Exception($"Could not find template with shortName: {templateShortName} ");
+                throw new Exception($"Could not find template with shortName: {model.TemplateShortName} ");
             }
 
             TemplateCreator creator = new TemplateCreator(EnvSettings);
-            await creator.InstantiateAsync(templateInfo, projectName, "SteeltoeProject", outFolder, iParams, true, false, "baseLine");
+            creator.InstantiateAsync(templateInfo, model.ProjectName, "SteeltoeProject", outFolder, iParams, true, false, "baseLine");
             return outFolder;
+        }
+
+        public List<KeyValuePair<string, string>> GenerateProjectFiles(GeneratorModel model)
+        {
+
+            var listOfFiles = new List<KeyValuePair<string, string>>();
+
+            var outFolder = GenerateProject(model);
+            foreach (var file in Directory.EnumerateFiles(outFolder, "*", SearchOption.AllDirectories))
+            {
+                var pathPrefix = file.Replace(Path.GetFullPath(outFolder), string.Empty).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                string fileText = File.ReadAllText(file);
+                listOfFiles.Add(new KeyValuePair<string, string>(pathPrefix, fileText));
+            }
+
+            return listOfFiles;
+        }
+
+        public async Task<byte[]> GenerateProjectArchive(GeneratorModel model)
+        {
+            var outFolder = GenerateProject(model);
+
+            var zipFile = Path.Combine(outFolder, "..", model.ArchiveName);
+
+            await Task.Run(() => ZipFile.CreateFromDirectory(outFolder, zipFile));
+            var archiveBytes = await System.IO.File.ReadAllBytesAsync(zipFile);
+            await Task.Run(() => Delete(outFolder, zipFile));
+            return archiveBytes;
+        }
+
+        private void Delete(string outFolder, string zipFile)
+        {
+            try
+            {
+                System.IO.File.Delete(zipFile);
+                Directory.Delete(Path.Combine(outFolder, ".."), true);
+            }
+            catch (Exception ex)
+            {
+                // Todo: log exception
+                // Console.WriteLine("Delete Error: " + ex.Message);
+            }
         }
 
         public List<TemplateViewModel> GetAvailableTemplates()
@@ -143,10 +186,11 @@ namespace Steeltoe.Initializr.Services
             return items.ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(string shortName = "steeltoe2")
+        public List<ProjectDependency> GetDependencies(string shortName)
         {
             var list = GetAllTemplates();
-            var selectedTemplate = list.Where(x => x.ShortName == shortName).FirstOrDefault();
+
+            var selectedTemplate = list.Where(x => x.ShortName == (shortName ?? DEFAULT_TEMPLATE)).FirstOrDefault();
             return selectedTemplate.Parameters
                 .Where(p => p.Documentation != null && p.Documentation.ToLower().Contains("steeltoe"))
                 .Select(p => new ProjectDependency

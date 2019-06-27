@@ -39,6 +39,9 @@ using Steeltoe.CloudFoundry.Connector.MySql;
 {{#MySqlEFCore}}
 using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 {{/MySqlEFCore}}
+{{#SQLServer}}
+using Steeltoe.CloudFoundry.Connector.SqlServer.EFCore;
+{{/SQLServer}}
 {{#Discovery}}
 using Steeltoe.Discovery.Client;
 {{/Discovery}}
@@ -60,7 +63,7 @@ using Steeltoe.CloudFoundry.Connector.OAuth;
 {{#PostgresEFCore}}
 using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
 {{/PostgresEFCore}}
-namespace Company.WebApplication1
+namespace {{ProjectNameSpace}}
 {
     public class Startup
     {
@@ -135,6 +138,9 @@ namespace Company.WebApplication1
             // Add Context and use Postgres as provider ... provider will be configured from VCAP_ info
             // services.AddDbContext<MyDbContext>(options => options.UseNpgsql(Configuration));
 {{/PostgresEFCore}}
+{{#SQLServer}}
+            services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));
+{{/SQLServer}}
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
     }
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
