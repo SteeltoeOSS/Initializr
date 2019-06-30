@@ -26,7 +26,6 @@ namespace Steeltoe.Initializr.Models
         private string _templateShortName;
         private string _projectName;
 
-        [Required]
         public string[] Dependencies
         {
             get => _dependencies;
