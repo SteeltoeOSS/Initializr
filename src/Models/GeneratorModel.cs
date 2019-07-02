@@ -20,8 +20,6 @@ namespace Steeltoe.Initializr.Models
 {
     public class GeneratorModel
     {
-
-       // private const string DEFAULT_TEMPLATE = "WebApi-CSharp-Mustache";
         private string[] _dependencies;
         private string _templateShortName;
         private string _projectName;

@@ -37,8 +37,8 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void GetAvailableTemplates_returnsTemplates(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void GetAvailableTemplates_returnsTemplates(ITemplateService templateService, string templateName)
         {
             var templates = templateService.GetAvailableTemplates();
             Assert.NotNull(templates);
@@ -46,15 +46,16 @@ namespace Steeltoe.InitializrTests
 
             if (templateService is TemplateService)
             {
+                Assert.Contains(templates, x => x.ShortName == "CSharp-WebApi-2.x");
                 Assert.Contains(templates, x => x.ShortName == "steeltoe");
-                Assert.Contains(templates, x => x.ShortName == "steeltoe2");
+                Assert.Contains(templates, x => x.ShortName == "react");
             }
 
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void GetDependencies(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void GetDependencies(ITemplateService templateService, string templateName)
         {
             var deps = templateService.GetDependencies(null);
             Assert.NotNull(deps);
@@ -65,10 +66,11 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void GetDependencies_WithFriendlyNames(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void GetDependencies_WithFriendlyNames(ITemplateService templateService, string templateName)
         {
             var deps = templateService.GetDependencies();
+
             Assert.NotNull(deps);
             Assert.NotEmpty(deps);
 
@@ -76,13 +78,14 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_actuators(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_actuators(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "Actuators" },
                 ProjectName = "testProject",
+                TemplateShortName = templateName,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -94,12 +97,28 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_discovery(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_react(ITemplateService templateService, string templateName)
+        {
+            var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            {
+                ProjectName = "testProject",
+                TemplateShortName = templateName,
+
+            });
+
+            string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
+            Assert.NotEmpty(startUpContents);
+          }
+
+        [Theory]
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_discovery(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "Discovery" },
+                TemplateShortName = templateName,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -110,12 +129,13 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_actuators_circuitbreakers(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_actuators_circuitbreakers(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "Actuators,CircuitBreaker" },
+                TemplateShortName = templateName,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -124,12 +144,13 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_MySql(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_MySql(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "MySql" },
+                TemplateShortName = templateName,
             });
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
@@ -139,12 +160,13 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_MySql_EFCore(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_MySql_EFCore(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "MySqlEFCore" },
+                TemplateShortName = templateName,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -153,12 +175,13 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_postgresql(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_postgresql(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "Postgres" },
+                TemplateShortName = templateName,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -168,12 +191,13 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_postgresEFCore(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_postgresEFCore(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "PostgresEFCore" },
+                TemplateShortName = templateName,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -183,12 +207,13 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_RabbitMQ(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_RabbitMQ(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "RabbitMQ" },
+                TemplateShortName = templateName,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -198,12 +223,13 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_Redis(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_Redis(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "Redis" },
+                TemplateShortName = templateName,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -212,12 +238,13 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_MongoDB(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_MongoDB(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "MongoDB" },
+                TemplateShortName = templateName,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -226,12 +253,13 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_OauthConnector(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_OauthConnector(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "OAuthConnector" },
+                TemplateShortName = templateName,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -240,13 +268,14 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_SqlServer(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_SqlServer(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "SQLServer" },
                 ProjectName = "testProject",
+                TemplateShortName = templateName,
             });
 
             Assert.Contains(files, file => file.Key.StartsWith("Models"));
@@ -263,18 +292,22 @@ namespace Steeltoe.InitializrTests
             Assert.Contains(@"using Steeltoe.CloudFoundry.Connector.SqlServer.EFCore;", startup);
             Assert.Contains(@"services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));", startup);
 
-            string valuesController = files.Find(x => x.Key.EndsWith("ValuesController.cs")).Value;
-            Assert.Contains(@" public ValuesController(ILogger<ValuesController> logger, [FromServices] TestContext context)", valuesController);
+            if (templateName != "react") //TODO: Add demo for react app
+            {
+                string valuesController = files.Find(x => x.Key.EndsWith("ValuesController.cs")).Value;
+                Assert.Contains(@" public ValuesController(ILogger<ValuesController> logger, [FromServices] TestContext context)", valuesController);
+            }
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_DynamicLogger(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_DynamicLogger(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "DynamicLogger" },
                 ProjectName = "testProject",
+                TemplateShortName = templateName,
             });
 
             string fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
@@ -287,14 +320,15 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_actuators_cloudFoundry(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_actuators_cloudFoundry(ITemplateService templateService, string templateName)
         {
             Assert.NotNull(templateService);
 
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "CloudFoundry" },
+                TemplateShortName = templateName,
             });
             string programFileContents = files.Find(x => x.Key == "Program.cs").Value;
             Assert.Contains("using Steeltoe.Extensions.Configuration;", programFileContents);
@@ -340,12 +374,15 @@ namespace Steeltoe.InitializrTests
         ////}
 
         [Theory]
-        [ClassData(typeof(TemplateServiceImplementations))]
-        public void CreateTemplate_empty(ITemplateService templateService)
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_empty(ITemplateService templateService, string templateName)
         {
             Assert.NotNull(templateService);
 
-            var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel());
+            var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            {
+                TemplateShortName = templateName,
+            });
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
             Assert.DoesNotContain(files, file => file.Key.StartsWith("Models"));

@@ -34,7 +34,8 @@ namespace Steeltoe.Initializr.Services
 
         private static readonly string ENV_SETTINGS_KEY = "Environment_Settings";
         private static readonly string TEMPLATE_CACHE_KEY = "Template_Cache";
-        private static readonly string DEFAULT_TEMPLATE = "steeltoe2";
+        private static readonly string DEFAULT_TEMPLATE = "CSharp-WebApi-2.x";
+
         private EngineEnvironmentSettings EnvSettings
         {
             get
@@ -80,7 +81,7 @@ namespace Steeltoe.Initializr.Services
 
         public TemplateService()
         {
-            _hivePath = AppDomain.CurrentDomain.BaseDirectory + "templates" + Path.DirectorySeparatorChar;
+            _hivePath = AppDomain.CurrentDomain.BaseDirectory + "templates" + Path.DirectorySeparatorChar + "DotNetTemplating"+ Path.DirectorySeparatorChar ;
             _outPath = AppDomain.CurrentDomain.BaseDirectory + "output" + Path.DirectorySeparatorChar;
 
             Console.WriteLine("hivePath " + _hivePath);
@@ -120,14 +121,22 @@ namespace Steeltoe.Initializr.Services
                 }
             }
 
-            TemplateInfo templateInfo = FindTemplateByShortName(model.TemplateShortName ?? DEFAULT_TEMPLATE, EnvSettings);
+            var templateShortName = string.IsNullOrEmpty(model.TemplateShortName) ? DEFAULT_TEMPLATE : model.TemplateShortName;
+
+            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, EnvSettings);
             if (templateInfo == null)
             {
-                throw new Exception($"Could not find template with shortName: {model.TemplateShortName} ");
+                throw new Exception($"Could not find template with shortName: {templateShortName} ");
             }
 
             TemplateCreator creator = new TemplateCreator(EnvSettings);
-            creator.InstantiateAsync(templateInfo, model.ProjectName, "SteeltoeProject", outFolder, iParams, true, false, "baseLine");
+            var creationResult = creator.InstantiateAsync(templateInfo, model.ProjectName, "SteeltoeProject", outFolder, iParams, true, false, "baseLine").Result;
+
+            if (creationResult.Status != CreationResultStatus.Success)
+            {
+                throw new TemplateAuthoringException(creationResult.Message, templateShortName);
+            }
+
             return outFolder;
         }
 
@@ -191,6 +200,12 @@ namespace Steeltoe.Initializr.Services
             var list = GetAllTemplates();
 
             var selectedTemplate = list.Where(x => x.ShortName == (shortName ?? DEFAULT_TEMPLATE)).FirstOrDefault();
+
+            if (selectedTemplate == null)
+            {
+                throw new InvalidDataException($"Could not find template with ShortName: {shortName ?? DEFAULT_TEMPLATE} ");
+            }
+
             return selectedTemplate.Parameters
                 .Where(p => p.Documentation != null && p.Documentation.ToLower().Contains("steeltoe"))
                 .Select(p => new ProjectDependency
