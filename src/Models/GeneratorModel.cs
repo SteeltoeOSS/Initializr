@@ -24,7 +24,6 @@ namespace Steeltoe.Initializr.Models
         private string _templateShortName;
         private string _projectName;
 
-        [Required]
         public string[] Dependencies
         {
             get => _dependencies;
@@ -54,8 +53,10 @@ namespace Steeltoe.Initializr.Models
 
         public string ArchiveName
         {
-            get => ProjectName  + ".zip";
+            get => ProjectName + ".zip";
         }
+
+        public string TargetFrameworkVersion { get; internal set; }
 
         public IEnumerable<string> GetTemplateParameters()
         {

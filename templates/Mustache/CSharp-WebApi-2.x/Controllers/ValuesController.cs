@@ -19,7 +19,7 @@ namespace {{ProjectNameSpace }}.Controllers
     public class ValuesController : ControllerBase
     {
         private readonly ILogger _logger;
-       // {{#AnyEFCore}}
+        {{#AnyEFCore}}
         private readonly TestContext _context;
         public ValuesController(ILogger<ValuesController> logger, [FromServices] TestContext context)
         {

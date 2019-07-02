@@ -54,9 +54,8 @@ namespace Steeltoe.Initializr.Services
             configuration.Bind(this); // Get friendlyNames
         }
 
-        public MustacheTemplateService(ILogger<MustacheTemplateService> logger )
+        public MustacheTemplateService(ILogger<MustacheTemplateService> logger)
         {
-
             _stubble = new StubbleBuilder()
                 .Configure(settings => settings.AddJsonNet())
                 .Build();
@@ -102,19 +101,7 @@ namespace Steeltoe.Initializr.Services
                 throw new InvalidDataException("Template with $name doesnt exist");
             }
 
-            var dataView = GetDataView(templatePath);
-
-            if (model.Dependencies != null)
-            {
-                foreach (var dependency in model.Dependencies)
-                {
-                    var key = dataView.Keys.FirstOrDefault(k => k.ToLower() == dependency);
-                    if (key != null)
-                    {
-                        dataView[key] = "true";
-                    }
-                }
-            }
+            var dataView = GetDataView(templatePath, model);
 
             CalculatedFields(dataView, model.ProjectName);
 
@@ -122,7 +109,8 @@ namespace Steeltoe.Initializr.Services
 
             foreach (var file in GetFilteredSourceSets(dataView, templatePath))
             {
-                if (file.EndsWith("mustache.json"))
+                if (file.EndsWith("mustache.json")
+                    || file.EndsWith("sourceExclusions.json"))
                 {
                     continue;
                 }
@@ -249,30 +237,67 @@ namespace Steeltoe.Initializr.Services
             var templatePath = _templatePath + Path.DirectorySeparatorChar + selectedTemplate.Name;
             var config = GetMustacheConfigJson(templatePath);
 
-            return config
-                .Where(p => p.Value != null && p.Value.ContainsKey("description") && p.Value["description"].ToString().ToLower().Contains("steeltoe"))
+            return config.Dependencies
+                .Where(p => p.Description.ToLower().Contains("steeltoe"))
                 .Select(p => new ProjectDependency
                 {
-                    Name = GetFriendlyName(p.Key),
-                    ShortName = p.Key,
-                    Description = p.Value.ContainsKey("description") ? p.Value["description"].ToString() : string.Empty,
+                    Name = GetFriendlyName(p.Name),
+                    ShortName = p.Name,
+                    Description = p.Description,
                 }).ToList();
         }
 
-        private Dictionary<string, Dictionary<string, object>> GetMustacheConfigJson(string templatePath)
+        private MustacheConfig GetMustacheConfigJson(string templatePath)
         {
             var json = File.ReadAllText(Path.Combine(templatePath, "mustache.json"));
-            var dataView = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(json);
-            return dataView;
+            return JsonConvert.DeserializeObject<MustacheConfig>(json);
         }
 
-        private Dictionary<string, string> GetDataView(string templatePath)
+        private Dictionary<string, string> GetDataView(string templatePath, GeneratorModel model)
         {
             var mustacheConfig = GetMustacheConfigJson(templatePath);
             var dataView = new Dictionary<string, string>();
-            foreach (string key in mustacheConfig.Keys)
+
+            if (mustacheConfig == null)
             {
-                dataView.Add(key, mustacheConfig[key]["defaultValue"].ToString());
+                throw new InvalidDataException($"could not find config at {templatePath}");
+            }
+
+            foreach (var dep in mustacheConfig.Dependencies)
+            {
+                dataView.Add(dep.Name, dep.DefaultValue);
+            }
+
+            if (model.Dependencies != null)
+            {
+                foreach (var dependencyName in model.Dependencies)
+                {
+                    var key = mustacheConfig.Dependencies.FirstOrDefault(k => k.Name.ToLower() == dependencyName).Name;
+                    if (key != null)
+                    {
+                        dataView[key] = "true";
+                    }
+                }
+            }
+
+            dataView.Add("SteeltoeVersion", mustacheConfig.SteeltoeVersion.DefaultValue);
+
+            if (model.SteeltoeVersion != null)
+            {
+                if (mustacheConfig.SteeltoeVersion.Choices.Any(choice => choice.Choice == model.SteeltoeVersion))
+                {
+                    dataView["SteeltoeVersion"] = model.SteeltoeVersion;
+                }
+            }
+
+            dataView.Add("TargetFrameworkVersion", mustacheConfig.TargetFrameworkVersion.DefaultValue);
+
+            if (model.TargetFrameworkVersion != null)
+            {
+                if (mustacheConfig.TargetFrameworkVersion.Choices.Any(choice => choice.Choice == model.TargetFrameworkVersion))
+                {
+                    dataView["TargetFrameworkVersion"] = model.TargetFrameworkVersion;
+                }
             }
 
             return dataView;

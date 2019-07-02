@@ -25,9 +25,7 @@ using Microsoft.Extensions.Options;
 {{#ActuatorsOrCloudFoundry}}
 using Steeltoe.Management.CloudFoundry;
 using Steeltoe.Management.Endpoint;
-{{#SteeltoeVersion22}}
 using Steeltoe.Management.Hypermedia;
-{{/SteeltoeVersion22}}
 {{/ActuatorsOrCloudFoundry}}
 
 {{#CircuitBreaker}}

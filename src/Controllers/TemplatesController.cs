@@ -39,7 +39,7 @@ namespace Steeltoe.Initializr.Controllers
         }
 
         [Route("/starter.zip")]
-        [HttpPost]
+        
         public Task<ActionResult> GenerateProjectPost([FromForm] GeneratorModel model)
         {
             return GenerateProject(model);
