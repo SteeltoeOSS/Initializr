@@ -1,13 +1,13 @@
 <Project>
   <PropertyGroup>
-    <SteeltoeCircuitBreakerVersion>SteeltoeVersion</SteeltoeCircuitBreakerVersion>
-    <SteeltoeCommonVersion>SteeltoeVersion</SteeltoeCommonVersion>
-    <SteeltoeConfigVersion>SteeltoeVersion</SteeltoeConfigVersion>
-    <SteeltoeConnectorVersion>SteeltoeVersion</SteeltoeConnectorVersion>
-    <SteeltoeDiscoveryVersion>SteeltoeVersion</SteeltoeDiscoveryVersion>
-    <SteeltoeLoggingVersion>SteeltoeVersion</SteeltoeLoggingVersion>
-    <SteeltoeManagementVersion>SteeltoeVersion</SteeltoeManagementVersion>
-    <SteeltoeSecurityVersion>SteeltoeVersion</SteeltoeSecurityVersion>
+    <SteeltoeCircuitBreakerVersion>{{SteeltoeVersion}}</SteeltoeCircuitBreakerVersion>
+    <SteeltoeCommonVersion>{{SteeltoeVersion}}</SteeltoeCommonVersion>
+    <SteeltoeConfigVersion>{{SteeltoeVersion}}</SteeltoeConfigVersion>
+    <SteeltoeConnectorVersion>{{SteeltoeVersion}}</SteeltoeConnectorVersion>
+    <SteeltoeDiscoveryVersion>{{SteeltoeVersion}}</SteeltoeDiscoveryVersion>
+    <SteeltoeLoggingVersion>{{SteeltoeVersion}}</SteeltoeLoggingVersion>
+    <SteeltoeManagementVersion>{{SteeltoeVersion}}</SteeltoeManagementVersion>
+    <SteeltoeSecurityVersion>{{SteeltoeVersion}}</SteeltoeSecurityVersion>
     <AspNetCoreVersion>2.2.0</AspNetCoreVersion>
     <RabbitMQVersion>5.1.0</RabbitMQVersion>
     <MongoDBVersion>2.8.1</MongoDBVersion>

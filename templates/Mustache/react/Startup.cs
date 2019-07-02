@@ -25,9 +25,8 @@ using Microsoft.Extensions.Options;
 {{#ActuatorsOrCloudFoundry}}
 using Steeltoe.Management.CloudFoundry;
 using Steeltoe.Management.Endpoint;
-{{#SteeltoeVersion22}}
 using Steeltoe.Management.Hypermedia;
-{{/SteeltoeVersion22}}
+
 {{/ActuatorsOrCloudFoundry}}
 
 {{#CircuitBreaker}}
@@ -145,18 +144,15 @@ namespace {{ProjectNameSpace}}
             else
             {
                 app.UseExceptionHandler("/Error");
-#if (!NoHttps)
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
     {{/RequiresHttps}}
-#else
     {{#Auth}}
     	    app.UseAuthentication();
     {{/Auth}}
-#endif
     {{#Actuators}}
     {{#CloudFoundry}}
     	    app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);

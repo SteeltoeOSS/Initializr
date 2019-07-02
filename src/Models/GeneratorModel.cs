@@ -53,8 +53,10 @@ namespace Steeltoe.Initializr.Models
 
         public string ArchiveName
         {
-            get => ProjectName  + ".zip";
+            get => ProjectName + ".zip";
         }
+
+        public string TargetFrameworkVersion { get; internal set; }
 
         public IEnumerable<string> GetTemplateParameters()
         {

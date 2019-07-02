@@ -332,24 +332,59 @@ namespace Steeltoe.InitializrTests
             Assert.Contains(".AddCloudFoundry", programFileContents);
         }
 
-        //[Fact]
-        //public void CreateTemplate_actuators_v21()
-        //{
-        //    var templateService = new MustacheTemplateService(_logger);
+        [Theory]
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_actuators_v22(ITemplateService templateService, string templateName)
+        {
+            var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            {
+                Dependencies = new[] { "Actuators" },
+                SteeltoeVersion = "2.2.0",
+                TemplateShortName = templateName,
+            });
 
-        //    Assert.NotNull(templateService);
+            string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
-        //    var outFolder = templateService.GenerateProject("steeltoe2", "testProject", new[] { "Actuators", "SteeltoeVersion=2.1.0" }).Result;
-        //    Console.WriteLine("outFolder " + outFolder);
-        //    Assert.NotNull(outFolder);
-        //    Assert.True(Directory.Exists(outFolder));
-        //    var startupPath = Path.Combine(outFolder, "Startup.cs");
-        //    Assert.True(File.Exists(startupPath));
-        //    string startUpContents = File.ReadAllText(startupPath);
-        //    Assert.DoesNotContain("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
-        //    Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
-        // }
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
+            string versionProps = files.Find(x => x.Key == "versions.props").Value;
 
+            Assert.Contains(
+                @"<SteeltoeCircuitBreakerVersion>2.2.0</SteeltoeCircuitBreakerVersion>
+    <SteeltoeCommonVersion>2.2.0</SteeltoeCommonVersion>
+    <SteeltoeConfigVersion>2.2.0</SteeltoeConfigVersion>
+    <SteeltoeConnectorVersion>2.2.0</SteeltoeConnectorVersion>
+    <SteeltoeDiscoveryVersion>2.2.0</SteeltoeDiscoveryVersion>
+    <SteeltoeLoggingVersion>2.2.0</SteeltoeLoggingVersion>
+    <SteeltoeManagementVersion>2.2.0</SteeltoeManagementVersion>
+    <SteeltoeSecurityVersion>2.2.0</SteeltoeSecurityVersion>", versionProps);
+        }
+
+        [Theory]
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_actuators_23rc1(ITemplateService templateService, string templateName)
+        {
+            var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            {
+                Dependencies = new[] { "Actuators" },
+                SteeltoeVersion = "2.3.0-rc1",
+                TemplateShortName = templateName,
+            });
+
+            string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
+
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
+            string versionProps = files.Find(x => x.Key == "versions.props").Value;
+
+            Assert.Contains(
+                @"<SteeltoeCircuitBreakerVersion>2.3.0-rc1</SteeltoeCircuitBreakerVersion>
+    <SteeltoeCommonVersion>2.3.0-rc1</SteeltoeCommonVersion>
+    <SteeltoeConfigVersion>2.3.0-rc1</SteeltoeConfigVersion>
+    <SteeltoeConnectorVersion>2.3.0-rc1</SteeltoeConnectorVersion>
+    <SteeltoeDiscoveryVersion>2.3.0-rc1</SteeltoeDiscoveryVersion>
+    <SteeltoeLoggingVersion>2.3.0-rc1</SteeltoeLoggingVersion>
+    <SteeltoeManagementVersion>2.3.0-rc1</SteeltoeManagementVersion>
+    <SteeltoeSecurityVersion>2.3.0-rc1</SteeltoeSecurityVersion>", versionProps);
+        }
         ////[Fact]
         ////public void CreateTemplate_actuators_v3()
         ////{
@@ -377,11 +412,18 @@ namespace Steeltoe.InitializrTests
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 TemplateShortName = templateName,
+                ProjectName = "Foo.Bar",
             });
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
             Assert.DoesNotContain(files, file => file.Key.StartsWith("Models"));
             Assert.DoesNotContain("AddCloudFoundryActuators", startUpContents);
+
+            string dockerFile = files.Find(x => x.Key == "Dockerfile").Value;
+            Assert.NotNull(dockerFile);
+
+            Assert.Contains("Foo.Bar.dll", dockerFile);
+            Assert.Contains("Foo.Bar.csproj", dockerFile);
 
             foreach (var file in files)
             {
