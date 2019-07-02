@@ -32,6 +32,8 @@ namespace Steeltoe.Initializr.Services
 {
     public class MustacheTemplateService : ITemplateService
     {
+        private const string DEFAULT_TEMPLATE_NAME = "CSharp-WebApi-2.x";
+
         public Dictionary<string, string> FriendlyNames { get; set; }
 
         private StubbleVisitorRenderer _stubble;
@@ -59,7 +61,7 @@ namespace Steeltoe.Initializr.Services
                 .Configure(settings => settings.AddJsonNet())
                 .Build();
             _logger = logger;
-            _templatePath = AppDomain.CurrentDomain.BaseDirectory + "templates";
+            _templatePath = AppDomain.CurrentDomain.BaseDirectory + "templates" + Path.DirectorySeparatorChar + "Mustache";
         }
 
         public async Task<byte[]> GenerateProjectArchive(GeneratorModel model)
@@ -91,9 +93,15 @@ namespace Steeltoe.Initializr.Services
 
         public List<KeyValuePair<string, string>> GenerateProjectFiles(GeneratorModel model)
         {
-            var name = "WebApi-CSharp-Mustache";
+            var name = string.IsNullOrEmpty(model.TemplateShortName) ? DEFAULT_TEMPLATE_NAME : model.TemplateShortName;
 
             var templatePath = _templatePath + Path.DirectorySeparatorChar + name;
+
+            if (!Directory.Exists(templatePath))
+            {
+                throw new InvalidDataException("Template with $name doesnt exist");
+            }
+
             var dataView = GetDataView(templatePath);
 
             if (model.Dependencies != null)
@@ -111,7 +119,7 @@ namespace Steeltoe.Initializr.Services
             CalculatedFields(dataView, model.ProjectName);
 
             var listoffiles = new List<KeyValuePair<string, string>>();
-           
+
             foreach (var file in GetFilteredSourceSets(dataView, templatePath))
             {
                 if (file.EndsWith("mustache.json"))
@@ -129,16 +137,11 @@ namespace Steeltoe.Initializr.Services
                     var output = Render(file, fileText, dataView);
                     listoffiles.Add(new KeyValuePair<string, string>(pathPrefix, output));
                 }
-                else// if (file.EndsWith(".cs"))
+                else
                 {
                     var output = Render(file, fileText, dataView);
                     listoffiles.Add(new KeyValuePair<string, string>(pathPrefix, output));
                 }
-
-                //else
-                //{
-                //    listoffiles.Add(new KeyValuePair<string, string>(pathPrefix, fileText));
-                //}
             }
 
             return listoffiles;
@@ -219,10 +222,8 @@ namespace Steeltoe.Initializr.Services
 
         public List<TemplateViewModel> GetAvailableTemplates()
         {
-            string current = Directory.GetCurrentDirectory();
-            var templatesPath = AppDomain.CurrentDomain.BaseDirectory + "templates" + Path.DirectorySeparatorChar;
             return Directory
-                .GetDirectories(templatesPath)
+                .GetDirectories(_templatePath)
                 .Select(path => new TemplateViewModel
                 {
                     Name = new DirectoryInfo(path).Name,
@@ -236,13 +237,14 @@ namespace Steeltoe.Initializr.Services
 
         public List<ProjectDependency> GetDependencies(string shortName)
         {
-            if (string.IsNullOrEmpty(shortName))
-            {
-                shortName = "WebApi-CSharp-Mustache";
-            }
-
+            shortName = string.IsNullOrEmpty(shortName) ? DEFAULT_TEMPLATE_NAME : shortName;
             var list = GetAvailableTemplates();
             var selectedTemplate = list.Where(x => x.ShortName == shortName).FirstOrDefault();
+
+            if (selectedTemplate == null)
+            {
+                throw new InvalidDataException($"Could not find template with name {shortName} ");
+            }
 
             var templatePath = _templatePath + Path.DirectorySeparatorChar + selectedTemplate.Name;
             var config = GetMustacheConfigJson(templatePath);
@@ -259,15 +261,14 @@ namespace Steeltoe.Initializr.Services
 
         private Dictionary<string, Dictionary<string, object>> GetMustacheConfigJson(string templatePath)
         {
-           //var templatePath = _templatePath + Path.DirectorySeparatorChar + templateName;
             var json = File.ReadAllText(Path.Combine(templatePath, "mustache.json"));
             var dataView = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(json);
             return dataView;
         }
 
-        private Dictionary<string, string> GetDataView(string templateName)
+        private Dictionary<string, string> GetDataView(string templatePath)
         {
-            var mustacheConfig = GetMustacheConfigJson(templateName);
+            var mustacheConfig = GetMustacheConfigJson(templatePath);
             var dataView = new Dictionary<string, string>();
             foreach (string key in mustacheConfig.Keys)
             {
