@@ -294,9 +294,9 @@ namespace Steeltoe.Initializr.Services
 
             if (model.SteeltoeVersion != null)
             {
-                if (mustacheConfig.SteeltoeVersion.Choices.Any(choice => choice.Choice == model.SteeltoeVersion))
+                if (mustacheConfig.SteeltoeVersion.Choices.Any(choice => model.SteeltoeVersion.ToLower() == choice.Choice))
                 {
-                    dataView["SteeltoeVersion"] = model.SteeltoeVersion;
+                    dataView["SteeltoeVersion"] = model.SteeltoeVersion.ToLower();
                 }
             }
 

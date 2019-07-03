@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 {{/RequiresHttps}}
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 {{#Auth}}
 using Microsoft.AspNetCore.Authentication;
 {{/Auth}}
@@ -160,6 +161,7 @@ namespace {{ProjectNameSpace}}
     {{/Auth}}
     {{#Actuators}}
     {{#CloudFoundry}}
+
     	    app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
     {{/CloudFoundry}}
     {{^CloudFoundry}}
@@ -167,9 +169,9 @@ namespace {{ProjectNameSpace}}
     {{/CloudFoundry}}
     {{/Actuators}}
     {{#Discovery}}
-	    app.UseDiscoveryClient();
+	        app.UseDiscoveryClient();
     {{/Discovery}}
-	    app.UseStaticFiles();
+	        app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseMvc(routes =>
             {

@@ -59,7 +59,7 @@ export class Home extends Component {
         <div>
             <form name="form" action="/starter.zip" method="post" autoComplete="off" onSubmit={this.trackSubmitEvent} >
                     <div>
-                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.2", "2.3", "3.0"]} defaultValue="2.2" /*onChange={this.handleInputChange} *//>
+                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.2", "2.3.0-RC1"]} defaultValue="2.2" onChange={this.handleInputChange} />
                    
 
                 <div className="line">
@@ -89,8 +89,8 @@ export class Home extends Component {
                         </div>
                     </div>
                 </div>
-</form>
-   </div>
+            </form>
+        </div>
 
     );
   }

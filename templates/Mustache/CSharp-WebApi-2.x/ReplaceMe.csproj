@@ -32,7 +32,7 @@
     {{/AnyConnector}}
     {{#ActuatorsOrCloudFoundry}}
     <PackageReference Include="Steeltoe.Management.ExporterCore"  Version="$(SteeltoeManagementVersion)"/>
-    <PackageReference Include="Steeltoe.Management.CloudFoundryCore" Version="$(SteeltoeConnectorVersion)" />
+    <PackageReference Include="Steeltoe.Management.CloudFoundryCore" Version="$(SteeltoeManagementVersion)" />
     {{/ActuatorsOrCloudFoundry}}
     {{#CircuitBreaker}}
     <PackageReference Include="Steeltoe.CircuitBreaker.HystrixCore" Version="$(SteeltoeCircuitBreakerVersion)" />

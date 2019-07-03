@@ -27,7 +27,7 @@ namespace Steeltoe.Initializr.Models
         public string[] Dependencies
         {
             get => _dependencies;
-            set => _dependencies = (value == null || value.Length == 0 || value[0] == null) ? value : value[0].ToLower().Split(',');
+            set => _dependencies = (value == null || value.Length == 0 || value[0] == null) ? null : value[0].ToLower().Split(',');
         }
 
         public string ProjectName { get => _projectName ?? "steeltoeProject" ; set => _projectName = value; }

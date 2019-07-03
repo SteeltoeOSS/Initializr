@@ -29,7 +29,7 @@ namespace Steeltoe.Initializr.Controllers
     [ApiController]
     public class TemplatesController : ControllerBase
     {
-    //    private readonly TemplateService _templateService;
+        // private readonly TemplateService _templateService;
         private readonly MustacheTemplateService _sttemplateService;
 
         public TemplatesController(IEnumerable<ITemplateService> services)
@@ -39,7 +39,6 @@ namespace Steeltoe.Initializr.Controllers
         }
 
         [Route("/starter.zip")]
-        
         public Task<ActionResult> GenerateProjectPost([FromForm] GeneratorModel model)
         {
             return GenerateProject(model);

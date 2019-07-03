@@ -366,7 +366,7 @@ namespace Steeltoe.InitializrTests
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "Actuators" },
-                SteeltoeVersion = "2.3.0-rc1",
+                SteeltoeVersion = "2.3.0-RC1",
                 TemplateShortName = templateName,
             });
 
