@@ -17,6 +17,10 @@ The Web UI allows you to quickly generate a CSharp project with your choice of d
 
 In addition you can simply use curl like so:
 ```
+curl https://startsteeltoe.cfapps.io/starter.zip -d dependencies=actuators,cloudfoundry -o myProject.zip
+
+or
+
 curl https://startsteeltoe.cfapps.io/starter.zip -d dependencies=actuators,cloudfoundry -d templateShortName=react -d projectName=MyCompany.MySample -o myProject.zip
 ```
 
