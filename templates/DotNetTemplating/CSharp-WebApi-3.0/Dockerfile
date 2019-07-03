@@ -4,7 +4,7 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
-COPY ["webfrontend.csproj", "."]
+COPY ["Company.WebApplication1.csproj", "."]
 RUN dotnet restore "Company.WebApplication1.csproj"
 COPY . .
 RUN dotnet build "Company.WebApplication1.csproj" -c Release -o /app
