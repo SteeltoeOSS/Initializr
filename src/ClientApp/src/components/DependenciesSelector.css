@@ -1,0 +1,460 @@
+﻿.dependencies-box {
+    padding: 8px 0 8px 32px;
+    flex: 2 1;
+    max-width: 900px;
+    -webkit-transition: all .15s;
+    transition: all .15s
+}
+
+    .dependencies-box .colset-2 {
+        padding-top: 20px
+    }
+
+    .dependencies-box.large {
+        max-width: 1200px
+    }
+
+.tab {
+    z-index: 90;
+    background: #fff;
+    padding: 0 20px;
+    margin: 0 -20px 10px
+}
+
+    .tab .tab-container,
+    .tab a {
+        border-bottom: 3px solid #f3f3f3
+    }
+
+    .tab a {
+        display: inline-block;
+        margin-bottom: -3px;
+        text-decoration: none;
+        color: rgba(34,34,34,.6);
+        padding: 15px 16px 11px;
+        font-weight: 700;
+        line-height: 16px;
+        outline: 1px dotted #fff;
+        -webkit-transition: all .15s;
+        transition: all .15s
+    }
+
+        .tab a:focus {
+            outline: 1px dotted rgba(0,0,0,.2)
+        }
+
+        .tab a svg {
+            width: 16px
+        }
+
+        .tab a:hover {
+            color: #222;
+            border-bottom: 3px solid #d7d7d7
+        }
+
+        .tab a.active {
+            color: #222;
+            border-bottom: 3px solid #2d74d1
+        }
+
+    .tab strong {
+        float: right;
+        font-weight: 400;
+        background-color: #f7f7f7;
+        padding: 0 8px;
+        border-radius: 4px;
+        line-height: 24px;
+        margin-top: 6px;
+        font-weight: 700;
+        color: rgba(34,34,34,.7)
+    }
+
+        .tab strong span {
+            color: #222
+        }
+
+    .rbt-menu.dropdown-menu{
+        background-color: white
+    }
+
+
+.groups {
+    padding: 0 0 16px
+}
+
+    .groups .group {
+        line-height: 1.4rem;
+        position: relative;
+        padding-bottom: 12px
+    }
+
+        .groups .group a {
+            position: relative;
+            display: block;
+            text-decoration: none;
+            padding: 16px 60px 16px 16px;
+            color: rgba(34,34,34,.8);
+            background: #f7f7f7;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 2px;
+            line-height: 24px
+        }
+
+            .groups .group a:focus {
+                outline: 1px dotted rgba(0,0,0,.2)
+            }
+
+            .groups .group a strong {
+                color: #222
+            }
+
+            .groups .group a input {
+                display: none
+            }
+
+            .groups .group a div {
+                padding: 0;
+                margin: 0
+            }
+
+            .groups .group a span {
+                font-size: 13px
+            }
+
+            .groups .group a .icon {
+                position: absolute;
+                display: block;
+                border: 2px solid #e4e4e4;
+                height: 24px;
+                width: 24px;
+                margin-top: -12px;
+                top: 50%;
+                right: 16px;
+                border-radius: 14px;
+                color: #222
+            }
+
+            .groups .group a .icon-check,
+            .groups .group a .icon-plus,
+            .groups .group a .icon-times {
+                display: block;
+                opacity: 0;
+                width: 12px;
+                margin: 0 auto;
+                position: absolute;
+                top: 5px;
+                left: 6px
+            }
+
+            .groups .group a .icon-times {
+                left: 7px;
+                width: 10px;
+                color: #d20000
+            }
+
+            .groups .group a .icon-check {
+                top: 6px
+            }
+
+            .groups .group a.selected {
+                background: #e7f1f4
+            }
+
+                .groups .group a.selected .icon {
+                    border-color: rgba(161,200,212,.6);
+                    color: #356574
+                }
+
+                .groups .group a.selected .icon-plus {
+                    opacity: 1
+                }
+
+            .groups .group a.checked,
+            .groups .group a .selected {
+                background: #fff;
+                box-shadow: 0 2px 3px 1px rgba(0,0,0,.1)
+            }
+
+                .groups .group a.checked .icon,
+                .groups .group a .selected .icon {
+                    border-color: rgba(0,0,0,.1);
+                    color: #6db33f
+                }
+
+                .groups .group a.checked .icon-check,
+                .groups .group a .selected .icon-check {
+                    opacity: 1
+                }
+
+                .groups .group a.checked:hover .icon-check,
+                .groups .group a.checked:hover .icon-plus {
+                    opacity: 0
+                }
+
+                .groups .group a.checked:hover .icon-times {
+                    opacity: 1
+                }
+
+                .groups .group a.checked.invalid,
+                .groups .group a.invalid {
+                    opacity: .6;
+                    cursor: not-allowed;
+                    background: #f7f7f7
+                }
+
+                    .groups .group a.checked.invalid:hover,
+                    .groups .group a.invalid:hover {
+                        background: #f7f7f7
+                    }
+
+                    .groups .group a.checked.invalid .warning,
+                    .groups .group a.invalid .warning {
+                        color: #f30808
+                    }
+
+                    .groups .group a.invalid .icon {
+                        display: none
+                    }
+
+                .groups .group a.checked.invalid {
+                    cursor: pointer
+                }
+
+                    .groups .group a.checked.invalid .icon {
+                        display: block
+                    }
+
+                    .groups .group a.checked.invalid .icon-check {
+                        opacity: 0
+                    }
+
+                    .groups .group a.checked.invalid .icon-times {
+                        opacity: 1
+                    }
+
+            .groups .group a:hover {
+                background: #e7f1f4
+            }
+
+                .groups .group a:hover .icon {
+                    border-color: rgba(161,200,212,.6);
+                    color: #15282e
+                }
+
+                .groups .group a:hover .icon-plus {
+                    opacity: 1
+                }
+
+            .groups .group a.checked:hover {
+                background: #fff
+            }
+
+                .groups .group a.checked:hover .icon {
+                    border-color: rgba(0,0,0,.1)
+                }
+
+        .groups .group .group-title {
+            border-bottom: 1px solid #e4e4e4;
+            font-weight: 700;
+            margin-top: 8px;
+            cursor: pointer
+        }
+
+            .groups .group .group-title span {
+                display: block;
+                position: relative;
+                margin: 4px 0;
+                padding: 4px 0 4px 26px;
+                font-size: 16px
+            }
+
+                .groups .group .group-title span:focus {
+                    outline: 1px dotted rgba(0,0,0,.2)
+                }
+
+                .groups .group .group-title span svg {
+                    position: absolute;
+                    top: 8px;
+                    left: 8px;
+                    width: 8px;
+                    -webkit-transition: all .15s;
+                    transition: all .15s
+                }
+
+                .groups .group .group-title span.toggleGroupItems svg {
+                    -webkit-transform: rotate(90deg);
+                    transform: rotate(90deg)
+                }
+
+                .groups .group .group-title span:hover svg {
+                    color: #6db33f
+                }
+
+        .groups .group:first-child {
+            padding-top: 8px
+        }
+
+    .groups div.group-items {
+        padding-top: 15px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+        grid-template-rows: repeat(auto-fill,minmax(85,.75fr));
+        grid-gap: 8px 10px
+    }
+
+
+.dependencies-list .dependency-item {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    padding: 16px 60px 16px 16px;
+    color: rgba(34,34,34,.8);
+    background: #f7f7f7;
+    cursor: pointer;
+    font-size: 14px;
+    align-items: center;
+    line-height: 24px;
+    margin: 4px 0;
+    border-radius: 5px;
+}
+    
+    
+    .dependencies-list .dependency-item:focus {
+        outline: 1px dotted rgba(0,0,0,.2)
+    }
+
+    .dependencies-list .dependency-item strong {
+        color: #222
+    }
+
+    .dependencies-list .dependency-item input {
+        display: none
+    }
+
+    .dependencies-list .dependency-item div {
+        padding: 0;
+        margin: 0
+    }
+
+    .dependencies-list .dependency-item span {
+        font-size: 13px
+    }
+
+    .dependencies-list .dependency-item .icon {
+        position: absolute;
+        display: block;
+        border: 2px solid #e4e4e4;
+        height: 24px;
+        width: 24px;
+        margin-top: -12px;
+        top: 50%;
+        right: 16px;
+        border-radius: 14px;
+        color: #222
+    }
+
+    .dependencies-list .dependency-item .icon-check,
+    .dependencies-list .dependency-item .icon-plus,
+    .dependencies-list .dependency-item .icon-times {
+        display: block;
+        opacity: 0;
+        width: 12px;
+        margin: 0 auto;
+        position: absolute;
+        top: 5px;
+        left: 6px
+    }
+
+    .dependencies-list .dependency-item .icon-times {
+        left: 7px;
+        width: 10px;
+        color: #d20000
+    }
+
+    .dependencies-list .dependency-item .icon-check {
+        top: 6px
+    }
+
+    .dependencies-list .dependency-item.selected {
+        background: #e7f1f4
+    }
+
+        .dependencies-list .dependency-item.selected .icon {
+            border-color: rgba(161,200,212,.6);
+            color: #356574
+        }
+
+        .dependencies-list .dependency-item.selected .icon-plus {
+            opacity: 1
+        }
+
+    .dependencies-list .dependency-item.checked,
+    .dependencies-list .dependency-item .selected {
+        background: #fff;
+        box-shadow: 0 2px 3px 1px rgba(0,0,0,.1)
+    }
+
+        .dependencies-list .dependency-item.checked .icon,
+        .dependencies-list .dependency-item .selected .icon {
+            border-color: rgba(0,0,0,.1);
+            color: #6db33f
+        }
+
+        .dependencies-list .dependency-item.checked .icon-check,
+        .dependencies-list .dependency-item .selected .icon-check {
+            opacity: 1
+        }
+
+        .dependencies-list .dependency-item.checked:hover .icon-check,
+        .dependencies-list .dependency-item.checked:hover .icon-plus {
+            opacity: 0
+        }
+
+        .dependencies-list .dependency-item.checked:hover .icon-times {
+            opacity: 1
+        }
+
+        .dependencies-list .dependency-item.checked.invalid,
+        .dependencies-list .dependency-item.invalid {
+            opacity: .6;
+            cursor: not-allowed;
+            background: #f7f7f7
+        }
+
+            .dependencies-list .dependency-item.checked.invalid:hover,
+            .dependencies-list .dependency-item.invalid:hover {
+                background: #f7f7f7
+            }
+
+            .dependencies-list .dependency-item.checked.invalid .warning,
+            .dependencies-list .dependency-item.invalid .warning {
+                color: #f30808
+            }
+
+            .dependencies-list .dependency-item.invalid .icon {
+                display: none
+            }
+
+        .dependencies-list .dependency-item.checked.invalid {
+            cursor: pointer
+        }
+
+            .dependencies-list .dependency-item.checked.invalid .icon {
+                display: block
+            }
+
+            .dependencies-list .dependency-item.checked.invalid .icon-check {
+                opacity: 0
+            }
+
+            .dependencies-list .dependency-item.checked.invalid .icon-times {
+                opacity: 1
+            }
+
+.dependencies-list.dependencies-list-checked .dependency-item {
+    margin: 16px 0
+}
+

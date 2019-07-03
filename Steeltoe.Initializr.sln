@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Steeltoe.Initializr.Tests", "tests\Steeltoe.Initializr.Tests.csproj", "{E1CCB76F-904D-4B24-BF5F-B3B7DF9897C9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Steeltoe.Initializr", "src\Steeltoe.Initializr.csproj", "{945A8C33-08A6-4D07-A3B6-51D7802A4DC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{42A583D3-DB7F-49E9-A89B-58FE16391C6C}"
+	ProjectSection(SolutionItems) = preProject
+		shared.props = shared.props
+		stylecop.json = stylecop.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1CCB76F-904D-4B24-BF5F-B3B7DF9897C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1CCB76F-904D-4B24-BF5F-B3B7DF9897C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1CCB76F-904D-4B24-BF5F-B3B7DF9897C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1CCB76F-904D-4B24-BF5F-B3B7DF9897C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{945A8C33-08A6-4D07-A3B6-51D7802A4DC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{945A8C33-08A6-4D07-A3B6-51D7802A4DC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{945A8C33-08A6-4D07-A3B6-51D7802A4DC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{945A8C33-08A6-4D07-A3B6-51D7802A4DC0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4100ED07-1ADA-4149-8052-C39F9402DB37}
+	EndGlobalSection
+EndGlobal

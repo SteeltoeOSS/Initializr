@@ -1,0 +1,43 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-16.04'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+
+- task: CloudFoundryCLIInstall@0
+  inputs:
+    cfVersion: '6.43.0'
+    
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    arguments: '-f netcoreapp2.2 -r ubuntu.14.04-x64'
+    zipAfterPublish: false
+    modifyOutputPath: false
+    workingDirectory: 'src'
+
+- task: CloudFoundry@1
+  inputs:
+    cfEndpoint: 'PWS'
+    skipSSLValidation: true
+    org: 'steeltoe.io'
+    space: 'development'
+    deploymentOptions: 'manifest'
+    cfManifest: 'src/manifest.yml'
+    additionalDeployArgs: '-p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
+    createServices: false
+    bindServices: false
+    workingDirectory: 'src'

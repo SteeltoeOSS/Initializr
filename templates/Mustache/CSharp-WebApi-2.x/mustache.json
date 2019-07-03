@@ -1,0 +1,109 @@
+{
+  "Dependencies": [
+    {
+      "Name": "Actuators",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add management endpoints for your application"
+    },
+    {
+      "Name": "Auth",
+      "DefaultValue": false,
+      "Description": "Add Authentication"
+    },
+    {
+      "Name": "CircuitBreaker",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Circuit Breakers",
+      "friendlyName": "Circuit Breakers"
+    },
+    {
+      "Name": "CloudFoundry",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Target CloudFoundry Hosting"
+    },
+    {
+      "Name": "Discovery",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Discovery Client"
+    },
+    {
+      "Name": "DynamicLogger",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Dynamic Logger"
+    },
+    {
+      "Name": "MongoDB",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add MongoDB connnectors"
+    },
+    {
+      "Name": "MySql",
+      "DefaultValue": "false",
+      "Description": "Steeltoe: Add MySql connnectors"
+    },
+    {
+      "Name": "MySqlEFCore",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add MySQL EFCore connnectors"
+    },
+    {
+      "Name": "OAuthConnector",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add OAuth connnectors"
+    },
+    {
+      "Name": "Postgres",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Postgres connnectors"
+    },
+    {
+      "Name": "PostgresEFCore",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add PostgresEFCore connnectors"
+    },
+    {
+      "Name": "RabbitMQ",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add RabbitMQ connnectors"
+    },
+    {
+      "Name": "Redis",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Redis connnectors"
+    },
+    {
+      "Name": "SQLServer",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Microsoft SQL Server connnectors",
+      "friendlyName": "SQL Server"
+    }
+  ],
+  "SteeltoeVersion": {
+    "DefaultValue": "2.2.0",
+    "Description": "Target the appropriate Steeltoe version",
+    "choices": [
+      {
+        "choice": "2.2.0",
+        "Description": "Target Steeltoe version 2.2.0"
+      },
+      {
+        "choice": "2.3.0-rc1",
+        "Description": "Target Steeltoe version 2.3.0-rc1"
+      }
+    ]
+  },
+  "TargetFrameworkVersion": {
+    "DefaultValue": "netcoreapp2.2",
+    "Description": "Target the appropriate Dotnet framework version",
+    "choices": [
+      {
+        "Choice": "netcoreapp2.1",
+        "Description": "Target Dotnet framework version 2.1"
+      },
+      {
+        "Choice": "netcoreapp2.2",
+        "Description": "Target SDotnet framework version 2.2"
+      }
+    ]
+  }
+}
