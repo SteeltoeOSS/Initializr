@@ -230,10 +230,33 @@
         {
           "choice": "netcoreapp2.2",
           "description": "Target netcoreapp2.2"
+        },
+        {
+          "choice": "netcoreapp2.1",
+          "description": "Target netcoreapp2.1"
         }
       ],
       "replaces": "netcoreapp2.2",
       "defaultValue": "netcoreapp2.2"
+    },
+    "AspNetCoreVersion": {
+      "type": "generated",
+      "generator": "switch",
+      "replaces": "AspNetCoreVersionString",
+      "parameters": {
+        "evaluator": "C++",
+        "datatype": "string",
+        "cases": [
+          {
+            "condition": "(Framework == 'netcoreapp2.1')",
+            "value": "2.1.1"
+          },
+          {
+            "condition": "(Framework == 'netcoreapp2.2')",
+            "value": "2.2.0"
+          }
+        ]
+      }
     },
     "copyrightYear": {
       "type": "generated",
@@ -278,8 +301,8 @@
       "datatype": "bool",
       "defaultValue": "false",
       "description": "Steeltoe: Add Microsoft SQL Server connnectors",
-      "friendlyName":  "SQL Server"
-       
+      "friendlyName": "SQL Server"
+
     },
     "RabbitMQ": {
       "type": "parameter",

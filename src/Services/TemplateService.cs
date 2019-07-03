@@ -121,6 +121,11 @@ namespace Steeltoe.Initializr.Services
                 }
             }
 
+            if (!string.IsNullOrEmpty(model.TargetFrameworkVersion))
+            {
+                iParams.Add("Framework", model.TargetFrameworkVersion);
+            }
+
             var templateShortName = string.IsNullOrEmpty(model.TemplateShortName) ? DEFAULT_TEMPLATE : model.TemplateShortName;
 
             TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, EnvSettings);
@@ -134,7 +139,7 @@ namespace Steeltoe.Initializr.Services
 
             if (creationResult.Status != CreationResultStatus.Success)
             {
-                throw new TemplateAuthoringException(creationResult.Message, templateShortName);
+                throw new InvalidDataException(creationResult.Message + ": " + creationResult.Status + " " + templateShortName);
             }
 
             return outFolder;

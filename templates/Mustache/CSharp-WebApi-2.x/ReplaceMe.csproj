@@ -2,7 +2,7 @@
 
   <Import Project="versions.props" />
   <PropertyGroup>
-    <TargetFramework >{{TargetFramework}}</TargetFramework>
+    <TargetFramework>{{TargetFrameworkVersion}}</TargetFramework>
     {{#Auth}}
     <UserSecretsId >{{UserSecretsId}}</UserSecretsId>
     {{/Auth}}

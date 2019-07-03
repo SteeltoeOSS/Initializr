@@ -425,11 +425,58 @@ namespace Steeltoe.InitializrTests
             Assert.Contains("Foo.Bar.dll", dockerFile);
             Assert.Contains("Foo.Bar.csproj", dockerFile);
 
+            string projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
+            Assert.Contains("<TargetFramework>netcoreapp2.2</TargetFramework>", projectFile);
+
+
             foreach (var file in files)
             {
                 Assert.DoesNotContain("{{", file.Value);
                 Assert.DoesNotContain("}}", file.Value);
             }
+        }
+
+        [Theory]
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_targetVersion21(ITemplateService templateService, string templateName)
+        {
+            var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            {
+                TemplateShortName = templateName,
+                ProjectName = "Foo.Bar",
+                TargetFrameworkVersion = "netcoreapp2.1",
+            });
+            string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
+            Assert.Contains("services.AddMvc();", startUpContents);
+
+            string versionProps = files.Find(x => x.Key == "versions.props").Value;
+            Assert.Contains("<AspNetCoreVersion>2.1.1</AspNetCoreVersion", versionProps);
+
+            string projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
+            Assert.Contains("<TargetFramework>netcoreapp2.1</TargetFramework>", projectFile);
+
+        }
+
+        [Theory]
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_targetVersion22(ITemplateService templateService, string templateName)
+        {
+            var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            {
+                TemplateShortName = templateName,
+                ProjectName = "Foo.Bar",
+                TargetFrameworkVersion = "netcoreapp2.2",
+            });
+
+            string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
+            Assert.Contains("services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);", startUpContents);
+
+            string versionProps = files.Find(x => x.Key == "versions.props").Value;
+            Assert.Contains("<AspNetCoreVersion>2.2.0</AspNetCoreVersion", versionProps);
+
+            string projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
+            Assert.Contains("<TargetFramework>netcoreapp2.2</TargetFramework>", projectFile);
+
         }
     }
 }

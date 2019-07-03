@@ -56,7 +56,7 @@ namespace Steeltoe.Initializr.Models
             get => ProjectName + ".zip";
         }
 
-        public string TargetFrameworkVersion { get; internal set; }
+        public string TargetFrameworkVersion { get; set; }
 
         public IEnumerable<string> GetTemplateParameters()
         {

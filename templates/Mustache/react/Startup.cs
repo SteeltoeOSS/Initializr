@@ -126,11 +126,16 @@ namespace {{ProjectNameSpace}}
 {{#SQLServer}}
             services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));
 {{/SQLServer}}
+{{#TargetFrameworkVersion22}}
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-	    services.AddSpaStaticFiles(configuration =>
-	    {
-	        configuration.RootPath = "ClientApp/build";
-	    });
+{{/TargetFrameworkVersion22}}
+{{^TargetFrameworkVersion22}}
+            services.AddMvc();
+{{/TargetFrameworkVersion22}}
+	        services.AddSpaStaticFiles(configuration =>
+	        {
+	            configuration.RootPath = "ClientApp/build";
+	        });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

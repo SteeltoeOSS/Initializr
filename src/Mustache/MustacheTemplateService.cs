@@ -193,6 +193,16 @@ namespace Steeltoe.Initializr.Services
                 dataView.Add("AnyEFCore", "true");
             }
 
+            if (dataView["TargetFrameworkVersion"] == "netcoreapp2.2")
+            {
+                dataView.Add("AspNetCoreVersion", "2.2.0");
+                dataView.Add("TargetFrameworkVersion22", "true");
+            }
+            else if (dataView["TargetFrameworkVersion"] == "netcoreapp2.1")
+            {
+                dataView.Add("AspNetCoreVersion", "2.1.1");
+            }
+
             dataView.Add("ProjectNameSpace", projectName);
         }
 
