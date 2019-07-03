@@ -28,6 +28,10 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\CSharp-WebApi-2.x\Properties\**" />
+    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\react\Properties\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />

@@ -133,7 +133,12 @@ namespace Company.WebApplication1
 #if (SQLServerEFCore)
                services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));
 #endif
+#if (FrameworkVersion == "netcoreapp2.2")
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+#else
             services.AddMvc();
+#endif
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

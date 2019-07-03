@@ -128,9 +128,14 @@ namespace {{ProjectNameSpace}}
 {{#SQLServer}}
             services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));
 {{/SQLServer}}
+{{#TargetFrameworkVersion22}}
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+{{/TargetFrameworkVersion22}}
+{{^TargetFrameworkVersion22}}
+            services.AddMvc();
+{{/TargetFrameworkVersion22}}
     }
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
     if (env.IsDevelopment())

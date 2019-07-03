@@ -120,7 +120,11 @@ namespace Company.WebApplication1
                services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));
 #endif
 
+#if (FrameworkVersion == "netcoreapp2.2")
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+#else
+            services.AddMvc();
+#endif
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
