@@ -193,6 +193,15 @@ namespace Steeltoe.Initializr.Services
                 dataView.Add("AnyEFCore", "true");
             }
 
+            if (dataView["MySql"] == "true"
+                || dataView["Postgres"] == "true"
+                || dataView["Redis"] == "true"
+                || dataView["MongoDB"] == "true"
+                || dataView["OAuthConnector"] == "true")
+            {
+                dataView.Add("AnyConnector", "true");
+            }
+
             if (dataView["TargetFrameworkVersion"] == "netcoreapp2.2")
             {
                 dataView.Add("AspNetCoreVersion", "2.2.0");
@@ -282,7 +291,7 @@ namespace Steeltoe.Initializr.Services
             {
                 foreach (var dependencyName in model.Dependencies)
                 {
-                    var key = mustacheConfig.Dependencies.FirstOrDefault(k => k.Name.ToLower() == dependencyName).Name;
+                    var key = mustacheConfig.Dependencies.FirstOrDefault(k => k.Name.ToLower() == dependencyName)?.Name;
                     if (key != null)
                     {
                         dataView[key] = "true";
@@ -290,23 +299,29 @@ namespace Steeltoe.Initializr.Services
                 }
             }
 
-            dataView.Add("SteeltoeVersion", mustacheConfig.SteeltoeVersion.DefaultValue);
+            foreach (var version in mustacheConfig.Versions)
+            {
+                dataView.Add(version.Name, version.DefaultValue);
+            }
 
             if (model.SteeltoeVersion != null)
             {
-                if (mustacheConfig.SteeltoeVersion.Choices.Any(choice => model.SteeltoeVersion.ToLower() == choice.Choice))
+                var steeltoeVersionName = "SteeltoeVersion";
+                var steeltoVersion = mustacheConfig.Versions.FirstOrDefault(v => v.Name == steeltoeVersionName);
+                if (steeltoVersion.Choices.Any(choice => model.SteeltoeVersion.ToLower() == choice.Choice))
                 {
-                    dataView["SteeltoeVersion"] = model.SteeltoeVersion.ToLower();
+                    dataView[steeltoeVersionName] = model.SteeltoeVersion.ToLower();
                 }
             }
 
-            dataView.Add("TargetFrameworkVersion", mustacheConfig.TargetFrameworkVersion.DefaultValue);
-
             if (model.TargetFrameworkVersion != null)
             {
-                if (mustacheConfig.TargetFrameworkVersion.Choices.Any(choice => choice.Choice == model.TargetFrameworkVersion))
+                var targetFmwkName = "TargetFrameworkVersion";
+                var targetFmwk = mustacheConfig.Versions.FirstOrDefault(v => v.Name == targetFmwkName);
+
+                if (targetFmwk.Choices.Any(choice => model.TargetFrameworkVersion.ToLower() == choice.Choice))
                 {
-                    dataView["TargetFrameworkVersion"] = model.TargetFrameworkVersion;
+                    dataView[targetFmwkName] = model.TargetFrameworkVersion;
                 }
             }
 

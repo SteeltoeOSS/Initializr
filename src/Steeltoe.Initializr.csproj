@@ -32,6 +32,12 @@
     <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\CSharp-WebApi-2.x\Properties\**" />
     <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\react\Properties\**" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\DotNetTemplating\CSharp-React-2.x\versions.props" />
+    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\DotNetTemplating\CSharp-WebApi-2.x\versions.props" />
+    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\CSharp-WebApi-2.x\versions.props" />
+    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\react\versions.props" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />

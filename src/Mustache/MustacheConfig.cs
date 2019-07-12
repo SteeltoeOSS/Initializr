@@ -20,15 +20,15 @@ namespace Steeltoe.Initializr.Services
     {
         public List<Dependency> Dependencies { get; set; }
 
-        public Version SteeltoeVersion { get; set; }
-
-        public Version TargetFrameworkVersion { get; set; }
+        public List<Version> Versions { get; set; }
     }
 
 #pragma warning disable SA1402 // File may only contain a single type
     public class Version
 #pragma warning restore SA1402 // File may only contain a single type
     {
+        public string Name { get; set; }
+
         public string DefaultValue { get; set; }
 
         public string Description { get; set; }

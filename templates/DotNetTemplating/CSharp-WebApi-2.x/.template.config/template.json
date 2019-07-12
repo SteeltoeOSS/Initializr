@@ -242,7 +242,7 @@
     "AspNetCoreVersion": {
       "type": "generated",
       "generator": "switch",
-      "replaces": "AspNetCoreVersionString",
+      "replaces": "AspNetCoreVersion",
       "parameters": {
         "evaluator": "C++",
         "datatype": "string",
@@ -372,7 +372,6 @@
       "defaultValue": "false",
       "description": "Steeltoe: Add Dynamic Logger"
     },
-
     "SteeltoeVersion": {
       "type": "parameter",
       "datatype": "choice",
@@ -390,8 +389,32 @@
           "description": "Target Steeltoe version 2.3.0-rc1"
         }
       ]
-    }
+    },
+    "MongoDbVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "2.8.1",
+      "replaces": "MongoDbVersion"
+    },
+    "MySqlVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "8.0.16",
+      "replaces": "MySqlVersion"
+    },
+    "NpgSqlVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "4.0.4",
+      "replaces": "NpgSqlVersion"
+    },
+    "RabbitMQVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "5.1.0",
+      "replaces": "RabbitMQVersion"
 
+    }
   },
   "primaryOutputs": [
     {

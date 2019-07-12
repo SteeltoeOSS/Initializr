@@ -2,11 +2,11 @@
   <PropertyGroup>
     <SteeltoeCircuitBreakerVersion>{{SteeltoeVersion}}</SteeltoeCircuitBreakerVersion>
     <SteeltoeCommonVersion>{{SteeltoeVersion}}</SteeltoeCommonVersion>
-    <SteeltoeConfigVersion>{{SteeltoeVersion}}</SteeltoeConfigVersion>
-    <SteeltoeConnectorVersion>{{SteeltoeVersion}}</SteeltoeConnectorVersion>
+    <SteeltoeVersion>{{SteeltoeVersion}}</SteeltoeVersion>
+    <SteeltoeVersion>{{SteeltoeVersion}}</SteeltoeVersion>
     <SteeltoeDiscoveryVersion>{{SteeltoeVersion}}</SteeltoeDiscoveryVersion>
-    <SteeltoeLoggingVersion>{{SteeltoeVersion}}</SteeltoeLoggingVersion>
-    <SteeltoeManagementVersion>{{SteeltoeVersion}}</SteeltoeManagementVersion>
+    <SteeltoeVersion>{{SteeltoeVersion}}</SteeltoeVersion>
+    <SteeltoeVersion>{{SteeltoeVersion}}</SteeltoeVersion>
     <SteeltoeSecurityVersion>{{SteeltoeVersion}}</SteeltoeSecurityVersion>
     <AspNetCoreVersion>{{AspNetCoreVersion}}</AspNetCoreVersion>
     <RabbitMQVersion>5.1.0</RabbitMQVersion>
