@@ -21,7 +21,6 @@ namespace Steeltoe.Initializr.Models
     public class GeneratorModel
     {
         private string[] _dependencies;
-        private string _templateShortName;
         private string _projectName;
 
         public string[] Dependencies
@@ -30,31 +29,15 @@ namespace Steeltoe.Initializr.Models
             set => _dependencies = (value == null || value.Length == 0 || value[0] == null) ? null : value[0].ToLower().Split(',');
         }
 
-        public string ProjectName { get => _projectName ?? "steeltoeProject" ; set => _projectName = value; }
+        public string ProjectName { get => _projectName ?? "steeltoeProject"; set => _projectName = value; }
 
-        public string TemplateShortName
-        {
-            get
-            {
-               // _templateShortName = _templateShortName ?? DEFAULT_TEMPLATE;
-                //if (SteeltoeVersion == "3.0")
-                //{
-                //    _templateShortName = "steeltoe";
-                //}
-
-                return _templateShortName;
-            }
-            set => _templateShortName = value;
-        }
+        public string TemplateShortName { get; set; }
 
         public string Description { get; set; }
 
         public string SteeltoeVersion { get; set; }
 
-        public string ArchiveName
-        {
-            get => ProjectName + ".zip";
-        }
+        public string ArchiveName => ProjectName + ".zip";
 
         public string TargetFrameworkVersion { get; set; }
 
@@ -64,7 +47,7 @@ namespace Steeltoe.Initializr.Models
 
             if (!string.IsNullOrEmpty(SteeltoeVersion) && SteeltoeVersion != "3.0")
             {
-                templateParameters.Add($"SteeltoeVersion={SteeltoeVersion}");
+                templateParameters?.Add($"SteeltoeVersion={SteeltoeVersion}");
             }
 
             return templateParameters ?? new List<string>();

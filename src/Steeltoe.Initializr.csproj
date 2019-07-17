@@ -11,11 +11,6 @@
     <OutputType>Exe</OutputType>
      <StartupObject />
      <UserSecretsId>.zip</UserSecretsId>
-  
-
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\Hananiel\projects\InitializrApi\src\InitializrApi.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
@@ -28,19 +23,11 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\CSharp-WebApi-2.x\Properties\**" />
-    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\react\Properties\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\DotNetTemplating\CSharp-React-2.x\versions.props" />
-    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\DotNetTemplating\CSharp-WebApi-2.x\versions.props" />
-    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\CSharp-WebApi-2.x\versions.props" />
-    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\react\versions.props" />
-  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.1.0" />
     <PackageReference Include="Microsoft.TemplateEngine.Edge" Version="0.2.3-alpha" />
     <PackageReference Include="Microsoft.TemplateEngine.Orchestrator.RunnableProjects" Version="0.2.1-alpha" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
@@ -52,7 +39,17 @@
     </PackageReference>
   </ItemGroup>
 
-
+  <PropertyGroup>
+    <!--
+      Make sure any documentation comments which are included in code get checked for syntax during the build, but do
+      not report warnings for missing comments.
+  
+      CS1573: Parameter 'parameter' has no matching param tag in the XML comment for 'parameter' (but other parameters do)
+      CS1591: Missing XML comment for publicly visible type or member 'Type_or_Member'
+    -->
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
+  </PropertyGroup>
   
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
@@ -95,4 +92,3 @@
 
 
 </Project>
-  

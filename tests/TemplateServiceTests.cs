@@ -14,61 +14,54 @@
 
 using DiffMatchPatch;
 using Microsoft.Extensions.Logging;
-using Steeltoe.Initializr.Services;
-using System;
-using System.Collections.Generic;
+using Steeltoe.Initializr.Services.DotNetTemplateEngine;
+using Steeltoe.InitializrTests;
 using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Steeltoe.InitializrTests
+namespace Steeltoe.Initializr.Tests
 {
     public class TemplateServiceTests : XunitLoggingBase
     {
-        private ILogger<MustacheTemplateService> _logger;
+        private readonly LoggerFactory _loggerFactory;
 
         public TemplateServiceTests(ITestOutputHelper testOutputHelper)
             : base(testOutputHelper)
         {
-            var loggerFactory = new LoggerFactory();
-            loggerFactory.AddProvider(new XunitLoggerProvider(testOutputHelper));
-            _logger = loggerFactory.CreateLogger<MustacheTemplateService>();
+            _loggerFactory = new LoggerFactory();
+            _loggerFactory.AddProvider(new XunitLoggerProvider(testOutputHelper));
         }
 
-        [Theory]
-        [ClassData(typeof(TestData))]
-        public void GetAvailableTemplates_returnsTemplates(ITemplateService templateService, string templateName)
+        [Fact]
+        public void GetAvailableTemplates_returnsTemplates()
         {
-            var templates = templateService.GetAvailableTemplates();
+            var templates = new TemplateService(_loggerFactory.CreateLogger<TemplateService>())
+                .GetAvailableTemplates();
             Assert.NotNull(templates);
             Assert.NotEmpty(templates);
 
-            if (templateService is TemplateService)
-            {
-                Assert.Contains(templates, x => x.ShortName == "CSharp-WebApi-2.x");
-                Assert.Contains(templates, x => x.ShortName == "steeltoe");
-                Assert.Contains(templates, x => x.ShortName == "react");
-            }
-
+            Assert.Contains(templates, x => x.ShortName == "CSharp-WebApi-2.x");
+            Assert.Contains(templates, x => x.ShortName == "steeltoe");
+            Assert.Contains(templates, x => x.ShortName == "react");
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void GetDependencies(ITemplateService templateService, string templateName)
         {
-            var deps = templateService.GetDependencies(null);
+            var deps = templateService.GetDependencies(templateName);
             Assert.NotNull(deps);
             Assert.NotEmpty(deps);
 
             Assert.Contains(deps, x => x.Name == "OAuthConnector");
-
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void GetDependencies_WithFriendlyNames(ITemplateService templateService, string templateName)
         {
-            var deps = templateService.GetDependencies();
+            var deps = templateService.GetDependencies(templateName);
 
             Assert.NotNull(deps);
             Assert.NotEmpty(deps);
@@ -77,7 +70,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_actuators(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -96,22 +89,21 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_react(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
-
             });
 
-            string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
+            var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.NotEmpty(startUpContents);
           }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_discovery(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -128,7 +120,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_actuators_circuitbreakers(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -143,7 +135,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_MySql(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -159,7 +151,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_MySql_EFCore(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -174,7 +166,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_postgresql(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -190,7 +182,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_postgresEFCore(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -206,7 +198,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_RabbitMQ(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -222,7 +214,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_Redis(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -237,7 +229,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_MongoDB(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -252,7 +244,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_OauthConnector(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -267,7 +259,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_SqlServer(ITemplateService templateService, string templateName)
         {
             var steeltoeVersion = "2.3.0-rc1";
@@ -282,27 +274,27 @@ namespace Steeltoe.InitializrTests
 
             Assert.Contains(files, file => file.Key.StartsWith("Models"));
 
-            string fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
+            var fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
             Assert.Contains(@"<PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""2.2.0"" />", fileContents);
             Assert.Contains(@"<PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""2.2.0"" />", fileContents);
             Assert.Contains(@"<PackageReference Include=""Steeltoe.CloudFoundry.Connector.EFCore""  Version=""" + steeltoeVersion + @""" />", fileContents);
 
-            string program = files.Find(x => x.Key == "Program.cs").Value;
+            var program = files.Find(x => x.Key == "Program.cs").Value;
             Assert.Contains(@".InitializeDbContexts()", program);
 
-            string startup = files.Find(x => x.Key == "Startup.cs").Value;
+            var startup = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.Contains(@"using Steeltoe.CloudFoundry.Connector.SqlServer.EFCore;", startup);
             Assert.Contains(@"services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));", startup);
 
-            if (templateName != "react") //TODO: Add demo for react app
-            {
-                string valuesController = files.Find(x => x.Key.EndsWith("ValuesController.cs")).Value;
+            if (templateName != "react")
+            { // TODO: Add demo for react app
+                var valuesController = files.Find(x => x.Key.EndsWith("ValuesController.cs")).Value;
                 Assert.Contains(@" public ValuesController(ILogger<ValuesController> logger, [FromServices] TestContext context)", valuesController);
             }
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_DynamicLogger(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -322,7 +314,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_actuators_cloudFoundry(ITemplateService templateService, string templateName)
         {
             Assert.NotNull(templateService);
@@ -340,7 +332,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_actuators_v22(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -350,14 +342,13 @@ namespace Steeltoe.InitializrTests
                 TemplateShortName = templateName,
             });
 
-            string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
+            var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
             Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
-          
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_actuators_23rc1(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -367,10 +358,9 @@ namespace Steeltoe.InitializrTests
                 TemplateShortName = templateName,
             });
 
-            string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
+            var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
             Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
-           
         }
         ////[Fact]
         ////public void CreateTemplate_actuators_v3()
@@ -391,7 +381,7 @@ namespace Steeltoe.InitializrTests
         ////}
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_empty(ITemplateService templateService, string templateName)
         {
             Assert.NotNull(templateService);
@@ -401,20 +391,20 @@ namespace Steeltoe.InitializrTests
                 TemplateShortName = templateName,
                 ProjectName = "Foo.Bar",
             });
-            string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
+
+            var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
             Assert.DoesNotContain(files, file => file.Key.StartsWith("Models"));
             Assert.DoesNotContain("AddCloudFoundryActuators", startUpContents);
 
-            string dockerFile = files.Find(x => x.Key == "Dockerfile").Value;
+            var dockerFile = files.Find(x => x.Key == "Dockerfile").Value;
             Assert.NotNull(dockerFile);
 
             Assert.Contains("Foo.Bar.dll", dockerFile);
             Assert.Contains("Foo.Bar.csproj", dockerFile);
 
-            string projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
+            var projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
             Assert.Contains("<TargetFramework>netcoreapp2.2</TargetFramework>", projectFile);
-
 
             foreach (var file in files)
             {
@@ -424,7 +414,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_targetVersion21(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -443,7 +433,7 @@ namespace Steeltoe.InitializrTests
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_targetVersion22(ITemplateService templateService, string templateName)
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
@@ -453,24 +443,21 @@ namespace Steeltoe.InitializrTests
                 TargetFrameworkVersion = "netcoreapp2.2",
             });
 
-            string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
+            var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.Contains("services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);", startUpContents);
 
-            //string versionProps = files.Find(x => x.Key == "versions.props").Value;
-            //Assert.Contains("<AspNetCoreVersion>2.2.0</AspNetCoreVersion", versionProps);
-
-            string projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
+            var projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
             Assert.Contains("<TargetFramework>netcoreapp2.2</TargetFramework>", projectFile);
         }
 
         [Theory]
-        [ClassData(typeof(TestData))]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public void CreateTemplate_GeneratesCorrectVersions(ITemplateService templateService, string templateName)
         {
             var deps = templateService.GetDependencies();
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                //Todo : fix this
+                // Todo : fix this
                 Dependencies = new string[] { string.Join(",", deps.Select(d => d.ShortName.ToLower()).ToArray()) },
                 TemplateShortName = templateName,
                 ProjectName = "Foo.Bar",
@@ -601,19 +588,18 @@ namespace Steeltoe.InitializrTests
             Assert.True(DiffIgnoreWhitespace(expected, projectFile, out string diffMessage), diffMessage);
         }
 
-        public bool DiffIgnoreWhitespace(string a, string b, out string diffMessage)
+        private bool DiffIgnoreWhitespace(string a, string b, out string diffMessage)
         {
             var dmp = DiffMatchPatchModule.Default;
-            var a_min = a.Replace(" ", "").Replace("    ","");
-            var b_min = b.Replace(" ", "").Replace("    ", "");
-            var diffs = dmp.DiffMain(b_min,  a_min , true);
+            var a_min = a.Replace(" ", string.Empty).Replace("    ", string.Empty);
+            var b_min = b.Replace(" ", string.Empty).Replace("    ", string.Empty);
+            var diffs = dmp.DiffMain(b_min, a_min, true);
 
-            var filtered_diffs = diffs.Where(x => x.Operation != Operation.Equal && x.Text.Any(c => !char.IsWhiteSpace(c))).Take(3);
+            var filtered_diffs = diffs.Where(x => x.Operation != Operation.Equal && x.Text.Any(c => !char.IsWhiteSpace(c))).Take(3).ToList();
 
             var diffStrings = string.Join("\r\n", filtered_diffs.Select(d => (d.Operation == Operation.Insert ? '+' : '-') + $" {d.Text} "));
             diffMessage = diffStrings + "in " + b;
             return !filtered_diffs.Any();
-
         }
     }
 }

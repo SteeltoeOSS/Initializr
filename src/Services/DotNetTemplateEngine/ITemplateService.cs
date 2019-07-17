@@ -16,13 +16,13 @@ using Steeltoe.Initializr.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Steeltoe.Initializr.Services
+namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
 {
     public interface ITemplateService
     {
         List<KeyValuePair<string, string>> GenerateProjectFiles(GeneratorModel model);
 
-        Task<byte[]> GenerateProjectArchive(GeneratorModel model);
+        Task<byte[]> GenerateProjectArchiveAsync(GeneratorModel model);
 
         List<TemplateViewModel> GetAvailableTemplates();
 

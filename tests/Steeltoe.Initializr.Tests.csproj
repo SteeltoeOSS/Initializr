@@ -1,21 +1,24 @@
-﻿﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
- 
-  <PropertyGroup>
-    <NoWarn>SA0001</NoWarn>
-  </PropertyGroup>
+﻿ <Project Sdk="Microsoft.NET.Sdk.Web">
   <Import Project="..\shared.props" />
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
+   <PropertyGroup>
+     <!--
+       Make sure any documentation comments which are included in code get checked for syntax during the build, but do
+       not report warnings for missing comments.
+   
+       CS1573: Parameter 'parameter' has no matching param tag in the XML comment for 'parameter' (but other parameters do)
+       CS1591: Missing XML comment for publicly visible type or member 'Type_or_Member'
+     -->
+     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+     <NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
+   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
-
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
@@ -31,16 +34,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\src\Steeltoe.Initializr.csproj" />
   </ItemGroup>
-  
-  <Target Name="CopyTemplates" BeforeTargets="PreBuildEvent">
-    <ItemGroup>
-      <Templates Include="$(SolutionDir)\templates\**\*.*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(Templates)" DestinationFolder="$(TargetDir)\templates\%(RecursiveDir)" SkipUnchangedFiles="false" />
-   </Target> 
+   
 </Project>

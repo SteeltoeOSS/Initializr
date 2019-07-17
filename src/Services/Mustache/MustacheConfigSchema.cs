@@ -14,18 +14,35 @@
 
 using System.Collections.Generic;
 
-namespace Steeltoe.Initializr.Services
+namespace Steeltoe.Initializr.Services.Mustache
 {
-    public class MustacheConfig
+    public class MustacheConfigSchema
     {
-        public List<Dependency> Dependencies { get; set; }
+        public List<Param> Params { get; set; }
+
+        public List<CalculatedParam> CalculatedParams { get; set; }
 
         public List<Version> Versions { get; set; }
     }
 
 #pragma warning disable SA1402 // File may only contain a single type
+
+    public class CalculatedParam
+    {
+        public string Name { get; set; }
+
+        public string Expression { get; set; }
+
+        public ExpressionTypeEnum ExpressionType { get; set; }
+    }
+
+    public enum ExpressionTypeEnum
+    {
+        Lookup = 0,
+        Lambda,
+    }
+
     public class Version
-#pragma warning restore SA1402 // File may only contain a single type
     {
         public string Name { get; set; }
 
@@ -36,17 +53,14 @@ namespace Steeltoe.Initializr.Services
         public List<ChoiceValue> Choices { get; set; }
     }
 
-#pragma warning disable SA1402 // File may only contain a single type
     public class ChoiceValue
-#pragma warning restore SA1402 // File may only contain a single type
     {
         public string Choice { get; set; }
 
         public string Description { get; set; }
     }
 
-#pragma warning disable SA1402 // File may only contain a single type
-    public class Dependency
+    public class Param
 #pragma warning restore SA1402 // File may only contain a single type
     {
         public string Name { get; set; }
@@ -56,5 +70,7 @@ namespace Steeltoe.Initializr.Services
         public string Description { get; set; }
 
         public string FriendlyName { get; set; }
+
+        // TODO : Add param type Bool, String etc
     }
 }

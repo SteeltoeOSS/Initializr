@@ -1,5 +1,5 @@
 {
-  "Dependencies": [
+  "Params": [
     {
       "Name": "Actuators",
       "DefaultValue": false,
@@ -14,12 +14,13 @@
       "Name": "CircuitBreaker",
       "DefaultValue": false,
       "Description": "Steeltoe: Add Circuit Breakers",
-      "friendlyName": "Circuit Breakers"
+      "FriendlyName": "Circuit Breakers"
     },
     {
       "Name": "CloudFoundry",
       "DefaultValue": false,
-      "Description": "Steeltoe: Target CloudFoundry Hosting"
+      "Description": "Steeltoe: Target CloudFoundry Hosting",
+      "FriendlyName": "Cloud Foundry"
     },
     {
       "Name": "Discovery",
@@ -76,6 +77,54 @@
       "DefaultValue": false,
       "Description": "Steeltoe: Add Microsoft SQL Server connnectors",
       "friendlyName": "SQL Server"
+    },
+    {
+      "Name": "ProjectNameSpace",
+      "DefaultValue": "SteeltoeExample",
+      "Description": "Change the namespace "
+    }
+  ],
+  "CalculatedParams": 
+  [
+    {
+      "Name": "ActuatorsOrCloudFoundry",
+      "Expression": "Actuators || CloudFoundry",
+      "ExpressionType": "Lookup"
+    },
+    {
+    "Name": "MySqlOrMySqlEFCore",
+    "Expression": "MySql || MySqlEFCore",
+    "ExpressionType": "Lookup"
+    },
+    {
+      "Name": "ActuatorsOrDynamicLogger",
+      "Expression": "Actuators || DynamicLogger",
+      "ExpressionType": "Lookup"
+    },
+    {
+      "Name": "AnyEFCore",
+      "Expression": "SQLServer || MySqlEFCore",
+      "ExpressionType": "Lookup"
+    },
+    {
+      "Name": "AnyConnector",
+      "Expression": "MySql || Postgres || Redis || MongoDB || OAuthConnector",
+      "ExpressionType": "Lookup"
+    },
+    {
+      "Name": "AspNetCoreVersion",
+      "Expression": "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp2.2\"? \"2.2.0\": null",
+      "ExpressionType": "Lambda"
+    },
+    {
+      "Name": "TargetFrameworkVersion22",
+      "Expression": "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp2.2\"? \"true\": null",
+      "ExpressionType": "Lambda"
+    },
+    {
+      "Name": "AspNetCoreVersion",
+      "Expression": "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp2.1\"? \"2.1.1\": null",
+      "ExpressionType": "Lambda"
     }
   ],
   "Versions": [

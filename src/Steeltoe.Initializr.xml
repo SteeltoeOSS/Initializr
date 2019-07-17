@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Steeltoe.Initializr</name>
+    </assembly>
+    <members>
+        <member name="T:Steeltoe.Initializr.Services.DotNetTemplateEngine.InitializrComponentManager">
+            <summary>
+            Copy of https://github.com/dotnet/templating/blob/stabilize/src/Microsoft.TemplateEngine.Edge/Settings/ComponentManager.cs
+            Internal class and used by <see cref="T:Steeltoe.Initializr.Services.DotNetTemplateEngine.InitializrSettingsLoader"/>
+            No changes made
+            </summary>
+        </member>
+        <member name="T:Steeltoe.Initializr.Services.DotNetTemplateEngine.InitializrSettingsLoader">
+            <summary>
+            from: https://github.com/dotnet/templating/blob/master/src/Microsoft.TemplateEngine.Edge/Settings/SettingsLoader.cs
+            Needed a new method to rebuild Cache from settings
+            </summary>
+        </member>
+        <member name="T:Steeltoe.Initializr.Services.DotNetTemplateEngine.InitializrTemplateCache">
+            <summary>
+            From: https://github.com/dotnet/templating/blob/master/src/Microsoft.TemplateEngine.Edge/Settings/TemplateCache.cs
+            Need access to the Write Template Cache methods
+            </summary>
+        </member>
+        <member name="T:Steeltoe.Initializr.Services.DotNetTemplateEngine.InitializrMountPointManager">
+            <summary>
+            from: https://github.com/dotnet/templating/blob/master/src/Microsoft.TemplateEngine.Edge/Settings/MountPointManager.cs
+            Need access to internal class
+            </summary>
+        </member>
+        <member name="T:Steeltoe.Initializr.Services.Mustache.MustacheTemplateService">
+            <summary>
+            An implementation of a Dotnet Template service via Mustache (Stubble).
+            </summary>
+        </member>
+    </members>
+</doc>

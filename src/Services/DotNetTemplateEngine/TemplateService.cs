@@ -14,6 +14,7 @@
 
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.TemplateEngine.Abstractions;
 using Microsoft.TemplateEngine.Edge.Settings;
 using Microsoft.TemplateEngine.Edge.Template;
@@ -26,7 +27,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Steeltoe.Initializr.Services
+namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
 {
     public class TemplateService : ITemplateService
     {
@@ -71,17 +72,20 @@ namespace Steeltoe.Initializr.Services
         private readonly string _hivePath;
         private readonly string _outPath;
         private IMemoryCache _memoryCache;
+        private ILogger<TemplateService> _logger;
 
-        public TemplateService(IConfiguration configuration, IMemoryCache memoryCache)
-            : this()
+        public TemplateService(IConfiguration configuration, IMemoryCache memoryCache, ILogger<TemplateService> logger)
+            : this(logger)
         {
             _memoryCache = memoryCache;
             configuration.Bind(this); // Get friendlyNames
         }
 
-        public TemplateService()
+        public TemplateService(ILogger<TemplateService> logger)
         {
-            _hivePath = AppDomain.CurrentDomain.BaseDirectory + "templates" + Path.DirectorySeparatorChar + "DotNetTemplating"+ Path.DirectorySeparatorChar ;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+            _hivePath = AppDomain.CurrentDomain.BaseDirectory + "templates" + Path.DirectorySeparatorChar + "DotNetTemplating" + Path.DirectorySeparatorChar;
             _outPath = AppDomain.CurrentDomain.BaseDirectory + "output" + Path.DirectorySeparatorChar;
 
             Console.WriteLine("hivePath " + _hivePath);
@@ -147,7 +151,6 @@ namespace Steeltoe.Initializr.Services
 
         public List<KeyValuePair<string, string>> GenerateProjectFiles(GeneratorModel model)
         {
-
             var listOfFiles = new List<KeyValuePair<string, string>>();
 
             var outFolder = GenerateProject(model);
@@ -161,7 +164,7 @@ namespace Steeltoe.Initializr.Services
             return listOfFiles;
         }
 
-        public async Task<byte[]> GenerateProjectArchive(GeneratorModel model)
+        public async Task<byte[]> GenerateProjectArchiveAsync(GeneratorModel model)
         {
             var outFolder = GenerateProject(model);
 
@@ -171,20 +174,6 @@ namespace Steeltoe.Initializr.Services
             var archiveBytes = await System.IO.File.ReadAllBytesAsync(zipFile);
             await Task.Run(() => Delete(outFolder, zipFile));
             return archiveBytes;
-        }
-
-        private void Delete(string outFolder, string zipFile)
-        {
-            try
-            {
-                System.IO.File.Delete(zipFile);
-                Directory.Delete(Path.Combine(outFolder, ".."), true);
-            }
-            catch (Exception ex)
-            {
-                // Todo: log exception
-                // Console.WriteLine("Delete Error: " + ex.Message);
-            }
         }
 
         public List<TemplateViewModel> GetAvailableTemplates()
@@ -204,7 +193,9 @@ namespace Steeltoe.Initializr.Services
         {
             var list = GetAllTemplates();
 
-            var selectedTemplate = list.Where(x => x.ShortName == (shortName ?? DEFAULT_TEMPLATE)).FirstOrDefault();
+            shortName = string.IsNullOrEmpty(shortName) ? DEFAULT_TEMPLATE : shortName;
+
+            var selectedTemplate = list.FirstOrDefault(x => x.ShortName == shortName);
 
             if (selectedTemplate == null)
             {
@@ -219,6 +210,19 @@ namespace Steeltoe.Initializr.Services
                     ShortName = p.Name,
                     Description = p.Documentation,
                 }).ToList();
+        }
+
+        private void Delete(string outFolder, string zipFile)
+        {
+            try
+            {
+                System.IO.File.Delete(zipFile);
+                Directory.Delete(Path.Combine(outFolder, ".."), true);
+            }
+            catch (Exception ex)
+            {
+               _logger.LogError("Delete Error: " + ex.Message);
+            }
         }
 
         private EngineEnvironmentSettings GetEngineEnvironmentSettings()

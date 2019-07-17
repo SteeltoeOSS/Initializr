@@ -14,7 +14,7 @@ using Microsoft.TemplateEngine.Edge.Mount.Archive;
 using Microsoft.TemplateEngine.Edge.Mount.FileSystem;
 using Microsoft.TemplateEngine.Edge.Settings;
 
-namespace Steeltoe.Initializr.Services
+namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
 {
     /// <summary>
     /// Copy of https://github.com/dotnet/templating/blob/stabilize/src/Microsoft.TemplateEngine.Edge/Settings/ComponentManager.cs
