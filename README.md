@@ -2,9 +2,7 @@
 ![image](https://dev.azure.com/hsarella/sample/_apis/build/status/hananiel.start.steeltoe.io?branchName=master)
 
 
-Steeltoe Initializr provides an extensible API to generate quickstart projects. It also
-provides a configurable service. It provides a simple web UI to configure the project
-to generate and endpoints that you can use via plain HTTP.
+Steeltoe Initializr provides an extensible API to generate quickstart projects. It provides a simple web UI to configure the project to generate and endpoints that you can use via plain HTTP.
 
 Steeltoe Initializr also exposes an endpoint that serves its metadata in a well-known
 format to allow third-party clients to provide the necessary assistance.
@@ -19,7 +17,7 @@ The Web UI allows you to quickly generate a CSharp project with your choice of d
 
 In addition you can simply use curl like so:
 ```
-curl https://startsteeltoe.cfapps.io/starter.zip -d dependencies=actuators,cloudfoundry -d projectName=MyCompany.MySample -o myProject.zip
+curl https://startsteeltoe.cfapps.io/starter.zip -d dependencies=actuators,cloudfoundry -o myProject.zip
 
 or
 

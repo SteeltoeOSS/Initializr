@@ -12,8 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using DiffMatchPatch;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -266,19 +270,22 @@ namespace Steeltoe.InitializrTests
         [ClassData(typeof(TestData))]
         public void CreateTemplate_SqlServer(ITemplateService templateService, string templateName)
         {
+            var steeltoeVersion = "2.3.0-rc1";
+
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
                 Dependencies = new[] { "SQLServer" },
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
+                SteeltoeVersion = steeltoeVersion,
             });
 
             Assert.Contains(files, file => file.Key.StartsWith("Models"));
 
             string fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
-            Assert.Contains(@"<PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""$(AspNetCoreVersion)"" />", fileContents);
-            Assert.Contains(@"<PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""$(AspNetCoreVersion)"" />", fileContents);
-            Assert.Contains(@"<PackageReference Include=""Steeltoe.CloudFoundry.Connector.EFCore"" Version=""$(SteeltoeConnectorVersion)"" />", fileContents);
+            Assert.Contains(@"<PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""2.2.0"" />", fileContents);
+            Assert.Contains(@"<PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""2.2.0"" />", fileContents);
+            Assert.Contains(@"<PackageReference Include=""Steeltoe.CloudFoundry.Connector.EFCore""  Version=""" + steeltoeVersion + @""" />", fileContents);
 
             string program = files.Find(x => x.Key == "Program.cs").Value;
             Assert.Contains(@".InitializeDbContexts()", program);
@@ -306,7 +313,7 @@ namespace Steeltoe.InitializrTests
             });
 
             string fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
-            Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=""$(SteeltoeLoggingVersion)""/>", fileContents);
+            Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=""2.2.0""/>", fileContents);
 
             string programFileContents = files.Find(x => x.Key == "Program.cs").Value;
             Assert.Contains(@"using Steeltoe.Extensions.Logging;", programFileContents);
@@ -346,17 +353,7 @@ namespace Steeltoe.InitializrTests
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
             Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
-            string versionProps = files.Find(x => x.Key == "versions.props").Value;
-
-            Assert.Contains(
-                @"<SteeltoeCircuitBreakerVersion>2.2.0</SteeltoeCircuitBreakerVersion>
-    <SteeltoeCommonVersion>2.2.0</SteeltoeCommonVersion>
-    <SteeltoeConfigVersion>2.2.0</SteeltoeConfigVersion>
-    <SteeltoeConnectorVersion>2.2.0</SteeltoeConnectorVersion>
-    <SteeltoeDiscoveryVersion>2.2.0</SteeltoeDiscoveryVersion>
-    <SteeltoeLoggingVersion>2.2.0</SteeltoeLoggingVersion>
-    <SteeltoeManagementVersion>2.2.0</SteeltoeManagementVersion>
-    <SteeltoeSecurityVersion>2.2.0</SteeltoeSecurityVersion>", versionProps);
+          
         }
 
         [Theory]
@@ -373,17 +370,7 @@ namespace Steeltoe.InitializrTests
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
             Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
-            string versionProps = files.Find(x => x.Key == "versions.props").Value;
-
-            Assert.Contains(
-                @"<SteeltoeCircuitBreakerVersion>2.3.0-rc1</SteeltoeCircuitBreakerVersion>
-    <SteeltoeCommonVersion>2.3.0-rc1</SteeltoeCommonVersion>
-    <SteeltoeConfigVersion>2.3.0-rc1</SteeltoeConfigVersion>
-    <SteeltoeConnectorVersion>2.3.0-rc1</SteeltoeConnectorVersion>
-    <SteeltoeDiscoveryVersion>2.3.0-rc1</SteeltoeDiscoveryVersion>
-    <SteeltoeLoggingVersion>2.3.0-rc1</SteeltoeLoggingVersion>
-    <SteeltoeManagementVersion>2.3.0-rc1</SteeltoeManagementVersion>
-    <SteeltoeSecurityVersion>2.3.0-rc1</SteeltoeSecurityVersion>", versionProps);
+           
         }
         ////[Fact]
         ////public void CreateTemplate_actuators_v3()
@@ -442,6 +429,7 @@ namespace Steeltoe.InitializrTests
         {
             var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
+                Dependencies = new string[] { "Actuators,SQLServer" },
                 TemplateShortName = templateName,
                 ProjectName = "Foo.Bar",
                 TargetFrameworkVersion = "netcoreapp2.1",
@@ -449,12 +437,9 @@ namespace Steeltoe.InitializrTests
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.Contains("services.AddMvc();", startUpContents);
 
-            string versionProps = files.Find(x => x.Key == "versions.props").Value;
-            Assert.Contains("<AspNetCoreVersion>2.1.1</AspNetCoreVersion", versionProps);
-
             string projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
             Assert.Contains("<TargetFramework>netcoreapp2.1</TargetFramework>", projectFile);
-
+            Assert.Contains(@"<PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""2.1.1"" />", projectFile);
         }
 
         [Theory]
@@ -471,11 +456,163 @@ namespace Steeltoe.InitializrTests
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.Contains("services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);", startUpContents);
 
-            string versionProps = files.Find(x => x.Key == "versions.props").Value;
-            Assert.Contains("<AspNetCoreVersion>2.2.0</AspNetCoreVersion", versionProps);
+            //string versionProps = files.Find(x => x.Key == "versions.props").Value;
+            //Assert.Contains("<AspNetCoreVersion>2.2.0</AspNetCoreVersion", versionProps);
 
             string projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
             Assert.Contains("<TargetFramework>netcoreapp2.2</TargetFramework>", projectFile);
+        }
+
+        [Theory]
+        [ClassData(typeof(TestData))]
+        public void CreateTemplate_GeneratesCorrectVersions(ITemplateService templateService, string templateName)
+        {
+            var deps = templateService.GetDependencies();
+            var files = templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            {
+                //Todo : fix this
+                Dependencies = new string[] { string.Join(",", deps.Select(d => d.ShortName.ToLower()).ToArray()) },
+                TemplateShortName = templateName,
+                ProjectName = "Foo.Bar",
+            });
+
+            string projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
+            var expected = templateName != "react" ? @"<Project Sdk=""Microsoft.NET.Sdk.Web"">
+                              <PropertyGroup>
+                                <TargetFramework>netcoreapp2.2</TargetFramework>
+                                <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+                              </PropertyGroup>
+
+                              <ItemGroup >
+                                <PackageReference Include=""Microsoft.AspNetCore.App"" />
+                                <PackageReference Include=""Steeltoe.Extensions.Configuration.CloudFoundryCore""  Version=""2.2.0"" />
+                                <PackageReference Include=""Steeltoe.Management.ExporterCore""  Version=""2.2.0""/>
+                                <PackageReference Include=""Steeltoe.Management.CloudFoundryCore"" Version=""2.2.0"" />
+                                <PackageReference Include=""Steeltoe.CircuitBreaker.HystrixCore"" Version=""2.2.0"" />
+                                <PackageReference Include=""MySql.Data"" Version=""8.0.16"" />
+                                <PackageReference Include=""Npgsql"" Version=""4.0.4"" />
+                                <PackageReference Include=""Newtonsoft.Json"" Version=""12.0.2"" />
+
+                                <PackageReference Include=""Steeltoe.Discovery.ClientCore"" Version=""2.2.0""/>
+                                <PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""2.2.0"" />
+ 
+                                <PackageReference Include=""Microsoft.Extensions.Caching.Redis"" Version=""2.2.0"" />
+                                <PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""2.2.0"" />
+                                <PackageReference Include=""Steeltoe.CloudFoundry.Connector.EFCore""  Version=""2.2.0"" />
+                                <PackageReference Include=""Steeltoe.CloudFoundry.ConnectorCore""  Version=""2.2.0"" />
+
+                                <PackageReference Include=""Npgsql.EntityFrameworkCore.PostgreSQL""  Version=""2.2.0"" />
+                                <PackageReference Include=""MongoDB.Driver"" Version=""2.8.1"" />
+
+                                <PackageReference Include=""RabbitMQ.Client""  Version=""5.1.0"" />
+                                <PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=""2.2.0""/>
+                             </ItemGroup>
+                              <ItemGroup Condition=""'$(BUILD)' == ''"">
+                                <PackageReference Include=""Steeltoe.CircuitBreaker.Hystrix.MetricsStreamCore"" Version=""2.2.0"" />
+                                <PackageReference Include=""RabbitMQ.Client"" Version=""5.1.0"" />
+                              </ItemGroup>
+
+                              <ItemGroup Condition=""'$(BUILD)' == 'LOCAL'"">
+                                <PackageReference Include=""Steeltoe.CircuitBreaker.Hystrix.MetricsEventsCore"" Version=""2.2.0"" />
+                                <PackageReference Include=""System.Threading.ThreadPool"" Version=""4.3.0"" />
+                              </ItemGroup>
+</Project>
+" :
+@"
+<Project Sdk=""Microsoft.NET.Sdk.Web"">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+        <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+        <IsPackable>false</IsPackable>
+        <SpaRoot>ClientApp\</SpaRoot>
+        <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+    </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Content Remove=""$(SpaRoot)**"" />
+    <None Remove=""$(SpaRoot)**"" />
+    <None Include=""$(SpaRoot)**"" Exclude=""$(SpaRoot)node_modules\**"" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include=""Microsoft.AspNetCore.App"" />
+    <PackageReference Include=""Microsoft.AspNetCore.Razor.Design"" Version=""2.2.0"" PrivateAssets=""All"" />
+    <PackageReference Include=""Steeltoe.Extensions.Configuration.CloudFoundryCore""  Version=""2.2.0"" />
+    <PackageReference Include=""Steeltoe.Management.ExporterCore""  Version=""2.2.0""/>               
+
+    <PackageReference Include=""Steeltoe.Management.CloudFoundryCore"" Version=""2.2.0"" />
+    <PackageReference Include=""Steeltoe.CircuitBreaker.HystrixCore"" Version=""2.2.0"" />
+    <PackageReference Include=""MySql.Data"" Version=""8.0.16"" />
+    <PackageReference Include=""Npgsql"" Version=""4.0.4"" />
+    <PackageReference Include=""Newtonsoft.Json"" Version=""12.0.2"" />
+    <PackageReference Include=""Steeltoe.Discovery.ClientCore"" Version=""2.2.0""/>
+    <PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""2.2.0"" />
+    <PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""2.2.0"" />
+    <PackageReference Include=""Microsoft.Extensions.Caching.Redis"" Version=""2.2.0"" />
+    <PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""2.2.0"" />
+    <PackageReference Include=""Steeltoe.CloudFoundry.Connector.EFCore"" Version=""2.2.0"" />
+    <PackageReference Include=""Steeltoe.CloudFoundry.ConnectorCore""  Version=""2.2.0"" />
+
+    <PackageReference Include=""Npgsql.EntityFrameworkCore.PostgreSQL""  Version=""2.2.0"" />
+    <PackageReference Include=""MongoDB.Driver"" Version=""2.8.1"" />
+    <PackageReference Include=""RabbitMQ.Client""  Version=""5.1.0"" />
+    <PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=""2.2.0""/>
+    </ItemGroup>
+   <ItemGroup Condition=""'$(BUILD)' == ''"">
+    <PackageReference Include=""Steeltoe.CircuitBreaker.Hystrix.MetricsStreamCore"" Version=""2.2.0"" />
+    <PackageReference Include=""RabbitMQ.Client"" Version=""5.1.0"" />
+   </ItemGroup>
+   <ItemGroup Condition=""'$(BUILD)' == 'LOCAL'"">
+    <PackageReference Include=""Steeltoe.CircuitBreaker.Hystrix.MetricsEventsCore"" Version=""2.2.0"" />
+    <PackageReference Include=""System.Threading.ThreadPool"" Version=""4.3.0"" />
+   </ItemGroup>
+  <Target Name=""DebugEnsureNodeEnv"" BeforeTargets=""Build"" Condition="" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') "">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command=""node --version"" ContinueOnError=""true"">
+      <Output TaskParameter=""ExitCode"" PropertyName=""ErrorCode"" />
+    </Exec>
+    <Error Condition=""'$(ErrorCode)' != '0'"" Text=""Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE."" />
+    <Message Importance=""high"" Text=""Restoring dependencies using 'npm'. This may take several minutes..."" />
+    <Exec WorkingDirectory=""$(SpaRoot)"" Command=""npm install"" />
+  </Target>
+
+  <Target Name=""PublishRunWebpack"" AfterTargets=""ComputeFilesToPublish"">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory=""$(SpaRoot)"" Command=""npm install"" />
+    <Exec WorkingDirectory=""$(SpaRoot)"" Command=""npm run build"" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include=""$(SpaRoot)build\**"" />
+      <ResolvedFileToPublish Include=""@(DistFiles->'%(FullPath)')"" Exclude=""@(ResolvedFileToPublish)"">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>
+
+
+";
+
+            Assert.True(DiffIgnoreWhitespace(expected, projectFile, out string diffMessage), diffMessage);
+        }
+
+        public bool DiffIgnoreWhitespace(string a, string b, out string diffMessage)
+        {
+            var dmp = DiffMatchPatchModule.Default;
+            var a_min = a.Replace(" ", "").Replace("    ","");
+            var b_min = b.Replace(" ", "").Replace("    ", "");
+            var diffs = dmp.DiffMain(b_min,  a_min , true);
+
+            var filtered_diffs = diffs.Where(x => x.Operation != Operation.Equal && x.Text.Any(c => !char.IsWhiteSpace(c))).Take(3);
+
+            var diffStrings = string.Join("\r\n", filtered_diffs.Select(d => (d.Operation == Operation.Insert ? '+' : '-') + $" {d.Text} "));
+            diffMessage = diffStrings + "in " + b;
+            return !filtered_diffs.Any();
 
         }
     }

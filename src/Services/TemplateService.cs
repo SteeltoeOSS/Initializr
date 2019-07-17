@@ -212,7 +212,7 @@ namespace Steeltoe.Initializr.Services
             }
 
             return selectedTemplate.Parameters
-                .Where(p => p.Documentation != null && p.Documentation.ToLower().Contains("steeltoe"))
+                .Where(p => p.Documentation != null && p.Documentation.ToLower().StartsWith("steeltoe:"))
                 .Select(p => new ProjectDependency
                 {
                     Name = GetFriendlyName(p.Name),

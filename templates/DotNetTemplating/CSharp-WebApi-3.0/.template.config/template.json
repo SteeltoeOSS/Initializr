@@ -331,6 +331,31 @@
           "description": "Target Steeltoe version 3.0"
         }
       ]
+    },
+    "MongoDbVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "2.8.1",
+      "replaces": "MongoDbVersion"
+    },
+    "MySqlVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "8.0.16",
+      "replaces": "MySqlVersion"
+    },
+    "NpgSqlVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "4.0.4",
+      "replaces": "NpgSqlVersion"
+    },
+    "RabbitMQclient": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "5.1.0",
+      "replaces": "RabbitMQclient"
+
     }
 
   },
