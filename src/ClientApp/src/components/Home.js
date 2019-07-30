@@ -58,25 +58,25 @@ export class Home extends Component {
     return (
         <div>
             <form name="form" action="/starter.zip" method="post" autoComplete="off" onSubmit={this.trackSubmitEvent} >
-                    <div>
+                <div>
                     <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.2", "2.3.0-RC1"]} defaultValue="2.2" onChange={this.handleInputChange} />
-                   
+               
 
-                <div className="line">
-                    <div className="left">Project Metadata</div>
+                    <div className="line">
+                        <div className="left">Project Metadata</div>
                         <div className="right">
                             <div className="project-metadata">
-
+        
                                 <InputText title="Project Name" name="projectName" defaultValue="SteeltoeExample" tabIndex="1" />
                                 <div id="more-block">
                                     <InputText title="Description" name="description" defaultValue="Demo project for Steeltoe" tabIndex="2" />
-                                    <RightInputSelector title='Target Framework' values={["netcoreapp2.1", "netcoreapp2.2", "net461"]} defaultValue="netcoreapp2.2" />
+                                    <RightInputSelector title='Target Framework' values={["netcoreapp2.1", "netcoreapp2.2", "netcoreapp3.0"]} defaultValue="netcoreapp2.2" />
                                 </div>
                            
-                             </div>
+                            </div>
                         </div>
                     </div>      
-                <DependenciesSelector id="deps" />
+                    <DependenciesSelector id="deps" />
                     <br/>
                 </div>          
                 <div className="line row-action">

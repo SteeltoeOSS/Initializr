@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework Condition="'$(TargetFrameworkOverride)' == ''">netcoreapp2.2</TargetFramework>
+    <TargetFramework Condition="'$(TargetFrameworkOverride)' != ''">TargetFrameworkOverride</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+    <NoDefaultLaunchSettingsFile Condition="'$(ExcludeLaunchSettings)' == 'True'">True</NoDefaultLaunchSettingsFile>
+    <RootNamespace Condition="'$(name)' != '$(name{-VALUE-FORMS-}safe_namespace)'">Company.WebApplication1</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Content Remove="$(SpaRoot)**" />
+    <None Remove="$(SpaRoot)**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="AspNetCoreVersion" PrivateAssets="All" />
+    <PackageReference Include="Steeltoe.Extensions.Configuration.CloudFoundryCore"  Condition="'$(CloudFoundry)'" Version="SteeltoeVersion" />
+    <PackageReference Include="Steeltoe.Management.ExporterCore"  Version="SteeltoeVersion"/>
+
+    <PackageReference Include="Steeltoe.Management.CloudFoundryCore" Condition="'$(Actuators)' == 'True' OR '$(CloudFoundry)' == 'True'"  Version="SteeltoeVersion" />
+    <PackageReference Include="Steeltoe.CircuitBreaker.HystrixCore"  Condition="'$(CircuitBreaker)'" Version="SteeltoeVersion" />
+    <PackageReference Include="MySql.Data" Condition="'$(MySql)'" Version="MySqlVersion" />
+    <PackageReference Include="Npgsql" Condition="'$(Postgres)'" Version="NpgSqlVersion" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Steeltoe.Discovery.ClientCore" Condition="'$(Discovery)'" Version="SteeltoeVersion"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Condition="'$(SQLServer)'" Version="AspNetCoreVersion" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Condition="'$(SQLServer)'" Version="AspNetCoreVersion" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Condition="'$(Redis)'" Version="AspNetCoreVersion" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Condition="$(AnyEFCore)'" Version="AspNetCoreVersion" />
+    <PackageReference Include="Steeltoe.CloudFoundry.Connector.EFCore" Condition="'$(AnyEFCore)'"  Version="SteeltoeVersion" />
+    <PackageReference Include="Steeltoe.CloudFoundry.ConnectorCore" Condition="'$(AnyConnector)'" Version="SteeltoeVersion"/>
+
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"  Condition="'$(PostgresEFCore)'" Version="AspNetCoreVersion" />
+    <PackageReference Include="MongoDB.Driver" Condition="$(MongoDB)" Version="MongoDBVersion" />
+    <PackageReference Include="RabbitMQ.Client"  Condition="'$(RabbitMQ)'" Version="RabbitMQVersion" />
+    <PackageReference Include="Steeltoe.Extensions.Logging.DynamicLogger" Condition="'$(DynamicLogger)'" Version="SteeltoeVersion"/>
+  </ItemGroup>
+  <ItemGroup Condition="'$(CircuitBreaker)' == 'True'" Condition="'$(BUILD)' == ''">
+    <PackageReference Include="Steeltoe.CircuitBreaker.Hystrix.MetricsStreamCore" Version="SteeltoeVersion" />
+    <PackageReference Include="RabbitMQ.Client" Version="RabbitMQVersion" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(CircuitBreaker)' == 'True'" Condition="'$(BUILD)' == 'LOCAL'">
+    <PackageReference Include="Steeltoe.CircuitBreaker.Hystrix.MetricsEventsCore" Version="SteeltoeVersion" />
+    <PackageReference Include="System.Threading.ThreadPool" Version="4.3.0" />
+  </ItemGroup>
+<!--/-:cnd:noEmit -->
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+<!--/+:cnd:noEmit -->
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)build\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>

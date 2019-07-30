@@ -19,9 +19,10 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     <None Include="$(ProjectDir)..\templates\**\*.*">
       <Link>templates\%(RecursiveDir)%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
+    
   </ItemGroup>
 
 
@@ -37,6 +38,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+  
   </ItemGroup>
 
   <PropertyGroup>
@@ -62,6 +64,12 @@
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+   
+  </Target>
+  
+  <Target Name="Test" BeforeTargets="Compile">
+    <RemoveDir Directories="$(OutputPath)templates" />
+    <Message Importance="high" Text="Deleting ...$(OutputPath)templates" />
   </Target>
   
 

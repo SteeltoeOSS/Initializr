@@ -64,13 +64,20 @@ namespace Steeltoe.Initializr.Controllers
             return GenerateProject2(testModel);
         }
 
-        [Route("/dependencies")]
+        [Route("dependencies")]
         public ActionResult GetDependencies([FromQuery(Name = "templateShortName")] string templateShortName)
         {
             return Ok(_sttemplateService.GetDependencies(templateShortName));
         }
 
-        [Route("all")]
+//
+//        [Route("versions")]
+//        public ActionResult GetVersions()
+//        {
+//            return Ok(_sttemplateService.get(templateShortName));
+//        }
+
+        [Route("templates")]
         public ActionResult<IEnumerable<TemplateViewModel>> GetTemplates([FromQuery(Name = "Mustache")] bool useMustache)
         {
             return _sttemplateService.GetAvailableTemplates();

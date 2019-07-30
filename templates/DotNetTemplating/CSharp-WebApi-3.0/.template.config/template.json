@@ -11,7 +11,7 @@
   "groupIdentity": "Steeltoe.Microservice",
   "precedence": "4000",
   "identity": "Steeltoe.Microservice.CSharp.3.0",
-  "shortName": "steeltoe",
+  "shortName": "CSharp-WebApi-3.0",
   "tags": {
     "language": "C#",
     "type": "project"

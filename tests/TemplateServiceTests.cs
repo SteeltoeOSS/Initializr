@@ -42,8 +42,8 @@ namespace Steeltoe.Initializr.Tests
             Assert.NotEmpty(templates);
 
             Assert.Contains(templates, x => x.ShortName == "CSharp-WebApi-2.x");
-            Assert.Contains(templates, x => x.ShortName == "steeltoe");
-            Assert.Contains(templates, x => x.ShortName == "react");
+            Assert.Contains(templates, x => x.ShortName == "CSharp-WebApi-3.0");
+            Assert.Contains(templates, x => x.ShortName == "CSharp-React-2.x");
         }
 
         [Theory]
