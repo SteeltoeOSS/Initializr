@@ -45,8 +45,10 @@ namespace Steeltoe.Initializr.Tests
             var templateNames = new string[]
             {
                 string.Empty, // test default
-                "react",
+                "CSharp-React-2.x",
                 "CSharp-WebApi-2.x",
+                "CSharp-React-3.0",
+                "CSharp-WebApi-3.0",
             };
             var data = from implementation in implementations
                         from templateName in templateNames

@@ -113,7 +113,7 @@
     },
     {
       "Name": "AspNetCoreVersion",
-      "Expression": "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp2.2\"? \"2.2.0\": null",
+      "Expression": "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp3.0\"? \"3.0.100-preview7-012821\": null",
       "ExpressionType": "Lambda"
     },
     {
@@ -121,11 +121,7 @@
       "Expression": "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp2.2\"? \"true\": null",
       "ExpressionType": "Lambda"
     },
-    {
-      "Name": "AspNetCoreVersion",
-      "Expression": "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp2.1\"? \"2.1.1\": null",
-      "ExpressionType": "Lambda"
-    }
+   
   ],
   "Versions": [
     {
@@ -145,16 +141,12 @@
     },
     {
       "Name": "TargetFrameworkVersion",
-      "DefaultValue": "netcoreapp2.2",
+      "DefaultValue": "netcoreapp3.0",
       "Description": "Target the appropriate Dotnet framework version",
       "choices": [
         {
-          "Choice": "netcoreapp2.1",
-          "Description": "Target Dotnet framework version 2.1"
-        },
-        {
-          "Choice": "netcoreapp2.2",
-          "Description": "Target SDotnet framework version 2.2"
+          "Choice": "netcoreapp3.0",
+          "Description": "Target Dotnet framework version 3.0"
         }
       ]
     },

@@ -18,6 +18,12 @@
       "MountPointFactoryId": "8c19221b-dea3-4250-86fe-2d4e189a11d2",
       "MountPointId": "1815274a-f735-4189-9f1c-cbc16a31dd3c",
       "Place": "__Path__CSharp-React-2.x"
+    },
+    {
+      "ParentMountPointId": "00000000-0000-0000-0000-000000000000",
+      "MountPointFactoryId": "8c19221b-dea3-4250-86fe-2d4e189a11d2",
+      "MountPointId": "1815274a-f735-4189-9f1c-cbc16a31dd3d",
+      "Place": "__Path__CSharp-React-3.0"
     }
 
   ],
