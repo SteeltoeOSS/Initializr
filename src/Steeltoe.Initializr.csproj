@@ -67,11 +67,6 @@
    
   </Target>
   
-  <Target Name="Test" BeforeTargets="Compile">
-    <RemoveDir Directories="$(OutputPath)templates" />
-    <Message Importance="high" Text="Deleting ...$(OutputPath)templates" />
-  </Target>
-  
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <Exec Command="node --version" ContinueOnError="true">

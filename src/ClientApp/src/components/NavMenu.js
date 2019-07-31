@@ -17,6 +17,10 @@ const logoStyles = {
 const imageStyles = {
     paddingLeft: "20px"
 }
+const betaStyles = {
+    paddingLeft: "40px",
+    position: "absolute"
+}
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
    
@@ -41,8 +45,9 @@ export class NavMenu extends Component {
           <header style={styles}>
               <h1 style={logoStyles}>
                   <img src="logo-inline.svg" width="180px" height="50px" alt="" style={imageStyles} />
-                      <br/>
-                  Kick start your .NET app
+                  <img src="beta.png" height="80px" style={betaStyles} />
+               <br/>
+              Kick start your .NET app
               </h1>
          </header>
     );
