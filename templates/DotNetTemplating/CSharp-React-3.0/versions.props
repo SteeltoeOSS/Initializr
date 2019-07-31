@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup>
+    <SteeltoeCircuitBreakerVersion>SteeltoeVersion</SteeltoeCircuitBreakerVersion>
+    <SteeltoeCommonVersion>SteeltoeVersion</SteeltoeCommonVersion>
+    <SteeltoeVersion>SteeltoeVersion</SteeltoeVersion>
+    <SteeltoeVersion>SteeltoeVersion</SteeltoeVersion>
+    <SteeltoeDiscoveryVersion>SteeltoeVersion</SteeltoeDiscoveryVersion>
+    <SteeltoeVersion>SteeltoeVersion</SteeltoeVersion>
+    <SteeltoeVersion>SteeltoeVersion</SteeltoeVersion>
+    <SteeltoeSecurityVersion>SteeltoeVersion</SteeltoeSecurityVersion>
+    <AspNetCoreVersion>AspNetCoreVersionString</AspNetCoreVersion>
+    <RabbitMQVersion>5.1.0</RabbitMQVersion>
+    <MongoDBVersion>2.8.1</MongoDBVersion>
+    <NpgSqlVersion>4.0.4</NpgSqlVersion>
+    <MySqlVersion>8.0.16</MySqlVersion>
+  </PropertyGroup>
+</Project>

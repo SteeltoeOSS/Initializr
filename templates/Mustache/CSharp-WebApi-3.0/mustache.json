@@ -1,0 +1,174 @@
+{
+  "Params": [
+    {
+      "Name": "Actuators",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add management endpoints for your application"
+    },
+    {
+      "Name": "Auth",
+      "DefaultValue": false,
+      "Description": "Add Authentication"
+    },
+    {
+      "Name": "CircuitBreaker",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Circuit Breakers",
+      "FriendlyName": "Circuit Breakers"
+    },
+    {
+      "Name": "CloudFoundry",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Target CloudFoundry Hosting",
+      "FriendlyName": "Cloud Foundry"
+    },
+    {
+      "Name": "Discovery",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Discovery Client"
+    },
+    {
+      "Name": "DynamicLogger",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Dynamic Logger"
+    },
+    {
+      "Name": "MongoDB",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add MongoDB connnectors"
+    },
+    {
+      "Name": "MySql",
+      "DefaultValue": "false",
+      "Description": "Steeltoe: Add MySql connnectors"
+    },
+    {
+      "Name": "MySqlEFCore",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add MySQL EFCore connnectors"
+    },
+    {
+      "Name": "OAuthConnector",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add OAuth connnectors"
+    },
+    {
+      "Name": "Postgres",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Postgres connnectors"
+    },
+    {
+      "Name": "PostgresEFCore",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add PostgresEFCore connnectors"
+    },
+    {
+      "Name": "RabbitMQ",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add RabbitMQ connnectors"
+    },
+    {
+      "Name": "Redis",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Redis connnectors"
+    },
+    {
+      "Name": "SQLServer",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Microsoft SQL Server connnectors",
+      "friendlyName": "SQL Server"
+    },
+    {
+      "Name": "ProjectNameSpace",
+      "DefaultValue": "SteeltoeExample",
+      "Description": "Change the namespace "
+    }
+  ],
+  "CalculatedParams": 
+  [
+    {
+      "Name": "ActuatorsOrCloudFoundry",
+      "Expression": "Actuators || CloudFoundry",
+      "ExpressionType": "Lookup"
+    },
+    {
+    "Name": "MySqlOrMySqlEFCore",
+    "Expression": "MySql || MySqlEFCore",
+    "ExpressionType": "Lookup"
+    },
+    {
+      "Name": "ActuatorsOrDynamicLogger",
+      "Expression": "Actuators || DynamicLogger",
+      "ExpressionType": "Lookup"
+    },
+    {
+      "Name": "AnyEFCore",
+      "Expression": "SQLServer || MySqlEFCore",
+      "ExpressionType": "Lookup"
+    },
+    {
+      "Name": "AnyConnector",
+      "Expression": "MySql || Postgres || Redis || MongoDB || OAuthConnector",
+      "ExpressionType": "Lookup"
+    },
+    {
+      "Name": "AspNetCoreVersion",
+      "Expression": "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp3.0\"? \"3.0.100-preview7-012821\": null",
+      "ExpressionType": "Lambda"
+    },
+    {
+      "Name": "TargetFrameworkVersion22",
+      "Expression": "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp2.2\"? \"true\": null",
+      "ExpressionType": "Lambda"
+    },
+   
+  ],
+  "Versions": [
+    {
+      "Name": "SteeltoeVersion",
+      "DefaultValue": "2.2.0",
+      "Description": "Target the appropriate Steeltoe version",
+      "choices": [
+        {
+          "choice": "2.2.0",
+          "Description": "Target Steeltoe version 2.2.0"
+        },
+        {
+          "choice": "2.3.0-rc1",
+          "Description": "Target Steeltoe version 2.3.0-rc1"
+        }
+      ]
+    },
+    {
+      "Name": "TargetFrameworkVersion",
+      "DefaultValue": "netcoreapp3.0",
+      "Description": "Target the appropriate Dotnet framework version",
+      "choices": [
+        {
+          "Choice": "netcoreapp3.0",
+          "Description": "Target Dotnet framework version 3.0"
+        }
+      ]
+    },
+    {
+      "Name": "MySqlVersion",
+      "DefaultValue": "8.0.16"
+    },
+
+    {
+      "Name": "NpgSqlVersion",
+      "DefaultValue": "4.0.4"
+    },
+
+    {
+      "Name": "MongoDBVersion",
+      "DefaultValue": "2.8.1"
+    },
+
+    {
+      "Name": "RabbitMQVersion",
+      "DefaultValue": "5.1.0"
+    }
+  ]
+    
+}

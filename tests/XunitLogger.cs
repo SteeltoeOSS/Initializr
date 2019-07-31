@@ -16,9 +16,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using Xunit.Abstractions;
 
-namespace Steeltoe.InitializrTests
+namespace Steeltoe.Initializr.Tests
 {
-
     public class XunitLogger : ILogger
     {
         private readonly ITestOutputHelper _testOutputHelper;
@@ -50,7 +49,8 @@ namespace Steeltoe.InitializrTests
             public static NoopDisposable Instance = new NoopDisposable();
 
             public void Dispose()
-            { }
+            {
+            }
         }
     }
 }

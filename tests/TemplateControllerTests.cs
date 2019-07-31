@@ -14,8 +14,8 @@
 
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Logging;
-using Steeltoe.Initializr;
-using Steeltoe.Initializr.Services;
+using Steeltoe.Initializr.Services.Mustache;
+using Steeltoe.InitializrTests;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -24,13 +24,16 @@ using System.Net.Http;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Steeltoe.InitializrTests
+namespace Steeltoe.Initializr.Tests
 {
+    /// <summary>
+    /// Controller Tests for multiple templateService implementations.
+    /// </summary>
     public class TemplateControllerTests : XunitLoggingBase, IClassFixture<TestWebAppFactory<Startup>>
     {
-        private ILogger<MustacheTemplateService> _logger;
         private readonly TestWebAppFactory<Startup> _factory;
         private readonly HttpClient _client;
+        private ILogger<MustacheTemplateService> _logger;
 
         public TemplateControllerTests(ITestOutputHelper testOutputHelper, TestWebAppFactory<Startup> factory)
             : base(testOutputHelper)
@@ -39,7 +42,8 @@ namespace Steeltoe.InitializrTests
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false,
-            }) ;
+            });
+
             var loggerFactory = new LoggerFactory();
             loggerFactory.AddProvider(new XunitLoggerProvider(testOutputHelper));
             _logger = loggerFactory.CreateLogger<MustacheTemplateService>();
@@ -64,9 +68,8 @@ namespace Steeltoe.InitializrTests
                     }
                 }
             }
-            Assert.True(files.Count > 0);
-          
 
+            Assert.True(files.Count > 0);
         }
     }
 }

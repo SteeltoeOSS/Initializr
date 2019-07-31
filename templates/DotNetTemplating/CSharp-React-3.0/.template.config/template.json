@@ -1,0 +1,306 @@
+{
+  "author": "Microsoft",
+  "classifications": [
+    "Web",
+    "MVC",
+    "SPA"
+  ],
+  "groupIdentity": "Steeltoe React Service",
+  "identity": "Steeltoe.React.CSharp.3.0",
+  "name": "ASP.NET Core with React.js",
+  "preferNameDirectory": true,
+  "guids": [
+    "19732173-2cef-47b7-83db-1334bcb179d3", // Tenant ID
+    "73bc9b9d-9d6a-35d4-8429-2a2761773512" // Client ID
+  ],
+  "shortName": "CSharp-React-3.0",
+  "sourceName": "Company.WebApplication1",
+  "sources": [
+    {
+      "source": "./",
+      "target": "./",
+      "exclude": [
+        ".template.config/**"
+      ],
+      "modifiers": [
+        {
+          "condition": "(TargetFrameworkOverride == '')",
+          "exclude": [
+            "app.config"
+          ]
+        },
+        {
+          "condition": "(ExcludeLaunchSettings)",
+          "exclude": [
+            "Properties/launchSettings.json"
+          ]
+        },
+        {
+          "condition": "(!AnyEFCore)",
+          "exclude": [
+            "Models/**"
+          ]
+        }
+      ]
+    }
+  ],
+  "symbols": {
+    "ExcludeLaunchSettings": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Whether to exclude launchSettings.json from the generated template."
+    },
+    "HttpPort": {
+      "type": "parameter",
+      "datatype": "integer",
+      "description": "Port number to use for the HTTP endpoint in launchSettings.json."
+    },
+    "HttpPortGenerated": {
+      "type": "generated",
+      "generator": "port"
+    },
+    "HttpPortReplacer": {
+      "type": "generated",
+      "generator": "coalesce",
+      "parameters": {
+        "sourceVariableName": "HttpPort",
+        "fallbackVariableName": "HttpPortGenerated"
+      },
+      "replaces": "8080"
+    },
+    "HttpsPort": {
+      "type": "parameter",
+      "datatype": "integer",
+      "description": "Port number to use for the HTTPS endpoint in launchSettings.json. This option is only applicable when the parameter no-https is not used (no-https will be ignored if either IndividualAuth or OrganizationalAuth is used)."
+    },
+    "HttpsPortGenerated": {
+      "type": "generated",
+      "generator": "port",
+      "parameters": {
+        "low": 44300,
+        "high": 44399
+      }
+    },
+    "HttpsPortReplacer": {
+      "type": "generated",
+      "generator": "coalesce",
+      "parameters": {
+        "sourceVariableName": "HttpsPort",
+        "fallbackVariableName": "HttpsPortGenerated"
+      },
+      "replaces": "44300"
+    },
+    "TargetFrameworkOverride": {
+      "type": "parameter",
+      "description": "Overrides the target framework",
+      "replaces": "TargetFrameworkOverride",
+      "datatype": "string",
+      "defaultValue": ""
+    },
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "netcoreapp3.0",
+          "description": "Target netcoreapp3.0"
+        }
+      ],
+      "replaces": "netcoreapp3.0",
+      "defaultValue": "netcoreapp3.0"
+    },
+    "AspNetCoreVersion": {
+      "type": "generated",
+      "generator": "switch",
+      "replaces": "AspNetCoreVersion",
+      "parameters": {
+        "evaluator": "C++",
+        "datatype": "string",
+        "cases": [
+          {
+            "condition": "(Framework == 'netcoreapp3.0')",
+            "value": "3.0.100-preview7-012821"
+          }
+        ]
+      }
+    },
+    "HostIdentifier": {
+      "type": "bind",
+      "binding": "HostIdentifier"
+    },
+    "skipRestore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "If specified, skips the automatic restore of the project on create.",
+      "defaultValue": "false"
+    },
+    "Actuators": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add management endpoints for your application"
+    },
+    "CloudFoundry": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Target CloudFoundry Hosting"
+    },
+    "MySql": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add MySql connnectors"
+    },
+    "Postgres": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Postgres connnectors"
+    },
+    "SQLServer": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Microsoft SQL Server connnectors",
+      "friendlyName": "SQL Server"
+
+    },
+    "RabbitMQ": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add RabbitMQ connnectors"
+    },
+    "Redis": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Redis connnectors"
+    },
+    "MongoDB": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add MongoDB connnectors"
+    },
+    "OAuthConnector": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add OAuth connnectors"
+    },
+    "PostgresEFCore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add PostgresEFCore connnectors"
+    },
+    "MySqlEFCore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add MySQL EFCore connnectors"
+    },
+    "MySqlEF6": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add MySQL EF6 connnectors"
+    },
+    "AnyConnector": {
+      "type": "computed",
+      "value": "(MySql || Postgres || MySql || Redis || MongoDB || OAuthConnector)"
+    },
+    "AnyEFCore": {
+      "type": "computed",
+      "value": "(PostgresEFCore || MySqlEFCore || SQLServer)"
+    },
+    "CircuitBreaker": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Circuit Breakers"
+    },
+    "Discovery": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Discovery Client"
+    },
+    "DynamicLogger": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Dynamic Logger"
+    },
+
+    "SteeltoeVersion": {
+      "type": "parameter",
+      "datatype": "choice",
+      "defaultValue": "2.2.0",
+      "description": "Target the appropriate Steeltoe version",
+      "replaces": "SteeltoeVersion",
+      "choices": [
+        {
+          "choice": "2.2.0",
+          "description": "Target Steeltoe version 2.2.0"
+        },
+        {
+          "choice": "2.3.0-rc1",
+          "description": "Target Steeltoe version 2.3.0-rc1"
+        }
+      ]
+    },
+    "MongoDbVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "2.8.1",
+      "replaces": "MongoDBVersion"
+    },
+    "MySqlVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "8.0.16",
+      "replaces": "MySqlVersion"
+    },
+    "NpgSqlVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "4.0.4",
+      "replaces": "NpgSqlVersion"
+    },
+    "RabbitMQVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "5.1.0",
+      "replaces": "RabbitMQVersion"
+
+    },
+    "NoHttps": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Whether to turn off HTTPS. This option only applies if IndividualAuth or OrganizationalAuth are not being used."
+    }
+  },
+ "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "postActions": [
+    {
+      "condition": "(!skipRestore)",
+      "description": "Restore NuGet packages required by this project.",
+      "manualInstructions": [
+        {
+          "text": "Run 'dotnet restore'"
+        }
+      ],
+      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+      "continueOnError": true
+    }
+  ]
+}

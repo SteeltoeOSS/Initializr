@@ -21,7 +21,7 @@ export class DependenciesSelector extends Component {
         
     }
     componentDidMount() {
-        fetch('/dependencies')
+        fetch('/api/templates/dependencies')
             .then(response => response.json())
             .then(data => {
                 this.setState({

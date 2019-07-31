@@ -14,11 +14,9 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Steeltoe.Initializr.Models;
-using Steeltoe.Initializr.Services;
-using System;
+using Steeltoe.Initializr.Services.DotNetTemplateEngine;
+using Steeltoe.Initializr.Services.Mustache;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -35,7 +33,7 @@ namespace Steeltoe.Initializr.Controllers
         public TemplatesController(IEnumerable<ITemplateService> services)
         {
           // _templateService = services.OfType<TemplateService>().FirstOrDefault();
-            _sttemplateService = services.OfType<MustacheTemplateService>().FirstOrDefault(); ;
+            _sttemplateService = services.OfType<MustacheTemplateService>().FirstOrDefault();
         }
 
         [Route("/starter.zip")]
@@ -66,34 +64,34 @@ namespace Steeltoe.Initializr.Controllers
             return GenerateProject2(testModel);
         }
 
-        [Route("/dependencies")]
+        [Route("dependencies")]
         public ActionResult GetDependencies([FromQuery(Name = "templateShortName")] string templateShortName)
         {
             return Ok(_sttemplateService.GetDependencies(templateShortName));
         }
 
-        [Route("all")]
+//
+//        [Route("versions")]
+//        public ActionResult GetVersions()
+//        {
+//            return Ok(_sttemplateService.get(templateShortName));
+//        }
+
+        [Route("templates")]
         public ActionResult<IEnumerable<TemplateViewModel>> GetTemplates([FromQuery(Name = "Mustache")] bool useMustache)
         {
             return _sttemplateService.GetAvailableTemplates();
-                //: _templateService.GetAvailableTemplates();
         }
 
         private async Task<ActionResult> GenerateProject(GeneratorModel model)
         {
-            //var list = _sttemplateService.GetAvailableTemplates();
-
-            //if (list == null || !list.Any(x => x.ShortName.ToLower() == model.TemplateShortName.ToLower()))
-            //{
-            //    return NotFound($"Template {model.TemplateShortName} was not found");
-            //}
-            //model.TemplateShortName = string.Empty;
-            var archiveBytes = await _sttemplateService.GenerateProjectArchive(model);
+            var archiveBytes = await _sttemplateService.GenerateProjectArchiveAsync(model);
 
             var cd = new ContentDispositionHeaderValue("attachment")
             {
                 FileNameStar = model.ArchiveName,
             };
+
             Response.Headers.Add("Content-Disposition", cd.ToString());
 
             return File(archiveBytes, "application/zip");
@@ -101,7 +99,7 @@ namespace Steeltoe.Initializr.Controllers
 
         private ActionResult GenerateProject2(GeneratorModel model)
         {
-            var fileBytes = _sttemplateService.GenerateProjectArchive(model).Result;
+            var fileBytes = _sttemplateService.GenerateProjectArchiveAsync(model).Result;
             var cd = new ContentDispositionHeaderValue("attachment")
             {
                 FileNameStar = (model.ProjectName ?? "SteeltoeProject") + ".zip",

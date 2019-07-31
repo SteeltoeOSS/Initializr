@@ -20,7 +20,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.Services;
-using System.Collections.Generic;
+using Steeltoe.Initializr.Services.DotNetTemplateEngine;
+using Steeltoe.Initializr.Services.Mustache;
 
 namespace Steeltoe.Initializr
 {
@@ -49,7 +50,6 @@ namespace Steeltoe.Initializr
             });
             services.AddSingleton<ITemplateService, TemplateService>();
             services.AddSingleton<ITemplateService, MustacheTemplateService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,7 +67,7 @@ namespace Steeltoe.Initializr
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
@@ -80,6 +80,8 @@ namespace Steeltoe.Initializr
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
+
+                    // spa.UseProxyToSpaDevelopmentServer("https://startui.apps.pcfone.io");
                 }
             });
         }

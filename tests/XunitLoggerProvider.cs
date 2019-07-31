@@ -27,9 +27,10 @@ namespace Steeltoe.InitializrTests
         }
 
         public ILogger CreateLogger(string categoryName)
-            => new XunitLogger(_testOutputHelper, categoryName);
+            => new Initializr.Tests.XunitLogger(_testOutputHelper, categoryName);
 
         public void Dispose()
-        { }
+        {
+        }
     }
 }
