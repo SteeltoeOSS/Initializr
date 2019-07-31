@@ -31,7 +31,7 @@ steps:
 
 - task: CloudFoundry@1
   inputs:
-    cfEndpoint: 'PWS'
+    cfEndpoint: 'PWS-initializr'
     skipSSLValidation: true
     org: 'steeltoe.io'
     space: 'development'
