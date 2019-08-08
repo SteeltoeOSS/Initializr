@@ -22,10 +22,19 @@ namespace Steeltoe.Initializr.Services.Mustache
 
         public List<CalculatedParam> CalculatedParams { get; set; }
 
+        public List<ConditionalInclusions> ConditionalInclusions { get; set; }
+
         public List<Version> Versions { get; set; }
+
     }
 
 #pragma warning disable SA1402 // File may only contain a single type
+    public class ConditionalInclusions
+    {
+        public string Name { get; set; }
+
+        public string InclusionExpression { get; set; }
+    }
 
     public class CalculatedParam
     {
@@ -34,12 +43,15 @@ namespace Steeltoe.Initializr.Services.Mustache
         public string Expression { get; set; }
 
         public ExpressionTypeEnum ExpressionType { get; set; }
+
     }
 
     public enum ExpressionTypeEnum
     {
-        Lookup = 0,
-        Lambda,
+        Any = 0, // Any of the keys are present in Comma seperated list
+        Case, // Given string a:x, b:y, c:z Case when key is a, then x ...
+        Bool, // Boolean expression over the keys (converted to lambda)
+        String, // String lambda expression over keys
     }
 
     public class Version

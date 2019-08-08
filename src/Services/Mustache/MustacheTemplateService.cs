@@ -26,6 +26,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Steeltoe.Initializr.Utilities;
 
 namespace Steeltoe.Initializr.Services.Mustache
 {
@@ -57,7 +58,7 @@ namespace Steeltoe.Initializr.Services.Mustache
             _logger = logger;
             _templatePath = AppDomain.CurrentDomain.BaseDirectory + "templates" + Path.DirectorySeparatorChar +
                             "Mustache";
-            _mustacheConfig = new MustacheConfig();
+            _mustacheConfig = new MustacheConfig(_logger, _templatePath);
         }
 
         public async Task<byte[]> GenerateProjectArchiveAsync(GeneratorModel model)
@@ -65,7 +66,7 @@ namespace Steeltoe.Initializr.Services.Mustache
             return await Task.Run(() => GenerateProjectArchive(model)).ConfigureAwait(false);
         }
 
-        public List<KeyValuePair<string, string>> GenerateProjectFiles(GeneratorModel model)
+        public async Task<List<KeyValuePair<string, string>>> GenerateProjectFiles(GeneratorModel model)
         {
             var name = string.IsNullOrEmpty(model.TemplateShortName) ? DefaultTemplateName : model.TemplateShortName;
 
@@ -73,36 +74,31 @@ namespace Steeltoe.Initializr.Services.Mustache
 
             if (!Directory.Exists(templatePath))
             {
-                throw new InvalidDataException("Template with $name doesnt exist");
+                throw new InvalidDataException("Template with $name doesn't exist");
             }
 
-            var dataView = _mustacheConfig.GetDataView(templatePath, model);
-            var listOfFiles = new List<KeyValuePair<string, string>>();
-
-            foreach (var file in _mustacheConfig.GetFilteredSourceSets(dataView, templatePath))
+            Dictionary<string, string> dataView;
+            using (Timing.Over(_logger, "GetDataView"))
             {
-                if (file.EndsWith("mustache.json")
-                    || file.EndsWith("sourceExclusions.json"))
-                {
-                    continue;
-                }
+                dataView = await _mustacheConfig.GetDataView(name, model.Dependencies, model);
+            }
 
-                var pathPrefix = file.Replace(Path.GetFullPath(templatePath), string.Empty)
-                    .TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-
-                string fileText = File.ReadAllText(file);
-
-                if (file.EndsWith(".csproj"))
+            var listOfFiles = new List<KeyValuePair<string, string>>();
+            using (Timing.Over(_logger, "Rendering files"))
+            {
+                foreach (var file in _mustacheConfig.GetFilteredSourceSets(dataView, name))
                 {
-                    pathPrefix =
-                        pathPrefix.Replace("ReplaceMe", model.ProjectName ?? "SteeltoeExample"); // get from model
-                    var output = Render(file, fileText, dataView);
-                    listOfFiles.Add(new KeyValuePair<string, string>(pathPrefix, output));
-                }
-                else
-                {
-                    var output = Render(file, fileText, dataView);
-                    listOfFiles.Add(new KeyValuePair<string, string>(pathPrefix, output));
+                    if (file.Name.EndsWith(".csproj"))
+                    {
+                        var fileName = file.Name.Replace("ReplaceMe", model.ProjectName ?? "SteeltoeExample"); 
+                        var output = Render(file.Name, file.Text, dataView);
+                        listOfFiles.Add(new KeyValuePair<string, string>(fileName, output));
+                    }
+                    else
+                    {
+                        var output = Render(file.Name, file.Text, dataView);
+                        listOfFiles.Add(new KeyValuePair<string, string>(file.Name, output));
+                    }
                 }
             }
 
@@ -111,8 +107,7 @@ namespace Steeltoe.Initializr.Services.Mustache
 
         public List<TemplateViewModel> GetAvailableTemplates()
         {
-            return Directory
-                .GetDirectories(_templatePath)
+            return _mustacheConfig.GetTemplateNames()
                 .Select(path => new TemplateViewModel
                 {
                     Name = new DirectoryInfo(path).Name,
@@ -134,8 +129,8 @@ namespace Steeltoe.Initializr.Services.Mustache
                 throw new InvalidDataException($"Could not find template with name {shortName} ");
             }
 
-            var templatePath = _templatePath + Path.DirectorySeparatorChar + selectedTemplate.Name;
-            var config = _mustacheConfig.GetMustacheConfigSchema(templatePath);
+           // var templatePath = _templatePath + Path.DirectorySeparatorChar + selectedTemplate.Name;
+            var config = _mustacheConfig.GetSchema(shortName);
 
             return config.Params
                 .Where(p => p.Description.ToLower().Contains("steeltoe"))
@@ -152,10 +147,10 @@ namespace Steeltoe.Initializr.Services.Mustache
             throw new NotImplementedException();
         }
 
-        private byte[] GenerateProjectArchive(GeneratorModel model)
+        private async Task<byte[]> GenerateProjectArchive(GeneratorModel model)
         {
             byte[] archiveBytes;
-            var listOfFiles = GenerateProjectFiles(model);
+            var listOfFiles = await GenerateProjectFiles(model);
 
             using (var memoryStream = new MemoryStream())
             {

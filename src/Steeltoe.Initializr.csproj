@@ -24,6 +24,12 @@
     </None>
     
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\CSharp-React-2.x\sourceExclusions.json" />
+    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\CSharp-React-3.0\sourceExclusions.json" />
+    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\CSharp-WebApi-2.x\sourceExclusions.json" />
+    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\CSharp-WebApi-3.0\sourceExclusions.json" />
+  </ItemGroup>
 
 
   <ItemGroup>

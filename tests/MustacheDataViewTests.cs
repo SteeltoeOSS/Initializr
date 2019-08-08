@@ -14,72 +14,171 @@
 
 using Steeltoe.Initializr.Services.Mustache;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Steeltoe.InitializrTests;
 using Xunit;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace Steeltoe.Initializr.Tests
 {
-    public class MustacheDataViewTests
+    public class MustacheDataViewTests : XunitLoggingBase
     {
-        [Fact]
-        public void TestExpressions()
+        private readonly ILogger<MustacheDataViewTests> _logger;
+
+        public MustacheDataViewTests(ITestOutputHelper testOutputHelper)
+            : base(testOutputHelper)
         {
-            var cdv = new MustacheConfig();
-            var dv = new Dictionary<string, object>
+            var loggerFactory = new LoggerFactory();
+            loggerFactory.AddProvider(new XunitLoggerProvider(testOutputHelper));
+            _logger = loggerFactory.CreateLogger<MustacheDataViewTests>();
+        }
+
+        [Fact]
+        public async Task TestExpressions()
+        {
+            var config = new MustacheConfigSchema()
             {
-                { "A", true },
-                { "B", false },
-                { "C", false },
+                Params = new List<Param>
+                {
+                    new Param {Name = "A", DefaultValue = "true"},
+                    new Param {Name = "B", DefaultValue = "false"},
+                    new Param {Name = "C", DefaultValue = "false"},
+                },
             };
-            var calcExp = new CalculatedParam
+
+            var dv = new Dictionary<string, string>
+            {
+                {"A", "true"},
+                {"B", "false"},
+                {"C", "false"},
+            };
+
+            var calcParam = new CalculatedParam
             {
                 Name = "testExp",
                 Expression = "A || B && !C ",
-                ExpressionType = ExpressionTypeEnum.Lookup,
+                ExpressionType = ExpressionTypeEnum.Bool,
             };
 
-            var lambda = cdv.BuildLookupLambda(calcExp, dv);
-            cdv.EvaluateLambdaExpression<bool>(calcExp.Name, lambda, dv);
-            Assert.Contains(dv, (item) => item.Key == calcExp.Name && item.Value is bool itemValue && itemValue);
+            var expression = new BooleanExpression(_logger, calcParam, config);
+            var result = await expression.EvaluateExpressionAsync(dv);
+            Assert.Equal("True", result);
         }
 
         [Fact]
-        public void TestExpressionsActuators()
+        public async Task TestExpressionsActuators()
         {
-            var cdv = new MustacheConfig();
-            var dv = new Dictionary<string, object>
+            var config = new MustacheConfigSchema()
             {
-                { "MySql", true },
-                { "MySqlEFCore", false },
+                Params = new List<Param>
+                {
+                    new Param { Name = "MySql", DefaultValue = "true" },
+                    new Param { Name = "MySqlEFCore", DefaultValue = "false" },
+                    new Param { Name = "C", DefaultValue = "false" },
+                },
             };
-            var calcExp = new CalculatedParam
+            var dv = new Dictionary<string, string>
+            {
+                { "MySql", "true" },
+                { "MySqlEFCore", "false" },
+            };
+            var calcParam = new CalculatedParam
             {
                 Name = "MySqlOrMySqlEFCore",
                 Expression = "MySql || MySqlEFCore",
-                ExpressionType = ExpressionTypeEnum.Lookup,
+                ExpressionType = ExpressionTypeEnum.Bool,
             };
 
-            var lambda = cdv.BuildLookupLambda(calcExp, dv);
-            cdv.EvaluateLambdaExpression<bool>(calcExp.Name, lambda, dv);
-            Assert.Contains(dv, (item) => item.Key == calcExp.Name && item.Value is bool itemValue && itemValue);
+            var expression = new BooleanExpression(_logger, calcParam, config);
+            var result = await expression.EvaluateExpressionAsync(dv);
+            Assert.Equal(true.ToString(), result);
         }
 
         [Fact]
-        public void TestLambdaExpression()
+        public async Task TestStringExpression()
         {
-            var cdv = new MustacheConfig();
-            var dv = new Dictionary<string, object>
+            var config = new MustacheConfigSchema()
+            {
+                Params = new List<Param>
+                {
+                    new Param { Name = "MySql", DefaultValue = "true" },
+                    new Param { Name = "MySqlEFCore", DefaultValue = "false" },
+                    new Param { Name = "C", DefaultValue = "false" },
+                },
+            };
+            var dv = new Dictionary<string,string>
             {
                 { "TargetFrameworkVersion", "netcoreapp2.2" },
             };
-            var calcExp = new CalculatedParam
+            var calcParam = new CalculatedParam
             {
                 Name = "AspNetCoreVersion",
                 Expression = "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp2.2\"? \"2.2.0\": null",
-                ExpressionType = ExpressionTypeEnum.Lambda,
+                ExpressionType = ExpressionTypeEnum.String,
             };
 
-            cdv.EvaluateLambdaExpression<string>(calcExp.Name, calcExp.Expression, dv);
-            Assert.Contains(dv, (item) => item.Key == calcExp.Name && (string)item.Value == "2.2.0");
+            var expression = new StringExpression(_logger, calcParam, config);
+            var result = await expression.EvaluateExpressionAsync(dv);
+            Assert.Equal("2.2.0", result);
+        }
+
+        [Fact]
+        public async Task TestCaseExpression()
+        {
+            var config = new MustacheConfigSchema()
+            {
+                Params = new List<Param>
+                {
+                    new Param { Name = "MySql", DefaultValue = "true" },
+                    new Param { Name = "MySqlEFCore", DefaultValue = "false" },
+                    new Param { Name = "C", DefaultValue = "false" },
+                },
+            };
+            var dv = new Dictionary<string, string>
+            {
+                { "TargetFrameworkVersion", "netcoreapp2.2" },
+            };
+            var calcParam = new CalculatedParam
+            {
+                Name = "AspNetCoreVersion",
+                Expression = "TargetFrameworkVersion,netcoreapp2.2=2.2.0,netcoreapp2.1=2.1.1,default=False",
+                ExpressionType = ExpressionTypeEnum.Case,
+            };
+
+            var expression = new CaseExpression(_logger, calcParam, config);
+            var result = await expression.EvaluateExpressionAsync(dv);
+            Assert.Equal("2.2.0", result);
+        }
+
+        [Fact]
+        public async Task TestAnyExpression()
+        {
+            var config = new MustacheConfigSchema()
+            {
+                Params = new List<Param>
+                {
+                    new Param { Name = "MySql", DefaultValue = "true" },
+                    new Param { Name = "MySqlEFCore", DefaultValue = "false" },
+                    new Param { Name = "C", DefaultValue = "false" },
+                },
+            };
+            var dv = new Dictionary<string, string>
+            {
+                { "MySql", "true" },
+            };
+            var calcParam = new CalculatedParam
+            {
+                Name = "AnyEFCore",
+                Expression = "MySql,Postgres,Redis,MongoDB,OAuthConnector",
+                ExpressionType = ExpressionTypeEnum.Any,
+            };
+
+            var expression = new AnyExpression(_logger, calcParam, config);
+            var result = await expression.EvaluateExpressionAsync(dv);
+            Assert.Equal("True", result);
+
         }
     }
 }

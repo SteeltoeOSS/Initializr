@@ -21,212 +21,234 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Rewrite.Internal.UrlMatches;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.Logging;
+using Microsoft.TemplateEngine.Core.Matching;
+using Steeltoe.Initializr.Utilities;
 
 namespace Steeltoe.Initializr.Services.Mustache
 {
     public class MustacheConfig
     {
-        public IEnumerable<string> GetFilteredSourceSets(Dictionary<string, object> dataView, string templatePath)
+        private readonly ILogger _logger;
+        private readonly IDictionary<string, MustacheConfigSchema> _templateConfigs;
+        private readonly IDictionary<string, IEnumerable<SourceFile>> _sourceSets;
+        private readonly IDictionary<string, IDictionary<string, IExpression>> _evaluationExpressions = new Dictionary<string, IDictionary<string, IExpression>>();
+
+        public MustacheConfig(ILogger logger, string templatePath)
         {
-            var files = Directory.EnumerateFiles(templatePath, "*", SearchOption.AllDirectories).ToList();
-            var json = File.ReadAllText(Path.Combine(templatePath, "sourceExclusions.json"));
-            IDictionary<string, string>
-                allExclusions = JsonConvert.DeserializeObject<IDictionary<string, string>>(json);
-            var conditionalInclusions = allExclusions.Where(x => !dataView.ContainsKey(x.Key)
-                                                                 || (dataView[x.Key] is bool boolValue && !boolValue)
-                                                                 || (dataView[x.Key] is string stringValue &&
-                                                                     stringValue != "true")).ToList();
-            var exclusionFiles = new List<string>();
-
-            foreach (string file in files)
+            _logger = logger;
+            _templateConfigs = new Dictionary<string, MustacheConfigSchema>();
+            _sourceSets = new Dictionary<string, IEnumerable<SourceFile>>();
+            if (!string.IsNullOrEmpty(templatePath))
             {
-                var pathPrefix = file.Replace(Path.GetFullPath(templatePath), string.Empty)
-                    .TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                LoadConfig(templatePath);
+            }
+        }
 
-                foreach (var inclusion in conditionalInclusions)
+        private void LoadConfig(string templatePath)
+        {
+            foreach (var dir in new DirectoryInfo(templatePath).EnumerateDirectories())
+            {
+                var schema = ReadSchema(dir.FullName);
+                _templateConfigs.Add(dir.Name, schema);
+
+                _sourceSets.Add(dir.Name, GetSourceSets(templatePath + Path.DirectorySeparatorChar + dir.Name));
+
+                var evalExpressions = new Dictionary<string, IExpression>();
+                foreach (var calculatedParam in schema.CalculatedParams)
                 {
-                    var inclusionExpression = inclusion.Value;
-
-                    if (inclusionExpression.EndsWith("**"))
+                    IExpression expression = null;
+                    switch (calculatedParam.ExpressionType)
                     {
-                        if (pathPrefix.StartsWith(inclusionExpression.Replace("/**", string.Empty)))
+                        case ExpressionTypeEnum.Any:
+                            expression = new AnyExpression(_logger, calculatedParam, schema);
+                            break;
+                        case ExpressionTypeEnum.Bool:
+                            expression = new BooleanExpression(_logger, calculatedParam, schema);
+                            break;
+                        case ExpressionTypeEnum.Case:
+                            expression = new CaseExpression(_logger, calculatedParam, schema);
+                            break;
+                        case ExpressionTypeEnum.String:
+                            expression = new CaseExpression(_logger, calculatedParam, schema);
+                            break;
+                    }
+
+                    if (expression != null)
+                    {
+                        evalExpressions.Add(calculatedParam.Name, expression);
+                    }
+                }
+
+                _evaluationExpressions.Add(dir.Name, evalExpressions);
+
+            }
+        }
+
+        private IEnumerable<SourceFile> GetSourceSets(string path)
+        {
+            var files = Directory.EnumerateFiles(path, "*", SearchOption.AllDirectories).ToList();
+            var returnValue = new List<SourceFile>();
+            foreach (var file in files)
+            {
+                returnValue.Add(new SourceFile {
+                    Name = file.Replace(Path.GetFullPath(path), string.Empty)
+                        .TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar),
+                    FullPath = file,
+                    Text = File.ReadAllText(file),
+                });
+            }
+
+            return returnValue;
+        }
+
+        private List<string> GetExclusionList(Dictionary<string, string> dataView, MustacheConfigSchema schema)
+        {
+            // This list of expressions that do NOT apply become the exclusion list here
+            return schema.ConditionalInclusions.Where(x => !dataView.ContainsKey(x.Name)
+                                                           || (dataView[x.Name] is string stringValue && stringValue != "True"))
+                .Select(x => x.InclusionExpression).ToList();
+        }
+
+        public IEnumerable<SourceFile> GetFilteredSourceSets(Dictionary<string, string> dataView, string templateName)
+        {
+            var files = _sourceSets[templateName].ToList();
+            var exclusionExpressions = GetExclusionList(dataView, _templateConfigs[templateName]);
+            var excludedFiles = new List<string>();
+            foreach (var sourceFile in files)
+            {
+                if (sourceFile.Name.EndsWith("mustache.json")
+                    || sourceFile.Name.EndsWith("sourceExclusions.json"))
+                {
+                    continue;
+                }
+
+                foreach (var exclusionExpression in exclusionExpressions)
+                {
+
+                    if (exclusionExpression.EndsWith("**"))
+                    {
+                        if (sourceFile.Name.StartsWith(exclusionExpression.Replace("/**", string.Empty)))
                         {
-                            exclusionFiles.Add(file);
+                            excludedFiles.Add(sourceFile.Name);
                         }
                     }
                     else
                     {
                         // exact Match
-                        if (pathPrefix == inclusionExpression)
+                        if (sourceFile.Name == exclusionExpression)
                         {
-                            exclusionFiles.Add(file);
+                            excludedFiles.Add(sourceFile.Name);
                         }
                     }
                 }
             }
 
-            return files.Where(f => exclusionFiles.All(e => e != f));
+            return files.Where(f => excludedFiles.All(e => e != f.Name));
+
         }
 
-        public MustacheConfigSchema GetMustacheConfigSchema(string templatePath)
+        private MustacheConfigSchema ReadSchema(string templatePath)
         {
             var json = File.ReadAllText(Path.Combine(templatePath, "mustache.json"));
-            return JsonConvert.DeserializeObject<MustacheConfigSchema>(json);
-        }
-
-        public Dictionary<string, object> GetDataView(string templatePath, GeneratorModel model)
-        {
-            var mustacheConfig = GetMustacheConfigSchema(templatePath);
-            var dataView = new Dictionary<string, object>();
-
-            if (mustacheConfig == null)
+            var returnValue = JsonConvert.DeserializeObject<MustacheConfigSchema>(json);
+            if (returnValue == null)
             {
                 throw new InvalidDataException($"could not find config at {templatePath}");
             }
 
-            foreach (var dep in mustacheConfig.Params)
-            {
-                var defaultValue = bool.TryParse(dep.DefaultValue, out var boolDefaultValue)
-                    ? (object)boolDefaultValue
-                    : dep.DefaultValue;
-                dataView.Add(dep.Name, defaultValue);
-            }
+            return returnValue;
+        }
 
-            if (model.Dependencies != null)
+        public MustacheConfigSchema GetSchema(string templateName)
+        {
+            return _templateConfigs[templateName];
+        }
+
+        public IEnumerable<string> GetTemplateNames()
+        {
+            return _templateConfigs.Keys;
+        }
+
+        public async Task<Dictionary<string, string>> GetDataView(string templateName, string [] dependencies, GeneratorModel model)
+        {
+            var mustacheConfig = _templateConfigs[templateName];
+
+            var dataView = new Dictionary<string, string>();
+            using (Timing.Over(_logger, "GetDataView-Rest"))
             {
-                foreach (var dependencyName in model.Dependencies)
+                foreach (var dep in mustacheConfig.Params)
                 {
-                    var key = mustacheConfig.Params.FirstOrDefault(k => k.Name.ToLower() == dependencyName)?.Name;
-                    if (key != null)
+                    dataView.Add(dep.Name, dep.DefaultValue);
+                }
+
+                if (dependencies != null)
+                {
+                    foreach (var dependencyName in dependencies)
                     {
-                        dataView[key] = true;
+                        var key = mustacheConfig.Params.FirstOrDefault(k => k.Name.ToLower() == dependencyName)?.Name;
+                        if (key != null)
+                        {
+                            dataView[key] = "True";
+                        }
+                    }
+                }
+
+                foreach (var version in mustacheConfig.Versions)
+                {
+                    dataView.Add(version.Name, version.DefaultValue);
+                }
+
+                if (model.SteeltoeVersion != null)
+                {
+                    const string steeltoeVersionName = "SteeltoeVersion";
+                    var steeltoeVersion = mustacheConfig.Versions.FirstOrDefault(v => v.Name == steeltoeVersionName);
+                    var validChoice =
+                        steeltoeVersion?.Choices.Any(choice => model.SteeltoeVersion.ToLower() == choice.Choice);
+                    if (validChoice == true)
+                    {
+                        dataView[steeltoeVersionName] = model.SteeltoeVersion.ToLower();
+                    }
+                }
+
+                if (model.TargetFrameworkVersion != null)
+                {
+                    const string targetFrameworkName = "TargetFrameworkVersion";
+                    var targetFramework = mustacheConfig.Versions.FirstOrDefault(v => v.Name == targetFrameworkName);
+
+                    var validChoice =
+                        targetFramework?.Choices.Any(choice => model.TargetFrameworkVersion.ToLower() == choice.Choice);
+
+                    if (validChoice == true)
+                    {
+                        dataView[targetFrameworkName] = model.TargetFrameworkVersion;
+                    }
+                }
+
+                if (model.ProjectName != null)
+                {
+                    const string projectNamespaceName = "ProjectNameSpace";
+                    if (dataView.ContainsKey(projectNamespaceName))
+                    {
+                        dataView[projectNamespaceName] = model.ProjectName;
                     }
                 }
             }
 
-            foreach (var version in mustacheConfig.Versions)
+            using (Timing.Over(_logger, "GetDataView-CalculatedParams"))
             {
-                dataView.Add(version.Name, version.DefaultValue);
-            }
-
-            if (model.SteeltoeVersion != null)
-            {
-                const string steeltoeVersionName = "SteeltoeVersion";
-                var steeltoeVersion = mustacheConfig.Versions.FirstOrDefault(v => v.Name == steeltoeVersionName);
-                var validChoice =
-                    steeltoeVersion?.Choices.Any(choice => model.SteeltoeVersion.ToLower() == choice.Choice);
-                if (validChoice == true)
+                foreach (var (name, expression) in _evaluationExpressions[templateName])
                 {
-                    dataView[steeltoeVersionName] = model.SteeltoeVersion.ToLower();
-                }
-            }
-
-            if (model.TargetFrameworkVersion != null)
-            {
-                const string targetFrameworkName = "TargetFrameworkVersion";
-                var targetFramework = mustacheConfig.Versions.FirstOrDefault(v => v.Name == targetFrameworkName);
-
-                var validChoice =
-                    targetFramework?.Choices.Any(choice => model.TargetFrameworkVersion.ToLower() == choice.Choice);
-
-                if (validChoice == true)
-                {
-                    dataView[targetFrameworkName] = model.TargetFrameworkVersion;
-                }
-            }
-
-            if (model.ProjectName != null)
-            {
-                const string projectNamespaceName = "ProjectNameSpace";
-                if (dataView.ContainsKey(projectNamespaceName))
-                {
-                    dataView[projectNamespaceName] = model.ProjectName;
-                }
-            }
-
-            foreach (var calculatedParam in mustacheConfig.CalculatedParams)
-            {
-                switch (calculatedParam.ExpressionType)
-                {
-                    case ExpressionTypeEnum.Lookup:
-                        var lambda = BuildLookupLambda(calculatedParam, dataView);
-                        EvaluateLambdaExpression<bool>(calculatedParam.Name, lambda, dataView);
-                        break;
-
-                    case ExpressionTypeEnum.Lambda:
-                    default:
-                        lambda = calculatedParam.Expression;
-                        EvaluateLambdaExpression<string>(calculatedParam.Name, lambda, dataView);
-
-                        break;
+                    var result = await expression.EvaluateExpressionAsync(dataView);
+                    dataView.Add(name, result);
                 }
             }
 
             return dataView;
-        }
-
-        public string BuildLookupLambda(CalculatedParam calculatedParam, Dictionary<string, object> dataView)
-        {
-            var lambda = string.Empty;
-
-            var expressionString = calculatedParam.Expression;
-            var tree = SyntaxFactory.ParseExpression(expressionString);
-
-            foreach (var node in tree.DescendantTokens())
-            {
-                var key = node.ToString();
-                if (dataView.ContainsKey(key))
-                {
-                    lambda += $"dataView[\"{key}\"]";
-                }
-                else
-                {
-                    lambda += key;
-                }
-            }
-
-            return "dataView => " + lambda;
-        }
-
-        public void EvaluateLambdaExpression<T>(
-            string calculatedParamName,
-            string lambda,
-            Dictionary<string, object> dataView)
-            where T : IConvertible
-        {
-            try
-            {
-                var options = ScriptOptions.Default;
-                var evalExpression = CSharpScript
-                    .EvaluateAsync<Func<Dictionary<string, T>, T>>(lambda, options).Result;
-
-                var typedDataView = GetTypedDictionary<T>(dataView);
-
-                var result = evalExpression(typedDataView);
-                if (result != null)
-                {
-                    dataView.TryAdd(calculatedParamName, result);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new ArgumentException(lambda, ex);
-            }
-        }
-
-        private Dictionary<string, T> GetTypedDictionary<T>(Dictionary<string, object> dictionary)
-            where T : IConvertible
-        {
-            var result = new Dictionary<string, T>();
-            foreach (var (key, value) in dictionary)
-            {
-                if (value is T itemValue)
-                {
-                    result.Add(key, itemValue);
-                }
-            }
-
-            return result;
         }
     }
 }
