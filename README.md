@@ -26,7 +26,7 @@ curl https://startsteeltoe.cfapps.io/starter.zip -d dependencies=actuators,cloud
 
 To get a list of dependencies:
 ```
-curl https://startsteeltoe.cfapps.io/dependencies
+curl https://start.steeltoe.io/api/templates/dependencies
 ```
 
 To get a list of valid templates:
