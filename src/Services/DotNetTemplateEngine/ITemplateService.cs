@@ -20,7 +20,7 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
 {
     public interface ITemplateService
     {
-        List<KeyValuePair<string, string>> GenerateProjectFiles(GeneratorModel model);
+        Task<List<KeyValuePair<string, string>>> GenerateProjectFiles(GeneratorModel model);
 
         Task<byte[]> GenerateProjectArchiveAsync(GeneratorModel model);
 

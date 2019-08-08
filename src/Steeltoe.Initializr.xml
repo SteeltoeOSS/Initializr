@@ -29,6 +29,7 @@
             Need access to internal class
             </summary>
         </member>
+        <!-- Badly formed XML comment ignored for member "T:Steeltoe.Initializr.Services.Mustache.BooleanExpression" -->
         <member name="T:Steeltoe.Initializr.Services.Mustache.MustacheTemplateService">
             <summary>
             An implementation of a Dotnet Template service via Mustache (Stubble).

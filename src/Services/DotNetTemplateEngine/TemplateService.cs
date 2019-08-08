@@ -103,7 +103,7 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
             _memoryCache?.Remove(ENV_SETTINGS_KEY);
         }
 
-        public string GenerateProject(GeneratorModel model)
+        public async Task<string> GenerateProject(GeneratorModel model)
         {
             var randomString = Guid.NewGuid().ToString() + DateTime.Now.Millisecond;
             var outFolder = Path.Combine(_outPath, randomString, model.ProjectName);
@@ -139,7 +139,8 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
             }
 
             TemplateCreator creator = new TemplateCreator(EnvSettings);
-            var creationResult = creator.InstantiateAsync(templateInfo, model.ProjectName, "SteeltoeProject", outFolder, iParams, true, false, "baseLine").Result;
+            var creationResult = await creator.InstantiateAsync(templateInfo, model.ProjectName, "SteeltoeProject",
+                outFolder, iParams, true, false, "baseLine");
 
             if (creationResult.Status != CreationResultStatus.Success)
             {
@@ -149,11 +150,11 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
             return outFolder;
         }
 
-        public List<KeyValuePair<string, string>> GenerateProjectFiles(GeneratorModel model)
+        public async Task<List<KeyValuePair<string, string>>> GenerateProjectFiles(GeneratorModel model)
         {
             var listOfFiles = new List<KeyValuePair<string, string>>();
 
-            var outFolder = GenerateProject(model);
+            var outFolder = await GenerateProject(model);
             foreach (var file in Directory.EnumerateFiles(outFolder, "*", SearchOption.AllDirectories))
             {
                 var pathPrefix = file.Replace(Path.GetFullPath(outFolder), string.Empty).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
@@ -166,7 +167,7 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
 
         public async Task<byte[]> GenerateProjectArchiveAsync(GeneratorModel model)
         {
-            var outFolder = GenerateProject(model);
+            var outFolder = await GenerateProject(model);
 
             var zipFile = Path.Combine(outFolder, "..", model.ArchiveName);
 

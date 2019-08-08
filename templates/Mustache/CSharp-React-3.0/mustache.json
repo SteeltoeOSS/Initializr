@@ -84,42 +84,47 @@
       "Description": "Change the namespace "
     }
   ],
-  "CalculatedParams":
-  [
+  "CalculatedParams": [
     {
       "Name": "ActuatorsOrCloudFoundry",
-      "Expression": "Actuators || CloudFoundry",
-      "ExpressionType": "Lookup"
+      "Expression": "Actuators,CloudFoundry",
+      "ExpressionType": "Any"
     },
     {
       "Name": "MySqlOrMySqlEFCore",
-      "Expression": "MySql || MySqlEFCore",
-      "ExpressionType": "Lookup"
+      "Expression": "MySql,MySqlEFCore",
+      "ExpressionType": "Any"
     },
     {
       "Name": "ActuatorsOrDynamicLogger",
-      "Expression": "Actuators || DynamicLogger",
-      "ExpressionType": "Lookup"
+      "Expression": "Actuators,DynamicLogger",
+      "ExpressionType": "Any"
     },
     {
       "Name": "AnyEFCore",
-      "Expression": "SQLServer || MySqlEFCore",
-      "ExpressionType": "Lookup"
+      "Expression": "SQLServer,MySqlEFCore",
+      "ExpressionType": "Any"
     },
     {
       "Name": "AnyConnector",
-      "Expression": "MySql || Postgres || Redis || MongoDB || OAuthConnector",
-      "ExpressionType": "Lookup"
+      "Expression": "MySql,Postgres,Redis,MongoDB,OAuthConnector",
+      "ExpressionType": "Any"
     },
     {
       "Name": "AspNetCoreVersion",
-      "Expression": "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp3.0\"? \"3.0.100-preview7-012821\": null",
-      "ExpressionType": "Lambda"
+      "Expression": "TargetFrameworkVersion,netcoreapp3.0=3.0.100-preview7-012821,default=False",
+      "ExpressionType": "Case"
     },
     {
       "Name": "TargetFrameworkVersion22",
-      "Expression": "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp2.2\"? \"true\": null",
-      "ExpressionType": "Lambda"
+      "Expression": "TargetFrameworkVersion,netcoreapp2.2=true,default=False",
+      "ExpressionType": "Case"
+    }
+  ],
+  "ConditionalInclusions": [
+    {
+      "Name": "AnyEFCore",
+      "InclusionExpression": "Models/**"
     }
   ],
   "Versions": [
