@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -20,6 +21,7 @@ using Steeltoe.Initializr.Services.Mustache;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Steeltoe.Initializr.Services;
 
 namespace Steeltoe.Initializr.Tests
 {
@@ -45,14 +47,14 @@ namespace Steeltoe.Initializr.Tests
             var templateNames = new string[]
             {
                 string.Empty, // test default
-                "CSharp-React-2.x",
-                "CSharp-WebApi-2.x",
-                "CSharp-React-3.0",
-                "CSharp-WebApi-3.0",
+                "Steeltoe-React",
+                "Steeltoe-WebApi",
             };
+            var templateVersions = (TemplateVersion[])Enum.GetValues(typeof(TemplateVersion));
             var data = from implementation in implementations
                         from templateName in templateNames
-                        select new object[] { implementation, templateName };
+                        from templateVersion in templateVersions
+                        select new object[] { implementation, templateName, templateVersion };
             _data = data.ToList();
         }
 

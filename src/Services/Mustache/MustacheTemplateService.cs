@@ -21,6 +21,7 @@ using Stubble.Core.Builders;
 using Stubble.Extensions.JsonNet;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -35,7 +36,8 @@ namespace Steeltoe.Initializr.Services.Mustache
     /// </summary>
     public class MustacheTemplateService : ITemplateService
     {
-        private const string DefaultTemplateName = "CSharp-WebApi-2.x";
+        private const string DefaultTemplateName = "Steeltoe-WebApi";
+        private const TemplateVersion DefaultVersion = TemplateVersion.V2;
 
         private Dictionary<string, string> FriendlyNames { get; set; }
 
@@ -70,27 +72,27 @@ namespace Steeltoe.Initializr.Services.Mustache
         {
             var name = string.IsNullOrEmpty(model.TemplateShortName) ? DefaultTemplateName : model.TemplateShortName;
 
-            var templatePath = _templatePath + Path.DirectorySeparatorChar + name;
+            var templateKey = new TemplateKey(name, model.TemplateVersion);
 
-            if (!Directory.Exists(templatePath))
+            if (!_mustacheConfig.GetTemplateKeys().Contains(templateKey))
             {
-                throw new InvalidDataException("Template with $name doesn't exist");
+                throw new InvalidDataException($"Template with Name: {name} and Version: {model.TemplateVersion} doesn't exist");
             }
 
             Dictionary<string, string> dataView;
             using (Timing.Over(_logger, "GetDataView"))
             {
-                dataView = await _mustacheConfig.GetDataView(name, model.Dependencies, model);
+                dataView = await _mustacheConfig.GetDataView(templateKey, model.Dependencies, model);
             }
 
             var listOfFiles = new List<KeyValuePair<string, string>>();
             using (Timing.Over(_logger, "Rendering files"))
             {
-                foreach (var file in _mustacheConfig.GetFilteredSourceSets(dataView, name))
+                foreach (var file in _mustacheConfig.GetFilteredSourceSets(dataView, templateKey))
                 {
                     if (file.Name.EndsWith(".csproj"))
                     {
-                        var fileName = file.Name.Replace("ReplaceMe", model.ProjectName ?? "SteeltoeExample"); 
+                        var fileName = file.Name.Replace("ReplaceMe", model.ProjectName ?? "SteeltoeExample");
                         var output = Render(file.Name, file.Text, dataView);
                         listOfFiles.Add(new KeyValuePair<string, string>(fileName, output));
                     }
@@ -105,20 +107,21 @@ namespace Steeltoe.Initializr.Services.Mustache
             return listOfFiles;
         }
 
-        public List<TemplateViewModel> GetAvailableTemplates()
+        public List<TemplateViewModel> GetAvailableTemplates() //Todo: add version?
         {
-            return _mustacheConfig.GetTemplateNames()
-                .Select(path => new TemplateViewModel
+            return _mustacheConfig.GetTemplateKeys()
+                .Select(templateKey => new TemplateViewModel
                 {
-                    Name = new DirectoryInfo(path).Name,
-                    ShortName = new DirectoryInfo(path).Name,
+                    Name = templateKey.Name,
+                    ShortName = templateKey.Name,
+                    TemplateVersion = templateKey.Version,
                     Language = "C#",
                     Tags = "Web/Microservice",
                 })
                 .ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(string shortName)
+        public List<ProjectDependency> GetDependencies(string shortName, TemplateVersion version)
         {
             shortName = string.IsNullOrEmpty(shortName) ? DefaultTemplateName : shortName;
             var list = GetAvailableTemplates();
@@ -129,8 +132,8 @@ namespace Steeltoe.Initializr.Services.Mustache
                 throw new InvalidDataException($"Could not find template with name {shortName} ");
             }
 
-           // var templatePath = _templatePath + Path.DirectorySeparatorChar + selectedTemplate.Name;
-            var config = _mustacheConfig.GetSchema(shortName);
+            // var templatePath = _templatePath + Path.DirectorySeparatorChar + selectedTemplate.Name;
+            var config = _mustacheConfig.GetSchema(new TemplateKey(selectedTemplate.Name, version));
 
             return config.Params
                 .Where(p => p.Description.ToLower().Contains("steeltoe"))
@@ -191,4 +194,11 @@ namespace Steeltoe.Initializr.Services.Mustache
             return FriendlyNames?.ContainsKey(name) == true ? FriendlyNames[name] : name;
         }
     }
+
+    public enum TemplateVersion
+    {
+        V2,
+        V3
+    }
+
 }

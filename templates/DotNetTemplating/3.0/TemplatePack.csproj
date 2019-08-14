@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <PackageType>Template</PackageType>
+        <PackageVersion>3.0</PackageVersion>
+        <PackageId>Steeltoe.Templates</PackageId>
+        <Title>Steeltoe Templates</Title>
+        <Authors>Hananiel Sarella</Authors>
+        <Description>.NET Microservices made easy</Description>
+        <PackageTags>dotnet-new;templates;steeltoe</PackageTags>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <IncludeContentInPack>true</IncludeContentInPack>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <ContentTargetFolders>content</ContentTargetFolders>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="**\*" Exclude="**\bin\**;**\obj\**;TemplatePack.csproj" />
+        <Compile Remove="**\*" />
+    </ItemGroup>
+</Project>

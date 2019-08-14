@@ -1,4 +1,4 @@
-// Copyright 2017 the original author or authors.
+﻿// Copyright 2017 the original author or authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
+using Steeltoe.Initializr.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Steeltoe.Initializr.Services.Mustache;
 
-namespace Steeltoe.Initializr.Models
+namespace Steeltoe.Initializr.Services
 {
-    public class TemplateViewModel
+    public interface ITemplateService
     {
-        public string Id { get; set; }
+        Task<List<KeyValuePair<string, string>>> GenerateProjectFiles(GeneratorModel model);
 
-        public string Name { get; set; }
+        Task<byte[]> GenerateProjectArchiveAsync(GeneratorModel model);
 
-        public string ShortName { get; set; }
+        List<TemplateViewModel> GetAvailableTemplates();
 
-        public string Language { get; set; }
+        List<ProjectDependency> GetDependencies(string shortName = null, TemplateVersion templateVersion = TemplateVersion.V2);
 
-        public string Tags { get; set; }
-
-        public TemplateVersion TemplateVersion { get; set; }
-
+        void ClearCache();
     }
 }
