@@ -33,6 +33,7 @@ stages:
       displayName: Publish Web site 
       pool:
         vmImage: 'ubuntu-16.04'
+      environment: 'development'
       strategy:
         runOnce:
          deploy:
