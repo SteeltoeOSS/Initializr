@@ -69,5 +69,16 @@ stages:
           createServices: false
           bindServices: false
           workingDirectory: 'src'
-
-             
+  - stage: template_nugets 
+    jobs:
+        - job: PackAndPublishNuget
+          displayName: Build and Publish Nuget
+          pool:
+            vmImage: 'ubuntu-16.04'
+          steps:
+          - task: DotNetCoreCLI@2
+            displayName: Dotnet build
+            inputs:
+              command: 'pack'
+              packagesToPack: 'templates/DotNetTemplating/2.x/TemplatePack.csproj'
+              versioningScheme: 'off'
