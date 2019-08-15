@@ -7,50 +7,56 @@ trigger:
 - master
 - dev
 
-pool:
-  vmImage: 'ubuntu-16.04'
-
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
+stages:
+  - stage: BuildAndTest
+    jobs:
+    - job: BuildAndTestJob
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+      - script: echo Building! 
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'build'
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'test'
 
-- task: CloudFoundryCLIInstall@0
-  inputs:
-    cfVersion: '6.43.0'
-    
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: false
-    arguments: '-f netcoreapp2.2 -r ubuntu.14.04-x64'
-    zipAfterPublish: false
-    modifyOutputPath: false
-    workingDirectory: 'src'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'pack'
-    packagesToPack: '/templates/DotNetTemplating/2.x/TemplatePack.csproj'
-    versioningScheme: 'off'
-
-- task: CloudFoundry@1
-  inputs:
-    cfEndpoint: 'PWS-initializr'
-    skipSSLValidation: true
-    org: 'steeltoe.io'
-    space: 'development'
-    deploymentOptions: 'manifest'
-    cfManifest: 'src/manifest.yml'
-    additionalDeployArgs: '-p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
-    createServices: false
-    bindServices: false
-    workingDirectory: 'src'
+  - stage: Deployment
+    jobs:
+    - deployment: PublishWebJob
+      displayName: Publish Web site 
+      pool:
+        vmImage: 'ubuntu-16.04'
+      strategy:
+        runOnce:
+         deploy:
+           steps:
+            - task: CloudFoundryCLIInstall@0
+              inputs:
+                cfVersion: '6.43.0'
+            - task: DotNetCoreCLI@2
+              inputs:
+                command: 'publish'
+                publishWebProjects: false
+                arguments: '-f netcoreapp2.2 -r ubuntu.14.04-x64'
+                zipAfterPublish: false
+                modifyOutputPath: false
+                workingDirectory: 'src'
+            - task: CloudFoundry@1
+              inputs:
+                cfEndpoint: 'PWS-initializr'
+                skipSSLValidation: true
+                org: 'steeltoe.io'
+                space: 'development'
+                deploymentOptions: 'manifest'
+                cfManifest: 'src/manifest.yml'
+                additionalDeployArgs: '-p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
+                createServices: false
+                bindServices: false
+                workingDirectory: 'src'
