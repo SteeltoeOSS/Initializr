@@ -17,19 +17,15 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-    <None Include="$(ProjectDir)..\templates\**\*.*">
+    <None Include="$(ProjectDir)..\templates\**\*.*" Exclude="$(ProjectDir)..\templates\**\TemplatePack.csproj;$(ProjectDir)..\templates\**\TemplatePack.sln;$(ProjectDir)..\templates\**\bin\**;$(ProjectDir)..\templates\**\obj\**;">
       <Link>templates\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
     
+    
   </ItemGroup>
-  <ItemGroup>
-    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\CSharp-React-2.x\sourceExclusions.json" />
-    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\CSharp-React-3.0\sourceExclusions.json" />
-    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\CSharp-WebApi-2.x\sourceExclusions.json" />
-    <None Remove="C:\Users\Hananiel\projects\steeltoeoss-incubator\steetoe-initializr\src\..\templates\Mustache\CSharp-WebApi-3.0\sourceExclusions.json" />
-  </ItemGroup>
+ 
 
 
   <ItemGroup>
