@@ -77,6 +77,12 @@ stages:
         vmImage: 'ubuntu-16.04'
       steps:
       - task: DotNetCoreCLI@2
+        displayName: Dotnet build
+        inputs:
+          command: 'build'
+          workingDirectory: 'templates/DotNetTemplating/2.x'
+          versioningScheme: 'off'
+      - task: DotNetCoreCLI@2
         displayName: Dotnet pack
         inputs:
           command: 'custom'
