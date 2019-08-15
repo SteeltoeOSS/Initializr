@@ -13,9 +13,10 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
-  - stage: BuildAndTest
+  - stage: Initializr Website 
     jobs:
-    - job: BuildAndTestJob 
+    - job: BuildTestAndPublishJob 
+      displayName: Build Test and Publish to PWS
       pool:
         vmImage: 'ubuntu-16.04'
       steps:
@@ -36,29 +37,21 @@ stages:
           zipAfterPublish: false
           modifyOutputPath: false
           workingDirectory: 'src'
-    - deployment: PublishWebJob
-      displayName: Publish Web site step
-      dependsOn: BuildAndTestJob
-      pool:
-        vmImage: 'ubuntu-16.04'
-      environment: 'development'
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-              - task: CloudFoundryCLIInstall@0
-                inputs:
-                  cfVersion: '6.43.0'
+      - task: CloudFoundryCLIInstall@0
+        displayName: Install CF Cli
+        inputs:
+          cfVersion: '6.43.0'
+      - task: CloudFoundry@1
+        inputs:
+          cfEndpoint: 'PWS-initializr'
+          skipSSLValidation: true
+          org: 'steeltoe.io'
+          space: 'development'
+          deploymentOptions: 'manifest'
+          cfManifest: 'src/manifest.yml'
+          additionalDeployArgs: '-p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
+          createServices: false
+          bindServices: false
+          workingDirectory: 'src'
 
-              - task: CloudFoundry@1
-                inputs:
-                  cfEndpoint: 'PWS-initializr'
-                  skipSSLValidation: true
-                  org: 'steeltoe.io'
-                  space: 'development'
-                  deploymentOptions: 'manifest'
-                  cfManifest: 'src/manifest.yml'
-                  additionalDeployArgs: '-p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
-                  createServices: false
-                  bindServices: false
-                  workingDirectory: 'src'
+             
