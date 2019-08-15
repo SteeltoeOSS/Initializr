@@ -76,17 +76,14 @@ stages:
       pool:
         vmImage: 'ubuntu-16.04'
       steps:
-      - script: 'pwd'
+      - script: 'cd templates/DotNetTemplating/2.x'
 
       - task: DotNetCoreCLI@2
         displayName: Dotnet build
         inputs:
           command: 'build'
-          workingDirectory: 'templates/DotNetTemplating/2.x'
       - task: DotNetCoreCLI@2
         displayName: Dotnet pack
         inputs:
-          command: 'custom'
-          custom: 'pack'
-          workingDirectory: 'templates/DotNetTemplating/2.x'
+          command: 'pack'
           versioningScheme: 'off'
