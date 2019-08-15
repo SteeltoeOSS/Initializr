@@ -82,8 +82,10 @@ stages:
         displayName: Dotnet build
         inputs:
           command: 'build'
+          workingDirectory: 'templates/DotNetTemplating/2.x'
       - task: DotNetCoreCLI@2
         displayName: Dotnet pack
         inputs:
           command: 'pack'
+          packagesToPack: 'templates/DotNetTemplating/2.x/TemplatePack.csproj'
           versioningScheme: 'off'
