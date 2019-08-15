@@ -15,6 +15,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Steeltoe.Initializr.Services.Mustache;
 
 namespace Steeltoe.Initializr.Models
 {
@@ -22,6 +23,7 @@ namespace Steeltoe.Initializr.Models
     {
         private string[] _dependencies;
         private string _projectName;
+        private TemplateVersion? _templateVersion;
 
         public string[] Dependencies
         {
@@ -40,6 +42,21 @@ namespace Steeltoe.Initializr.Models
         public string ArchiveName => ProjectName + ".zip";
 
         public string TargetFrameworkVersion { get; set; }
+
+        public TemplateVersion TemplateVersion
+        {
+            get
+            {
+                if (_templateVersion == null)
+                {
+                    return TargetFrameworkVersion == "netcoreapp3.0" ? TemplateVersion.V3 : TemplateVersion.V2;
+                }
+
+                return _templateVersion.Value;
+            }
+
+            set => _templateVersion = value;
+        }
 
         public IEnumerable<string> GetTemplateParameters()
         {

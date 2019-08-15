@@ -5,27 +5,26 @@
       "ParentMountPointId": "00000000-0000-0000-0000-000000000000",
       "MountPointFactoryId": "8c19221b-dea3-4250-86fe-2d4e189a11d2",
       "MountPointId": "1815274a-f735-4189-9f1c-cbc16a31dd3a",
-      "Place": "__Path__CSharp-WebApi-2.x"
-    },
-    {
-      "ParentMountPointId": "00000000-0000-0000-0000-000000000000",
-      "MountPointFactoryId": "8c19221b-dea3-4250-86fe-2d4e189a11d2",
-      "MountPointId": "1815274a-f735-4189-9f1c-cbc16a31dd3b",
-      "Place": "__Path__CSharp-WebApi-3.0"
+      "Place": "__Path__2.x/CSharp-WebApi"
     },
     {
       "ParentMountPointId": "00000000-0000-0000-0000-000000000000",
       "MountPointFactoryId": "8c19221b-dea3-4250-86fe-2d4e189a11d2",
       "MountPointId": "1815274a-f735-4189-9f1c-cbc16a31dd3c",
-      "Place": "__Path__CSharp-React-2.x"
+      "Place": "__Path__2.x/CSharp-React"
+    },
+    {
+      "ParentMountPointId": "00000000-0000-0000-0000-000000000000",
+      "MountPointFactoryId": "8c19221b-dea3-4250-86fe-2d4e189a11d2",
+      "MountPointId": "1815274a-f735-4189-9f1c-cbc16a31dd3b",
+      "Place": "__Path__3.0/CSharp-WebApi"
     },
     {
       "ParentMountPointId": "00000000-0000-0000-0000-000000000000",
       "MountPointFactoryId": "8c19221b-dea3-4250-86fe-2d4e189a11d2",
       "MountPointId": "1815274a-f735-4189-9f1c-cbc16a31dd3d",
-      "Place": "__Path__CSharp-React-3.0"
+      "Place": "__Path__3.0/CSharp-React"
     }
-
   ],
   "ComponentGuidToAssemblyQualifiedName": {
     "0c434df7-e2cb-4dee-b216-d7c58c8eb4b3": "Microsoft.TemplateEngine.Orchestrator.RunnableProjects.RunnableProjectGenerator, Microsoft.TemplateEngine.Orchestrator.RunnableProjects, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35",

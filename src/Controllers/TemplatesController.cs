@@ -14,7 +14,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Steeltoe.Initializr.Models;
-using Steeltoe.Initializr.Services.DotNetTemplateEngine;
+using Steeltoe.Initializr.Services;
 using Steeltoe.Initializr.Services.Mustache;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,9 +65,9 @@ namespace Steeltoe.Initializr.Controllers
         }
 
         [Route("dependencies")]
-        public ActionResult GetDependencies([FromQuery(Name = "templateShortName")] string templateShortName)
+        public ActionResult GetDependencies([FromQuery(Name = "templateShortName")] string templateShortName, [FromQuery(Name = "templateVersion")] TemplateVersion? templateVersion)
         {
-            return Ok(_sttemplateService.GetDependencies(templateShortName));
+            return Ok(_sttemplateService.GetDependencies(templateShortName, templateVersion ?? TemplateVersion.V2));
         }
 
 //

@@ -26,6 +26,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
+using Steeltoe.Initializr.Services.Mustache;
 
 namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
 {
@@ -35,7 +36,7 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
 
         private static readonly string ENV_SETTINGS_KEY = "Environment_Settings";
         private static readonly string TEMPLATE_CACHE_KEY = "Template_Cache";
-        private static readonly string DEFAULT_TEMPLATE = "CSharp-WebApi-2.x";
+        private static readonly string DEFAULT_TEMPLATE = "Steeltoe-WebApi";
 
         private EngineEnvironmentSettings EnvSettings
         {
@@ -132,7 +133,7 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
 
             var templateShortName = string.IsNullOrEmpty(model.TemplateShortName) ? DEFAULT_TEMPLATE : model.TemplateShortName;
 
-            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, EnvSettings);
+            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, model.TemplateVersion,  EnvSettings);
             if (templateInfo == null)
             {
                 throw new Exception($"Could not find template with shortName: {templateShortName} ");
@@ -184,19 +185,21 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
             {
                 Name = x.Name,
                 ShortName = x.ShortName,
+                TemplateVersion = x.Identity.EndsWith("2.0")? TemplateVersion.V2: TemplateVersion.V3,
                 Language = x.Parameters?.FirstOrDefault(p => p.Name == "language")?.DefaultValue,
                 Tags = x.Classifications.Aggregate((current, next) => current + "/" + next),
             });
             return items.ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(string shortName)
+        public List<ProjectDependency> GetDependencies(string shortName, TemplateVersion templateVersion = TemplateVersion.V2)
         {
             var list = GetAllTemplates();
 
             shortName = string.IsNullOrEmpty(shortName) ? DEFAULT_TEMPLATE : shortName;
 
-            var selectedTemplate = list.FirstOrDefault(x => x.ShortName == shortName);
+            var versionString = templateVersion == TemplateVersion.V2 ? "2.0" : "3.0";
+            var selectedTemplate = list.FirstOrDefault(x => x.ShortName == shortName && x.Identity.EndsWith(versionString));
 
             if (selectedTemplate == null)
             {
@@ -243,10 +246,13 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
             return envSettings;
         }
 
-        private TemplateInfo FindTemplateByShortName(string shortName, IEngineEnvironmentSettings envSettings)
+        private TemplateInfo FindTemplateByShortName(string shortName, TemplateVersion version, IEngineEnvironmentSettings envSettings)
         {
             var loader = (InitializrSettingsLoader)envSettings.SettingsLoader;
-            return loader.UserTemplateCache.TemplateInfo.Where(ti => (bool)ti.ShortNameList?.Contains(shortName)).FirstOrDefault();
+            var versionString = version == TemplateVersion.V2 ? "2.0" : "3.0";
+            return loader.UserTemplateCache
+                .TemplateInfo
+                .FirstOrDefault(ti => ti.ShortNameList.Contains(shortName) && ti.Identity.EndsWith(versionString));
         }
 
         private IReadOnlyList<TemplateInfo> GetAllTemplates()
