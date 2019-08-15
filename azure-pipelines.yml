@@ -38,6 +38,7 @@ stages:
           workingDirectory: 'src'
     - deployment: PublishWebJob
       displayName: Publish Web site step
+      dependsOn: BuildAndTestJob
       pool:
         vmImage: 'ubuntu-16.04'
       environment: 'development'
