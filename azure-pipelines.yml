@@ -13,72 +13,73 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
-  - stage: Initializr_Website 
+  # - stage: Initializr_Website 
+  #   jobs:
+  #   - job: BuildTestAndPublishJob 
+  #     displayName: Build Test and Publish to PWS
+  #     pool:
+  #       vmImage: 'ubuntu-16.04'
+  #     steps:
+  #     - task: DotNetCoreCLI@2
+  #       displayName: Dotnet build
+  #       inputs:
+  #         command: 'build'
+  #     - task: DotNetCoreCLI@2
+  #       displayName: Dotnet test
+  #       inputs:
+  #         command: 'test'
+  #     - task: DotNetCoreCLI@2
+  #       displayName: Dotnet publish
+  #       inputs:
+  #         command: 'publish'
+  #         publishWebProjects: false
+  #         arguments: '-f netcoreapp2.2 -r ubuntu.14.04-x64'
+  #         zipAfterPublish: false
+  #         modifyOutputPath: false
+  #         workingDirectory: 'src'
+  #     - task: CloudFoundryCLIInstall@0
+  #       displayName: Install CF Cli
+  #       inputs:
+  #         cfVersion: '6.43.0'
+  #     - task: CloudFoundry@1
+  #       displayName: publish to Prod
+  #       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/template_nugets'))
+  #       inputs:
+  #         cfEndpoint: 'PWS-initializr'
+  #         skipSSLValidation: true
+  #         org: 'steeltoe.io'
+  #         space: 'development'
+  #         deploymentOptions: 'manifest'
+  #         cfManifest: 'src/manifest.yml'
+  #         additionalDeployArgs: '-p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
+  #         createServices: false
+  #         bindServices: false
+  #         workingDirectory: 'src'
+  #     - task: CloudFoundry@1
+  #       displayName: publish to Staging
+  #       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+  #       inputs:
+  #         cfEndpoint: 'PWS-initializr'
+  #         skipSSLValidation: true
+  #         org: 'steeltoe.io'
+  #         space: 'development'
+  #         deploymentOptions: 'manifest'
+  #         cfManifest: 'src/manifest-dev.yml'
+  #         additionalDeployArgs: '-p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
+  #         createServices: false
+  #         bindServices: false
+  #         workingDirectory: 'src'
+  - stage: template_nugets 
     jobs:
-    - job: BuildTestAndPublishJob 
-      displayName: Build Test and Publish to PWS
+    - job: PackAndPublishNuget
+      displayName: Build and Publish Nuget
       pool:
         vmImage: 'ubuntu-16.04'
       steps:
       - task: DotNetCoreCLI@2
-        displayName: Dotnet build
+        displayName: Dotnet pack
         inputs:
-          command: 'build'
-      - task: DotNetCoreCLI@2
-        displayName: Dotnet test
-        inputs:
-          command: 'test'
-      - task: DotNetCoreCLI@2
-        displayName: Dotnet publish
-        inputs:
-          command: 'publish'
-          publishWebProjects: false
-          arguments: '-f netcoreapp2.2 -r ubuntu.14.04-x64'
-          zipAfterPublish: false
-          modifyOutputPath: false
-          workingDirectory: 'src'
-      - task: CloudFoundryCLIInstall@0
-        displayName: Install CF Cli
-        inputs:
-          cfVersion: '6.43.0'
-      - task: CloudFoundry@1
-        displayName: publish to Prod
-        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/template_nugets'))
-        inputs:
-          cfEndpoint: 'PWS-initializr'
-          skipSSLValidation: true
-          org: 'steeltoe.io'
-          space: 'development'
-          deploymentOptions: 'manifest'
-          cfManifest: 'src/manifest.yml'
-          additionalDeployArgs: '-p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
-          createServices: false
-          bindServices: false
-          workingDirectory: 'src'
-      - task: CloudFoundry@1
-        displayName: publish to Staging
-        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
-        inputs:
-          cfEndpoint: 'PWS-initializr'
-          skipSSLValidation: true
-          org: 'steeltoe.io'
-          space: 'development'
-          deploymentOptions: 'manifest'
-          cfManifest: 'src/manifest-dev.yml'
-          additionalDeployArgs: '-p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
-          createServices: false
-          bindServices: false
-          workingDirectory: 'src'
-  - stage: template_nugets 
-    jobs:
-        - job: PackAndPublishNuget
-          displayName: Build and Publish Nuget
-          pool:
-            vmImage: 'ubuntu-16.04'
-          steps:
-          - task: DotNetCoreCLI@2
-            displayName: Dotnet build
-            inputs:
-              command: 'pack'
-              packagesToPack: 'templates/DotNetTemplating/2.x/TemplatePack.csproj'
-              versioningScheme: 'off'
+          command: 'custom'
+          custom: 'pack'
+          workingDirectory: 'templates/DotNetTemplating/2.x''
+                versioningScheme: 'off'
