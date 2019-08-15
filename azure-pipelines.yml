@@ -90,6 +90,7 @@ stages:
           packagesToPack: 'templates/DotNetTemplating/2.x/TemplatePack.csproj'
           versioningScheme: 'off'
 
-      - task: PublishPipelineArtifact@1
+      - task: PublishBuildArtifacts@1
         inputs:
-          targetPath: '$(Pipeline.Workspace)'
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: '2.x_nugets'
