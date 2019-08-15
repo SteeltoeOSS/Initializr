@@ -21,11 +21,22 @@ stages:
       steps:
       - script: echo Building! 
       - task: DotNetCoreCLI@2
+        displayName: Dotnet build
         inputs:
           command: 'build'
       - task: DotNetCoreCLI@2
+        displayName: Dotnet test
         inputs:
           command: 'test'
+      - task: DotNetCoreCLI@2
+        displayName: Dotnet publish
+        inputs:
+          command: 'publish'
+          publishWebProjects: false
+          arguments: '-f netcoreapp2.2 -r ubuntu.14.04-x64'
+          zipAfterPublish: false
+          modifyOutputPath: false
+          workingDirectory: 'src'
 
   - stage: Deployment
     jobs:
@@ -41,15 +52,7 @@ stages:
             - task: CloudFoundryCLIInstall@0
               inputs:
                 cfVersion: '6.43.0'
-            - task: DotNetCoreCLI@2
-              displayName: Dotnet publish
-              inputs:
-                command: 'publish'
-                publishWebProjects: false
-                arguments: '-f netcoreapp2.2 -r ubuntu.14.04-x64'
-                zipAfterPublish: false
-                modifyOutputPath: false
-                workingDirectory: 'src'
+
             - task: CloudFoundry@1
               inputs:
                 cfEndpoint: 'PWS-initializr'
