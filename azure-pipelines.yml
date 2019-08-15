@@ -13,7 +13,7 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
-  - stage: Initializr Website 
+  - stage: Initializr_Website 
     jobs:
     - job: BuildTestAndPublishJob 
       displayName: Build Test and Publish to PWS
