@@ -107,7 +107,7 @@
     },
     {
       "Name": "AnyConnector",
-      "Expression": "MySql,Postgres,Redis,MongoDB,OAuthConnector",
+      "Expression": "MySql,Postgres,Redis,MongoDB,RabbitMQ,OAuthConnector",
       "ExpressionType": "Any"
     },
     {

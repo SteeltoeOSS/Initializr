@@ -8,9 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 {{/Auth}}
 using Microsoft.AspNetCore.Mvc;
 
-namespace {{ProjectNameSpace }}.Controllers
+namespace {{ProjectNameSpace}}.Controllers
 {
-    
 {{#Auth}}
     [Authorize]
 {{/Auth}}

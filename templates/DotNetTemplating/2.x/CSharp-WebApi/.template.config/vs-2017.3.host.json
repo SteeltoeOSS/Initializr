@@ -35,8 +35,8 @@
       "orgAuthenticationOptions": "SSO"
     },
     {
-      "auth": "Windows",
-      "authenticationType": "WindowsAuth"
+      "auth": "Foop",
+      "authenticationType": "Goop"
     }
   ],
   "ports": [

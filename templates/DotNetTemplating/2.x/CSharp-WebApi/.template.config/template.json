@@ -53,7 +53,7 @@
     }
   ],
   "symbols": {
-    "auth": {
+    "Foo": {
       "type": "parameter",
       "datatype": "choice",
       "choices": [
@@ -348,7 +348,7 @@
     },
     "AnyConnector": {
       "type": "computed",
-      "value": "(MySql || Postgres || MySql || Redis || MongoDB || OAuthConnector)"
+      "value": "(MySql || Postgres || MySql || Redis || RabbitMQ || MongoDB || OAuthConnector)"
     },
     "AnyEFCore": {
       "type": "computed",
