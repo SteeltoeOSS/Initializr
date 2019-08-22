@@ -102,7 +102,7 @@
     },
     {
       "Name": "AnyEFCore",
-      "Expression": "SQLServer,MySqlEFCore",
+      "Expression": "PostgresEFCore,SQLServer,MySqlEFCore",
       "ExpressionType": "Any"
     },
     {
@@ -112,7 +112,7 @@
     },
     {
       "Name": "AspNetCoreVersion",
-      "Expression": "TargetFrameworkVersion,netcoreapp3.0=3.0.100-preview7-012821,default=False",
+      "Expression": "TargetFrameworkVersion,netcoreapp3.0=3.0.0-preview8.19405.7,default=False",
       "ExpressionType": "Case"
     },
     {

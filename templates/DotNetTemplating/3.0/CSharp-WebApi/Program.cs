@@ -31,22 +31,23 @@ namespace Company.WebApplication1
                 .Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
+        public static IWebHostBuilder CreateHostBuilder(string[] args)
+        {
+            var builder = WebHost.CreateDefaultBuilder(args)
+                .UseDefaultServiceProvider(configure => configure.ValidateScopes = false)
 #if (CloudFoundry)
-                    webBuilder.UseCloudFoundryHosting(5555); //Enable listening on a Env provided port
-                    webBuilder.AddCloudFoundry(); //Add cloudfoundry environment variables as a configuration source
+                .UseCloudFoundryHosting(5555) //Enable listening on a Env provided port
+                .AddCloudFoundry() //Add cloudfoundry environment variables as a configuration source
 #endif
-                    webBuilder.UseStartup<Startup>();
+                .UseStartup<Startup>();
 #if (Actuators || DynamicLogger)
-                    webBuilder.ConfigureLogging((hostingContext, loggingBuilder) =>
-                    {
-                        loggingBuilder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                        loggingBuilder.AddDynamicConsole();
-                    });
+            builder.ConfigureLogging((hostingContext, loggingBuilder) =>
+            {
+                loggingBuilder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                loggingBuilder.AddDynamicConsole();
+            });
 #endif
-                });
+            return builder;
+        }
     }
 }

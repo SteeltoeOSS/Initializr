@@ -239,7 +239,7 @@
         "cases": [
           {
             "condition": "(Framework == 'netcoreapp3.0')",
-            "value": "3.0.100-preview7-012821"
+            "value": "3.0.0-preview8.19405.11"
           }
         ]
       }
@@ -261,23 +261,13 @@
     "Actuators": {
       "type": "parameter",
       "datatype": "bool",
-      "defaultValue": "None",
+      "defaultValue": "false",
       "description": "Steeltoe: Add management endpoints for your application"
     },
     "CloudFoundry": {
       "type": "parameter",
-      "datatype": "choice",
-      "choices": [
-        {
-          "choice": "true",
-          "description": "Target netcoreapp2.2"
-        },
-        {
-          "choice": "None",
-          "description": "Target netcoreapp2.1"
-        }
-      ],
-      "defaultValue": "None",
+      "datatype": "bool",
+      "defaultValue": "false",
       "description": "Steeltoe: Target CloudFoundry Hosting"
     },
     "MySql": {
@@ -342,7 +332,7 @@
     },
     "AnyConnector": {
       "type": "computed",
-      "value": "(MySql || PostGres || MSSql || Redis || MongoDB || OAuthConnector)"
+      "value": "(MySql || Postgres || SQLServer || Redis || RabbitMQ || MongoDB || OAuthConnector)"
     },
     "AnyEFCore": {
       "type": "computed",
@@ -370,7 +360,7 @@
       "type": "parameter",
       "datatype": "choice",
       "defaultValue": "2.2.0",
-      "description": "Steeltoe: Support Community HealthChecks",
+      "description": "Target steeltoe version",
       "replaces": "SteeltoeVersion",
       "choices": [
         {
@@ -388,11 +378,11 @@
 
       ]
     },
-    "MongoDbVersion": {
+    "MongoDBVersion": {
       "type": "parameter",
       "datatype": "string",
       "defaultValue": "2.8.1",
-      "replaces": "MongoDbVersion"
+      "replaces": "MongoDBVersion"
     },
     "MySqlVersion": {
       "type": "parameter",
@@ -406,11 +396,11 @@
       "defaultValue": "4.0.4",
       "replaces": "NpgSqlVersion"
     },
-    "RabbitMQclient": {
+    "RabbitMQVersion": {
       "type": "parameter",
       "datatype": "string",
       "defaultValue": "5.1.0",
-      "replaces": "RabbitMQclient"
+      "replaces": "RabbitMQVersion"
 
     }
 

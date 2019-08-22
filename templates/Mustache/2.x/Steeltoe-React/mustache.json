@@ -102,7 +102,7 @@
     },
     {
       "Name": "AnyEFCore",
-      "Expression": "SQLServer,MySqlEFCore",
+      "Expression": "PostgresEFCore,SQLServer,MySqlEFCore",
       "ExpressionType": "Any"
     },
     {

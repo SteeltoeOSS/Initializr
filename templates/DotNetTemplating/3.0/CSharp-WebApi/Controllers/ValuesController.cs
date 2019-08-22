@@ -30,6 +30,7 @@ namespace Company.WebApplication1.Controllers
         {
             _logger = logger;
         }
+#endif
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()

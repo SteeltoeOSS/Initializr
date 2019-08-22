@@ -46,7 +46,6 @@ namespace Steeltoe.Initializr.Tests
             };
             var templateNames = new string[]
             {
-                string.Empty, // test default
                 "Steeltoe-React",
                 "Steeltoe-WebApi",
             };

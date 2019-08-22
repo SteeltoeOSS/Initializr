@@ -14,11 +14,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 using DiffMatchPatch;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.Services.DotNetTemplateEngine;
 using Steeltoe.InitializrTests;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -31,11 +36,13 @@ namespace Steeltoe.Initializr.Tests
 {
     public class TemplateServiceTests : XunitLoggingBase
     {
+        private readonly ITestOutputHelper _testOutputHelper;
         private readonly LoggerFactory _loggerFactory;
 
         public TemplateServiceTests(ITestOutputHelper testOutputHelper)
             : base(testOutputHelper)
         {
+            _testOutputHelper = testOutputHelper;
             _loggerFactory = new LoggerFactory();
             _loggerFactory.AddProvider(new XunitLoggerProvider(testOutputHelper));
         }
@@ -493,7 +500,8 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains("<TargetFramework>netcoreapp2.2</TargetFramework>", projectFile);
         }
 
-       // [Theory]
+
+        // [Theory]
         //[ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_GeneratesCorrectVersions(ITemplateService templateService, string templateName, TemplateVersion version)
         {

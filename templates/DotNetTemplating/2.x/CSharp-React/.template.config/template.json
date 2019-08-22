@@ -147,23 +147,13 @@
     "Actuators": {
       "type": "parameter",
       "datatype": "bool",
-      "defaultValue": "None",
+      "defaultValue": "false",
       "description": "Steeltoe: Add management endpoints for your application"
     },
     "CloudFoundry": {
       "type": "parameter",
-      "datatype": "choice",
-      "choices": [
-        {
-          "choice": "true",
-          "description": "Target netcoreapp2.2"
-        },
-        {
-          "choice": "None",
-          "description": "Target netcoreapp2.1"
-        }
-      ],
-      "defaultValue": "None",
+      "datatype": "bool",
+      "defaultValue": "false",
       "description": "Steeltoe: Target CloudFoundry Hosting"
     },
     "MySql": {
@@ -230,7 +220,7 @@
     },
     "AnyConnector": {
       "type": "computed",
-      "value": "(MySql || Postgres || MySql || Redis || MongoDB || OAuthConnector)"
+      "value": "(MySql || Postgres || MySql || Redis || RabbitMQ || MongoDB || OAuthConnector)"
     },
     "AnyEFCore": {
       "type": "computed",
