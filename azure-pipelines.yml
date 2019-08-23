@@ -23,6 +23,11 @@ stages:
       - task: UseDotNet@2
         inputs:
           packageType: 'sdk'
+          useGlobalJson: false
+          version: 2.2.101
+      - task: UseDotNet@2
+        inputs:
+          packageType: 'sdk'
           useGlobalJson: true
       - task: DotNetCoreCLI@2
         displayName: Dotnet build
