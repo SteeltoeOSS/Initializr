@@ -37,6 +37,9 @@ stages:
         displayName: Dotnet test (Unit Tests)
         inputs:
           command: 'test'
+          arguments: '--filter Category!=Integration'
+          testRunTitle: 'Unit Tests'
+
       - task: DotNetCoreCLI@2
         displayName: Dotnet publish
         inputs:
