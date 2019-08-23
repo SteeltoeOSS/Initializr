@@ -21,12 +21,20 @@ steps:
   inputs:
     cfVersion: '6.43.0'
     
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    useGlobalJson: true
+    
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
+    arguments: '--filter Category!=Integration'
+
 
 - task: DotNetCoreCLI@2
   inputs:
