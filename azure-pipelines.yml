@@ -34,7 +34,7 @@ stages:
         inputs:
           command: 'build'
       - task: DotNetCoreCLI@2
-        displayName: Dotnet test
+        displayName: Dotnet test (Unit Tests)
         inputs:
           command: 'test'
       - task: DotNetCoreCLI@2
