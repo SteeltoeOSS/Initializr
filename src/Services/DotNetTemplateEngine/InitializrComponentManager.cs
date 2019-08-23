@@ -89,6 +89,7 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
             if (!ids.Contains(InitializrSettingsLoader.FactoryId))
             {
                 ids.Add(InitializrSettingsLoader.FactoryId);
+                
                 Cache<IMountPointFactory>.Instance.AddPart(new FileSystemMountPointFactory());
             }
 

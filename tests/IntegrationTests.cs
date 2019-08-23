@@ -13,6 +13,7 @@ using Xunit.Abstractions;
 
 namespace Steeltoe.Initializr.Tests
 {
+    [Trait("Category", "Integration")]
     public class IntegrationTests : XunitLoggingBase
     {
         private readonly ITestOutputHelper _testOutputHelper;
