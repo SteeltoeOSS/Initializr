@@ -121,7 +121,7 @@
         "cases": [
           {
             "condition": "(Framework == 'netcoreapp3.0')",
-            "value": "3.0.0-preview8.19405.7"
+            "value": "3.0.0-preview8.19405.11"
           }
         ]
       }

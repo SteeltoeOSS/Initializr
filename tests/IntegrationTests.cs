@@ -1,15 +1,13 @@
+using Microsoft.Extensions.Logging;
+using Steeltoe.Initializr.Services;
+using Steeltoe.Initializr.Services.Mustache;
+using Steeltoe.InitializrTests;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Threading;
 using System.Threading.Tasks;
-using DiffMatchPatch;
-using Microsoft.Extensions.Logging;
-using Steeltoe.Initializr.Services;
-using Steeltoe.Initializr.Services.DotNetTemplateEngine;
-using Steeltoe.Initializr.Services.Mustache;
-using Steeltoe.InitializrTests;
 using Xunit;
 using Xunit.Abstractions;
 
