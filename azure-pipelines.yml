@@ -20,6 +20,10 @@ stages:
       pool:
         vmImage: 'ubuntu-16.04'
       steps:
+      - task: UseDotNet@2
+        inputs:
+          packageType: 'sdk'
+          useGlobalJson: true
       - task: DotNetCoreCLI@2
         displayName: Dotnet build
         inputs:
