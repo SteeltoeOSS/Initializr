@@ -89,7 +89,7 @@ stages:
   - stage: template_nugets 
     jobs:
     - job: PackAndPublishNuget
-      displayName: Build and Publish Nuget
+      displayName: Build and Publish Template Nugets
       pool:
         vmImage: 'ubuntu-16.04'
       steps:
