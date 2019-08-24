@@ -17,7 +17,7 @@ namespace Steeltoe.Initializr.Utilities
             {
                 host.LogInformation(label, x, d);
                 var indent = string.Join(string.Empty, Enumerable.Repeat("  ", d));
-                Console.WriteLine($"{indent} {label} {x.TotalMilliseconds}");
+            //    Console.WriteLine($"{indent} {label} {x.TotalMilliseconds}");
             });
         }
 

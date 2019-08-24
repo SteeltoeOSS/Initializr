@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SteeltoeExample
+namespace Company.WebApplication1
 {
-    public static class Company.WebApplication1
+    public static class InitializeContext
     {
         public static IWebHost InitializeDbContexts(this IWebHost host)
         {

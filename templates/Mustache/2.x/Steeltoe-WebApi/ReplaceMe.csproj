@@ -57,7 +57,7 @@
     <PackageReference Include="Steeltoe.CloudFoundry.ConnectorCore"  Version="{{SteeltoeVersion}}"/>
     {{/AnyConnector}}
     {{#PostgresEFCore}}
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"  Version="{{SteeltoeVersion}}" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"  Version="{{AspNetCoreVersion}}" />
     {{/PostgresEFCore}}
     {{#MongoDB}}
     <PackageReference Include="MongoDB.Driver" Version="{{MongoDBVersion}}" />

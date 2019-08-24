@@ -21,7 +21,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Steeltoe.Discovery.ClientCore" Condition="'$(Discovery)'" Version="SteeltoeVersion"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Condition="'$(SQLServer)'" Version="AspNetCoreVersion" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Condition="'$(Redis)'" Version="AspNetCoreVersion" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Condition="'$(Redis)'" Version="AspNetCoreVersion" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Condition="$(AnyEFCore)'" Version="AspNetCoreVersion" />
     <PackageReference Include="Steeltoe.CloudFoundry.Connector.EFCore" Condition="'$(AnyEFCore)'"  Version="SteeltoeVersion" />
     <PackageReference Include="Steeltoe.CloudFoundry.ConnectorCore" Condition="'$(AnyConnector)'" Version="SteeltoeVersion"/>

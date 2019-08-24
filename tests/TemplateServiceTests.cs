@@ -12,18 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Collections.Generic;
-using DiffMatchPatch;
 using Microsoft.Extensions.Logging;
-using Steeltoe.Initializr.Services.DotNetTemplateEngine;
-using Steeltoe.InitializrTests;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Steeltoe.Initializr.Services;
+using Steeltoe.Initializr.Services.DotNetTemplateEngine;
 using Steeltoe.Initializr.Services.Mustache;
+using Steeltoe.InitializrTests;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -31,11 +25,13 @@ namespace Steeltoe.Initializr.Tests
 {
     public class TemplateServiceTests : XunitLoggingBase
     {
+        private readonly ITestOutputHelper _testOutputHelper;
         private readonly LoggerFactory _loggerFactory;
 
         public TemplateServiceTests(ITestOutputHelper testOutputHelper)
             : base(testOutputHelper)
         {
+            _testOutputHelper = testOutputHelper;
             _loggerFactory = new LoggerFactory();
             _loggerFactory.AddProvider(new XunitLoggerProvider(testOutputHelper));
         }
@@ -286,7 +282,7 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_SqlServer(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var steeltoeVersion = "2.3.0-rc1";
+            var steeltoeVersion = "2.3.0";
 
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
@@ -300,7 +296,7 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains(files, file => file.Key.StartsWith("Models"));
 
             var fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
-            var aspnetCoreVersion = version == TemplateVersion.V3 ? "3.0.100-preview7-012821" : "2.2.0";
+            var aspnetCoreVersion = version == TemplateVersion.V3 ? "3.0.0-preview8.19405.11" : "2.2.0";
 
             Assert.Contains(
                 $@"<PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""{aspnetCoreVersion}"" />", fileContents);
@@ -334,7 +330,7 @@ namespace Steeltoe.Initializr.Tests
             });
 
             string fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
-            Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=""2.2.0""/>", fileContents);
+            Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=""2.3.0""/>", fileContents);
 
             string programFileContents = files.Find(x => x.Key == "Program.cs").Value;
             Assert.Contains(@"using Steeltoe.Extensions.Logging;", programFileContents);
@@ -380,12 +376,12 @@ namespace Steeltoe.Initializr.Tests
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_23rc1(ITemplateService templateService, string templateName, TemplateVersion version)
+        public async Task CreateTemplate_actuators_23(ITemplateService templateService, string templateName, TemplateVersion version)
         {
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = new[] { "Actuators" },
-                SteeltoeVersion = "2.3.0-RC1",
+                SteeltoeVersion = "2.3.0",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -491,180 +487,6 @@ namespace Steeltoe.Initializr.Tests
 
             var projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
             Assert.Contains("<TargetFramework>netcoreapp2.2</TargetFramework>", projectFile);
-        }
-
-       // [Theory]
-        //[ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_GeneratesCorrectVersions(ITemplateService templateService, string templateName, TemplateVersion version)
-        {
-            var deps = templateService.GetDependencies();
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
-            {
-                // Todo : fix this
-                Dependencies = new string[] { string.Join(",", deps.Select(d => d.ShortName.ToLower()).ToArray()) },
-                TemplateShortName = templateName,
-                ProjectName = "Foo.Bar",
-                TemplateVersion = version,
-            });
-
-            string projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
-
-            var targetFramework = version == TemplateVersion.V3 ? "netcoreapp3.0" : "netcoreapp2.2";
-            var aspnetCoreVersion = version == TemplateVersion.V3 ? "3.0.100-preview7-012821" : "2.2.0";
-
-            var expected = !templateName.Contains("React") ? $@"<Project Sdk=""Microsoft.NET.Sdk.Web"">
-                              <PropertyGroup>
-                                <TargetFramework>{targetFramework}</TargetFramework>
-                                <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-                              </PropertyGroup>
-
-                              <ItemGroup >
-                                <PackageReference Include=""Microsoft.AspNetCore.App"" />
-                                <PackageReference Include=""Steeltoe.Extensions.Configuration.CloudFoundryCore""  Version=""2.2.0"" />
-                                <PackageReference Include=""Steeltoe.Management.ExporterCore""  Version=""2.2.0""/>
-                                <PackageReference Include=""Steeltoe.Management.CloudFoundryCore"" Version=""2.2.0"" />
-                                <PackageReference Include=""Steeltoe.CircuitBreaker.HystrixCore"" Version=""2.2.0"" />
-                                <PackageReference Include=""MySql.Data"" Version=""8.0.16"" />
-                                <PackageReference Include=""Npgsql"" Version=""4.0.4"" />
-                                <PackageReference Include=""Newtonsoft.Json"" Version=""12.0.2"" />
-
-                                <PackageReference Include=""Steeltoe.Discovery.ClientCore"" Version=""2.2.0""/>
-                                <PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""{aspnetCoreVersion}"" />
- 
-                                <PackageReference Include=""Microsoft.Extensions.Caching.Redis"" Version=""{aspnetCoreVersion}"" />
-                                <PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""{aspnetCoreVersion}"" />
-                                <PackageReference Include=""Steeltoe.CloudFoundry.Connector.EFCore""  Version=""2.2.0"" />
-                                <PackageReference Include=""Steeltoe.CloudFoundry.ConnectorCore""  Version=""2.2.0"" />
-
-                                <PackageReference Include=""Npgsql.EntityFrameworkCore.PostgreSQL""  Version=""{aspnetCoreVersion}"" />
-                                <PackageReference Include=""MongoDB.Driver"" Version=""2.8.1"" />
-
-                                <PackageReference Include=""RabbitMQ.Client""  Version=""5.1.0"" />
-                                <PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=""2.2.0""/>
-                             </ItemGroup>
-                              <ItemGroup Condition=""'$(BUILD)' == ''"">
-                                <PackageReference Include=""Steeltoe.CircuitBreaker.Hystrix.MetricsStreamCore"" Version=""2.2.0"" />
-                                <PackageReference Include=""RabbitMQ.Client"" Version=""5.1.0"" />
-                              </ItemGroup>
-
-                              <ItemGroup Condition=""'$(BUILD)' == 'LOCAL'"">
-                                <PackageReference Include=""Steeltoe.CircuitBreaker.Hystrix.MetricsEventsCore"" Version=""2.2.0"" />
-                                <PackageReference Include=""System.Threading.ThreadPool"" Version=""4.3.0"" />
-                              </ItemGroup>
-</Project>
-" :
-$@"
-<Project Sdk=""Microsoft.NET.Sdk.Web"">
-
-    <PropertyGroup>
-        <TargetFramework>{targetFramework}</TargetFramework>
-        <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
-        <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
-        <IsPackable>false</IsPackable>
-        <SpaRoot>ClientApp\</SpaRoot>
-        <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
-    </PropertyGroup>
-
-  <ItemGroup>
-    <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    <Content Remove=""$(SpaRoot)**"" />
-    <None Remove=""$(SpaRoot)**"" />
-    <None Include=""$(SpaRoot)**"" Exclude=""$(SpaRoot)node_modules\**"" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include=""Microsoft.AspNetCore.App"" />
-    <PackageReference Include=""Microsoft.AspNetCore.Razor.Design"" Version=""{aspnetCoreVersion}"" PrivateAssets=""All"" />
-    <PackageReference Include=""Steeltoe.Extensions.Configuration.CloudFoundryCore""  Version=""2.2.0"" />
-    <PackageReference Include=""Steeltoe.Management.ExporterCore""  Version=""2.2.0""/>               
-
-    <PackageReference Include=""Steeltoe.Management.CloudFoundryCore"" Version=""2.2.0"" />
-    <PackageReference Include=""Steeltoe.CircuitBreaker.HystrixCore"" Version=""2.2.0"" />
-    <PackageReference Include=""MySql.Data"" Version=""8.0.16"" />
-    <PackageReference Include=""Npgsql"" Version=""4.0.4"" />
-    <PackageReference Include=""Newtonsoft.Json"" Version=""12.0.2"" />
-    <PackageReference Include=""Steeltoe.Discovery.ClientCore"" Version=""2.2.0""/>
-    <PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""{aspnetCoreVersion}"" />
-    <PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""{aspnetCoreVersion}"" />
-    <PackageReference Include=""Microsoft.Extensions.Caching.Redis"" Version=""{aspnetCoreVersion}"" />
-    <PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""{aspnetCoreVersion}"" />
-    <PackageReference Include=""Steeltoe.CloudFoundry.Connector.EFCore"" Version=""2.2.0"" />
-    <PackageReference Include=""Steeltoe.CloudFoundry.ConnectorCore""  Version=""2.2.0"" />
-
-    <PackageReference Include=""Npgsql.EntityFrameworkCore.PostgreSQL""  Version=""{aspnetCoreVersion}"" />
-    <PackageReference Include=""MongoDB.Driver"" Version=""2.8.1"" />
-    <PackageReference Include=""RabbitMQ.Client""  Version=""5.1.0"" />
-    <PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=""2.2.0""/>
-    </ItemGroup>
-   <ItemGroup Condition=""'$(BUILD)' == ''"">
-    <PackageReference Include=""Steeltoe.CircuitBreaker.Hystrix.MetricsStreamCore"" Version=""2.2.0"" />
-    <PackageReference Include=""RabbitMQ.Client"" Version=""5.1.0"" />
-   </ItemGroup>
-   <ItemGroup Condition=""'$(BUILD)' == 'LOCAL'"">
-    <PackageReference Include=""Steeltoe.CircuitBreaker.Hystrix.MetricsEventsCore"" Version=""2.2.0"" />
-    <PackageReference Include=""System.Threading.ThreadPool"" Version=""4.3.0"" />
-   </ItemGroup>
-  <Target Name=""DebugEnsureNodeEnv"" BeforeTargets=""Build"" Condition="" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') "">
-    <!-- Ensure Node.js is installed -->
-    <Exec Command=""node --version"" ContinueOnError=""true"">
-      <Output TaskParameter=""ExitCode"" PropertyName=""ErrorCode"" />
-    </Exec>
-    <Error Condition=""'$(ErrorCode)' != '0'"" Text=""Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE."" />
-    <Message Importance=""high"" Text=""Restoring dependencies using 'npm'. This may take several minutes..."" />
-    <Exec WorkingDirectory=""$(SpaRoot)"" Command=""npm install"" />
-  </Target>
-
-  <Target Name=""PublishRunWebpack"" AfterTargets=""ComputeFilesToPublish"">
-    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec WorkingDirectory=""$(SpaRoot)"" Command=""npm install"" />
-    <Exec WorkingDirectory=""$(SpaRoot)"" Command=""npm run build"" />
-
-    <!-- Include the newly-built files in the publish output -->
-    <ItemGroup>
-      <DistFiles Include=""$(SpaRoot)build\**"" />
-      <ResolvedFileToPublish Include=""@(DistFiles->'%(FullPath)')"" Exclude=""@(ResolvedFileToPublish)"">
-        <RelativePath>%(DistFiles.Identity)</RelativePath>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </ResolvedFileToPublish>
-    </ItemGroup>
-  </Target>
-
-</Project>
-
-
-";
-
-            Assert.True(DiffIgnoreWhitespace(expected, projectFile, out string diffMessage), diffMessage);
-        }
-
-        private bool DiffIgnoreWhitespace(string a, string b, out string diffMessage)
-        {
-            var dmp = DiffMatchPatchModule.Default;
-            var a_lines = a.Split("\r\n").Where( l => !string.IsNullOrWhiteSpace(l)); //a.Replace(" ", string.Empty).Replace("    ", string.Empty);
-            var b_lines = b.Split("\r\n").Where(l => !string.IsNullOrWhiteSpace(l)); //b.Replace(" ", string.Empty).Replace("    ", string.Empty);
-            var comps = new List<string>();
-            // var diffs = dmp.DiffMain(b_min, a_min, true);
-            // >
-            var diffs = new List<KeyValuePair<string,string>>();
-
-
-            foreach (var line in a_lines.Zip(b_lines, (a_line, b_line) => new KeyValuePair<string, string>(a_line, b_line)))
-            {
-                var linediff = dmp.DiffMain(line.Key+"\r\n", line.Value+"\r\n", true);
-                if (linediff.Any( d => d.Operation != Operation.Equal && d.Text.Any(c => !char.IsWhiteSpace(c))))
-                {
-                    diffs.Add(line);
-                }
-            }
-
-            // var filtered_diffs = diffs.Where(x => x.Operation != Operation.Equal && x.Text.Any(c => !char.IsWhiteSpace(c))).Take(5).ToList();
-
-            var diffStrings = ""; // string.Join("\r\n", filtered_diffs.Select(d => (d.Operation == Operation.Insert ? '+' : '-') + $" {d.Text} "));
-            foreach (var diff in diffs)
-            {
-                diffStrings += "expected >>  " + diff.Key + "\n" + "but found << " + diff.Value + "\n";
-            }
-            diffMessage = diffStrings + "in " + b;
-            return !diffs.Any();
         }
     }
 }

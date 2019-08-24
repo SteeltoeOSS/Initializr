@@ -121,7 +121,7 @@
         "cases": [
           {
             "condition": "(Framework == 'netcoreapp3.0')",
-            "value": "3.0.100-preview7-012821"
+            "value": "3.0.0-preview8.19405.11"
           }
         ]
       }
@@ -212,7 +212,7 @@
     },
     "AnyConnector": {
       "type": "computed",
-      "value": "(MySql || Postgres || MySql || Redis || MongoDB || OAuthConnector)"
+      "value": "(MySql || Postgres || Redis || RabbitMQ || MongoDB || OAuthConnector)"
     },
     "AnyEFCore": {
       "type": "computed",
@@ -240,7 +240,7 @@
     "SteeltoeVersion": {
       "type": "parameter",
       "datatype": "choice",
-      "defaultValue": "2.2.0",
+      "defaultValue": "2.3.0",
       "description": "Target the appropriate Steeltoe version",
       "replaces": "SteeltoeVersion",
       "choices": [
@@ -249,12 +249,12 @@
           "description": "Target Steeltoe version 2.2.0"
         },
         {
-          "choice": "2.3.0-rc1",
-          "description": "Target Steeltoe version 2.3.0-rc1"
+          "choice": "2.3.0",
+          "description": "Target Steeltoe version 2.3.0"
         }
       ]
     },
-    "MongoDbVersion": {
+    "MongoDBVersion": {
       "type": "parameter",
       "datatype": "string",
       "defaultValue": "2.8.1",

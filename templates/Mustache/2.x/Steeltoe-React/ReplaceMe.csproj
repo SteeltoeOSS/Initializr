@@ -76,8 +76,8 @@
     {{#DynamicLogger}}
     <PackageReference Include="Steeltoe.Extensions.Logging.DynamicLogger" Version="{{SteeltoeVersion}}"/>
     {{/DynamicLogger}}
-    {{#CircuitBreaker}}
   </ItemGroup>
+    {{#CircuitBreaker}}
     <ItemGroup Condition="'$(BUILD)' == ''">
       <PackageReference Include="Steeltoe.CircuitBreaker.Hystrix.MetricsStreamCore" Version="{{SteeltoeVersion}}" />
       <PackageReference Include="RabbitMQ.Client" Version="{{RabbitMQVersion}}" />

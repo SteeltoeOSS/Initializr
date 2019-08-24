@@ -47,7 +47,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="{{AspNetCoreVersion}}" />
     {{/SQLServer}}
     {{#Redis}}
-    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="{{AspNetCoreVersion}}" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="3.0.0-preview8.18405.4" />
     {{/Redis}}
     {{#AnyEFCore}}
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="{{AspNetCoreVersion}}" />
@@ -57,7 +57,7 @@
     <PackageReference Include="Steeltoe.CloudFoundry.ConnectorCore"  Version="{{SteeltoeVersion}}"/>
     {{/AnyConnector}}
     {{#PostgresEFCore}}
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"  Version="{{AspNetCoreVersion}}" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"  Version="3.0.0-preview8" />
     {{/PostgresEFCore}}
     {{#MongoDB}}
     <PackageReference Include="MongoDB.Driver" Version="{{MongoDBVersion}}" />

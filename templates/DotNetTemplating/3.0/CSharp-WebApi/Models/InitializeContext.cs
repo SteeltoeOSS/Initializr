@@ -2,13 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
-namespace SteeltoeExample
+namespace Company.WebApplication1
 {
-    public static class Company.WebApplication1
+    public static class InitializeContext
     {
         public static IWebHost InitializeDbContexts(this IWebHost host)
         {

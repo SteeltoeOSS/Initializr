@@ -102,12 +102,12 @@
     },
     {
       "Name": "AnyEFCore",
-      "Expression": "SQLServer,MySqlEFCore",
+      "Expression": "PostgresEFCore,SQLServer,MySqlEFCore",
       "ExpressionType": "Any"
     },
     {
       "Name": "AnyConnector",
-      "Expression": "MySql,Postgres,Redis,MongoDB,OAuthConnector",
+      "Expression": "MySql,Postgres,Redis,MongoDB,RabbitMQ,OAuthConnector",
       "ExpressionType": "Any"
     },
     {
@@ -130,7 +130,7 @@
   "Versions": [
     {
       "Name": "SteeltoeVersion",
-      "DefaultValue": "2.2.0",
+      "DefaultValue": "2.3.0",
       "Description": "Target the appropriate Steeltoe version",
       "choices": [
         {
@@ -138,8 +138,8 @@
           "Description": "Target Steeltoe version 2.2.0"
         },
         {
-          "choice": "2.3.0-rc1",
-          "Description": "Target Steeltoe version 2.3.0-rc1"
+          "choice": "2.3.0",
+          "Description": "Target Steeltoe version 2.3.0"
         }
       ]
     },

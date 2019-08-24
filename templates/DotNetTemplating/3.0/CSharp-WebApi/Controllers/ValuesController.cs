@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 #if (!NoAuth)
 using Microsoft.AspNetCore.Authorization;
 #endif
@@ -29,6 +30,7 @@ namespace Company.WebApplication1.Controllers
         {
             _logger = logger;
         }
+#endif
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
@@ -40,11 +42,11 @@ namespace Company.WebApplication1.Controllers
             _logger.LogDebug("Test Debug message");
             _logger.LogTrace("Test Trace message");
 
-
 #if(AnyEFCore)
-               return Ok(_context.TestData.Select(x => $"{x.Id}:{x.Data}"));
- else
-            return new string[] { "value1", "value2" };
+            return Ok(_context.TestData.Select(x => $"{x.Id}:{x.Data}"));
+#else
+            return new string[] {"value1", "value2"};
+#endif
         }
 
         // GET api/values/5
