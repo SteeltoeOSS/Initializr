@@ -60,7 +60,7 @@ stages:
           cfVersion: '6.43.0'
       - task: CloudFoundry@1
         displayName: publish to Prod
-        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/template_nugets'))
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
         inputs:
           cfEndpoint: 'PWS-initializr'
           skipSSLValidation: true
