@@ -1,6 +1,6 @@
 ﻿---
 applications:
-- name: startsteeltoe-prod
+- name: startsteeltoe-stage
   buildpacks:
    - dotnet_core_buildpack
   memory: 1024M
