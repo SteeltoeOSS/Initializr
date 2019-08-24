@@ -39,12 +39,12 @@ stages:
           command: 'test'
           arguments: '--filter Category!=Integration'
           testRunTitle: 'Unit Tests'
-      - task: DotNetCoreCLI@2
-        displayName: Dotnet test (Integration Tests)
-        inputs:
-          command: 'test'
-          arguments: '--filter Category=Integration'
-          testRunTitle: 'Unit Tests'
+      # - task: DotNetCoreCLI@2
+      #   displayName: Dotnet test (Integration Tests)
+      #   inputs:
+      #     command: 'test'
+      #     arguments: '--filter Category=Integration'
+      #     testRunTitle: 'Unit Tests'
       - task: DotNetCoreCLI@2
         displayName: Dotnet publish
         inputs:
@@ -65,7 +65,7 @@ stages:
           cfEndpoint: 'PWS-initializr'
           skipSSLValidation: true
           org: 'steeltoe.io'
-          space: 'development'
+          space: 'steeltoe.io'
           deploymentOptions: 'manifest'
           cfManifest: 'src/manifest.yml'
           additionalDeployArgs: '-p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
@@ -81,7 +81,7 @@ stages:
           org: 'steeltoe.io'
           space: 'development'
           deploymentOptions: 'manifest'
-          cfManifest: 'src/manifest-dev.yml'
+          cfManifest: 'src/manifest.yml'
           additionalDeployArgs: '-p bin/Debug/netcoreapp2.2/ubuntu.14.04-x64/publish'
           createServices: false
           bindServices: false
