@@ -1,5 +1,5 @@
 # Steeltoe Initializr 
-![image](https://dev.azure.com/hsarella/sample/_apis/build/status/hananiel.start.steeltoe.io?branchName=master)
+![image](https://dev.azure.com/SteeltoeOSS/Steeltoe/_apis/build/status/SteeltoeOSS.initializr?branchName=dev)
 
 
 Steeltoe Initializr provides an extensible API to generate quickstart projects. It provides a simple web UI to configure the project to generate and endpoints that you can use via plain HTTP.
