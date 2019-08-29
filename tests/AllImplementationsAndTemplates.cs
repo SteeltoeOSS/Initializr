@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Steeltoe.Initializr.Services;
 using Steeltoe.Initializr.Services.DotNetTemplateEngine;
 using Steeltoe.Initializr.Services.Mustache;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Steeltoe.Initializr.Services;
 
 namespace Steeltoe.Initializr.Tests
 {

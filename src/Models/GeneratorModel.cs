@@ -12,24 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Steeltoe.Initializr.Services.Mustache;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Steeltoe.Initializr.Models
 {
     public class GeneratorModel
     {
-        private string[] _dependencies;
         private string _projectName;
         private TemplateVersion? _templateVersion;
 
-        public string[] Dependencies
-        {
-            get => _dependencies;
-            set => _dependencies = (value == null || value.Length == 0 || value[0] == null) ? null : value[0].ToLower().Split(',');
-        }
+        public string Dependencies { get; set; }
 
         public string ProjectName { get => _projectName ?? "steeltoeProject"; set => _projectName = value; }
 
@@ -42,6 +37,11 @@ namespace Steeltoe.Initializr.Models
         public string ArchiveName => ProjectName + ".zip";
 
         public string TargetFrameworkVersion { get; set; }
+
+        public string [] GetDependencies()
+        {
+            return string.IsNullOrEmpty(Dependencies) ? null : Dependencies.ToLower().Split(',');
+        }
 
         public TemplateVersion TemplateVersion
         {
@@ -60,7 +60,7 @@ namespace Steeltoe.Initializr.Models
 
         public IEnumerable<string> GetTemplateParameters()
         {
-            var templateParameters = Dependencies?.Where(d => d != null).ToList();
+            var templateParameters = GetDependencies()?.Where(d => d != null).ToList();
 
             if (!string.IsNullOrEmpty(SteeltoeVersion) && SteeltoeVersion != "3.0")
             {

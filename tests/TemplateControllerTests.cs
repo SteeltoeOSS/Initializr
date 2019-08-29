@@ -14,13 +14,18 @@
 
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Logging;
+using Steeltoe.Initializr.Models;
 using Steeltoe.Initializr.Services.Mustache;
 using Steeltoe.InitializrTests;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
+using System.Reflection;
+using System.Text;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -50,9 +55,9 @@ namespace Steeltoe.Initializr.Tests
         }
 
         [Fact]
-        public async void CreateZipTest()
+        public async void GetStarterZipTest()
         {
-            var result = await _client.GetAsync("http://localhost/createtest");
+            var result = await _client.GetAsync("http://localhost/starter.zip?ProjectName=TestCompany.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.3.0&TemplateVersion=V2&TargetFrameworkVersion=netcoreapp2.2&TemplateShortName=Steeltoe-WebApi");
 
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
 
@@ -70,6 +75,49 @@ namespace Steeltoe.Initializr.Tests
             }
 
             Assert.True(files.Count > 0);
+            Assert.Contains("Program.cs", files.Keys);
+            Assert.Contains("TestCompany.TestProject", files["Program.cs"]);
+        }
+
+        [Fact]
+        public async void PostStarterZipTest()
+        {
+            var model = new GeneratorModel()
+            {
+                Dependencies = "Actuator,MySql",
+                Description = "TestDescription",
+                ProjectName = "TestCompany.TestProject",
+                SteeltoeVersion = "2.2.0",
+                TargetFrameworkVersion = "netcoreapp2.2",
+                TemplateShortName = "Steeltoe-WebApi",
+                TemplateVersion = TemplateVersion.V2,
+            };
+
+            var props = model.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var kvps = props.Select(prop => new KeyValuePair<string, string>(prop.Name, prop.GetValue(model).ToString())).ToArray();
+
+            var formContent = new FormUrlEncodedContent(kvps);
+
+            var result = await _client.PostAsync("http://localhost/starter.zip", formContent);
+
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+
+            Dictionary<string, string> files = new Dictionary<string, string>();
+            using (var stream = await result.Content.ReadAsStreamAsync())
+            {
+                using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read))
+                {
+                    foreach (var entry in archive.Entries)
+                    {
+                        var fileStream = entry.Open();
+                        files.Add(entry.Name, new StreamReader(fileStream).ReadToEnd());
+                    }
+                }
+            }
+
+            Assert.True(files.Count > 0);
+            Assert.Contains("Program.cs", files.Keys);
+            Assert.Contains("TestCompany.TestProject", files["Program.cs"]);
         }
     }
 }

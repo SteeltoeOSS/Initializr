@@ -37,31 +37,17 @@ namespace Steeltoe.Initializr.Controllers
         }
 
         [Route("/starter.zip")]
+        [HttpPost]
         public Task<ActionResult> GenerateProjectPost([FromForm] GeneratorModel model)
         {
             return GenerateProject(model);
         }
 
-        [Route("/createtest")]
-        public async Task<ActionResult> GenerateProjectTest([FromQuery(Name = "templateShortName")] string templateShortName)
+        [Route("/starter.zip")]
+        [HttpGet]
+        public Task<ActionResult> GenerateProjectGet([FromQuery] GeneratorModel model)
         {
-            var testModel = new GeneratorModel
-            {
-                ProjectName = "mytest",
-                Dependencies = new[] { "actuators,mysql" },
-            };
-            return await GenerateProject(testModel);
-        }
-
-        [Route("/createtest2")]
-        public ActionResult GenerateProjectTest2([FromQuery(Name = "templateShortName")] string templateShortName)
-        {
-            var testModel = new GeneratorModel
-            {
-                ProjectName = "mytest",
-                Dependencies = new[] { "actuators,mysql" },
-            };
-            return GenerateProject2(testModel);
+            return GenerateProject(model);
         }
 
         [Route("dependencies")]
@@ -69,13 +55,6 @@ namespace Steeltoe.Initializr.Controllers
         {
             return Ok(_sttemplateService.GetDependencies(templateShortName, templateVersion ?? TemplateVersion.V2));
         }
-
-//
-//        [Route("versions")]
-//        public ActionResult GetVersions()
-//        {
-//            return Ok(_sttemplateService.get(templateShortName));
-//        }
 
         [Route("templates")]
         public ActionResult<IEnumerable<TemplateViewModel>> GetTemplates([FromQuery(Name = "Mustache")] bool useMustache)
@@ -95,18 +74,6 @@ namespace Steeltoe.Initializr.Controllers
             Response.Headers.Add("Content-Disposition", cd.ToString());
 
             return File(archiveBytes, "application/zip");
-        }
-
-        private ActionResult GenerateProject2(GeneratorModel model)
-        {
-            var fileBytes = _sttemplateService.GenerateProjectArchiveAsync(model).Result;
-            var cd = new ContentDispositionHeaderValue("attachment")
-            {
-                FileNameStar = (model.ProjectName ?? "SteeltoeProject") + ".zip",
-            };
-            Response.Headers.Add("Content-Disposition", cd.ToString());
-
-            return File(fileBytes, "application/zip");
         }
     }
 }

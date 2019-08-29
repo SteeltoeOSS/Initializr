@@ -20,13 +20,13 @@ using Microsoft.TemplateEngine.Edge.Settings;
 using Microsoft.TemplateEngine.Edge.Template;
 using Microsoft.TemplateEngine.Utils;
 using Steeltoe.Initializr.Models;
+using Steeltoe.Initializr.Services.Mustache;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
-using Steeltoe.Initializr.Services.Mustache;
 
 namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
 {
@@ -94,7 +94,8 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
             var settingsContent = File.ReadAllText(settingsPath);
 
             var escapedPath = _hivePath.Replace(@"\", @"\\");
-            var newContent = settingsContent.Replace("__Path__", (Path.DirectorySeparatorChar == '\\') ? escapedPath : _hivePath);
+            var newContent = settingsContent.Replace("__DIR_SEPERATOR__", (Path.DirectorySeparatorChar == '\\') ? "\\\\" : Path.DirectorySeparatorChar.ToString());
+            newContent = newContent.Replace("__Path__", (Path.DirectorySeparatorChar == '\\') ? escapedPath : _hivePath);
 
             File.WriteAllText(settingsPath, newContent);
         }
@@ -133,15 +134,22 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
 
             var templateShortName = string.IsNullOrEmpty(model.TemplateShortName) ? DEFAULT_TEMPLATE : model.TemplateShortName;
 
-            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, model.TemplateVersion,  EnvSettings);
+            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, model.TemplateVersion, EnvSettings);
             if (templateInfo == null)
             {
                 throw new Exception($"Could not find template with shortName: {templateShortName} ");
             }
 
             TemplateCreator creator = new TemplateCreator(EnvSettings);
-            var creationResult = await creator.InstantiateAsync(templateInfo, model.ProjectName, "SteeltoeProject",
-                outFolder, iParams, true, false, "baseLine");
+            var creationResult = await creator.InstantiateAsync(
+                templateInfo: templateInfo,
+                name: model.ProjectName,
+                fallbackName: "SteeltoeProject",
+                outputPath: outFolder,
+                inputParameters: iParams,
+                skipUpdateCheck: true,
+                forceCreation: false,
+                baselineName: "baseLine");
 
             if (creationResult.Status != CreationResultStatus.Success)
             {
@@ -185,7 +193,7 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
             {
                 Name = x.Name,
                 ShortName = x.ShortName,
-                TemplateVersion = x.Identity.EndsWith("2.0")? TemplateVersion.V2: TemplateVersion.V3,
+                TemplateVersion = x.Identity.EndsWith("2.0") ? TemplateVersion.V2 : TemplateVersion.V3,
                 Language = x.Parameters?.FirstOrDefault(p => p.Name == "language")?.DefaultValue,
                 Tags = x.Classifications.Aggregate((current, next) => current + "/" + next),
             });
@@ -225,7 +233,7 @@ namespace Steeltoe.Initializr.Services.DotNetTemplateEngine
             }
             catch (Exception ex)
             {
-               _logger.LogError("Delete Error: " + ex.Message);
+                _logger.LogError("Delete Error: " + ex.Message);
             }
         }
 

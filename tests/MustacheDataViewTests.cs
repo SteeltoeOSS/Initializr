@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.Services.Mustache;
+using Steeltoe.InitializrTests;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Steeltoe.InitializrTests;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace Steeltoe.Initializr.Tests
 {
@@ -42,17 +41,17 @@ namespace Steeltoe.Initializr.Tests
             {
                 Params = new List<Param>
                 {
-                    new Param {Name = "A", DefaultValue = "true"},
-                    new Param {Name = "B", DefaultValue = "false"},
-                    new Param {Name = "C", DefaultValue = "false"},
+                    new Param { Name = "A", DefaultValue = "true" },
+                    new Param { Name = "B", DefaultValue = "false" },
+                    new Param { Name = "C", DefaultValue = "false" },
                 },
             };
 
             var dv = new Dictionary<string, string>
             {
-                {"A", "true"},
-                {"B", "false"},
-                {"C", "false"},
+                { "A", "true" },
+                { "B", "false" },
+                { "C", "false" },
             };
 
             var calcParam = new CalculatedParam
@@ -108,7 +107,7 @@ namespace Steeltoe.Initializr.Tests
                     new Param { Name = "C", DefaultValue = "false" },
                 },
             };
-            var dv = new Dictionary<string,string>
+            var dv = new Dictionary<string, string>
             {
                 { "TargetFrameworkVersion", "netcoreapp2.2" },
             };
@@ -178,7 +177,6 @@ namespace Steeltoe.Initializr.Tests
             var expression = new AnyExpression(_logger, calcParam, config);
             var result = await expression.EvaluateExpressionAsync(dv);
             Assert.Equal("True", result);
-
         }
     }
 }

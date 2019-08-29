@@ -15,19 +15,17 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.Models;
-using Steeltoe.Initializr.Services.DotNetTemplateEngine;
+using Steeltoe.Initializr.Utilities;
 using Stubble.Core;
 using Stubble.Core.Builders;
 using Stubble.Extensions.JsonNet;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Steeltoe.Initializr.Utilities;
 
 namespace Steeltoe.Initializr.Services.Mustache
 {
@@ -82,7 +80,7 @@ namespace Steeltoe.Initializr.Services.Mustache
             Dictionary<string, string> dataView;
             using (Timing.Over(_logger, "GetDataView"))
             {
-                dataView = await _mustacheConfig.GetDataView(templateKey, model.Dependencies, model);
+                dataView = await _mustacheConfig.GetDataView(templateKey, model);
             }
 
             var listOfFiles = new List<KeyValuePair<string, string>>();
@@ -107,7 +105,7 @@ namespace Steeltoe.Initializr.Services.Mustache
             return listOfFiles;
         }
 
-        public List<TemplateViewModel> GetAvailableTemplates() //Todo: add version?
+        public List<TemplateViewModel> GetAvailableTemplates()
         {
             return _mustacheConfig.GetTemplateKeys()
                 .Select(templateKey => new TemplateViewModel
@@ -198,7 +196,6 @@ namespace Steeltoe.Initializr.Services.Mustache
     public enum TemplateVersion
     {
         V2,
-        V3
+        V3,
     }
-
 }

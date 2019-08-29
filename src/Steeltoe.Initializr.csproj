@@ -17,12 +17,12 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+    
     <None Include="$(ProjectDir)..\templates\**\*.*" Exclude="$(ProjectDir)..\templates\**\TemplatePack.csproj;$(ProjectDir)..\templates\**\TemplatePack.sln;$(ProjectDir)..\templates\**\bin\**;$(ProjectDir)..\templates\**\obj\**;">
       <Link>templates\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
-    
     
   </ItemGroup>
  

@@ -13,9 +13,9 @@
 // limitations under the License.
 
 using Steeltoe.Initializr.Models;
+using Steeltoe.Initializr.Services.Mustache;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Steeltoe.Initializr.Services.Mustache;
 
 namespace Steeltoe.Initializr.Services
 {

@@ -79,10 +79,10 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new[] { "Actuators" },
+                Dependencies = "Actuators",
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
-                TemplateVersion = version
+                TemplateVersion = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -114,7 +114,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new[] { "Discovery" },
+                Dependencies = "Discovery",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -126,8 +126,6 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains("app.UseDiscoveryClient();", startUpContents);
             string appSettingsContents = files.Find(x => x.Key == "appsettings.Development.json").Value;
             Assert.Contains("eureka", appSettingsContents);
-
-
         }
 
         [Theory]
@@ -136,7 +134,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new[] { "Actuators,CircuitBreaker" },
+                Dependencies = "Actuators,CircuitBreaker",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -152,7 +150,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new[] { "MySql" },
+                Dependencies = "MySql",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -169,7 +167,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new[] { "MySqlEFCore" },
+                Dependencies = "MySqlEFCore",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -185,7 +183,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new[] { "Postgres" },
+                Dependencies = "Postgres",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -202,7 +200,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new[] { "PostgresEFCore" },
+                Dependencies = "PostgresEFCore",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -219,7 +217,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new[] { "RabbitMQ" },
+                Dependencies = "RabbitMQ",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -236,7 +234,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new[] { "Redis" },
+                Dependencies  = "Redis",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -252,7 +250,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new[] { "MongoDB" },
+                Dependencies = "MongoDB",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -268,7 +266,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new[] { "OAuthConnector" },
+                Dependencies = "OAuthConnector",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -286,7 +284,7 @@ namespace Steeltoe.Initializr.Tests
 
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new[] { "SQLServer" },
+                Dependencies = "SQLServer",
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
                 SteeltoeVersion = steeltoeVersion,
@@ -323,7 +321,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
-                Dependencies = new[] { "DynamicLogger" },
+                Dependencies = "DynamicLogger",
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
@@ -346,7 +344,7 @@ namespace Steeltoe.Initializr.Tests
 
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
-                Dependencies = new[] { "CloudFoundry" },
+                Dependencies = "CloudFoundry",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -363,7 +361,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new[] { "Actuators" },
+                Dependencies = "Actuators",
                 SteeltoeVersion = "2.2.0",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
@@ -380,7 +378,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
-                Dependencies = new[] { "Actuators" },
+                Dependencies = "Actuators",
                 SteeltoeVersion = "2.3.0",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
@@ -453,7 +451,7 @@ namespace Steeltoe.Initializr.Tests
 
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies = new string[] { "Actuators,SQLServer" },
+                Dependencies = "Actuators,SQLServer",
                 TemplateShortName = templateName,
                 ProjectName = "Foo.Bar",
                 TargetFrameworkVersion = "netcoreapp2.1",
