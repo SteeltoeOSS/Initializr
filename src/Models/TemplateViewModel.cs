@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using Steeltoe.Initializr.Services.Mustache;
 
 namespace Steeltoe.Initializr.Models
@@ -30,6 +29,5 @@ namespace Steeltoe.Initializr.Models
         public string Tags { get; set; }
 
         public TemplateVersion TemplateVersion { get; set; }
-
     }
 }

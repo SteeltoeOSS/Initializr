@@ -5,25 +5,25 @@
       "ParentMountPointId": "00000000-0000-0000-0000-000000000000",
       "MountPointFactoryId": "8c19221b-dea3-4250-86fe-2d4e189a11d2",
       "MountPointId": "1815274a-f735-4189-9f1c-cbc16a31dd3a",
-      "Place": "__Path__2.x/CSharp-WebApi"
+      "Place": "__Path__2.x__DIR_SEPERATOR__CSharp-WebApi"
     },
     {
       "ParentMountPointId": "00000000-0000-0000-0000-000000000000",
       "MountPointFactoryId": "8c19221b-dea3-4250-86fe-2d4e189a11d2",
       "MountPointId": "1815274a-f735-4189-9f1c-cbc16a31dd3c",
-      "Place": "__Path__2.x/CSharp-React"
+      "Place": "__Path__2.x__DIR_SEPERATOR__CSharp-React"
     },
     {
       "ParentMountPointId": "00000000-0000-0000-0000-000000000000",
       "MountPointFactoryId": "8c19221b-dea3-4250-86fe-2d4e189a11d2",
       "MountPointId": "1815274a-f735-4189-9f1c-cbc16a31dd3b",
-      "Place": "__Path__3.0/CSharp-WebApi"
+      "Place": "__Path__3.0__DIR_SEPERATOR__CSharp-WebApi"
     },
     {
       "ParentMountPointId": "00000000-0000-0000-0000-000000000000",
       "MountPointFactoryId": "8c19221b-dea3-4250-86fe-2d4e189a11d2",
       "MountPointId": "1815274a-f735-4189-9f1c-cbc16a31dd3d",
-      "Place": "__Path__3.0/CSharp-React"
+      "Place": "__Path__3.0__DIR_SEPERATOR__CSharp-React"
     }
   ],
   "ComponentGuidToAssemblyQualifiedName": {

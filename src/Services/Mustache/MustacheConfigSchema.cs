@@ -25,7 +25,6 @@ namespace Steeltoe.Initializr.Services.Mustache
         public List<ConditionalInclusions> ConditionalInclusions { get; set; }
 
         public List<Version> Versions { get; set; }
-
     }
 
 #pragma warning disable SA1402 // File may only contain a single type
@@ -43,7 +42,6 @@ namespace Steeltoe.Initializr.Services.Mustache
         public string Expression { get; set; }
 
         public ExpressionTypeEnum ExpressionType { get; set; }
-
     }
 
     public enum ExpressionTypeEnum
