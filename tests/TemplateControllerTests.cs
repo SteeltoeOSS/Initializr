@@ -57,7 +57,7 @@ namespace Steeltoe.Initializr.Tests
         [Fact]
         public async void GetStarterZipTest()
         {
-            var result = await _client.GetAsync("http://localhost/starter.zip?ProjectName=TestCompany.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.3.0&TemplateVersion=V2&TargetFrameworkVersion=netcoreapp2.2&TemplateShortName=Steeltoe-WebApi");
+            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=TestCompany.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.3.0&TemplateVersion=V2&TargetFrameworkVersion=netcoreapp2.2&TemplateShortName=Steeltoe-WebApi");
 
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
 
@@ -98,7 +98,7 @@ namespace Steeltoe.Initializr.Tests
 
             var formContent = new FormUrlEncodedContent(kvps);
 
-            var result = await _client.PostAsync("http://localhost/starter.zip", formContent);
+            var result = await _client.PostAsync("https://localhost/starter.zip", formContent);
 
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
 
