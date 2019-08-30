@@ -234,7 +234,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
             {
-                Dependencies  = "Redis",
+                Dependencies = "Redis",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
