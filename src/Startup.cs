@@ -46,6 +46,7 @@ namespace Steeltoe.Initializr
             services.AddHttpsRedirection(options =>
             {
                 options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.HttpsPort = 443;
             });
 
             // In production, the React files will be served from this directory
