@@ -38,7 +38,7 @@ namespace Steeltoe.Initializr.Models
 
         public string TargetFrameworkVersion { get; set; }
 
-        public string [] GetDependencies()
+        public string[] GetDependencies()
         {
             return string.IsNullOrEmpty(Dependencies) ? null : Dependencies.ToLower().Split(',');
         }
