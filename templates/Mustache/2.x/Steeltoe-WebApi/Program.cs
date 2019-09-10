@@ -18,7 +18,9 @@ using Steeltoe.Extensions.Configuration.CloudFoundry;
 {{#ConfigServer}}
 using Steeltoe.Extensions.Configuration.ConfigServer;
 {{/ConfigServer}}
-
+{{#PlaceholderConfig}}
+using Steeltoe.Extensions.Configuration.PlaceholderCore;
+{{/PlaceholderConfig}}
 namespace {{ProjectNameSpace}}
 {
     public class Program
@@ -28,7 +30,10 @@ namespace {{ProjectNameSpace}}
             CreateWebHostBuilder(args)
             {{#ConfigServer}}
 			.AddConfigServer()
-            {{/ConfigServer}}  
+            {{/ConfigServer}} 
+            {{#PlaceholderConfig}}
+            .AddPlaceholderResolver()
+            {{/PlaceholderConfig}}
             .Build()
             {{#AnyEFCore}}
             .InitializeDbContexts()
@@ -41,18 +46,18 @@ namespace {{ProjectNameSpace}}
         {
             var builder = WebHost.CreateDefaultBuilder(args)
                 .UseDefaultServiceProvider(configure => configure.ValidateScopes = false)
-{{#CloudFoundry}}
+                {{#CloudFoundry}}
                 .UseCloudFoundryHosting(5555) //Enable listening on a Env provided port
                 .AddCloudFoundry() //Add cloudfoundry environment variables as a configuration source
-{{/CloudFoundry}}
+                {{/CloudFoundry}}
                 .UseStartup<Startup>();
-{{#ActuatorsOrDynamicLogger}}
+            {{#ActuatorsOrDynamicLogger}}
             builder.ConfigureLogging((hostingContext, loggingBuilder) =>
             {
                 loggingBuilder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                 loggingBuilder.AddDynamicConsole();
             });
-{{/ActuatorsOrDynamicLogger}}
+            {{/ActuatorsOrDynamicLogger}}
             return builder;
         }
     }

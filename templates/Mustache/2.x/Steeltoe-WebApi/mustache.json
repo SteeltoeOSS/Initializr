@@ -85,6 +85,12 @@
       "friendlyName": "Config Server"
     },
     {
+      "Name": "PlaceholderConfig",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Placeholder Configuration Source",
+      "friendlyName": "Placeholder Configuration Source"
+    },
+    {
       "Name": "ProjectNameSpace",
       "DefaultValue": "SteeltoeExample",
       "Description": "Change the namespace "
@@ -134,7 +140,11 @@
     },
     {
       "Name": "ConfigServer",
-      "InclusionExpression":  "Models/ConfigServerData.cs;Controllers/ConfigDataController.cs"
+      "InclusionExpression": "Models/ConfigServerData.cs;Controllers/ConfigDataController.cs"
+    },
+    {
+      "Name": "PlaceholderConfig",
+      "InclusionExpression": "SampleOptions.cs;Controllers/PlaceholderDataController.cs"
     }
   ],
   "Versions": [
