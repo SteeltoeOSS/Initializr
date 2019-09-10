@@ -25,6 +25,9 @@
     {{#CloudFoundry}}
     <PackageReference Include="Steeltoe.Extensions.Configuration.CloudFoundryCore"  Version="{{SteeltoeVersion}}" />
     {{/CloudFoundry}}
+    {{#ConfigServer}}
+    <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="{{SteeltoeVersion}}" />
+    {{/ConfigServer}}
 
     {{#ActuatorsOrCloudFoundry}}
     <PackageReference Include="Steeltoe.Management.ExporterCore"  Version="{{SteeltoeVersion}}"/>

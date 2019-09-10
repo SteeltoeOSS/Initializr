@@ -131,34 +131,35 @@ namespace Steeltoe.Initializr.Services.Mustache
         {
             var settings = _templateSettings[templateKey];
             var files = settings.SourceSets;
-            var exclusionExpressions = GetExclusionList(dataView, settings.Schema);
+            var exclusionExpressions = GetInclusionExpressions(dataView, settings.Schema);
             var excludedFiles = new List<string>();
             foreach (var sourceFile in files)
             {
-                if (sourceFile.Name.EndsWith("mustache.json")
-                    || sourceFile.Name.EndsWith("sourceExclusions.json"))
+                if (sourceFile.Name.EndsWith("mustache.json"))
                 {
                     continue;
                 }
 
+                // By default everything is included, unless there is a conditional inclusions
+                // which causes it to be an exclusion when condition is not met.
+                // Explicit inclusions override exclusions by condition not being met
+                var explicitInclusions = new List<string>();
                 foreach (var exclusionExpression in exclusionExpressions)
                 {
-                    if (exclusionExpression.EndsWith("**"))
+                    if (exclusionExpression.IsMatch(sourceFile.Name))
                     {
-                        if (sourceFile.Name.StartsWith(exclusionExpression.Replace("/**", string.Empty)))
+                        if (exclusionExpression.IsInclusion)
                         {
-                            excludedFiles.Add(sourceFile.Name);
+                            explicitInclusions.Add(sourceFile.Name);
                         }
-                    }
-                    else
-                    {
-                        // exact Match
-                        if (sourceFile.Name == exclusionExpression)
+                        else
                         {
                             excludedFiles.Add(sourceFile.Name);
                         }
                     }
                 }
+
+                excludedFiles = excludedFiles.Except(explicitInclusions).ToList();
             }
 
             return files.Where(f => excludedFiles.All(e => e != f.Name));
@@ -180,12 +181,54 @@ namespace Steeltoe.Initializr.Services.Mustache
             }
         }
 
-        private List<string> GetExclusionList(Dictionary<string, string> dataView, MustacheConfigSchema schema)
+        private List<InclusionExpression> GetInclusionExpressions(Dictionary<string, string> dataView, MustacheConfigSchema schema) =>
+            schema.ConditionalInclusions
+                .Select(x => new InclusionExpression(
+                    expression: x.InclusionExpression,
+                    matchesView: dataView.ContainsKey(x.Name) && (dataView[x.Name] is string stringValue && stringValue == "True")))
+                .ToList();
+    }
+
+    public class InclusionExpression
+    {
+        private readonly string _expression;
+        private readonly bool _matchesView;
+
+        public InclusionExpression(string expression, bool matchesView)
         {
-            // This list of expressions that do NOT apply become the exclusion list here
-            return schema.ConditionalInclusions.Where(x => !dataView.ContainsKey(x.Name)
-                                                           || (dataView[x.Name] is string stringValue && stringValue != "True"))
-                .Select(x => x.InclusionExpression).ToList();
+            _expression = expression;
+            _matchesView = matchesView;
         }
+
+        public bool IsInclusion
+        {
+            get { return _matchesView; }
+        }
+
+        public bool IsMatch(string fileName)
+        {
+            if (_expression.EndsWith("**"))
+            {
+                if (fileName.StartsWith(_expression.Replace("/**", string.Empty))) //unless it is has an explicit inclusion
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                var escapedExpression = _expression.Replace('/', Path.DirectorySeparatorChar);
+                var exactMatches = escapedExpression.Split(';');
+                foreach (var match in exactMatches)
+                {
+                    if (fileName == match)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
     }
 }

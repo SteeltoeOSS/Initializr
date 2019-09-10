@@ -15,6 +15,10 @@ using Steeltoe.Extensions.Logging;
 using Steeltoe.Extensions.Configuration;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 {{/CloudFoundry}}
+{{#ConfigServer}}
+using Steeltoe.Extensions.Configuration.ConfigServer;
+{{/ConfigServer}}
+
 namespace {{ProjectNameSpace}}
 {
     public class Program
@@ -22,10 +26,13 @@ namespace {{ProjectNameSpace}}
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args)
+            {{#ConfigServer}}
+			.AddConfigServer()
+            {{/ConfigServer}}  
             .Build()
             {{#AnyEFCore}}
             .InitializeDbContexts()
-            {{/AnyEFCore}}
+            {{/AnyEFCore}}    
             .Run();
              
         }

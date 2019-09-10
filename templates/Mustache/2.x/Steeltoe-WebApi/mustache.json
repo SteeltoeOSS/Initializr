@@ -79,6 +79,12 @@
       "friendlyName": "SQL Server"
     },
     {
+      "Name": "ConfigServer",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add ConfigServer Configuration Source",
+      "friendlyName": "Config Server"
+    },
+    {
       "Name": "ProjectNameSpace",
       "DefaultValue": "SteeltoeExample",
       "Description": "Change the namespace "
@@ -125,6 +131,10 @@
     {
       "Name": "AnyEFCore",
       "InclusionExpression": "Models/**"
+    },
+    {
+      "Name": "ConfigServer",
+      "InclusionExpression":  "Models/ConfigServerData.cs;Controllers/ConfigDataController.cs"
     }
   ],
   "Versions": [

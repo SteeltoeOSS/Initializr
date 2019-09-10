@@ -77,7 +77,7 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_actuators(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "Actuators",
                 ProjectName = "testProject",
@@ -97,7 +97,7 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_react(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
@@ -112,7 +112,7 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_discovery(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "Discovery",
                 TemplateShortName = templateName,
@@ -132,7 +132,7 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_actuators_circuitbreakers(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "Actuators,CircuitBreaker",
                 TemplateShortName = templateName,
@@ -148,7 +148,7 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_MySql(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "MySql",
                 TemplateShortName = templateName,
@@ -165,7 +165,7 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_MySql_EFCore(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "MySqlEFCore",
                 TemplateShortName = templateName,
@@ -181,7 +181,7 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_postgresql(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "Postgres",
                 TemplateShortName = templateName,
@@ -194,11 +194,35 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains("services.AddPostgresConnection(Configuration);", startUpContents);
         }
 
+
+        [Fact]
+        public async Task CreateTemplate_ConfigServer()
+        {
+            var configuration = TestHelper.GetConfiguration();
+            var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
+
+            ITemplateService templateService = new MustacheTemplateService(configuration, logger);
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
+            {
+                Dependencies = "ConfigServer",
+                TemplateShortName = "Steeltoe-WebApi",
+                TemplateVersion = TemplateVersion.V2,
+            });
+
+            Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
+            Assert.Contains(files, file => file.Key.EndsWith("ConfigDataController.cs"));
+            Assert.Contains(files, file => file.Key.EndsWith("ConfigServerData.cs"));
+            //string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
+            //Assert.Contains("using Steeltoe.CloudFoundry.Connector.PostgreSql;", startUpContents);
+
+            //Assert.Contains("services.AddPostgresConnection(Configuration);", startUpContents);
+        }
+
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_postgresEFCore(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "PostgresEFCore",
                 TemplateShortName = templateName,
@@ -215,7 +239,7 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_RabbitMQ(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "RabbitMQ",
                 TemplateShortName = templateName,
@@ -232,7 +256,7 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_Redis(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "Redis",
                 TemplateShortName = templateName,
@@ -248,7 +272,7 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_MongoDB(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "MongoDB",
                 TemplateShortName = templateName,
@@ -264,7 +288,7 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_OauthConnector(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "OAuthConnector",
                 TemplateShortName = templateName,
@@ -282,7 +306,7 @@ namespace Steeltoe.Initializr.Tests
         {
             var steeltoeVersion = "2.3.0";
 
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "SQLServer",
                 ProjectName = "testProject",
@@ -359,7 +383,7 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_actuators_v22(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "Actuators",
                 SteeltoeVersion = "2.2.0",
@@ -422,6 +446,7 @@ namespace Steeltoe.Initializr.Tests
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
             Assert.DoesNotContain(files, file => file.Key.StartsWith("Models"));
+            Assert.DoesNotContain(files, file => file.Key.EndsWith("ConfigDataController.cs"));
             Assert.DoesNotContain("AddCloudFoundryActuators", startUpContents);
             var dockerFile = files.Find(x => x.Key == "Dockerfile").Value;
             Assert.NotNull(dockerFile);
@@ -449,7 +474,7 @@ namespace Steeltoe.Initializr.Tests
                 return;
             }
 
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "Actuators,SQLServer",
                 TemplateShortName = templateName,
@@ -473,7 +498,7 @@ namespace Steeltoe.Initializr.Tests
                 return;
             }
 
-            var files = await templateService.GenerateProjectFiles(new Initializr.Models.GeneratorModel()
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 TemplateShortName = templateName,
                 ProjectName = "Foo.Bar",

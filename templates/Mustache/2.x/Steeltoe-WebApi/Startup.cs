@@ -61,6 +61,10 @@ using Steeltoe.CloudFoundry.Connector.OAuth;
 {{#PostgresEFCore}}
 using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
 {{/PostgresEFCore}}
+{{#ConfigServer}}
+using Steeltoe.Extensions.Configuration.ConfigServer;
+{{/ConfigServer}}
+
 namespace {{ProjectNameSpace}}
 {
     public class Startup
@@ -128,6 +132,16 @@ namespace {{ProjectNameSpace}}
 {{#SQLServer}}
             services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));
 {{/SQLServer}}
+{{#ConfigServer}}
+			// Optional: Adds ConfigServerClientOptions to service container
+			services.ConfigureConfigServerClientOptions(Configuration);
+
+			// Optional:  Adds IConfiguration and IConfigurationRoot to service container
+			services.AddConfiguration(Configuration);
+
+			 // Adds the configuration data POCO configured with data returned from the Spring Cloud Config Server
+            services.Configure<ConfigServerData>(Configuration);
+{{/ConfigServer}}
 {{#TargetFrameworkVersion22}}
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 {{/TargetFrameworkVersion22}}
