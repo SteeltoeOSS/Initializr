@@ -21,6 +21,9 @@ using Steeltoe.Extensions.Configuration.ConfigServer;
 {{#PlaceholderConfig}}
 using Steeltoe.Extensions.Configuration.PlaceholderCore;
 {{/PlaceholderConfig}}
+{{#RandomValueConfig}}
+using Steeltoe.Extensions.Configuration.RandomValue;
+{{/ RandomValueConfig}}
 namespace {{ProjectNameSpace}}
 {
     public class Program
@@ -34,6 +37,9 @@ namespace {{ProjectNameSpace}}
             {{#PlaceholderConfig}}
             .AddPlaceholderResolver()
             {{/PlaceholderConfig}}
+            {{#RandomValueConfig}}
+            .ConfigureAppConfiguration((b) => b.AddRandomValueSource())
+            {{/RandomValueConfig}}
             .Build()
             {{#AnyEFCore}}
             .InitializeDbContexts()

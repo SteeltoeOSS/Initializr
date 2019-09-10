@@ -91,6 +91,12 @@
       "friendlyName": "Placeholder Configuration Source"
     },
     {
+      "Name": "RandomValueConfig",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add RandomValue Configuration Source",
+      "friendlyName": "RandomValue Configuration Source"
+    },
+    {
       "Name": "ProjectNameSpace",
       "DefaultValue": "SteeltoeExample",
       "Description": "Change the namespace "
@@ -145,6 +151,10 @@
     {
       "Name": "PlaceholderConfig",
       "InclusionExpression": "SampleOptions.cs;Controllers/PlaceholderDataController.cs"
+    },
+    {
+      "Name": "RandomValueConfig",
+      "InclusionExpression": "Controllers/RandomValueDataController.cs"
     }
   ],
   "Versions": [

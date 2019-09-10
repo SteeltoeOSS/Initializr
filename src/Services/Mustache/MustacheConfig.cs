@@ -220,7 +220,7 @@ namespace Steeltoe.Initializr.Services.Mustache
                 var exactMatches = escapedExpression.Split(';');
                 foreach (var match in exactMatches)
                 {
-                    if (fileName == match)
+                    if (string.Equals(fileName, match, StringComparison.OrdinalIgnoreCase))
                     {
                         return true;
                     }

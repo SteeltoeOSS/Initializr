@@ -458,11 +458,6 @@ namespace Steeltoe.Initializr.Tests
             var targetFramework = version == TemplateVersion.V3 ? "netcoreapp3.0" : "netcoreapp2.2";
             Assert.Contains($"<TargetFramework>{targetFramework}</TargetFramework>", projectFile);
 
-            foreach (var file in files)
-            {
-                Assert.DoesNotContain("{{", file.Value);
-                Assert.DoesNotContain("}}", file.Value);
-            }
         }
 
         [Theory]
