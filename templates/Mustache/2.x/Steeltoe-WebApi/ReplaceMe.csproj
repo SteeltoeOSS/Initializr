@@ -25,7 +25,15 @@
     {{#CloudFoundry}}
     <PackageReference Include="Steeltoe.Extensions.Configuration.CloudFoundryCore"  Version="{{SteeltoeVersion}}" />
     {{/CloudFoundry}}
-
+    {{#ConfigServer}}
+    <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="{{SteeltoeVersion}}" />
+    {{/ConfigServer}}
+    {{#PlaceholderConfig}}
+    <PackageReference Include="Steeltoe.Extensions.Configuration.PlaceholderCore" Version="{{SteeltoeVersion}}" />
+    {{/PlaceholderConfig}}
+    {{#RandomValueConfig}}
+    <PackageReference Include="Steeltoe.Extensions.Configuration.RandomValueBase" Version="{{SteeltoeVersion}}" />
+    {{/RandomValueConfig}}
     {{#ActuatorsOrCloudFoundry}}
     <PackageReference Include="Steeltoe.Management.ExporterCore"  Version="{{SteeltoeVersion}}"/>
     <PackageReference Include="Steeltoe.Management.CloudFoundryCore" Version="{{SteeltoeVersion}}" />

@@ -31,13 +31,7 @@ namespace Steeltoe.Initializr.Tests
 
         public AllImplementationsAndTemplates()
         {
-            var settings = new Dictionary<string, string>()
-            {
-                ["FriendlyNames:CloudFoundry"] = "Cloud Foundry",
-            };
-            var configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(settings)
-                .Build();
+            IConfigurationRoot configuration = TestHelper.GetConfiguration();
 
             var implementations = new ITemplateService[]
             {
@@ -51,12 +45,12 @@ namespace Steeltoe.Initializr.Tests
             };
             var templateVersions = (TemplateVersion[])Enum.GetValues(typeof(TemplateVersion));
             var data = from implementation in implementations
-                        from templateName in templateNames
-                        from templateVersion in templateVersions
-                        select new object[] { implementation, templateName, templateVersion };
+                       from templateName in templateNames
+                       from templateVersion in templateVersions
+                       select new object[] { implementation, templateName, templateVersion };
             _data = data.ToList();
         }
-
+        
         public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

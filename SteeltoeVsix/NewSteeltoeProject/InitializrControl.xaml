@@ -1,0 +1,46 @@
+﻿<local:DiscoveryDialog x:Class="NewSteeltoeProject.InitializrControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NewSteeltoeProject"
+             mc:Ignorable="d" >
+   <Grid VerticalAlignment="Top" Height="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="680"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            
+        </Grid.ColumnDefinitions>
+
+        <Label Name="lblProjectName" Grid.Column="0" Grid.Row="0">Project Name:</Label>
+        <TextBox Name="txtProjectName" Grid.Column="1" Grid.Row="0">SteeltoeProject</TextBox>
+        <Label Name="lblDependencies" Margin="0 10 0 0" Grid.Column="0" Grid.Row="1">Dependencies:</Label>
+        <ListView x:Name="lstDependencies" Margin="0 10 0 0" ItemsSource="{Binding Dependencies}" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Dependencies"  Width="400">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected}">
+                                    <WrapPanel Orientation="Horizontal" ItemHeight="20" ItemWidth="400">
+                                        <TextBlock FontWeight="Bold" Text="{Binding Name}" />
+                                        <TextBlock Text="{Binding Description}" />
+                                    </WrapPanel>
+                                </CheckBox>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button x:Name="btn2" Content="Create project"
+        Click="OnClick2" ClickMode="Press" Grid.Column="1" Grid.Row="2"
+        Foreground="Blue" Margin="0 10" Height="50"/>
+    </Grid>
+</local:DiscoveryDialog>
