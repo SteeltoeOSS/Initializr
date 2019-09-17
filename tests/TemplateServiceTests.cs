@@ -25,13 +25,11 @@ namespace Steeltoe.Initializr.Tests
 {
     public class TemplateServiceTests : XunitLoggingBase
     {
-        private readonly ITestOutputHelper _testOutputHelper;
         private readonly LoggerFactory _loggerFactory;
 
         public TemplateServiceTests(ITestOutputHelper testOutputHelper)
             : base(testOutputHelper)
         {
-            _testOutputHelper = testOutputHelper;
             _loggerFactory = new LoggerFactory();
             _loggerFactory.AddProvider(new XunitLoggerProvider(testOutputHelper));
         }
@@ -193,8 +191,7 @@ namespace Steeltoe.Initializr.Tests
 
             Assert.Contains("services.AddPostgresConnection(Configuration);", startUpContents);
         }
-
-
+        
         [Fact]
         public async Task CreateTemplate_ConfigServer()
         {
@@ -212,10 +209,6 @@ namespace Steeltoe.Initializr.Tests
             Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
             Assert.Contains(files, file => file.Key.EndsWith("ConfigDataController.cs"));
             Assert.Contains(files, file => file.Key.EndsWith("ConfigServerData.cs"));
-            //string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            //Assert.Contains("using Steeltoe.CloudFoundry.Connector.PostgreSql;", startUpContents);
-
-            //Assert.Contains("services.AddPostgresConnection(Configuration);", startUpContents);
         }
 
         [Theory]
@@ -457,7 +450,6 @@ namespace Steeltoe.Initializr.Tests
             var projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
             var targetFramework = version == TemplateVersion.V3 ? "netcoreapp3.0" : "netcoreapp2.2";
             Assert.Contains($"<TargetFramework>{targetFramework}</TargetFramework>", projectFile);
-
         }
 
         [Theory]

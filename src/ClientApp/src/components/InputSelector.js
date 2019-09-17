@@ -5,7 +5,7 @@ export class InputSelector extends Component {
         
         this.handleChange = this.handleChange.bind(this);
         this.state = { selectedValue: this.props.defaultValue };
-        console.log("in constructor ", this.props.name)
+     //   console.log("in constructor ", this.props.name)
     }
     handleChange(e) {
         console.log('setting state from ' + this.state.selectedValue);
