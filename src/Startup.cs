@@ -29,7 +29,7 @@ namespace Steeltoe.Initializr
 {
     public class Startup
     {
-        private ILogger<Startup> _logger;
+        private readonly ILogger<Startup> _logger;
 
         public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
@@ -44,12 +44,11 @@ namespace Steeltoe.Initializr
         {
             services.AddMemoryCache();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
+
             services.AddHttpsRedirection(options =>
             {
                 options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
                 options.HttpsPort = 443;
-                
             });
 
             // In production, the React files will be served from this directory

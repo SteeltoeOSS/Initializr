@@ -188,47 +188,4 @@ namespace Steeltoe.Initializr.Services.Mustache
                     matchesView: dataView.ContainsKey(x.Name) && (dataView[x.Name] is string stringValue && stringValue == "True")))
                 .ToList();
     }
-
-    public class InclusionExpression
-    {
-        private readonly string _expression;
-        private readonly bool _matchesView;
-
-        public InclusionExpression(string expression, bool matchesView)
-        {
-            _expression = expression;
-            _matchesView = matchesView;
-        }
-
-        public bool IsInclusion
-        {
-            get { return _matchesView; }
-        }
-
-        public bool IsMatch(string fileName)
-        {
-            if (_expression.EndsWith("**"))
-            {
-                if (fileName.StartsWith(_expression.Replace("/**", string.Empty))) //unless it is has an explicit inclusion
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                var escapedExpression = _expression.Replace('/', Path.DirectorySeparatorChar);
-                var exactMatches = escapedExpression.Split(';');
-                foreach (var match in exactMatches)
-                {
-                    if (string.Equals(fileName, match, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-    }
 }

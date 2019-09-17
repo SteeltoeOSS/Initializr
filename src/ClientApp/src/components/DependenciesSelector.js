@@ -36,8 +36,8 @@ export class DependenciesSelector extends Component {
 
     handleSelection(currentSelection) {
         var nextDeps =  this.state.dependencies.map(x => {
-            if (x.name == currentSelection.name) {
-                x.selected = currentSelection.selected != true;
+            if (x.name === currentSelection.name) {
+                x.selected = currentSelection.selected !== true;
             }
             return x;
         });
@@ -66,7 +66,7 @@ export class DependenciesSelector extends Component {
                         {option.name}
                     </strong>
                     <br />
-                    <span className="description" key={index} className="desc">
+                    <span key={index} className="desc">
                         {option.description}
                     </span>
                     <span className="icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="icon-plus"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></span>
@@ -85,7 +85,7 @@ export class DependenciesSelector extends Component {
                     <DependencyViewSelector onChange={this.handleViewChange} />
                     <input name="dependencies" type="hidden" defaultValue={this.state.dependencies.filter(d => d.selected === true).map(d => d.shortName)} />
 
-                    {this.state.activeView == 'quicksearch' &&
+                    {this.state.activeView === 'quicksearch' &&
                         <div className="colset">
                             <div className="col">Search dependencies to add
                             <div className="control">
@@ -111,7 +111,7 @@ export class DependenciesSelector extends Component {
                                
                                 {
                                     this.state.dependencies.filter(d => d.selected === true).map((item) => {
-                                        return <a className="dependency-item checked" onClick={() => { this.handleSelection(item) }}>
+                                        return <a  href="/#" className="dependency-item checked" onClick={() => { this.handleSelection(item) }}>
                                                 <div>
                                                     <strong> {item.name} </strong>
                                                     <br/>
@@ -127,13 +127,13 @@ export class DependenciesSelector extends Component {
                             </div>
                         </div>
                     }
-                    {this.state.activeView == 'list' &&
+                    {this.state.activeView === 'list' &&
                         <div className="groups">
                             <div className="group">
                                 <div className="group-items">
                                 {
                                     this.state.dependencies.map((option, index) => {
-                                        return <a className={option.selected == true ? 'checked' : ''} onClick={() => { this.handleSelection(option) }} >
+                                        return <a href="/#" className={option.selected === true ? 'checked' : ''} onClick={() => { this.handleSelection(option) }} >
                                             <div>
                                                 <strong>{option.name}</strong><br />
                                                 <span>{option.description}</span>

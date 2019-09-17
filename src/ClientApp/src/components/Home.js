@@ -43,8 +43,8 @@ export class Home extends Component {
     }
     handleInputChange(name, selectedValue) {
 
-        if (name == "templateType") {
-             this.setState({ level2SelectorType: selectedValue == ".NET Templates" ? "net" : "steeltoe"})
+        if (name === "templateType") {
+             this.setState({ level2SelectorType: selectedValue === ".NET Templates" ? "net" : "steeltoe"})
         }
 
         this.setState({ [name]: selectedValue })
