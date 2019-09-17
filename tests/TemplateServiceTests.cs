@@ -191,7 +191,7 @@ namespace Steeltoe.Initializr.Tests
 
             Assert.Contains("services.AddPostgresConnection(Configuration);", startUpContents);
         }
-
+        
         [Fact]
         public async Task CreateTemplate_ConfigServer()
         {
