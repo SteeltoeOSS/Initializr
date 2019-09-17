@@ -15,6 +15,7 @@
 using Steeltoe.Initializr.Services.Mustache;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Steeltoe.Initializr.Models
@@ -26,6 +27,7 @@ namespace Steeltoe.Initializr.Models
 
         public string Dependencies { get; set; }
 
+        [ProjectNameValidation]
         public string ProjectName { get => _projectName ?? "steeltoeProject"; set => _projectName = value; }
 
         public string TemplateShortName { get; set; }
