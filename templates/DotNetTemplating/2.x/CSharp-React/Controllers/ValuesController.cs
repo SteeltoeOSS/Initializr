@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-{{#Auth}}
+#if (!NoAuth)
 using Microsoft.AspNetCore.Authorization;
-{{/Auth}}
+#endif
 using Microsoft.AspNetCore.Mvc;
-{{#SQLServer}}
+#if (SQLServer)
 using System.Data.SqlClient;
 using System.Data;
-{{/SQLServer}}
-
-namespace {{ProjectNameSpace}}.Controllers
+#endif
+namespace Company.WebApplication1.Controllers
 {
-    {{#Auth}}
+#if (!NoAuth)
     [Authorize]
-    {{/Auth}}
+#endif
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
-{
-        {{#SQLServer}}
+    {
+        private readonly ILogger _logger;
+#if (SQLServer)
         private readonly SqlConnection _dbConnection;
         public ValuesController([FromServices] SqlConnection dbConnection)
         {
@@ -44,15 +44,16 @@ namespace {{ProjectNameSpace}}.Controllers
             }
             return tables;
         }
-        {{/SQLServer}}
 
-        {{^ValuesControllerWithArgs}}
+#endif
+#if (!ValuesControllerWithArgs)
         [HttpGet]
         public ActionResult<string> Get()
         {
             return "value";
         }
-        {{/ValuesControllerWithArgs}}
+#endif
+
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
@@ -64,7 +65,7 @@ namespace {{ProjectNameSpace}}.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
-
+  
         }
 
         // PUT api/values/5

@@ -215,8 +215,14 @@
       "value": "(MySql || Postgres || Redis || RabbitMQ || MongoDB || OAuthConnector)"
     },
     "AnyEFCore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Supress Models generation"
+    },
+    "ValuesControllerWithArgs": {
       "type": "computed",
-      "value": "(PostgresEFCore || MySqlEFCore || SQLServer)"
+      "value": "(SQLServer || MySql || Postgres || MongoDB || RabbitMQ || Redis)"
     },
     "CircuitBreaker": {
       "type": "parameter",

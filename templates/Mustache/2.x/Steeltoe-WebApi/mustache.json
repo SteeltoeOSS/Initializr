@@ -119,13 +119,13 @@
       "ExpressionType": "Any"
     },
     {
-      "Name": "AnyEFCore",
-      "Expression": "PostgresEFCore,SQLServer,MySqlEFCore",
+      "Name": "ValuesControllerWithArgs",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis",
       "ExpressionType": "Any"
     },
     {
       "Name": "AnyConnector",
-      "Expression": "MySql,Postgres,Redis,MongoDB,RabbitMQ,OAuthConnector",
+      "Expression": "MySql,Postgres,SQLServer,Redis,MongoDB,RabbitMQ,OAuthConnector",
       "ExpressionType": "Any"
     },
     {

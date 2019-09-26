@@ -7,7 +7,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 #endif
 using Microsoft.AspNetCore.Mvc;
-
+#if (SQLServer)
+using System.Data.SqlClient;
+using System.Data;
+#endif
 namespace Company.WebApplication1.Controllers
 {
 #if (!NoAuth)
@@ -18,36 +21,38 @@ namespace Company.WebApplication1.Controllers
     public class ValuesController : ControllerBase
     {
         private readonly ILogger _logger;
-#if (AnyEFCore)
-        private readonly TestContext _context;
-        public ValuesController(ILogger<ValuesController> logger, [FromServices] TestContext context)
+#if (SQLServer)
+        private readonly SqlConnection _dbConnection;
+        public ValuesController([FromServices] SqlConnection dbConnection)
         {
-            _context = context;
-            _logger = logger;
+            _dbConnection = dbConnection;
         }
-#else
-        public ValuesController(ILogger<ValuesController> logger)
-        {
-            _logger = logger;
-        }
-#endif
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            _logger.LogCritical("Test Critical message");
-            _logger.LogError("Test Error message");
-            _logger.LogWarning("Test Warning message");
-            _logger.LogInformation("Test Informational message");
-            _logger.LogDebug("Test Debug message");
-            _logger.LogTrace("Test Trace message");
-
-#if(AnyEFCore)
-            return Ok(_context.TestData.Select(x => $"{x.Id}:{x.Data}"));
-#else
-            return new string[] {"value1", "value2"};
-#endif
+            List<string> tables = new List<string>();
+        
+            _dbConnection.Open();
+            DataTable dt = _dbConnection.GetSchema("Tables");
+            _dbConnection.Close();
+            foreach (DataRow row in dt.Rows)
+            {
+                string tablename = (string)row[2];
+                tables.Add(tablename);
+            }
+            return tables;
         }
+
+#endif
+#if (!ValuesControllerWithArgs)
+        [HttpGet]
+        public ActionResult<string> Get()
+        {
+            return "value";
+        }
+#endif
 
         // GET api/values/5
         [HttpGet("{id}")]

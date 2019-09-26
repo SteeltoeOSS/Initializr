@@ -7,53 +7,52 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 {{/Auth}}
 using Microsoft.AspNetCore.Mvc;
+{{#SQLServer}}
+using System.Data.SqlClient;
+using System.Data;
+{{/SQLServer}}
 
-namespace {{ProjectNameSpace }}.Controllers
+namespace {{ProjectNameSpace}}.Controllers
 {
-    
-{{#Auth}}
+    {{#Auth}}
     [Authorize]
-{{/Auth}}
+    {{/Auth}}
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
-    {
-        private readonly ILogger _logger;
-        {{#AnyEFCore}}
-        private readonly TestContext _context;
-        public ValuesController(ILogger<ValuesController> logger, [FromServices] TestContext context)
+{
+        {{#SQLServer}}
+        private readonly SqlConnection _dbConnection;
+        public ValuesController([FromServices] SqlConnection dbConnection)
         {
-            _context = context;
-            _logger = logger;
+            _dbConnection = dbConnection;
         }
-        {{/AnyEFCore}}
-        {{^AnyEFCore}}
-        public ValuesController(ILogger<ValuesController> logger)
-        {
-            _logger = logger;
-        }
-        {{/AnyEFCore}}
-        
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            _logger.LogCritical("Test Critical message");
-            _logger.LogError("Test Error message");
-            _logger.LogWarning("Test Warning message");
-            _logger.LogInformation("Test Informational message");
-            _logger.LogDebug("Test Debug message");
-            _logger.LogTrace("Test Trace message");
-
-            {{#AnyEFCore}}
-            return Ok(_context.TestData.Select(x => $"{x.Id}:{x.Data}"));
-            {{/AnyEFCore}}
-            {{^AnyEFCore}}
-            return new string[] { "value1", "value2" };
-            {{/AnyEFCore}}
-
+            List<string> tables = new List<string>();
+        
+            _dbConnection.Open();
+            DataTable dt = _dbConnection.GetSchema("Tables");
+            _dbConnection.Close();
+            foreach (DataRow row in dt.Rows)
+            {
+                string tablename = (string)row[2];
+                tables.Add(tablename);
+            }
+            return tables;
         }
+        {{/SQLServer}}
 
+        {{^ValuesControllerWithArgs}}
+        [HttpGet]
+        public ActionResult<string> Get()
+        {
+            return "value";
+        }
+        {{/ValuesControllerWithArgs}}
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)

@@ -88,7 +88,7 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains("using Steeltoe.Management.Hypermedia;", startUpContents);
             Assert.Contains("using Steeltoe.Management.Endpoint;", startUpContents);
             Assert.Contains("using Steeltoe.Management.CloudFoundry;", startUpContents);
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
         }
 
         [Theory]
@@ -138,7 +138,7 @@ namespace Steeltoe.Initializr.Tests
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
             Assert.Contains("using Steeltoe.CircuitBreaker.Hystrix;", startUpContents);
         }
 
@@ -308,27 +308,19 @@ namespace Steeltoe.Initializr.Tests
                 TemplateVersion = version,
             });
 
-            Assert.Contains(files, file => file.Key.StartsWith("Models"));
-
             var fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
             var aspnetCoreVersion = version == TemplateVersion.V3 ? "3.0.0-preview8.19405.11" : "2.2.0";
 
-            Assert.Contains(
-                $@"<PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""{aspnetCoreVersion}"" />", fileContents);
             Assert.Contains($@"<PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""{aspnetCoreVersion}"" />", fileContents);
-            Assert.Contains($@"<PackageReference Include=""Steeltoe.CloudFoundry.Connector.EFCore""  Version=""{steeltoeVersion}"" />", fileContents);
-
-            var program = files.Find(x => x.Key == "Program.cs").Value;
-            Assert.Contains(@".InitializeDbContexts()", program);
 
             var startup = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains(@"using Steeltoe.CloudFoundry.Connector.SqlServer.EFCore;", startup);
-            Assert.Contains(@"services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));", startup);
+            Assert.Contains(@"using Steeltoe.CloudFoundry.Connector.SqlServer;", startup);
+            Assert.Contains(@"services.AddSqlServerConnection(Configuration);", startup);
 
             if (!templateName.Contains("React"))
             { // TODO: Add demo for react app
                 var valuesController = files.Find(x => x.Key.EndsWith("ValuesController.cs")).Value;
-                Assert.Contains(@" public ValuesController(ILogger<ValuesController> logger, [FromServices] TestContext context)", valuesController);
+                Assert.Contains(@" public ValuesController([FromServices] SqlConnection dbConnection)", valuesController);
             }
         }
 
@@ -386,7 +378,7 @@ namespace Steeltoe.Initializr.Tests
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
         }
 
         [Theory]
@@ -403,7 +395,7 @@ namespace Steeltoe.Initializr.Tests
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
         }
         ////[Fact]
         ////public void CreateTemplate_actuators_v3()
@@ -473,8 +465,7 @@ namespace Steeltoe.Initializr.Tests
 
             string projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
             Assert.Contains("<TargetFramework>netcoreapp2.1</TargetFramework>", projectFile);
-            Assert.Contains(@"<PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""2.1.1"" />", projectFile);
-        }
+         }
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]

@@ -101,8 +101,8 @@
       "ExpressionType": "Any"
     },
     {
-      "Name": "AnyEFCore",
-      "Expression": "PostgresEFCore,SQLServer,MySqlEFCore",
+      "Name": "ValuesControllerWithArgs",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis",
       "ExpressionType": "Any"
     },
     {
@@ -125,6 +125,18 @@
     {
       "Name": "AnyEFCore",
       "InclusionExpression": "Models/**"
+    },
+    {
+      "Name": "ConfigServer",
+      "InclusionExpression": "Models/ConfigServerData.cs;Controllers/ConfigDataController.cs"
+    },
+    {
+      "Name": "PlaceholderConfig",
+      "InclusionExpression": "SampleOptions.cs;Controllers/PlaceholderDataController.cs"
+    },
+    {
+      "Name": "RandomValueConfig",
+      "InclusionExpression": "Controllers/RandomValueDataController.cs"
     }
   ],
   "Versions": [
