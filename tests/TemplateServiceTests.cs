@@ -17,6 +17,7 @@ using Steeltoe.Initializr.Services;
 using Steeltoe.Initializr.Services.DotNetTemplateEngine;
 using Steeltoe.Initializr.Services.Mustache;
 using Steeltoe.InitializrTests;
+using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
@@ -143,7 +144,7 @@ namespace Steeltoe.Initializr.Tests
 
             Assert.Contains(files, file => file.Key.EndsWith("MyCircuitBreakerCommand.cs"));
 
-            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
             Assert.Contains(@"MyCircuitBreakerCommand cb = new MyCircuitBreakerCommand(""ThisIsMyBreaker"");", valuesController);
         }
 
@@ -163,7 +164,7 @@ namespace Steeltoe.Initializr.Tests
 
             Assert.Contains(".AddMySqlConnection(", startUpContents);
 
-            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
             Assert.Contains("using System.Data.MySqlClient;", valuesController);
             Assert.Contains("using System.Data", valuesController);
 
@@ -208,7 +209,7 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.PostgreSql;", startUpContents);
             Assert.Contains("services.AddPostgresConnection(Configuration);", startUpContents);
 
-            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
             Assert.Contains("using Npgsql;", valuesController);
             Assert.Contains("using System.Data", valuesController);
 
@@ -236,7 +237,7 @@ namespace Steeltoe.Initializr.Tests
             string programContents = files.Find(x => x.Key == "Program.cs").Value;
             Assert.Contains("using Steeltoe.Extensions.Configuration.ConfigServer;", programContents);
 
-            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
             Assert.Contains("using Microsoft.Extensions.Configuration;", valuesController);
 
             Assert.Contains(@"public ValuesController(IConfiguration config)", valuesController);
@@ -263,7 +264,7 @@ namespace Steeltoe.Initializr.Tests
             string programContents = files.Find(x => x.Key == "Program.cs").Value;
             Assert.Contains("using Steeltoe.Extensions.Configuration.RandomValue;", programContents);
 
-            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
             Assert.Contains("using Microsoft.Extensions.Configuration;", valuesController);
 
             Assert.Contains(@"public ValuesController(IConfiguration config)", valuesController);
@@ -290,7 +291,7 @@ namespace Steeltoe.Initializr.Tests
             string programContents = files.Find(x => x.Key == "Program.cs").Value;
             Assert.Contains("using Steeltoe.Extensions.Configuration.PlaceholderCore;", programContents);
 
-            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
             Assert.Contains("using Microsoft.Extensions.Configuration;", valuesController);
 
             Assert.Contains(@"public ValuesController(IConfiguration config)", valuesController);
@@ -329,7 +330,7 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.RabbitMQ;", startUpContents);
             Assert.Contains("services.AddRabbitMQConnection(Configuration);", startUpContents);
 
-            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
             Assert.Contains(
                 @"using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -360,7 +361,7 @@ using System.Threading;", valuesController);
             Assert.Contains("services.AddDistributedRedisCache(Configuration);", startUpContents);
             Assert.Contains("// services.AddRedisConnectionMultiplexer(Configuration);", startUpContents);
 
-            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
             Assert.Contains("using Microsoft.Extensions.Caching.Distributed;", valuesController);
 
             Assert.Contains(@" public ValuesController(IDistributedCache cache)", valuesController);
@@ -383,7 +384,7 @@ using System.Threading;", valuesController);
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.MongoDb;", startUpContents);
             Assert.Contains("services.AddMongoClient(Configuration);", startUpContents);
 
-            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
             Assert.Contains("using MongoDB.Driver;", valuesController);
             Assert.Contains("using System.Data", valuesController);
 
