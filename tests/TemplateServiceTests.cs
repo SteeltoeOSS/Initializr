@@ -294,6 +294,13 @@ namespace Steeltoe.Initializr.Tests
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.MongoDb;", startUpContents);
             Assert.Contains("services.AddMongoClient(Configuration);", startUpContents);
+
+            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            Assert.Contains("using MongoDB.Driver;", valuesController);
+            Assert.Contains("using System.Data", valuesController);
+
+            Assert.Contains(@"public ValuesController(IMongoClient mongoClient, MongoUrl mongoUrl)", valuesController);
+            Assert.Contains(@"_mongoClient.ListDatabaseNames().ToList();", valuesController);
         }
 
         [Theory]

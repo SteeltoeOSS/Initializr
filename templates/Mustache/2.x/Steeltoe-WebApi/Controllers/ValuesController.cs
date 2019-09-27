@@ -19,6 +19,10 @@ using System.Data;
 using Npgsql;
 using System.Data;
 {{/Postgres}}
+{{#MongoDB}}
+using MongoDB.Driver;
+using System.Data;
+{{/MongoDB}}
 namespace {{ProjectNameSpace}}.Controllers
 {
     {{#Auth}}
@@ -100,6 +104,22 @@ namespace {{ProjectNameSpace}}.Controllers
             return tables;
         }
         {{/Postgres}}
+        {{#MongoDB}}
+        private readonly IMongoClient _mongoClient;
+        private readonly MongoUrl _mongoUrl;
+        public ValuesController(IMongoClient mongoClient, MongoUrl mongoUrl)
+        {
+            _mongoClient = mongoClient;
+            _mongoUrl = mongoUrl;
+        }
+
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            return _mongoClient.ListDatabaseNames().ToList();
+        }
+        {{/MongoDB}}
         {{^ValuesControllerWithArgs}}
         [HttpGet]
         public ActionResult<string> Get()

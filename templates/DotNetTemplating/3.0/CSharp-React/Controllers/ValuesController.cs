@@ -19,7 +19,10 @@ using System.Data;
 using Npgsql;
 using System.Data;
 #endif
-
+#if(MongoDB)
+using MongoDB.Driver;
+using System.Data;
+#endif
 namespace Company.WebApplication1.Controllers
 {
 #if (!NoAuth)
@@ -101,6 +104,22 @@ namespace Company.WebApplication1.Controllers
                 tables.Add(tablename);
             }
             return tables;
+        }
+#endif
+#if (MongoDB)
+        private readonly IMongoClient _mongoClient;
+        private readonly MongoUrl _mongoUrl;
+        public ValuesController(IMongoClient mongoClient, MongoUrl mongoUrl)
+        {
+            _mongoClient = mongoClient;
+            _mongoUrl = mongoUrl;
+        }
+
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            return _mongoClient.ListDatabaseNames().ToList();
         }
 #endif
 #if (!ValuesControllerWithArgs)
