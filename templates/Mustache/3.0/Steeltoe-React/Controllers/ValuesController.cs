@@ -23,6 +23,9 @@ using System.Data;
 using MongoDB.Driver;
 using System.Data;
 {{/MongoDB}}
+{{#Redis}}
+using Microsoft.Extensions.Caching.Distributed;
+{{/Redis}}
 namespace {{ProjectNameSpace}}.Controllers
 {
     {{#Auth}}
@@ -120,6 +123,25 @@ namespace {{ProjectNameSpace}}.Controllers
             return _mongoClient.ListDatabaseNames().ToList();
         }
         {{/MongoDB}}
+        {{#Redis}}
+        private readonly IDistributedCache _cache;
+        public ValuesController(IDistributedCache cache)
+        {
+            _cache = cache;
+        }
+
+        // GET api/values
+        [HttpGet]
+        public async Task<IEnumerable<string>> Get()
+        {
+            await _cache.SetStringAsync("MyValue1", "123");
+            await _cache.SetStringAsync("MyValue2", "456");
+            string myval1 = await _cache.GetStringAsync("MyValue1");
+            string myval2 = await _cache.GetStringAsync("MyValue2");
+            return new string[]{ myval1, myval2};
+        }
+        {{/Redis}}
+
         {{^ValuesControllerWithArgs}}
         [HttpGet]
         public ActionResult<string> Get()

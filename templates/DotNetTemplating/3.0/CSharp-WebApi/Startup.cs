@@ -122,7 +122,7 @@ namespace Company.WebApplication1
             services.AddDistributedRedisCache(Configuration);
 
             // This works like the above, but adds a IConnectionMultiplexer to the container
-            services.AddRedisConnectionMultiplexer(Configuration);
+            // services.AddRedisConnectionMultiplexer(Configuration);
 #endif
 #if (MongoDB)
              services.AddMongoClient(Configuration);

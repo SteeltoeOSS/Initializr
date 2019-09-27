@@ -119,7 +119,7 @@ namespace {{ProjectNameSpace}}
             services.AddDistributedRedisCache(Configuration);
 
             // This works like the above, but adds a IConnectionMultiplexer to the container
-            services.AddRedisConnectionMultiplexer(Configuration);
+            // services.AddRedisConnectionMultiplexer(Configuration);
 {{/Redis}}
 {{#MongoDB}}
             services.AddMongoClient(Configuration);

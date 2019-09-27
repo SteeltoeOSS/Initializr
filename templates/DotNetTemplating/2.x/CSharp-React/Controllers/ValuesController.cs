@@ -19,9 +19,12 @@ using System.Data;
 using Npgsql;
 using System.Data;
 #endif
-#if(MongoDB)
+#if (MongoDB)
 using MongoDB.Driver;
 using System.Data;
+#endif
+#if (Redis)
+using Microsoft.Extensions.Caching.Distributed;
 #endif
 namespace Company.WebApplication1.Controllers
 {
@@ -120,6 +123,24 @@ namespace Company.WebApplication1.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
             return _mongoClient.ListDatabaseNames().ToList();
+        }
+#endif
+#if (Redis)
+        private readonly IDistributedCache _cache;
+        public ValuesController(IDistributedCache cache)
+        {
+            _cache = cache;
+        }
+
+        // GET api/values
+        [HttpGet]
+        public async Task<IEnumerable<string>> Get()
+        {
+            await _cache.SetStringAsync("MyValue1", "123");
+            await _cache.SetStringAsync("MyValue2", "456");
+            string myval1 = await _cache.GetStringAsync("MyValue1");
+            string myval2 = await _cache.GetStringAsync("MyValue2");
+            return new string[]{ myval1, myval2};
         }
 #endif
 #if (!ValuesControllerWithArgs)

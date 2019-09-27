@@ -278,6 +278,14 @@ namespace Steeltoe.Initializr.Tests
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.Redis", startUpContents);
             Assert.Contains("services.AddDistributedRedisCache(Configuration);", startUpContents);
+            Assert.Contains("// services.AddRedisConnectionMultiplexer(Configuration);", startUpContents);
+
+            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            Assert.Contains("using Microsoft.Extensions.Caching.Distributed;", valuesController);
+
+            Assert.Contains(@" public ValuesController(IDistributedCache cache)", valuesController);
+            Assert.Contains(@"await _cache.SetStringAsync(""MyValue1"", ""123"");", valuesController);
+            
         }
 
         [Theory]

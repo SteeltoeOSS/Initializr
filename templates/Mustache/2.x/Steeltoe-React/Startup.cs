@@ -110,11 +110,15 @@ namespace {{ProjectNameSpace}}
             services.AddRabbitMQConnection(Configuration);
 {{/RabbitMQ}}
 {{#Redis}}
-            // In production, the React files will be served from this directory
+             // Add the Redis distributed cache.
+
+            // We are using the Steeltoe Redis Connector to pickup the CloudFoundry
+            // Redis Service binding and use it to configure the underlying RedisCache
+            // This adds a IDistributedCache to the container
             services.AddDistributedRedisCache(Configuration);
 
             // This works like the above, but adds a IConnectionMultiplexer to the container
-            services.AddRedisConnectionMultiplexer(Configuration);
+            // services.AddRedisConnectionMultiplexer(Configuration);
 {{/Redis}}
 {{#MongoDB}}
             services.AddMongoClient(Configuration);
