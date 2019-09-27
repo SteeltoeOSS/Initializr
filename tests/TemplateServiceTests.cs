@@ -140,6 +140,11 @@ namespace Steeltoe.Initializr.Tests
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
             Assert.Contains("using Steeltoe.CircuitBreaker.Hystrix;", startUpContents);
+
+            Assert.Contains(files, file => file.Key.EndsWith("MyCircuitBreakerCommand.cs"));
+
+            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            Assert.Contains(@"MyCircuitBreakerCommand cb = new MyCircuitBreakerCommand(""ThisIsMyBreaker"");", valuesController);
         }
 
         [Theory]
@@ -540,7 +545,7 @@ using System.Threading;", valuesController);
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
             Assert.DoesNotContain(files, file => file.Key.StartsWith("Models"));
-            Assert.DoesNotContain(files, file => file.Key.EndsWith("ConfigDataController.cs"));
+            Assert.DoesNotContain(files, file => file.Key.EndsWith("MyCircuitBreakerCommand.cs"));
             Assert.DoesNotContain("AddCloudFoundryActuators", startUpContents);
             var dockerFile = files.Find(x => x.Key == "Dockerfile").Value;
             Assert.NotNull(dockerFile);

@@ -40,6 +40,12 @@
           "exclude": [
             "Models/**"
           ]
+        },
+        {
+          "condition": "(!CircuitBreaker)",
+          "exclude": [
+            "MyCircuitBreakerCommand.cs"
+          ]
         }
       ]
     }

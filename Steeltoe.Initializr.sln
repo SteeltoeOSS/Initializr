@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.329
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29318.209
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Steeltoe.Initializr", "src\Steeltoe.Initializr.csproj", "{945A8C33-08A6-4D07-A3B6-51D7802A4DC0}"
 EndProject
@@ -11,7 +11,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{42A583
 		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Steeltoe.Initializr.Tests", "tests\Steeltoe.Initializr.Tests.csproj", "{69971BFE-F4F4-42D2-8AC8-6D9723EBE09F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Steeltoe.Initializr.Tests", "tests\Steeltoe.Initializr.Tests.csproj", "{69971BFE-F4F4-42D2-8AC8-6D9723EBE09F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F9866E9A-16DD-4AAF-A43A-1E08001E9942}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

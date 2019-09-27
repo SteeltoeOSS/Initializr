@@ -119,14 +119,14 @@
       "ExpressionType": "Any"
     },
     {
-      "Name": "MoreThanOneValuesControllerWithArgs",
-      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig",
-      "ExpressionType": "MoreThanOne"
+      "Name": "ValuesControllerWithArgs",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker",
+      "ExpressionType": "Any"
     },
     {
-      "Name": "ValuesControllerWithArgs",
-      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig",
-      "ExpressionType": "Any"
+      "Name": "MoreThanOneValuesControllerWithArgs",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker",
+      "ExpressionType": "MoreThanOne"
     },
     {
       "Name": "AnyConfigSource",
@@ -153,6 +153,10 @@
     {
       "Name": "AnyEFCore",
       "InclusionExpression": "Models/**"
+    },
+    {
+      "Name": "CircuitBreaker",
+      "InclusionExpression": "MyCircuitBreakerCommand.cs"
     }
   ],
   "Versions": [

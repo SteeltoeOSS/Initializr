@@ -247,6 +247,17 @@ namespace {{ProjectNameSpace}}.Controllers
             return new string[] { val1, val2, val3 };
         }
         {{/RandomValueConfig}}
+        {{#CircuitBreaker}}
+         // GET api/values
+        [HttpGet]
+        public async Task<IEnumerable<string>> Get()
+        {
+            MyCircuitBreakerCommand cb = new MyCircuitBreakerCommand("ThisIsMyBreaker");
+            cb.IsFallbackUserDefined = true;
+            string a = await cb.ExecuteAsync();
+            return new string[] { a };
+        }
+        {{/CircuitBreaker}}
 {{/MoreThanOneValuesControllerWithArgs}}
 {{#MoreThanOneValuesControllerWithArgs}}
         [HttpGet]
