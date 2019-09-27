@@ -15,6 +15,10 @@ using System.Data;
 using System.Data.MySqlClient;
 using System.Data;
 {{/MySql}}
+{{#Postgres}}
+using Npgsql;
+using System.Data;
+{{/Postgres}}
 namespace {{ProjectNameSpace}}.Controllers
 {
     {{#Auth}}
@@ -72,6 +76,30 @@ namespace {{ProjectNameSpace}}.Controllers
             return tables;
         }
         {{/MySql}}
+        {{#Postgres}}
+        private readonly NpgsqlConnection _dbConnection;
+        public ValuesController([FromServices] NpgsqlConnection dbConnection)
+        {
+            _dbConnection = dbConnection;
+        }
+
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            List<string> tables = new List<string>();
+
+            _dbConnection.Open();
+            DataTable dt = _dbConnection.GetSchema("Databases");
+            _dbConnection.Close();
+            foreach (DataRow row in dt.Rows)
+            {
+                string tablename = (string)row[2];
+                tables.Add(tablename);
+            }
+            return tables;
+        }
+        {{/Postgres}}
         {{^ValuesControllerWithArgs}}
         [HttpGet]
         public ActionResult<string> Get()

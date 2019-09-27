@@ -201,10 +201,16 @@ namespace Steeltoe.Initializr.Tests
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.PostgreSql;", startUpContents);
-
             Assert.Contains("services.AddPostgresConnection(Configuration);", startUpContents);
+
+            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            Assert.Contains("using Npgsql;", valuesController);
+            Assert.Contains("using System.Data", valuesController);
+
+            Assert.Contains(@"public ValuesController([FromServices] NpgsqlConnection dbConnection)", valuesController);
+            Assert.Contains(@"DataTable dt = _dbConnection.GetSchema(""Databases"");", valuesController);
         }
-        
+
         [Fact]
         public async Task CreateTemplate_ConfigServer()
         {

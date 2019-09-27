@@ -15,6 +15,10 @@ using System.Data;
 using System.Data.MySqlClient;
 using System.Data;
 #endif
+#if (Postgres)
+using Npgsql;
+using System.Data;
+#endif
 namespace Company.WebApplication1.Controllers
 {
 #if (!NoAuth)
@@ -65,6 +69,30 @@ namespace Company.WebApplication1.Controllers
 
             _dbConnection.Open();
             DataTable dt = _dbConnection.GetSchema("Tables");
+            _dbConnection.Close();
+            foreach (DataRow row in dt.Rows)
+            {
+                string tablename = (string)row[2];
+                tables.Add(tablename);
+            }
+            return tables;
+        }
+#endif
+#if (Postgres)
+        private readonly NpgsqlConnection _dbConnection;
+        public ValuesController([FromServices] NpgsqlConnection dbConnection)
+        {
+            _dbConnection = dbConnection;
+        }
+
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            List<string> tables = new List<string>();
+
+            _dbConnection.Open();
+            DataTable dt = _dbConnection.GetSchema("Databases");
             _dbConnection.Close();
             foreach (DataRow row in dt.Rows)
             {
