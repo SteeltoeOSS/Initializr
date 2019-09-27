@@ -260,8 +260,21 @@ namespace Steeltoe.Initializr.Tests
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.RabbitMQ;", startUpContents);
-
             Assert.Contains("services.AddRabbitMQConnection(Configuration);", startUpContents);
+
+            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            Assert.Contains(
+                @"using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using System.Text;
+using System.Threading;", valuesController);
+
+            Assert.Contains(@"public ValuesController(ILogger<ValuesController> logger, [FromServices] ConnectionFactory factory)", valuesController);
+            Assert.Contains(
+                @"channel.BasicPublish(exchange: """",
+                                         routingKey: queueName,
+                                         basicProperties: null,
+                                         body: body);", valuesController);
         }
 
         [Theory]
@@ -285,7 +298,7 @@ namespace Steeltoe.Initializr.Tests
 
             Assert.Contains(@" public ValuesController(IDistributedCache cache)", valuesController);
             Assert.Contains(@"await _cache.SetStringAsync(""MyValue1"", ""123"");", valuesController);
-            
+
         }
 
         [Theory]
