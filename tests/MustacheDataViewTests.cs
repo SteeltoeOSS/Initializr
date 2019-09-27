@@ -35,7 +35,7 @@ namespace Steeltoe.Initializr.Tests
         }
 
         [Fact]
-        public async Task TestExpressions()
+        public async Task TestBoolExpressions()
         {
             var config = new MustacheConfigSchema()
             {
@@ -67,7 +67,7 @@ namespace Steeltoe.Initializr.Tests
         }
 
         [Fact]
-        public async Task TestExpressionsActuators()
+        public async Task TestBoolExpressionsActuators()
         {
             var config = new MustacheConfigSchema()
             {
@@ -115,12 +115,58 @@ namespace Steeltoe.Initializr.Tests
             {
                 Name = "AspNetCoreVersion",
                 Expression = "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp2.2\"? \"2.2.0\": null",
-                ExpressionType = ExpressionTypeEnum.String,
+                ExpressionType = ExpressionTypeEnum.Bool,
             };
 
             var expression = new StringExpression(_logger, calcParam, config);
             var result = await expression.EvaluateExpressionAsync(dv);
             Assert.Equal("2.2.0", result);
+        }
+
+        [Fact]
+        public async Task Test_MorethanOneExpression_true()
+        {
+            var config = new MustacheConfigSchema();
+            var dv = new Dictionary<string, string>
+            {
+                { "IsMoreThanOne", "false" },
+                { "ConfigServer", "true" },
+                { "SQLServer", "true" },
+                { "Redis", "false" },
+            };
+            var calcParam = new CalculatedParam
+            {
+                Name = "IsMoreThanOne",
+                Expression = "ConfigServer,SQLServer,Redis",
+                ExpressionType = ExpressionTypeEnum.MoreThanOne,
+            };
+
+            var expression = new MoreThanOneExpression(_logger, calcParam, config);
+            var result = await expression.EvaluateExpressionAsync(dv);
+            Assert.Equal("True", result);
+        }
+
+        [Fact]
+        public async Task Test_MorethanOneExpression_false()
+        {
+            var config = new MustacheConfigSchema();
+            var dv = new Dictionary<string, string>
+            {
+                { "IsMoreThanOne", "false" },
+                { "ConfigServer", "false" },
+                { "SQLServer", "true" },
+                { "Redis", "false" },
+            };
+            var calcParam = new CalculatedParam
+            {
+                Name = "IsMoreThanOne",
+                Expression = "ConfigServer,SQLServer,Redis",
+                ExpressionType = ExpressionTypeEnum.MoreThanOne,
+            };
+
+            var expression = new MoreThanOneExpression(_logger, calcParam, config);
+            var result = await expression.EvaluateExpressionAsync(dv);
+            Assert.Equal("False", result);
         }
 
         [Fact]

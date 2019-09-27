@@ -7,21 +7,20 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 #endif
 using Microsoft.AspNetCore.Mvc;
+#if(SQLServer || MySql || Postgres || MongoDB)
+using System.Data;
+#endif
 #if (SQLServer)
 using System.Data.SqlClient;
-using System.Data;
 #endif
 #if (MySql)
 using System.Data.MySqlClient;
-using System.Data;
 #endif
 #if (Postgres)
 using Npgsql;
-using System.Data;
 #endif
 #if (MongoDB)
 using MongoDB.Driver;
-using System.Data;
 #endif
 #if (Redis)
 using Microsoft.Extensions.Caching.Distributed;
@@ -31,6 +30,9 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Threading;
+#endif
+#if (AnyConfigSource)
+using Microsoft.Extensions.Configuration;
 #endif
 namespace Company.WebApplication1.Controllers
 {
@@ -65,8 +67,7 @@ namespace Company.WebApplication1.Controllers
             }
             return tables;
         }
-#endif
-#if (MySql)
+#elif (MySql)
         private readonly SqlConnection _dbConnection;
         public ValuesController([FromServices] SqlConnection dbConnection)
         {
@@ -89,8 +90,7 @@ namespace Company.WebApplication1.Controllers
             }
             return tables;
         }
-#endif
-#if (Postgres)
+#elif (Postgres)
         private readonly NpgsqlConnection _dbConnection;
         public ValuesController([FromServices] NpgsqlConnection dbConnection)
         {
@@ -113,8 +113,7 @@ namespace Company.WebApplication1.Controllers
             }
             return tables;
         }
-#endif
-#if (MongoDB)
+#elif (MongoDB)
         private readonly IMongoClient _mongoClient;
         private readonly MongoUrl _mongoUrl;
         public ValuesController(IMongoClient mongoClient, MongoUrl mongoUrl)
@@ -129,8 +128,7 @@ namespace Company.WebApplication1.Controllers
         {
             return _mongoClient.ListDatabaseNames().ToList();
         }
-#endif
-#if (Redis)
+#elif (Redis)
         private readonly IDistributedCache _cache;
         public ValuesController(IDistributedCache cache)
         {
@@ -147,8 +145,7 @@ namespace Company.WebApplication1.Controllers
             string myval2 = await _cache.GetStringAsync("MyValue2");
             return new string[]{ myval1, myval2};
         }
-#endif
-#if (RabbitMQ)
+#elif (RabbitMQ)
         private readonly ILogger _logger;
         private readonly ConnectionFactory _factory;
         private const string queueName = "my-queue";
@@ -195,12 +192,55 @@ namespace Company.WebApplication1.Controllers
             }
             return "Wrote 5 message to the info log. Have a look!";
         }
-        {{/RabbitMQ
-    }
-}
-#endif
+#elif (ConfigServer)
+        private readonly IConfiguration _config;
+        public ValuesController(IConfiguration config)
+        {
+            _config = config;
+        }
+        
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            var val1 = _config["Value1"];
+            var val2 = _config["Value2"];
+            return new string[] { val1, val2 };
+        }
 
-#if (!ValuesControllerWithArgs)
+#elif (PlaceholderConfig)
+        private readonly IConfiguration _config;
+        public ValuesController(IConfiguration config)
+        {
+            _config = config;
+        }
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            var val1 = _config["ResolvedPlaceholderFromEnvVariables"];
+            var val2 = _config["UnresolvedPlaceholder"];
+            var val3 = _config["ResolvedPlaceholderFromJson"];
+            return new string[] { val1, val2, val3 };
+        }
+      
+#elif (RandomValueConfig)
+        private readonly IConfiguration _config;
+        public ValuesController(IConfiguration config)
+        {
+            _config = config;
+        }
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            var val1 = _config["random:int"];
+            var val2 = _config["random:uuid"];
+            var val3 = _config["random:string"];
+
+            return new string[] { val1, val2, val3 };
+        }
+#else
         [HttpGet]
         public ActionResult<string> Get()
         {

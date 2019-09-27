@@ -211,23 +211,85 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains(@"DataTable dt = _dbConnection.GetSchema(""Databases"");", valuesController);
         }
 
-        [Fact]
-        public async Task CreateTemplate_ConfigServer()
+        [Theory]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
+        public async Task CreateTemplate_ConfigServer(ITemplateService templateService, string templateName, TemplateVersion version)
         {
             var configuration = TestHelper.GetConfiguration();
             var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
 
-            ITemplateService templateService = new MustacheTemplateService(configuration, logger);
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "ConfigServer",
-                TemplateShortName = "Steeltoe-WebApi",
-                TemplateVersion = TemplateVersion.V2,
+                TemplateShortName = templateName,
+                TemplateVersion = version,
             });
 
             Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
-            Assert.Contains(files, file => file.Key.EndsWith("ConfigDataController.cs"));
-            Assert.Contains(files, file => file.Key.EndsWith("ConfigServerData.cs"));
+            Assert.Contains(files, file => file.Key.EndsWith("ValuesController.cs"));
+
+            string programContents = files.Find(x => x.Key == "Program.cs").Value;
+            Assert.Contains("using Steeltoe.Extensions.Configuration.ConfigServer;", programContents);
+
+            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            Assert.Contains("using Microsoft.Extensions.Configuration;", valuesController);
+
+            Assert.Contains(@"public ValuesController(IConfiguration config)", valuesController);
+            Assert.Contains(@"_config[""Value1""];", valuesController);
+        }
+
+        [Theory]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
+        public async Task CreateTemplate_Randomvalue(ITemplateService templateService, string templateName, TemplateVersion version)
+        {
+            var configuration = TestHelper.GetConfiguration();
+            var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
+
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
+            {
+                Dependencies = "RandomValueConfig",
+                TemplateShortName = templateName,
+                TemplateVersion = version,
+            });
+
+            Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
+            Assert.Contains(files, file => file.Key.EndsWith("ValuesController.cs"));
+
+            string programContents = files.Find(x => x.Key == "Program.cs").Value;
+            Assert.Contains("using Steeltoe.Extensions.Configuration.RandomValue;", programContents);
+
+            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            Assert.Contains("using Microsoft.Extensions.Configuration;", valuesController);
+
+            Assert.Contains(@"public ValuesController(IConfiguration config)", valuesController);
+            Assert.Contains(@"_config[""random:int""];", valuesController);
+        }
+
+        [Theory]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
+        public async Task CreateTemplate_Placeholderconfig(ITemplateService templateService, string templateName, TemplateVersion version)
+        {
+            var configuration = TestHelper.GetConfiguration();
+            var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
+
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
+            {
+                Dependencies = "PlaceholderConfig",
+                TemplateShortName = templateName,
+                TemplateVersion = version,
+            });
+
+            Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
+            Assert.Contains(files, file => file.Key.EndsWith("ValuesController.cs"));
+
+            string programContents = files.Find(x => x.Key == "Program.cs").Value;
+            Assert.Contains("using Steeltoe.Extensions.Configuration.PlaceholderCore;", programContents);
+
+            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            Assert.Contains("using Microsoft.Extensions.Configuration;", valuesController);
+
+            Assert.Contains(@"public ValuesController(IConfiguration config)", valuesController);
+            Assert.Contains(@"_config[""ResolvedPlaceholderFromEnvVariables""];", valuesController);
         }
 
         [Theory]
@@ -348,7 +410,7 @@ using System.Threading;", valuesController);
 
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
-                Dependencies = "SQLServer",
+                Dependencies = "SQLServer,ConfigServer",
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
                 SteeltoeVersion = steeltoeVersion,

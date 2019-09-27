@@ -210,6 +210,24 @@
       "defaultValue": "false",
       "description": "Steeltoe: Add MySQL EF6 connnectors"
     },
+    "ConfigServer": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add ConfigServer Configuration Source"
+    },
+    "PlaceholderConfig": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Placeholder Configuration Source"
+    },
+    "RandomValueConfig": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add RandomValue Configuration Source"
+    },
     "AnyConnector": {
       "type": "computed",
       "value": "(MySql || Postgres || Redis || RabbitMQ || MongoDB || OAuthConnector)"
@@ -219,6 +237,10 @@
       "datatype": "bool",
       "defaultValue": "false",
       "description": "Supress Models generation"
+    },
+    "AnyConfigSource": {
+      "type": "computed",
+      "value": "(ConfigServer || PlaceholderConfig || RandomValueConfig)"
     },
     "ValuesControllerWithArgs": {
       "type": "computed",

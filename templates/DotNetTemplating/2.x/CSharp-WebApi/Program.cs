@@ -14,8 +14,15 @@ using Steeltoe.Extensions.Logging;
 using Steeltoe.Extensions.Configuration;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 #endif
-
-
+#if (ConfigServer)
+using Steeltoe.Extensions.Configuration.ConfigServer;
+#endif
+#if(PlaceholderConfig)
+using Steeltoe.Extensions.Configuration.PlaceholderCore;
+#endif
+#if(RandomValueConfig)
+using Steeltoe.Extensions.Configuration.RandomValue;
+#endif
 namespace Company.WebApplication1
 {
     public class Program
@@ -37,6 +44,15 @@ namespace Company.WebApplication1
 #if (CloudFoundry)
                 .UseCloudFoundryHosting(5555) //Enable listening on a Env provided port
                 .AddCloudFoundry() //Add cloudfoundry environment variables as a configuration source
+#endif
+#if (ConfigServer)
+                .AddConfigServer()
+#endif
+#if (PlaceholderConfig)
+                .AddPlaceholderResolver()
+#endif
+#if (RandomValueConfig)
+                .ConfigureAppConfiguration((b) => b.AddRandomValueSource())
 #endif
                 .UseStartup<Startup>();
 #if (Actuators || DynamicLogger)

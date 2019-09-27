@@ -32,6 +32,9 @@ using RabbitMQ.Client.Events;
 using System.Text;
 using System.Threading;
 {{/RabbitMQ}}
+{{#AnyConfigSource}}
+using Microsoft.Extensions.Configuration;
+{{/AnyConfigSource}}
 namespace {{ProjectNameSpace}}.Controllers
 {
     {{#Auth}}
@@ -41,6 +44,7 @@ namespace {{ProjectNameSpace}}.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+{{^MoreThanOneValuesControllerWithArgs }}
         {{#SQLServer}}
         private readonly SqlConnection _dbConnection;
         public ValuesController([FromServices] SqlConnection dbConnection)
@@ -194,6 +198,63 @@ namespace {{ProjectNameSpace}}.Controllers
             return "Wrote 5 message to the info log. Have a look!";
         }
         {{/RabbitMQ}}
+        {{#ConfigServer}}
+        private readonly IConfiguration _config;
+        public ValuesController(IConfiguration config)
+        {
+            _config = config;
+        }
+        
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            var val1 = _config["Value1"];
+            var val2 = _config["Value2"];
+            return new string[] { val1, val2 };
+        }
+        {{/ConfigServer}}
+        {{#PlaceholderConfig}}
+        private readonly IConfiguration _config;
+        public ValuesController(IConfiguration config)
+        {
+            _config = config;
+        }
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            var val1 = _config["ResolvedPlaceholderFromEnvVariables"];
+            var val2 = _config["UnresolvedPlaceholder"];
+            var val3 = _config["ResolvedPlaceholderFromJson"];
+            return new string[] { val1, val2, val3 };
+        }
+        {{/PlaceholderConfig}}
+        {{#RandomValueConfig}}
+        private readonly IConfiguration _config;
+        public ValuesController(IConfiguration config)
+        {
+            _config = config;
+        }
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            var val1 = _config["random:int"];
+            var val2 = _config["random:uuid"];
+            var val3 = _config["random:string"];
+
+            return new string[] { val1, val2, val3 };
+        }
+        {{/RandomValueConfig}}
+{{/MoreThanOneValuesControllerWithArgs}}
+{{#MoreThanOneValuesControllerWithArgs}}
+        [HttpGet]
+        public ActionResult<string> Get()
+        {
+            return "value";
+        }
+{{/MoreThanOneValuesControllerWithArgs}}
         {{^ValuesControllerWithArgs}}
         [HttpGet]
         public ActionResult<string> Get()

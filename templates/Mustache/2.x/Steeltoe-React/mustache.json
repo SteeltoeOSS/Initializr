@@ -82,6 +82,24 @@
       "Name": "ProjectNameSpace",
       "DefaultValue": "SteeltoeExample",
       "Description": "Change the namespace "
+    },
+    {
+      "Name": "ConfigServer",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add ConfigServer Configuration Source",
+      "friendlyName": "Config Server"
+    },
+    {
+      "Name": "PlaceholderConfig",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Placeholder Configuration Source",
+      "friendlyName": "Placeholder Configuration Source"
+    },
+    {
+      "Name": "RandomValueConfig",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add RandomValue Configuration Source",
+      "friendlyName": "RandomValue Configuration Source"
     }
   ],
   "CalculatedParams": [
@@ -106,8 +124,18 @@
       "ExpressionType": "Any"
     },
     {
+      "Name": "MoreThanOneValuesControllerWithArgs",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis",
+      "ExpressionType": "MoreThanOne"
+    },
+    {
       "Name": "AnyConnector",
       "Expression": "MySql,Postgres,Redis,MongoDB,RabbitMQ,OAuthConnector",
+      "ExpressionType": "Any"
+    },
+    {
+      "Name": "AnyConfigSource",
+      "Expression": "ConfigServer,PlaceholderConfig,RandomValueConfig",
       "ExpressionType": "Any"
     },
     {
@@ -125,18 +153,6 @@
     {
       "Name": "AnyEFCore",
       "InclusionExpression": "Models/**"
-    },
-    {
-      "Name": "ConfigServer",
-      "InclusionExpression": "Models/ConfigServerData.cs;Controllers/ConfigDataController.cs"
-    },
-    {
-      "Name": "PlaceholderConfig",
-      "InclusionExpression": "SampleOptions.cs;Controllers/PlaceholderDataController.cs"
-    },
-    {
-      "Name": "RandomValueConfig",
-      "InclusionExpression": "Controllers/RandomValueDataController.cs"
     }
   ],
   "Versions": [

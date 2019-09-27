@@ -120,12 +120,22 @@
     },
     {
       "Name": "ValuesControllerWithArgs",
-      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,RamdomValueConfig,PlaceholderConfig",
       "ExpressionType": "Any"
+    },
+    {
+      "Name": "MoreThanOneValuesControllerWithArgs",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig",
+      "ExpressionType": "MoreThanOne"
     },
     {
       "Name": "AnyConnector",
       "Expression": "MySql,Postgres,SQLServer,Redis,MongoDB,RabbitMQ,OAuthConnector",
+      "ExpressionType": "Any"
+    },
+    {
+      "Name": "AnyConfigSource",
+      "Expression": "ConfigServer,PlaceholderConfig,RandomValueConfig",
       "ExpressionType": "Any"
     },
     {
@@ -143,18 +153,6 @@
     {
       "Name": "AnyEFCore",
       "InclusionExpression": "Models/**"
-    },
-    {
-      "Name": "ConfigServer",
-      "InclusionExpression": "Models/ConfigServerData.cs;Controllers/ConfigDataController.cs"
-    },
-    {
-      "Name": "PlaceholderConfig",
-      "InclusionExpression": "SampleOptions.cs;Controllers/PlaceholderDataController.cs"
-    },
-    {
-      "Name": "RandomValueConfig",
-      "InclusionExpression": "Controllers/RandomValueDataController.cs"
     }
   ],
   "Versions": [

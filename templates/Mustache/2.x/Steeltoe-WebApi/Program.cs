@@ -31,15 +31,6 @@ namespace {{ProjectNameSpace}}
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args)
-            {{#ConfigServer}}
-			.AddConfigServer()
-            {{/ConfigServer}} 
-            {{#PlaceholderConfig}}
-            .AddPlaceholderResolver()
-            {{/PlaceholderConfig}}
-            {{#RandomValueConfig}}
-            .ConfigureAppConfiguration((b) => b.AddRandomValueSource())
-            {{/RandomValueConfig}}
             .Build()
             {{#AnyEFCore}}
             .InitializeDbContexts()
@@ -56,6 +47,15 @@ namespace {{ProjectNameSpace}}
                 .UseCloudFoundryHosting(5555) //Enable listening on a Env provided port
                 .AddCloudFoundry() //Add cloudfoundry environment variables as a configuration source
                 {{/CloudFoundry}}
+                {{#ConfigServer}}
+			    .AddConfigServer()
+                {{/ConfigServer}} 
+                {{#PlaceholderConfig}}
+                .AddPlaceholderResolver()
+                {{/PlaceholderConfig}}
+                {{#RandomValueConfig}}
+                .ConfigureAppConfiguration((b) => b.AddRandomValueSource())
+                {{/RandomValueConfig}}
                 .UseStartup<Startup>();
             {{#ActuatorsOrDynamicLogger}}
             builder.ConfigureLogging((hostingContext, loggingBuilder) =>

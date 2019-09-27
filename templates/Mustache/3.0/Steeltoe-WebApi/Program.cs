@@ -15,6 +15,15 @@ using Steeltoe.Extensions.Logging;
 using Steeltoe.Extensions.Configuration;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 {{/CloudFoundry}}
+{{#ConfigServer}}
+using Steeltoe.Extensions.Configuration.ConfigServer;
+{{/ConfigServer}}
+{{#PlaceholderConfig}}
+using Steeltoe.Extensions.Configuration.PlaceholderCore;
+{{/PlaceholderConfig}}
+{{#RandomValueConfig}}
+using Steeltoe.Extensions.Configuration.RandomValue;
+{{/ RandomValueConfig}}
 namespace {{ProjectNameSpace}}
 {
     public class Program
@@ -34,10 +43,19 @@ namespace {{ProjectNameSpace}}
         {
             var builder = WebHost.CreateDefaultBuilder(args)
                 .UseDefaultServiceProvider(configure => configure.ValidateScopes = false)
-{{#CloudFoundry}}
+                {{#CloudFoundry}}
                 .UseCloudFoundryHosting(5555) //Enable listening on a Env provided port
                 .AddCloudFoundry() //Add cloudfoundry environment variables as a configuration source
-{{/CloudFoundry}}
+                {{/CloudFoundry}}
+                {{#ConfigServer}}
+			    .AddConfigServer()
+                {{/ConfigServer}} 
+                {{#PlaceholderConfig}}
+                .AddPlaceholderResolver()
+                {{/PlaceholderConfig}}
+                {{#RandomValueConfig}}
+                .ConfigureAppConfiguration((b) => b.AddRandomValueSource())
+                {{/RandomValueConfig}}
                 .UseStartup<Startup>();
 {{#ActuatorsOrDynamicLogger}}
             builder.ConfigureLogging((hostingContext, loggingBuilder) =>
