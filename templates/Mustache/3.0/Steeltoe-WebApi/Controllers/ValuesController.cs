@@ -11,7 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using System.Data;
 {{/SQLServer}}
-
+{{#MySql}}
+using System.Data.MySqlClient;
+using System.Data;
+{{/MySql}}
 namespace {{ProjectNameSpace}}.Controllers
 {
     {{#Auth}}
@@ -45,7 +48,30 @@ namespace {{ProjectNameSpace}}.Controllers
             return tables;
         }
         {{/SQLServer}}
+        {{#MySql}}
+        private readonly SqlConnection _dbConnection;
+        public ValuesController([FromServices] SqlConnection dbConnection)
+        {
+            _dbConnection = dbConnection;
+        }
 
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            List<string> tables = new List<string>();
+        
+            _dbConnection.Open();
+            DataTable dt = _dbConnection.GetSchema("Tables");
+            _dbConnection.Close();
+            foreach (DataRow row in dt.Rows)
+            {
+                string tablename = (string)row[2];
+                tables.Add(tablename);
+            }
+            return tables;
+        }
+        {{/MySql}}
         {{^ValuesControllerWithArgs}}
         [HttpGet]
         public ActionResult<string> Get()

@@ -157,6 +157,19 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.MySql;", startUpContents);
 
             Assert.Contains(".AddMySqlConnection(", startUpContents);
+
+            string valuesController = files.Find(x => x.Key == "Controllers\\ValuesController.cs").Value;
+            Assert.Contains("using System.Data.MySqlClient;", valuesController);
+            Assert.Contains("using System.Data", valuesController);
+
+            Assert.Contains(
+                @"private readonly SqlConnection _dbConnection;
+        public ValuesController([FromServices] SqlConnection dbConnection)
+        {
+            _dbConnection = dbConnection;
+        }", valuesController);
+
+            Assert.Contains(@"DataTable dt = _dbConnection.GetSchema(""Tables"");", valuesController);
         }
 
         [Theory]
