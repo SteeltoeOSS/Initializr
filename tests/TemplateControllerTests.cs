@@ -36,14 +36,12 @@ namespace Steeltoe.Initializr.Tests
     /// </summary>
     public class TemplateControllerTests : XunitLoggingBase, IClassFixture<TestWebAppFactory<Startup>>
     {
-        private readonly TestWebAppFactory<Startup> _factory;
         private readonly HttpClient _client;
         private ILogger<MustacheTemplateService> _logger;
 
         public TemplateControllerTests(ITestOutputHelper testOutputHelper, TestWebAppFactory<Startup> factory)
             : base(testOutputHelper)
         {
-            _factory = factory;
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false,
@@ -77,6 +75,43 @@ namespace Steeltoe.Initializr.Tests
             Assert.True(files.Count > 0);
             Assert.Contains("Program.cs", files.Keys);
             Assert.Contains("TestCompany.TestProject", files["Program.cs"]);
+        }
+
+        [Fact]
+        public async void GetStarterZipValidationTest()
+        {
+            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=123.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.3.0&TemplateVersion=V2&TargetFrameworkVersion=netcoreapp2.2&TemplateShortName=Steeltoe-WebApi");
+
+            Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
+
+            var responseString = await result.Content.ReadAsStringAsync();
+            Assert.Contains(@"""ProjectName"":[""ProjectName must be a valid C# Identifier""]", responseString);
+        }
+
+        [Fact]
+        public async void PostStarterZipValidationTest()
+        {
+            var model = new GeneratorModel()
+            {
+                Dependencies = "Actuator,MySql",
+                Description = "TestDescription",
+                ProjectName = "123.TestProject",
+                SteeltoeVersion = "2.2.0",
+                TargetFrameworkVersion = "netcoreapp2.2",
+                TemplateShortName = "Steeltoe-WebApi",
+                TemplateVersion = TemplateVersion.V2,
+            };
+
+            var props = model.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var kvps = props.Select(prop => new KeyValuePair<string, string>(prop.Name, prop.GetValue(model).ToString())).ToArray();
+
+            var formContent = new FormUrlEncodedContent(kvps);
+
+            var result = await _client.PostAsync("https://localhost/starter.zip", formContent);
+            Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
+
+            var responseString = await result.Content.ReadAsStringAsync();
+            Assert.Contains(@"""ProjectName"":[""ProjectName must be a valid C# Identifier""]", responseString);
         }
 
         [Fact]

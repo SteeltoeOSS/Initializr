@@ -59,8 +59,8 @@ using Steeltoe.CloudFoundry.Connector.OAuth;
 #if (PostgresEFCore)
 using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
 #endif
-#if (SQLServerEFCore)
-using Steeltoe.CloudFoundry.Connector.SqlServer.EFCore;
+#if (SQLServer)
+using Steeltoe.CloudFoundry.Connector.SqlServer;
 #endif
 namespace Company.WebApplication1
 {
@@ -90,7 +90,7 @@ namespace Company.WebApplication1
 #if (Actuators && CloudFoundry)
 	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)
-	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);
+	        services.AddCloudFoundryActuators(Configuration);
 #endif
 #else
 #if (Actuators && CloudFoundry)
@@ -118,7 +118,7 @@ namespace Company.WebApplication1
             services.AddDistributedRedisCache(Configuration);
 
             // This works like the above, but adds a IConnectionMultiplexer to the container
-            services.AddRedisConnectionMultiplexer(Configuration);
+            // services.AddRedisConnectionMultiplexer(Configuration);
 #endif
 #if (MongoDB)
              services.AddMongoClient(Configuration);
@@ -130,8 +130,8 @@ namespace Company.WebApplication1
               // Add Context and use Postgres as provider ... provider will be configured from VCAP_ info
               // services.AddDbContext<MyDbContext>(options => options.UseNpgsql(Configuration));
 #endif
-#if (SQLServerEFCore)
-               services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));
+#if (SQLServer)
+             services.AddSqlServerConnection(Configuration);
 #endif
 #if (FrameworkVersion == "netcoreapp2.2")
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -164,7 +164,7 @@ namespace Company.WebApplication1
 #if (Actuators && CloudFoundry)
             app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)
-	    app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.Actuator);
+	    app.UseCloudFoundryActuators();
 #endif
 #else
 #if (Actuators && CloudFoundry)

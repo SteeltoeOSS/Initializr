@@ -50,7 +50,7 @@ namespace Steeltoe.Initializr.Tests
                        select new object[] { implementation, templateName, templateVersion };
             _data = data.ToList();
         }
-        
+
         public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

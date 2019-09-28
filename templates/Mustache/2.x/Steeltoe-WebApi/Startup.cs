@@ -38,7 +38,7 @@ using Steeltoe.CloudFoundry.Connector.MySql;
 using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 {{/MySqlEFCore}}
 {{#SQLServer}}
-using Steeltoe.CloudFoundry.Connector.SqlServer.EFCore;
+using Steeltoe.CloudFoundry.Connector.SqlServer;
 {{/SQLServer}}
 {{#Discovery}}
 using Steeltoe.Discovery.Client;
@@ -61,9 +61,6 @@ using Steeltoe.CloudFoundry.Connector.OAuth;
 {{#PostgresEFCore}}
 using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
 {{/PostgresEFCore}}
-{{#ConfigServer}}
-using Steeltoe.Extensions.Configuration.ConfigServer;
-{{/ConfigServer}}
 
 namespace {{ProjectNameSpace}}
 {
@@ -88,7 +85,7 @@ namespace {{ProjectNameSpace}}
                 .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
 {{/IndividualB2CAuth}}
 {{#PlaceholderConfig}}
-  services.Configure<SampleOptions>(Configuration);
+            services.Configure<SampleOptions>(Configuration);
 {{/PlaceholderConfig}}
 {{#MySql}}
             services.AddMySqlConnection(Configuration);
@@ -98,7 +95,7 @@ namespace {{ProjectNameSpace}}
 	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 {{/CloudFoundry}}
 {{^CloudFoundry}}
-	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);
+	        services.AddCloudFoundryActuators(Configuration);
 {{/CloudFoundry}}
 {{/Actuators}}
 {{#Discovery}}
@@ -119,7 +116,7 @@ namespace {{ProjectNameSpace}}
             services.AddDistributedRedisCache(Configuration);
 
             // This works like the above, but adds a IConnectionMultiplexer to the container
-            services.AddRedisConnectionMultiplexer(Configuration);
+            // services.AddRedisConnectionMultiplexer(Configuration);
 {{/Redis}}
 {{#MongoDB}}
             services.AddMongoClient(Configuration);
@@ -133,18 +130,8 @@ namespace {{ProjectNameSpace}}
             // services.AddDbContext<MyDbContext>(options => options.UseNpgsql(Configuration));
 {{/PostgresEFCore}}
 {{#SQLServer}}
-            services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));
+            services.AddSqlServerConnection(Configuration);
 {{/SQLServer}}
-{{#ConfigServer}}
-			// Optional: Adds ConfigServerClientOptions to service container
-			services.ConfigureConfigServerClientOptions(Configuration);
-
-			// Optional:  Adds IConfiguration and IConfigurationRoot to service container
-			services.AddConfiguration(Configuration);
-
-			 // Adds the configuration data POCO configured with data returned from the Spring Cloud Config Server
-            services.Configure<ConfigServerData>(Configuration);
-{{/ConfigServer}}
 {{#TargetFrameworkVersion22}}
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 {{/TargetFrameworkVersion22}}
@@ -179,7 +166,7 @@ namespace {{ProjectNameSpace}}
     app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
     {{/CloudFoundry}}
     {{^CloudFoundry}}
-    app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.Actuator);
+    app.UseCloudFoundryActuators();
     {{/CloudFoundry}}
     {{/Actuators}}
    

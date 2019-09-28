@@ -119,13 +119,23 @@
       "ExpressionType": "Any"
     },
     {
-      "Name": "AnyEFCore",
-      "Expression": "PostgresEFCore,SQLServer,MySqlEFCore",
+      "Name": "ValuesControllerWithArgs",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker",
       "ExpressionType": "Any"
     },
     {
+      "Name": "MoreThanOneValuesControllerWithArgs",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker",
+      "ExpressionType": "MoreThanOne"
+    },
+    {
       "Name": "AnyConnector",
-      "Expression": "MySql,Postgres,Redis,MongoDB,RabbitMQ,OAuthConnector",
+      "Expression": "MySql,Postgres,SQLServer,Redis,MongoDB,RabbitMQ,OAuthConnector",
+      "ExpressionType": "Any"
+    },
+    {
+      "Name": "AnyConfigSource",
+      "Expression": "ConfigServer,PlaceholderConfig,RandomValueConfig",
       "ExpressionType": "Any"
     },
     {
@@ -145,16 +155,8 @@
       "InclusionExpression": "Models/**"
     },
     {
-      "Name": "ConfigServer",
-      "InclusionExpression": "Models/ConfigServerData.cs;Controllers/ConfigDataController.cs"
-    },
-    {
-      "Name": "PlaceholderConfig",
-      "InclusionExpression": "SampleOptions.cs;Controllers/PlaceholderDataController.cs"
-    },
-    {
-      "Name": "RandomValueConfig",
-      "InclusionExpression": "Controllers/RandomValueDataController.cs"
+      "Name": "CircuitBreaker",
+      "InclusionExpression": "MyCircuitBreakerCommand.cs"
     }
   ],
   "Versions": [

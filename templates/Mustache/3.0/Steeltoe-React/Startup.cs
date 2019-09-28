@@ -42,7 +42,7 @@ using Steeltoe.CloudFoundry.Connector.MySql;
 using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 {{/MySqlEFCore}}
 {{#SQLServer}}
-using Steeltoe.CloudFoundry.Connector.SqlServer.EFCore;
+using Steeltoe.CloudFoundry.Connector.SqlServer;
 {{/SQLServer}}
 {{#Discovery}}
 using Steeltoe.Discovery.Client;
@@ -87,6 +87,9 @@ namespace {{ProjectNameSpace}}
             services.AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
                 .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
 {{/IndividualB2CAuth}}
+{{#PlaceholderConfig}}
+            services.Configure<SampleOptions>(Configuration);
+{{/PlaceholderConfig}}
 {{#MySql}}
             services.AddMySqlConnection(Configuration);
 {{/MySql}}
@@ -96,7 +99,7 @@ namespace {{ProjectNameSpace}}
 	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 {{/CloudFoundry}}
 {{^CloudFoundry}}
-	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);
+	        services.AddCloudFoundryActuators(Configuration);
 {{/CloudFoundry}}
 {{/Actuators}}
 {{#Discovery}}
@@ -109,11 +112,10 @@ namespace {{ProjectNameSpace}}
             services.AddRabbitMQConnection(Configuration);
 {{/RabbitMQ}}
 {{#Redis}}
-            // In production, the React files will be served from this directory
             services.AddDistributedRedisCache(Configuration);
 
             // This works like the above, but adds a IConnectionMultiplexer to the container
-            services.AddRedisConnectionMultiplexer(Configuration);
+            // services.AddRedisConnectionMultiplexer(Configuration);
 {{/Redis}}
 {{#MongoDB}}
             services.AddMongoClient(Configuration);
@@ -127,7 +129,7 @@ namespace {{ProjectNameSpace}}
             // services.AddDbContext<MyDbContext>(options => options.UseNpgsql(Configuration));
 {{/PostgresEFCore}}
 {{#SQLServer}}
-            services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));
+             services.AddSqlServerConnection(Configuration);
 {{/SQLServer}}
 {{#TargetFrameworkVersion22}}
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -167,7 +169,7 @@ namespace {{ProjectNameSpace}}
     	    app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
     {{/CloudFoundry}}
     {{^CloudFoundry}}
-    	    app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.Actuator);
+    	    app.UseCloudFoundryActuators();
     {{/CloudFoundry}}
     {{/Actuators}}
     {{#Discovery}}

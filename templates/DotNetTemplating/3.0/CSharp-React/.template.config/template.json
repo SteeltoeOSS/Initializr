@@ -40,6 +40,12 @@
           "exclude": [
             "Models/**"
           ]
+        },
+        {
+          "condition": "(!CircuitBreaker)",
+          "exclude": [
+            "MyCircuitBreakerCommand.cs"
+          ]
         }
       ]
     }
@@ -210,13 +216,41 @@
       "defaultValue": "false",
       "description": "Steeltoe: Add MySQL EF6 connnectors"
     },
+    "ConfigServer": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add ConfigServer Configuration Source"
+    },
+    "PlaceholderConfig": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add Placeholder Configuration Source"
+    },
+    "RandomValueConfig": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Add RandomValue Configuration Source"
+    },
     "AnyConnector": {
       "type": "computed",
       "value": "(MySql || Postgres || Redis || RabbitMQ || MongoDB || OAuthConnector)"
     },
     "AnyEFCore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Supress Models generation"
+    },
+    "AnyConfigSource": {
       "type": "computed",
-      "value": "(PostgresEFCore || MySqlEFCore || SQLServer)"
+      "value": "(ConfigServer || PlaceholderConfig || RandomValueConfig)"
+    },
+    "ValuesControllerWithArgs": {
+      "type": "computed",
+      "value": "(SQLServer || MySql || Postgres || MongoDB || RabbitMQ || Redis)"
     },
     "CircuitBreaker": {
       "type": "parameter",

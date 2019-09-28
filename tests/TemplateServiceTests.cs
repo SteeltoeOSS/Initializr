@@ -17,6 +17,7 @@ using Steeltoe.Initializr.Services;
 using Steeltoe.Initializr.Services.DotNetTemplateEngine;
 using Steeltoe.Initializr.Services.Mustache;
 using Steeltoe.InitializrTests;
+using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
@@ -88,7 +89,7 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains("using Steeltoe.Management.Hypermedia;", startUpContents);
             Assert.Contains("using Steeltoe.Management.Endpoint;", startUpContents);
             Assert.Contains("using Steeltoe.Management.CloudFoundry;", startUpContents);
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
         }
 
         [Theory]
@@ -138,8 +139,13 @@ namespace Steeltoe.Initializr.Tests
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
             Assert.Contains("using Steeltoe.CircuitBreaker.Hystrix;", startUpContents);
+
+            Assert.Contains(files, file => file.Key.EndsWith("MyCircuitBreakerCommand.cs"));
+
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
+            Assert.Contains(@"MyCircuitBreakerCommand cb = new MyCircuitBreakerCommand(""ThisIsMyBreaker"");", valuesController);
         }
 
         [Theory]
@@ -157,6 +163,19 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.MySql;", startUpContents);
 
             Assert.Contains(".AddMySqlConnection(", startUpContents);
+
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
+            Assert.Contains("using System.Data.MySqlClient;", valuesController);
+            Assert.Contains("using System.Data", valuesController);
+
+            Assert.Contains(
+                @"private readonly SqlConnection _dbConnection;
+        public ValuesController([FromServices] SqlConnection dbConnection)
+        {
+            _dbConnection = dbConnection;
+        }", valuesController);
+
+            Assert.Contains(@"DataTable dt = _dbConnection.GetSchema(""Tables"");", valuesController);
         }
 
         [Theory]
@@ -188,27 +207,95 @@ namespace Steeltoe.Initializr.Tests
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.PostgreSql;", startUpContents);
-
             Assert.Contains("services.AddPostgresConnection(Configuration);", startUpContents);
+
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
+            Assert.Contains("using Npgsql;", valuesController);
+            Assert.Contains("using System.Data", valuesController);
+
+            Assert.Contains(@"public ValuesController([FromServices] NpgsqlConnection dbConnection)", valuesController);
+            Assert.Contains(@"DataTable dt = _dbConnection.GetSchema(""Databases"");", valuesController);
         }
-        
-        [Fact]
-        public async Task CreateTemplate_ConfigServer()
+
+        [Theory]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
+        public async Task CreateTemplate_ConfigServer(ITemplateService templateService, string templateName, TemplateVersion version)
         {
             var configuration = TestHelper.GetConfiguration();
             var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
 
-            ITemplateService templateService = new MustacheTemplateService(configuration, logger);
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "ConfigServer",
-                TemplateShortName = "Steeltoe-WebApi",
-                TemplateVersion = TemplateVersion.V2,
+                TemplateShortName = templateName,
+                TemplateVersion = version,
             });
 
             Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
-            Assert.Contains(files, file => file.Key.EndsWith("ConfigDataController.cs"));
-            Assert.Contains(files, file => file.Key.EndsWith("ConfigServerData.cs"));
+            Assert.Contains(files, file => file.Key.EndsWith("ValuesController.cs"));
+
+            string programContents = files.Find(x => x.Key == "Program.cs").Value;
+            Assert.Contains("using Steeltoe.Extensions.Configuration.ConfigServer;", programContents);
+
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
+            Assert.Contains("using Microsoft.Extensions.Configuration;", valuesController);
+
+            Assert.Contains(@"public ValuesController(IConfiguration config)", valuesController);
+            Assert.Contains(@"_config[""Value1""];", valuesController);
+        }
+
+        [Theory]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
+        public async Task CreateTemplate_Randomvalue(ITemplateService templateService, string templateName, TemplateVersion version)
+        {
+            var configuration = TestHelper.GetConfiguration();
+            var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
+
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
+            {
+                Dependencies = "RandomValueConfig",
+                TemplateShortName = templateName,
+                TemplateVersion = version,
+            });
+
+            Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
+            Assert.Contains(files, file => file.Key.EndsWith("ValuesController.cs"));
+
+            string programContents = files.Find(x => x.Key == "Program.cs").Value;
+            Assert.Contains("using Steeltoe.Extensions.Configuration.RandomValue;", programContents);
+
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
+            Assert.Contains("using Microsoft.Extensions.Configuration;", valuesController);
+
+            Assert.Contains(@"public ValuesController(IConfiguration config)", valuesController);
+            Assert.Contains(@"_config[""random:int""];", valuesController);
+        }
+
+        [Theory]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
+        public async Task CreateTemplate_Placeholderconfig(ITemplateService templateService, string templateName, TemplateVersion version)
+        {
+            var configuration = TestHelper.GetConfiguration();
+            var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
+
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
+            {
+                Dependencies = "PlaceholderConfig",
+                TemplateShortName = templateName,
+                TemplateVersion = version,
+            });
+
+            Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
+            Assert.Contains(files, file => file.Key.EndsWith("ValuesController.cs"));
+
+            string programContents = files.Find(x => x.Key == "Program.cs").Value;
+            Assert.Contains("using Steeltoe.Extensions.Configuration.PlaceholderCore;", programContents);
+
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
+            Assert.Contains("using Microsoft.Extensions.Configuration;", valuesController);
+
+            Assert.Contains(@"public ValuesController(IConfiguration config)", valuesController);
+            Assert.Contains(@"_config[""ResolvedPlaceholderFromEnvVariables""];", valuesController);
         }
 
         [Theory]
@@ -241,8 +328,21 @@ namespace Steeltoe.Initializr.Tests
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.RabbitMQ;", startUpContents);
-
             Assert.Contains("services.AddRabbitMQConnection(Configuration);", startUpContents);
+
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
+            Assert.Contains(
+                @"using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using System.Text;
+using System.Threading;", valuesController);
+
+            Assert.Contains(@"public ValuesController(ILogger<ValuesController> logger, [FromServices] ConnectionFactory factory)", valuesController);
+            Assert.Contains(
+                @"channel.BasicPublish(exchange: """",
+                                         routingKey: queueName,
+                                         basicProperties: null,
+                                         body: body);", valuesController);
         }
 
         [Theory]
@@ -259,6 +359,14 @@ namespace Steeltoe.Initializr.Tests
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.Redis", startUpContents);
             Assert.Contains("services.AddDistributedRedisCache(Configuration);", startUpContents);
+            Assert.Contains("// services.AddRedisConnectionMultiplexer(Configuration);", startUpContents);
+
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
+            Assert.Contains("using Microsoft.Extensions.Caching.Distributed;", valuesController);
+
+            Assert.Contains(@" public ValuesController(IDistributedCache cache)", valuesController);
+            Assert.Contains(@"await _cache.SetStringAsync(""MyValue1"", ""123"");", valuesController);
+
         }
 
         [Theory]
@@ -275,6 +383,13 @@ namespace Steeltoe.Initializr.Tests
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
             Assert.Contains("using Steeltoe.CloudFoundry.Connector.MongoDb;", startUpContents);
             Assert.Contains("services.AddMongoClient(Configuration);", startUpContents);
+
+            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
+            Assert.Contains("using MongoDB.Driver;", valuesController);
+            Assert.Contains("using System.Data", valuesController);
+
+            Assert.Contains(@"public ValuesController(IMongoClient mongoClient, MongoUrl mongoUrl)", valuesController);
+            Assert.Contains(@"_mongoClient.ListDatabaseNames().ToList();", valuesController);
         }
 
         [Theory]
@@ -301,34 +416,26 @@ namespace Steeltoe.Initializr.Tests
 
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
-                Dependencies = "SQLServer",
+                Dependencies = "SQLServer,ConfigServer",
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
                 SteeltoeVersion = steeltoeVersion,
                 TemplateVersion = version,
             });
 
-            Assert.Contains(files, file => file.Key.StartsWith("Models"));
-
             var fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
             var aspnetCoreVersion = version == TemplateVersion.V3 ? "3.0.0-preview8.19405.11" : "2.2.0";
 
-            Assert.Contains(
-                $@"<PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""{aspnetCoreVersion}"" />", fileContents);
             Assert.Contains($@"<PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""{aspnetCoreVersion}"" />", fileContents);
-            Assert.Contains($@"<PackageReference Include=""Steeltoe.CloudFoundry.Connector.EFCore""  Version=""{steeltoeVersion}"" />", fileContents);
-
-            var program = files.Find(x => x.Key == "Program.cs").Value;
-            Assert.Contains(@".InitializeDbContexts()", program);
 
             var startup = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains(@"using Steeltoe.CloudFoundry.Connector.SqlServer.EFCore;", startup);
-            Assert.Contains(@"services.AddDbContext<TestContext>(options => options.UseSqlServer(Configuration));", startup);
+            Assert.Contains(@"using Steeltoe.CloudFoundry.Connector.SqlServer;", startup);
+            Assert.Contains(@"services.AddSqlServerConnection(Configuration);", startup);
 
             if (!templateName.Contains("React"))
             { // TODO: Add demo for react app
                 var valuesController = files.Find(x => x.Key.EndsWith("ValuesController.cs")).Value;
-                Assert.Contains(@" public ValuesController(ILogger<ValuesController> logger, [FromServices] TestContext context)", valuesController);
+                Assert.Contains(@" public ValuesController([FromServices] SqlConnection dbConnection)", valuesController);
             }
         }
 
@@ -386,7 +493,7 @@ namespace Steeltoe.Initializr.Tests
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
         }
 
         [Theory]
@@ -403,7 +510,7 @@ namespace Steeltoe.Initializr.Tests
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
         }
         ////[Fact]
         ////public void CreateTemplate_actuators_v3()
@@ -439,7 +546,7 @@ namespace Steeltoe.Initializr.Tests
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
             Assert.DoesNotContain(files, file => file.Key.StartsWith("Models"));
-            Assert.DoesNotContain(files, file => file.Key.EndsWith("ConfigDataController.cs"));
+            Assert.DoesNotContain(files, file => file.Key.EndsWith("MyCircuitBreakerCommand.cs"));
             Assert.DoesNotContain("AddCloudFoundryActuators", startUpContents);
             var dockerFile = files.Find(x => x.Key == "Dockerfile").Value;
             Assert.NotNull(dockerFile);
@@ -473,8 +580,7 @@ namespace Steeltoe.Initializr.Tests
 
             string projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
             Assert.Contains("<TargetFramework>netcoreapp2.1</TargetFramework>", projectFile);
-            Assert.Contains(@"<PackageReference Include=""Microsoft.EntityFrameworkCore"" Version=""2.1.1"" />", projectFile);
-        }
+         }
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]

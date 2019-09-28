@@ -3,49 +3,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-{{#Auth}}
+#if (!NoAuth)
 using Microsoft.AspNetCore.Authorization;
-{{/Auth}}
+#endif
 using Microsoft.AspNetCore.Mvc;
-{{#SQLServer}}
+#if(SQLServer || MySql || Postgres || MongoDB)
+using System.Data;
+#endif
+#if (SQLServer)
 using System.Data.SqlClient;
-using System.Data;
-{{/SQLServer}}
-{{#MySql}}
+#endif
+#if (MySql)
 using System.Data.MySqlClient;
-using System.Data;
-{{/MySql}}
-{{#Postgres}}
+#endif
+#if (Postgres)
 using Npgsql;
-using System.Data;
-{{/Postgres}}
-{{#MongoDB}}
+#endif
+#if (MongoDB)
 using MongoDB.Driver;
-using System.Data;
-{{/MongoDB}}
-{{#Redis}}
+#endif
+#if (Redis)
 using Microsoft.Extensions.Caching.Distributed;
-{{/Redis}}
-{{#RabbitMQ}}
+#endif
+#if (Redis)
+using Microsoft.Extensions.Caching.Distributed;
+#endif
+#if (RabbitMQ)
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Threading;
-{{/RabbitMQ}}
-{{#AnyConfigSource}}
+#endif
+#if (AnyConfigSource)
 using Microsoft.Extensions.Configuration;
-{{/AnyConfigSource}}
-namespace {{ProjectNameSpace}}.Controllers
+#endif
+namespace Company.WebApplication1.Controllers
 {
-    {{#Auth}}
+#if (!NoAuth)
     [Authorize]
-    {{/Auth}}
+#endif
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
-{{^MoreThanOneValuesControllerWithArgs }}
-        {{#SQLServer}}
+        private readonly ILogger _logger;
+#if (SQLServer)
         private readonly SqlConnection _dbConnection;
         public ValuesController([FromServices] SqlConnection dbConnection)
         {
@@ -68,8 +70,7 @@ namespace {{ProjectNameSpace}}.Controllers
             }
             return tables;
         }
-        {{/SQLServer}}
-        {{#MySql}}
+#elif (MySql)
         private readonly SqlConnection _dbConnection;
         public ValuesController([FromServices] SqlConnection dbConnection)
         {
@@ -81,7 +82,7 @@ namespace {{ProjectNameSpace}}.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
             List<string> tables = new List<string>();
-        
+
             _dbConnection.Open();
             DataTable dt = _dbConnection.GetSchema("Tables");
             _dbConnection.Close();
@@ -92,8 +93,7 @@ namespace {{ProjectNameSpace}}.Controllers
             }
             return tables;
         }
-        {{/MySql}}
-        {{#Postgres}}
+#elif (Postgres)
         private readonly NpgsqlConnection _dbConnection;
         public ValuesController([FromServices] NpgsqlConnection dbConnection)
         {
@@ -116,8 +116,7 @@ namespace {{ProjectNameSpace}}.Controllers
             }
             return tables;
         }
-        {{/Postgres}}
-        {{#MongoDB}}
+#elif (MongoDB)
         private readonly IMongoClient _mongoClient;
         private readonly MongoUrl _mongoUrl;
         public ValuesController(IMongoClient mongoClient, MongoUrl mongoUrl)
@@ -132,8 +131,7 @@ namespace {{ProjectNameSpace}}.Controllers
         {
             return _mongoClient.ListDatabaseNames().ToList();
         }
-        {{/MongoDB}}
-        {{#Redis}}
+#elif (Redis)
         private readonly IDistributedCache _cache;
         public ValuesController(IDistributedCache cache)
         {
@@ -150,8 +148,7 @@ namespace {{ProjectNameSpace}}.Controllers
             string myval2 = await _cache.GetStringAsync("MyValue2");
             return new string[]{ myval1, myval2};
         }
-        {{/Redis}}
-        {{#RabbitMQ}}
+#elif (RabbitMQ)
         private readonly ILogger _logger;
         private readonly ConnectionFactory _factory;
         private const string queueName = "my-queue";
@@ -160,7 +157,7 @@ namespace {{ProjectNameSpace}}.Controllers
             _logger = logger;
             _factory = factory;
         }
-        
+
         // GET api/values
         [HttpGet]
         public ActionResult<string> Get()
@@ -186,7 +183,8 @@ namespace {{ProjectNameSpace}}.Controllers
                                      consumer: consumer);
                 // publisher
                 int i = 0;
-                while (i<5) { //write a message every second, for 5 seconds
+                while (i < 5)
+                { //write a message every second, for 5 seconds
                     var body = Encoding.UTF8.GetBytes($"Message {++i}");
                     channel.BasicPublish(exchange: "",
                                          routingKey: queueName,
@@ -197,8 +195,7 @@ namespace {{ProjectNameSpace}}.Controllers
             }
             return "Wrote 5 message to the info log. Have a look!";
         }
-        {{/RabbitMQ}}
-        {{#ConfigServer}}
+#elif (ConfigServer)
         private readonly IConfiguration _config;
         public ValuesController(IConfiguration config)
         {
@@ -213,8 +210,8 @@ namespace {{ProjectNameSpace}}.Controllers
             var val2 = _config["Value2"];
             return new string[] { val1, val2 };
         }
-        {{/ConfigServer}}
-        {{#PlaceholderConfig}}
+
+#elif (PlaceholderConfig)
         private readonly IConfiguration _config;
         public ValuesController(IConfiguration config)
         {
@@ -229,8 +226,8 @@ namespace {{ProjectNameSpace}}.Controllers
             var val3 = _config["ResolvedPlaceholderFromJson"];
             return new string[] { val1, val2, val3 };
         }
-        {{/PlaceholderConfig}}
-        {{#RandomValueConfig}}
+      
+#elif (RandomValueConfig)
         private readonly IConfiguration _config;
         public ValuesController(IConfiguration config)
         {
@@ -245,9 +242,8 @@ namespace {{ProjectNameSpace}}.Controllers
             var val3 = _config["random:string"];
 
             return new string[] { val1, val2, val3 };
-        }
-        {{/RandomValueConfig}}
-        {{#CircuitBreaker}}
+        }        
+#elif (CircuitBreaker)
          // GET api/values
         [HttpGet]
         public async Task<IEnumerable<string>> Get()
@@ -257,22 +253,14 @@ namespace {{ProjectNameSpace}}.Controllers
             string a = await cb.ExecuteAsync();
             return new string[] { a };
         }
-        {{/CircuitBreaker}}
-{{/MoreThanOneValuesControllerWithArgs}}
-{{#MoreThanOneValuesControllerWithArgs}}
-        [HttpGet]
-public ActionResult<string> Get()
-{
-    return "value";
-}
-{{/MoreThanOneValuesControllerWithArgs}}
-        {{^ValuesControllerWithArgs}}
+#else
         [HttpGet]
         public ActionResult<string> Get()
         {
             return "value";
         }
-        {{/ValuesControllerWithArgs}}
+#endif
+
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)

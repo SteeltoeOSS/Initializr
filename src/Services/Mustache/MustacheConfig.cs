@@ -137,6 +137,7 @@ namespace Steeltoe.Initializr.Services.Mustache
             {
                 if (sourceFile.Name.EndsWith("mustache.json"))
                 {
+                    excludedFiles.Add(sourceFile.Name);
                     continue;
                 }
 

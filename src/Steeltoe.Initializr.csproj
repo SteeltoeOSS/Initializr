@@ -25,6 +25,9 @@
     </None>
     
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="C:\Users\Hananiel\projects\SteeltoeOSS\initializr\src\..\templates\DotNetTemplating\2.x\.vs\TemplatePack\**" />
+  </ItemGroup>
  
 
 

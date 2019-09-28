@@ -50,6 +50,7 @@ namespace Steeltoe.Initializr.Services.Mustache
         Case, // Given string a:x, b:y, c:z Case when key is a, then x ...
         Bool, // Boolean expression over the keys (converted to lambda)
         String, // String lambda expression over keys
+        MoreThanOne, // More than one boolean is true
     }
 
     public class Version

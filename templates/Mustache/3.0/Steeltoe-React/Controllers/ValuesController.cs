@@ -81,7 +81,7 @@ namespace {{ProjectNameSpace}}.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
             List<string> tables = new List<string>();
-        
+ 
             _dbConnection.Open();
             DataTable dt = _dbConnection.GetSchema("Tables");
             _dbConnection.Close();
@@ -261,10 +261,10 @@ namespace {{ProjectNameSpace}}.Controllers
 {{/MoreThanOneValuesControllerWithArgs}}
 {{#MoreThanOneValuesControllerWithArgs}}
         [HttpGet]
-public ActionResult<string> Get()
-{
-    return "value";
-}
+        public ActionResult<string> Get()
+        {
+            return "value";
+        }
 {{/MoreThanOneValuesControllerWithArgs}}
         {{^ValuesControllerWithArgs}}
         [HttpGet]

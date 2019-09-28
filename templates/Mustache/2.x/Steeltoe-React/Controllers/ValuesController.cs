@@ -151,7 +151,7 @@ namespace {{ProjectNameSpace}}.Controllers
             return new string[]{ myval1, myval2};
         }
         {{/Redis}}
-        {{#RabbitMQ}}
+         {{#RabbitMQ}}
         private readonly ILogger _logger;
         private readonly ConnectionFactory _factory;
         private const string queueName = "my-queue";
