@@ -100,6 +100,12 @@
       "Name": "ProjectNameSpace",
       "DefaultValue": "SteeltoeExample",
       "Description": "Change the namespace "
+    },
+    {
+      "Name": "Dockerfile",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Dockerfile",
+      "friendlyName": "Dockerfile"
     }
   ],
   "CalculatedParams": [
@@ -157,6 +163,10 @@
     {
       "Name": "CircuitBreaker",
       "InclusionExpression": "MyCircuitBreakerCommand.cs"
+    },
+    {
+      "Name": "Dockerfile",
+      "InclusionExpression": "Dockerfile"
     }
   ],
   "Versions": [

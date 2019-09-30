@@ -46,6 +46,12 @@
           "exclude": [
             "MyCircuitBreakerCommand.cs"
           ]
+        },
+        {
+          "condition": "(!Dockerfile)",
+          "exclude": [
+            "Dockerfile"
+          ]
         }
       ]
     }
@@ -241,6 +247,12 @@
       "datatype": "bool",
       "defaultValue": "false",
       "description": "Steeltoe: Add RandomValue Configuration Source"
+    },
+    "Dockerfile":{
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Steeltoe: Include Dockerfile"
     },
     "AnyConnector": {
       "type": "computed",
