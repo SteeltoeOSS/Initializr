@@ -67,10 +67,10 @@ export class Home extends Component {
                         <div className="right">
                             <div className="project-metadata">
 
-                                <InputText title="Project Name" name="projectName" defaultValue="MyCompany.SteeltoeExample" tabIndex="1" required pattern="^(?:((?!\d)\w+(?:\.(?!\d)\w+)*)\.)?((?!\d)\w+)$" onInvalid={(e) => e.target.setCustomValidity("ProjectName must be a valid C# Identifier: ex. MyCompany.MyProject")} />
+                                <InputText title="Project Name" name="projectName" defaultValue="MyCompany.SteeltoeExample" tabIndex="1" required pattern="^(?:((?!\d)\w+(?:\.(?!\d)\w+)*)\.)?((?!\d)\w+)$" onInput={(e) => e.target.setCustomValidity("")} onInvalid={(e) => e.target.setCustomValidity("ProjectName must be a valid C# Identifier: ex. MyCompany.MyProject")} />
                                 <div id="more-block">
                                     <InputText title="Description" name="description" defaultValue="Demo project for Steeltoe" tabIndex="2" />
-                                    <RightInputSelector title='Target Framework' values={["netcoreapp2.1", "netcoreapp2.2", "netcoreapp3.0"]} defaultValue="netcoreapp2.2" />
+                                    <RightInputSelector title='Target Framework' values={["netcoreapp2.1", "netcoreapp2.2"]} defaultValue="netcoreapp2.2" />
                                 </div>
                            
                             </div>

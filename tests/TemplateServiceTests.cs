@@ -123,8 +123,7 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains("using Steeltoe.Discovery.Client;", startUpContents);
             Assert.Contains("services.AddDiscoveryClient(Configuration);", startUpContents);
             Assert.Contains("app.UseDiscoveryClient();", startUpContents);
-            string appSettingsContents = files.Find(x => x.Key == "appsettings.Development.json").Value;
-            Assert.Contains("eureka", appSettingsContents);
+           
         }
 
         [Theory]
@@ -366,11 +365,10 @@ using System.Threading;", valuesController);
 
             Assert.Contains(@" public ValuesController(IDistributedCache cache)", valuesController);
             Assert.Contains(@"await _cache.SetStringAsync(""MyValue1"", ""123"");", valuesController);
-
         }
 
         [Theory]
-        [ClassData(typeof(AllImplementationsAndTemplates))]
+        [ClassData(typeof(AllImplementationsAndTemplates))] 
         public async Task CreateTemplate_MongoDB(ITemplateService templateService, string templateName, TemplateVersion version)
         {
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
@@ -548,11 +546,6 @@ using System.Threading;", valuesController);
             Assert.DoesNotContain(files, file => file.Key.StartsWith("Models"));
             Assert.DoesNotContain(files, file => file.Key.EndsWith("MyCircuitBreakerCommand.cs"));
             Assert.DoesNotContain("AddCloudFoundryActuators", startUpContents);
-            var dockerFile = files.Find(x => x.Key == "Dockerfile").Value;
-            Assert.NotNull(dockerFile);
-
-            Assert.Contains("Foo.Bar.dll", dockerFile);
-            Assert.Contains("Foo.Bar.csproj", dockerFile);
 
             var projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
             var targetFramework = version == TemplateVersion.V3 ? "netcoreapp3.0" : "netcoreapp2.2";
