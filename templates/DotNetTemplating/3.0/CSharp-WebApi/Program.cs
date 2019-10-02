@@ -44,7 +44,7 @@ namespace Company.WebApplication1
             var builder = WebHost.CreateDefaultBuilder(args)
                 .UseDefaultServiceProvider(configure => configure.ValidateScopes = false)
 #if (CloudFoundry)
-                .UseCloudFoundryHosting(5555) //Enable listening on a Env provided port
+                .UseCloudFoundryHosting() //Enable listening on a Env provided port
                 .AddCloudFoundry() //Add cloudfoundry environment variables as a configuration source
 #endif
 #if (ConfigServer)

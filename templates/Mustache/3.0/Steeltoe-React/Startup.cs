@@ -87,9 +87,7 @@ namespace {{ProjectNameSpace}}
             services.AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
                 .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
 {{/IndividualB2CAuth}}
-{{#PlaceholderConfig}}
-            services.Configure<SampleOptions>(Configuration);
-{{/PlaceholderConfig}}
+
 {{#MySql}}
             services.AddMySqlConnection(Configuration);
 {{/MySql}}

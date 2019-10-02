@@ -44,7 +44,7 @@ namespace {{ProjectNameSpace}}
             var builder = WebHost.CreateDefaultBuilder(args)
                 .UseDefaultServiceProvider(configure => configure.ValidateScopes = false)
                 {{#CloudFoundry}}
-                .UseCloudFoundryHosting(5555) //Enable listening on a Env provided port
+                .UseCloudFoundryHosting() //Enable listening on a Env provided port
                 .AddCloudFoundry() //Add cloudfoundry environment variables as a configuration source
                 {{/CloudFoundry}}
                 {{#ConfigServer}}

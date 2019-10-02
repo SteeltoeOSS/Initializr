@@ -34,6 +34,10 @@ using System.Threading;
 #if (AnyConfigSource)
 using Microsoft.Extensions.Configuration;
 #endif
+#if (CloudFoundry)
+using Steeltoe.Extensions.Configuration.CloudFoundry;
+using Microsoft.Extensions.Options;
+#endif
 namespace Company.WebApplication1.Controllers
 {
 #if (!NoAuth)
@@ -249,6 +253,28 @@ namespace Company.WebApplication1.Controllers
             cb.IsFallbackUserDefined = true;
             string a = await cb.ExecuteAsync();
             return new string[] { a };
+        }
+#elif (CloudFoundry)
+        private readonly ILogger _logger;
+        private CloudFoundryApplicationOptions _appOptions { get; set; }
+        private CloudFoundryServicesOptions _serviceOptions { get; set; }
+        public ValuesController(ILogger<ValuesController> logger, IOptions<CloudFoundryApplicationOptions> appOptions, IOptions<CloudFoundryServicesOptions> serviceOptions)
+        {
+            _logger = logger;
+            _appOptions = appOptions.Value;
+            _serviceOptions = serviceOptions.Value;
+        }
+       
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            string appName = _appOptions.ApplicationName;
+            string appInstance = _appOptions.ApplicationId;
+            /*_serviceOptions.Services["user-provided"]
+                                                       .First(q => q.Name.Equals("xxxxxxx"))
+                                                       .Credentials["xxxxxxx"].Value*/
+            return new string[] { appInstance, appName };
         }
 #else
         [HttpGet]
