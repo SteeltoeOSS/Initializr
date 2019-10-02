@@ -395,7 +395,7 @@ using System.Threading;", valuesController);
         }
 
         [Theory]
-        [ClassData(typeof(AllImplementationsAndTemplates))]
+        [ClassData(typeof(AllImplementationsAndTemplates))] 
         public async Task CreateTemplate_MongoDB(ITemplateService templateService, string templateName, TemplateVersion version)
         {
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
