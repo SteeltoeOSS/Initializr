@@ -267,7 +267,7 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains(@"public ValuesController(IConfiguration config)", valuesController);
             Assert.Contains(@"_config[""random:int""];", valuesController);
         }
-        
+
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_Cloudfoundry(ITemplateService templateService, string templateName, TemplateVersion version)
@@ -282,7 +282,6 @@ namespace Steeltoe.Initializr.Tests
                 TemplateVersion = version,
             });
 
-           
             string programContents = files.Find(x => x.Key == "Program.cs").Value;
             Assert.Contains(".UseCloudFoundryHosting()", programContents);
             Assert.Contains(".AddCloudFoundry()", programContents);
@@ -290,11 +289,10 @@ namespace Steeltoe.Initializr.Tests
             string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
             Assert.Contains("using Steeltoe.Extensions.Configuration.CloudFoundry;", valuesController);
             Assert.Contains("using Microsoft.Extensions.Options;", valuesController);
-            
+
             Assert.Contains(@"public ValuesController(ILogger<ValuesController> logger, IOptions<CloudFoundryApplicationOptions> appOptions, IOptions<CloudFoundryServicesOptions> serviceOptions)", valuesController);
-           
         }
-        
+
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_Placeholderconfig(ITemplateService templateService, string templateName, TemplateVersion version)
@@ -315,11 +313,15 @@ namespace Steeltoe.Initializr.Tests
             string programContents = files.Find(x => x.Key == "Program.cs").Value;
             Assert.Contains("using Steeltoe.Extensions.Configuration.PlaceholderCore;", programContents);
 
-            string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
+            string valuesController =
+                files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
             Assert.Contains("using Microsoft.Extensions.Configuration;", valuesController);
 
             Assert.Contains(@"public ValuesController(IConfiguration config)", valuesController);
             Assert.Contains(@"_config[""ResolvedPlaceholderFromEnvVariables""];", valuesController);
+
+            string appSettings = files.Find(x => x.Key == $"appsettings.json").Value;
+            Assert.Contains("\"ResolvedPlaceholderFromEnvVariables\": \"${PATH?NotFound}\"", appSettings);
         }
 
         [Theory]
