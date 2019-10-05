@@ -12,7 +12,7 @@ using System.Data.SqlClient;
 using System.Data;
 {{/SQLServer}}
 {{#MySql}}
-using System.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 using System.Data;
 {{/MySql}}
 {{#Postgres}}
@@ -74,8 +74,8 @@ namespace {{ProjectNameSpace}}.Controllers
         }
         {{/SQLServer}}
         {{#MySql}}
-        private readonly SqlConnection _dbConnection;
-        public ValuesController([FromServices] SqlConnection dbConnection)
+        private readonly MySqlConnection _dbConnection;
+        public ValuesController([FromServices] MySqlConnection dbConnection)
         {
             _dbConnection = dbConnection;
         }

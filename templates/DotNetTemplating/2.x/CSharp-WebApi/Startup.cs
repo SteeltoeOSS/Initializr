@@ -164,18 +164,18 @@ namespace Company.WebApplication1
 #if (Actuators && CloudFoundry)
             app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)
-	    app.UseCloudFoundryActuators();
+	        app.UseCloudFoundryActuators();
 #endif
 #else
 #if (Actuators && CloudFoundry)
             app.UseCloudFoundryActuators();
 #elif (Actuators)
-	    app.UseCloudFoundryActuators();
+	        app.UseCloudFoundryActuators();
 #endif
 
 #endif
 #if (Discovery)
-        app.UseDiscoveryClient();
+            app.UseDiscoveryClient();
 #endif
             app.UseMvc(routes =>
             {

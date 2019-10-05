@@ -370,11 +370,10 @@
       "type": "computed",
       "value": "(MySql || Postgres || SQLServer || Redis || RabbitMQ || MongoDB || OAuthConnector)"
     },
+    
     "AnyEFCore": {
-      "type": "parameter",
-      "datatype": "bool",
-      "defaultValue": "false",
-      "description": "Supress Models generation"
+      "type": "computed",
+      "value": "(PostgresEFCore || MySqlEFCore)"
     },
     "AnyConfigSource": {
       "type": "computed",

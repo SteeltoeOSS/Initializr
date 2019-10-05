@@ -24,6 +24,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
+using Version = Steeltoe.Initializr.Services.Mustache.Version;
 
 namespace Steeltoe.Initializr.Tests
 {
@@ -45,6 +46,16 @@ namespace Steeltoe.Initializr.Tests
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_Test(ITemplateService templateService, string templateName, TemplateVersion version)
         {
+            if (version == TemplateVersion.V3)
+            {
+                return;
+            }
+
+            if (templateName.Contains("React"))
+            {
+                return;
+            }
+
             var deps = templateService.GetDependencies(templateName, version);
 
             foreach (var dep in deps)

@@ -74,15 +74,15 @@ namespace Company.WebApplication1
 #endif
 #if (SteeltoeVersion == "2.2.0" || SteeltoeVersion == "2.3.0")
 #if (Actuators && CloudFoundry)
-	    services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
+	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)
-	    services.AddCloudFoundryActuators(Configuration);
+	        services.AddCloudFoundryActuators(Configuration);
 #endif
 #else
 #if (Actuators && CloudFoundry)
-	    services.AddCloudFoundryActuators(Configuration);
+	        services.AddCloudFoundryActuators(Configuration);
 #elif (Actuators)
-	    services.AddCloudFoundryActuators(Configuration);
+	        services.AddCloudFoundryActuators(Configuration);
 #endif
 
 #endif
@@ -125,7 +125,6 @@ namespace Company.WebApplication1
 #else
             services.AddMvc();
 #endif
-
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -158,18 +157,18 @@ namespace Company.WebApplication1
 #if (Actuators && CloudFoundry)
             app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)
-	    app.UseCloudFoundryActuators();
+	        app.UseCloudFoundryActuators();
 #endif
 #else
 #if (Actuators && CloudFoundry)
             app.UseCloudFoundryActuators();
 #elif (Actuators)
-	    app.UseCloudFoundryActuators();
+	        app.UseCloudFoundryActuators();
 #endif
 
 #endif
 #if (Discovery)
-           app.UseDiscoveryClient();
+            app.UseDiscoveryClient();
 #endif
 
             app.UseStaticFiles();

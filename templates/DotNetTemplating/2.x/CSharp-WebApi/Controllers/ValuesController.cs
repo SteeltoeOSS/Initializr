@@ -14,7 +14,7 @@ using System.Data;
 using System.Data.SqlClient;
 #endif
 #if (MySql)
-using System.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 #endif
 #if (Postgres)
 using Npgsql;
@@ -72,8 +72,8 @@ namespace Company.WebApplication1.Controllers
             return tables;
         }
 #elif (MySql)
-        private readonly SqlConnection _dbConnection;
-        public ValuesController([FromServices] SqlConnection dbConnection)
+        private readonly MySqlConnection _dbConnection;
+        public ValuesController([FromServices] MySqlConnection dbConnection)
         {
             _dbConnection = dbConnection;
         }
@@ -150,7 +150,6 @@ namespace Company.WebApplication1.Controllers
             return new string[]{ myval1, myval2};
         }
 #elif (RabbitMQ)
-        private readonly ILogger _logger;
         private readonly ConnectionFactory _factory;
         private const string queueName = "my-queue";
         public ValuesController(ILogger<ValuesController> logger, [FromServices] ConnectionFactory factory)
@@ -255,7 +254,6 @@ namespace Company.WebApplication1.Controllers
             return new string[] { a };
         }
 #elif (CloudFoundry)
-        private readonly ILogger _logger;
         private CloudFoundryApplicationOptions _appOptions { get; set; }
         private CloudFoundryServicesOptions _serviceOptions { get; set; }
         public ValuesController(ILogger<ValuesController> logger, IOptions<CloudFoundryApplicationOptions> appOptions, IOptions<CloudFoundryServicesOptions> serviceOptions)
