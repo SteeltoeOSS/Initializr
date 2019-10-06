@@ -144,6 +144,10 @@ namespace Steeltoe.Initializr.Tests
 
             string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
             Assert.Contains(@"MyCircuitBreakerCommand cb = new MyCircuitBreakerCommand(""ThisIsMyBreaker"");", valuesController);
+
+            string appSettings = files.Find(x => x.Key == "appsettings.json").Value;
+            Assert.DoesNotContain("#if", appSettings);
+
         }
 
         [Theory]
