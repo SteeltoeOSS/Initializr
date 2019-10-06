@@ -115,6 +115,11 @@
       "ExpressionType": "Any"
     },
     {
+      "Name": "AnyEFCore",
+      "Expression": "PostgresEFCore,MySqlEFCore",
+      "ExpressionType": "Any"
+    },
+    {
       "Name": "MySqlOrMySqlEFCore",
       "Expression": "MySql,MySqlEFCore",
       "ExpressionType": "Any"

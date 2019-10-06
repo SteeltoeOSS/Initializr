@@ -21,13 +21,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
 {{#ActuatorsOrCloudFoundry}}
 using Steeltoe.Management.CloudFoundry;
 using Steeltoe.Management.Endpoint;
 using Steeltoe.Management.Hypermedia;
 {{/ActuatorsOrCloudFoundry}}
-
 {{#CircuitBreaker}}
 using Steeltoe.CircuitBreaker.Hystrix;
 {{/CircuitBreaker}}
@@ -139,38 +137,38 @@ namespace {{ProjectNameSpace}}
 // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
-    if (env.IsDevelopment())
-    {
-    app.UseDeveloperExceptionPage();
-    }
-    {{#RequiresHttps}}
-    else
-    {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-    }
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+        {{#RequiresHttps}}
+        else
+        {
+        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+        }
 
-    app.UseHttpsRedirection();
-    {{/RequiresHttps}}
+        app.UseHttpsRedirection();
+        {{/RequiresHttps}}
 
 
-    {{#Auth}}
-    app.UseAuthentication();
-    {{/Auth}}
+        {{#Auth}}
+        app.UseAuthentication();
+        {{/Auth}}
 
-    {{#Actuators}}
-    {{#CloudFoundry}}
-    app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
-    {{/CloudFoundry}}
-    {{^CloudFoundry}}
-    app.UseCloudFoundryActuators();
-    {{/CloudFoundry}}
-    {{/Actuators}}
-   
-    {{#Discovery}}
-    app.UseDiscoveryClient();
-    {{/Discovery}}
-    app.UseMvc();
+        {{#Actuators}}
+        {{#CloudFoundry}}
+        app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
+        {{/CloudFoundry}}
+        {{^CloudFoundry}}
+        app.UseCloudFoundryActuators();
+        {{/CloudFoundry}}
+        {{/Actuators}}
+       
+        {{#Discovery}}
+        app.UseDiscoveryClient();
+        {{/Discovery}}
+        app.UseMvc();
     }
   }
 }

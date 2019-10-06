@@ -156,6 +156,10 @@
       "description": "If specified, skips the automatic restore of the project on create.",
       "defaultValue": "false"
     },
+    "AnyEFCore": {
+      "type": "computed",
+      "value": "(PostgresEFCore || MySqlEFCore)"
+    },
     "Actuators": {
       "type": "parameter",
       "datatype": "bool",
@@ -257,12 +261,6 @@
     "AnyConnector": {
       "type": "computed",
       "value": "(MySql || Postgres || MySql || Redis || RabbitMQ || MongoDB || OAuthConnector)"
-    },
-    "AnyEFCore": {
-      "type": "parameter",
-      "datatype": "bool",
-      "defaultValue": "false",
-      "description": "Supress Models generation"
     },
     "AnyConfigSource": {
       "type": "computed",

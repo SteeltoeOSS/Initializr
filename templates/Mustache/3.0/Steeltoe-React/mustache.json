@@ -126,13 +126,18 @@
     },
     {
       "Name": "ValuesControllerWithArgs",
-      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker,CloudFoundry",
       "ExpressionType": "Any"
     },
     {
       "Name": "MoreThanOneValuesControllerWithArgs",
-      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker,CloudFoundry",
       "ExpressionType": "MoreThanOne"
+    },
+    {
+      "Name": "AnyEFCore",
+      "Expression": "PostgresEFCore,MySqlEFCore",
+      "ExpressionType": "Any"
     },
     {
       "Name": "AnyConnector",

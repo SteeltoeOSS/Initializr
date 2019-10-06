@@ -163,12 +163,12 @@ namespace Steeltoe.Initializr.Tests
             Assert.Contains(".AddMySqlConnection(", startUpContents);
 
             string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
-            Assert.Contains("using System.Data.MySqlClient;", valuesController);
+            Assert.Contains("using MySql.Data.MySqlClient;", valuesController);
             Assert.Contains("using System.Data", valuesController);
 
             Assert.Contains(
-                @"private readonly SqlConnection _dbConnection;
-        public ValuesController([FromServices] SqlConnection dbConnection)
+                @"private readonly MySqlConnection _dbConnection;
+        public ValuesController([FromServices] MySqlConnection dbConnection)
         {
             _dbConnection = dbConnection;
         }", valuesController);
@@ -395,7 +395,7 @@ using System.Threading;", valuesController);
         }
 
         [Theory]
-        [ClassData(typeof(AllImplementationsAndTemplates))] 
+        [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_MongoDB(ITemplateService templateService, string templateName, TemplateVersion version)
         {
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
