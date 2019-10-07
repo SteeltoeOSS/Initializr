@@ -9,6 +9,7 @@ Steeltoe Initializr also exposes an endpoint that serves its metadata in a well-
 format to allow third-party clients to provide the necessary assistance.
 
 # How to use
+## Web
 You can see a demo of app running on [Pivotal Web Services](https://startsteeltoe.cfapps.io).
 
 The Web UI allows you to quickly generate a CSharp project with your choice of dependencies
@@ -16,7 +17,7 @@ The Web UI allows you to quickly generate a CSharp project with your choice of d
  ![image](https://media.giphy.com/media/IdP0OiDeK0dTLIW1Qe/giphy.gif)
 
 
-In addition you can simply use curl like so:
+## Curl
 ```
 curl https://startsteeltoe.cfapps.io/starter.zip -d dependencies=actuators,cloudfoundry -o myProject.zip
 
@@ -32,9 +33,17 @@ curl https://start.steeltoe.io/api/templates/dependencies
 
 To get a list of valid templates:
 ```
-curl https://startsteeeltoe.cfapps.io/api/templates/all
+curl https://startsteeeltoe.cfapps.io/api/templates/templates
 ```
-
+## Dotnet templates
+Install the Steeloe Templates 
+```
+dotnet new -i steeltoe.templates::2.2.1 --nuget-source https://www.myget.org/F/steeltoedev/api/v3/index.json
+```
+Generate project
+```
+dotnet new Steeltoe-WebApi --Actuators --CloudFoundry
+```
 # Developing 
 
 Clone and cd into repo and :
