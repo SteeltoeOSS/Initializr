@@ -26,6 +26,9 @@ using Steeltoe.Management.CloudFoundry;
 using Steeltoe.Management.Endpoint;
 using Steeltoe.Management.Hypermedia;
 {{/ActuatorsOrCloudFoundry}}
+{{#CloudFoundry}}
+using Steeltoe.Extensions.Configuration.CloudFoundry; 
+{{/CloudFoundry}}
 {{#CircuitBreaker}}
 using Steeltoe.CircuitBreaker.Hystrix;
 {{/CircuitBreaker}}
@@ -87,6 +90,7 @@ namespace {{ProjectNameSpace}}
 {{/MySql}}
 {{#Actuators}}
 {{#CloudFoundry}}
+            services.ConfigureCloudFoundryOptions(Configuration);
 	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 {{/CloudFoundry}}
 {{^CloudFoundry}}
