@@ -47,7 +47,7 @@ namespace {{ProjectNameSpace}}.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
-{
+    {
 {{^MoreThanOneValuesControllerWithArgs}}
         {{#SQLServer}}
         private readonly SqlConnection _dbConnection;
