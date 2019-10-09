@@ -91,10 +91,10 @@ namespace {{ProjectNameSpace}}
 {{#Actuators}}
 {{#CloudFoundry}}
             services.ConfigureCloudFoundryOptions(Configuration);
-	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
+            services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 {{/CloudFoundry}}
 {{^CloudFoundry}}
-	        services.AddCloudFoundryActuators(Configuration);
+            services.AddCloudFoundryActuators(Configuration);
 {{/CloudFoundry}}
 {{/Actuators}}
 {{#Discovery}}
