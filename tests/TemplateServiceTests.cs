@@ -147,7 +147,6 @@ namespace Steeltoe.Initializr.Tests
 
             string appSettings = files.Find(x => x.Key == "appsettings.json").Value;
             Assert.DoesNotContain("#if", appSettings);
-
         }
 
         [Theory]
@@ -445,7 +444,7 @@ using System.Threading;", valuesController);
 
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
-                Dependencies = "SQLServer,ConfigServer",
+                Dependencies = "SQLServer",
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
                 SteeltoeVersion = steeltoeVersion,

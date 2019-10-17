@@ -15,6 +15,7 @@
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 
@@ -89,6 +90,11 @@ namespace Steeltoe.Initializr.Services.Mustache
                     case ExpressionTypeEnum.String:
                         expression = new CaseExpression(_logger, calculatedParam, schema);
                         break;
+                    case ExpressionTypeEnum.MoreThanOne:
+                        expression = new MoreThanOneExpression(_logger, calculatedParam, schema);
+                        break;
+                    default:
+                        throw new InvalidEnumArgumentException("Calculated Expression", (int)calculatedParam.ExpressionType, typeof(ExpressionTypeEnum));
                 }
 
                 if (expression != null)

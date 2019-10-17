@@ -13,7 +13,9 @@ using Steeltoe.Extensions.Logging;
 {{/ActuatorsOrDynamicLogger}}
 {{#CloudFoundry}}
 using Steeltoe.Extensions.Configuration;
+{{^ConfigServer}}
 using Steeltoe.Extensions.Configuration.CloudFoundry;
+{{/ConfigServer}}
 {{/CloudFoundry}}
 {{#ConfigServer}}
 using Steeltoe.Extensions.Configuration.ConfigServer;
@@ -45,7 +47,9 @@ namespace {{ProjectNameSpace}}
                 .UseDefaultServiceProvider(configure => configure.ValidateScopes = false)
                 {{#CloudFoundry}}
                 .UseCloudFoundryHosting() //Enable listening on a Env provided port
+                {{^ConfigServer}}
                 .AddCloudFoundry() //Add cloudfoundry environment variables as a configuration source
+                {{/ConfigServer}}   
                 {{/CloudFoundry}}
                 {{#ConfigServer}}
 			    .AddConfigServer()

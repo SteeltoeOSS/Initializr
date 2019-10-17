@@ -7,21 +7,20 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 {{/Auth}}
 using Microsoft.AspNetCore.Mvc;
+{{#AnySqlData}}
+using System.Data;
+{{/AnySqlData}}
 {{#SQLServer}}
 using System.Data.SqlClient;
-using System.Data;
 {{/SQLServer}}
 {{#MySql}}
 using MySql.Data.MySqlClient;
-using System.Data;
 {{/MySql}}
 {{#Postgres}}
 using Npgsql;
-using System.Data;
 {{/Postgres}}
 {{#MongoDB}}
 using MongoDB.Driver;
-using System.Data;
 {{/MongoDB}}
 {{#Redis}}
 using Microsoft.Extensions.Caching.Distributed;
