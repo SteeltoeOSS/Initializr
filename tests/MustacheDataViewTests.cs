@@ -130,14 +130,14 @@ namespace Steeltoe.Initializr.Tests
             var dv = new Dictionary<string, string>
             {
                 { "IsMoreThanOne", "false" },
-                { "ConfigServer", "true" },
-                { "SQLServer", "true" },
+                { "CloudFoundry", "true" },
+                { "CircuitBreaker", "true" },
                 { "Redis", "false" },
             };
             var calcParam = new CalculatedParam
             {
                 Name = "IsMoreThanOne",
-                Expression = "ConfigServer,SQLServer,Redis",
+                Expression = "ConfigServer,SQLServer,Redis,CircuitBreaker,CloudFoundry",
                 ExpressionType = ExpressionTypeEnum.MoreThanOne,
             };
 

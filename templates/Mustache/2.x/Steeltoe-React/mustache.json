@@ -140,6 +140,11 @@
       "ExpressionType": "MoreThanOne"
     },
     {
+      "Name": "AnySqlData",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB",
+      "ExpressionType": "Any"
+    },
+    {
       "Name": "AnyConnector",
       "Expression": "MySql,Postgres,Redis,MongoDB,RabbitMQ,OAuthConnector",
       "ExpressionType": "Any"

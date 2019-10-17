@@ -53,7 +53,7 @@ namespace Steeltoe.Initializr.Services.Mustache
 
         public async Task<string> EvaluateExpressionAsync(Dictionary<string, string> dataView)
         {
-            using (Timing.Over(_logger, "Build MoreThanOne Expression"))
+            using (Timing.Over(_logger, "Evaluate MoreThanOne Expression"))
             {
                 return await Task.Run(() => _evaluationExpression(dataView));
             }
