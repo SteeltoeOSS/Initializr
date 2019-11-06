@@ -440,7 +440,7 @@ using System.Threading;", valuesController);
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_SqlServer(ITemplateService templateService, string templateName, TemplateVersion version)
         {
-            var steeltoeVersion = "2.3.0";
+            var steeltoeVersion = "2.4.0-rc1";
 
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
@@ -532,6 +532,23 @@ using System.Threading;", valuesController);
             {
                 Dependencies = "Actuators",
                 SteeltoeVersion = "2.3.0",
+                TemplateShortName = templateName,
+                TemplateVersion = version,
+            });
+
+            var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
+
+            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
+        }
+
+        [Theory]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
+        public async Task CreateTemplate_actuators_24(ITemplateService templateService, string templateName, TemplateVersion version)
+        {
+            var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
+            {
+                Dependencies = "Actuators",
+                SteeltoeVersion = "2.4.0-rc1",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });

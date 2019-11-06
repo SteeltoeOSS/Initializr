@@ -43,7 +43,9 @@ namespace Company.WebApplication1
                 .UseDefaultServiceProvider(configure => configure.ValidateScopes = false)
 #if (CloudFoundry)
                 .UseCloudFoundryHosting() //Enable listening on a Env provided port
+    #if(!ConfigServer)
                 .AddCloudFoundry() //Add cloudfoundry environment variables as a configuration source
+    #endif
 #endif
 #if (ConfigServer)
                 .AddConfigServer()

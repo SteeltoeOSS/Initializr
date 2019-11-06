@@ -59,7 +59,7 @@ export class Home extends Component {
         <div>
             <form name="form" action="/starter.zip" method="post" autoComplete="off" onSubmit={this.trackSubmitEvent} >
                 <div>
-                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.2", "2.3.0"]} defaultValue="2.2" onChange={this.handleInputChange} />
+                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={[ "2.3.0", "2.4.0-rc1"]} defaultValue="2.2" onChange={this.handleInputChange} />
                
 
                     <div className="line">
