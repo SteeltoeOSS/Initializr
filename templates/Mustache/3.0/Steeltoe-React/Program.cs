@@ -44,7 +44,9 @@ namespace {{ProjectNameSpace}}
                 .UseDefaultServiceProvider(configure => configure.ValidateScopes = false)
                 {{#CloudFoundry}}
                 .UseCloudFoundryHosting() //Enable listening on a Env provided port
+                {{^ConfigServer}}
                 .AddCloudFoundry() //Add cloudfoundry environment variables as a configuration source
+                {{/ConfigServer}}   
                 {{/CloudFoundry}}
                 {{#ConfigServer}}
 			    .AddConfigServer()

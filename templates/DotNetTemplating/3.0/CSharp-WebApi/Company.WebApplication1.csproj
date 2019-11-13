@@ -22,6 +22,7 @@
     <PackageReference Include="Steeltoe.Management.ExporterCore" Condition="'$(Actuators)'" Version="SteeltoeVersion"/>
     <PackageReference Include="Steeltoe.CloudFoundry.ConnectorCore" Condition="'$(AnyConnector)'" Version="SteeltoeVersion"/>
     <PackageReference Include="Steeltoe.Management.CloudFoundryCore" Condition="'$(Actuators)' == 'True' OR '$(CloudFoundry)' == 'True'"  Version="SteeltoeVersion" />
+    <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="SteeltoeVersion" Condition="'$(ConfigServer)'" />
     <PackageReference Include="Steeltoe.CircuitBreaker.HystrixCore"  Condition="'$(CircuitBreaker)'" Version="SteeltoeVersion" />
     <PackageReference Include="MySql.Data" Condition="'$(MySql)'" Version="MySqlVersion" />
     <PackageReference Include="Npgsql" Condition="'$(Postgres)'" Version="NpgSqlVersion" />
@@ -37,6 +38,9 @@
     <PackageReference Include="MongoDB.Driver" Condition="$(MongoDB)" Version="MongoDBVersion" />
     <PackageReference Include="RabbitMQ.Client"  Condition="'$(RabbitMQ)'" Version="RabbitMQVersion" />
     <PackageReference Include="Steeltoe.Extensions.Logging.DynamicLogger" Condition="'$(DynamicLogger)'" Version="SteeltoeVersion"/>
+    <PackageReference Include="Steeltoe.Extensions.Configuration.PlaceholderCore" Version="SteeltoeVersion" Condition="'$(PlaceholderConfig)'" />
+    <PackageReference Include="Steeltoe.Extensions.Configuration.RandomValueBase" Version="SteeltoeVersion" Condition="'$(RandomValueConfig)'" />
+
   </ItemGroup>
 
   <ItemGroup Condition="'$(CircuitBreaker)' == 'True'" Condition="'$(BUILD)' == ''">
