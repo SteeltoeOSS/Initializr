@@ -25,7 +25,7 @@ using Microsoft.Extensions.Options;
 #if (Actuators || CloudFoundry)
 using Steeltoe.Management.CloudFoundry;
 using Steeltoe.Management.Endpoint;
-#if (SteeltoeVersion == "2.2.0" || SteeltoeVersion == "2.3.0" || SteeltoeVersion == "2.4.0-rc1")
+#if (SteeltoeVersion == "2.2.0" || SteeltoeVersion == "2.3.0" || SteeltoeVersion == "2.4.0")
 using Steeltoe.Management.Hypermedia;
 #endif
 #endif
@@ -86,7 +86,7 @@ namespace Company.WebApplication1
 #if (MySql)
             services.AddMySqlConnection(Configuration);
 #endif
-#if (SteeltoeVersion == "2.2.0" || SteeltoeVersion == "2.3.0" || SteeltoeVersion == "2.4.0-rc1")
+#if (SteeltoeVersion == "2.2.0" || SteeltoeVersion == "2.3.0" || SteeltoeVersion == "2.4.0")
 #if (Actuators && CloudFoundry)
 	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)
@@ -160,7 +160,7 @@ namespace Company.WebApplication1
 #if (OrganizationalAuth || IndividualAuth)
             app.UseAuthentication();
 #endif
-#if (SteeltoeVersion == "2.2.0" || SteeltoeVersion == "2.3.0" || SteeltoeVersion == "2.4.0-rc1")
+#if (SteeltoeVersion == "2.2.0" || SteeltoeVersion == "2.3.0" || SteeltoeVersion == "2.4.0")
 #if (Actuators && CloudFoundry)
             app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)
