@@ -7,7 +7,6 @@ import { DependenciesSelector } from './DependenciesSelector';
 import { BottomLinks } from './BottomLinks';
 import { InputText } from './InputText';
 import ReactGA from 'react-ga';
-import serialize from 'form-serialize';
 
 export class Home extends Component {
     static displayName = Home.name;
@@ -24,19 +23,41 @@ export class Home extends Component {
 
         }
             
-         this.toggleMore = this.toggleMore.bind(this);
+        this.toggleMore = this.toggleMore.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.trackSubmitEvent = this.trackSubmitEvent.bind(this);
          
     }
     trackSubmitEvent(e) {
-        var formValues = serialize(e.target);
-        console.log(formValues);
+        let i;
+        const elements = e.target.elements;
+
         ReactGA.event({
-            category: 'Submit',
-            action: 'Clicked Submit',
-            label: formValues
+            category: 'Generated Project',
+            action: 'Clicked',
+            label: ''
         });
+        ReactGA.event({
+            category: 'Generated Project',
+            action: 'Steeltoe-Framework',
+            label: elements["steeltoeVersion"].value
+        });
+        ReactGA.event({
+            category: 'Generated Project',
+            action: 'Net-Framework',
+            label: elements["targetFrameworkVersion"].value
+        });
+        //Send events for dependencies
+        const deps = elements["dependencies"].value;
+        const depArray = deps.split(',');
+        for(i = 0; i < depArray.length ; i++)
+        {
+            ReactGA.event({
+                category: 'Generated Project',
+                action: 'Dependency',
+                label: depArray[i]
+            });
+        }
     }
     toggleMore(e){
         this.setState(prevState => ({showMore: !prevState.showMore}))
@@ -47,7 +68,7 @@ export class Home extends Component {
              this.setState({ level2SelectorType: selectedValue === ".NET Templates" ? "net" : "steeltoe"})
         }
 
-        this.setState({ [name]: selectedValue })
+        this.setState({ [name]: selectedValue });
         console.log("parent setting hanglechange" , name, selectedValue)
     }
    
@@ -70,7 +91,7 @@ export class Home extends Component {
                                 <InputText title="Project Name" name="projectName" defaultValue="MyCompany.SteeltoeExample" tabIndex="1" required pattern="^(?:((?!\d)\w+(?:\.(?!\d)\w+)*)\.)?((?!\d)\w+)$" onInput={(e) => e.target.setCustomValidity("")} onInvalid={(e) => e.target.setCustomValidity("ProjectName must be a valid C# Identifier: ex. MyCompany.MyProject")} />
                                 <div id="more-block">
                                     <InputText title="Description" name="description" defaultValue="Demo project for Steeltoe" tabIndex="2" />
-                                    <RightInputSelector title='Target Framework' values={["netcoreapp2.1", "netcoreapp2.2"]} defaultValue="netcoreapp2.2" />
+                                    <RightInputSelector title='Target Framework' name="targetFrameworkVersion" values={["netcoreapp2.1", "netcoreapp2.2"]} defaultValue="netcoreapp2.2" />
                                 </div>
                            
                             </div>

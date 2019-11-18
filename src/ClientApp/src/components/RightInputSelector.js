@@ -27,7 +27,7 @@ export class RightInputSelector extends Component {
                                         </div>
                             })
                         }
-                   
+                        <input type="hidden" name={this.props.name} value={this.state.selectedValue} />
                     </div>
                 </div>
         );
