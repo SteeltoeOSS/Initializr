@@ -129,48 +129,48 @@ namespace {{ProjectNameSpace}}
 {{#SQLServer}}
             services.AddSqlServerConnection(Configuration);
 {{/SQLServer}}
-{{#TargetFrameworkVersion22}}
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-{{/TargetFrameworkVersion22}}
-{{^TargetFrameworkVersion22}}
-            services.AddMvc();
-{{/TargetFrameworkVersion22}}
-    }
-// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
+            services.AddControllers();
         }
-        {{#RequiresHttps}}
-        else
+ 
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-        }
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            {{#RequiresHttps}}
+            else
+            {
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
-        app.UseHttpsRedirection();
-        {{/RequiresHttps}}
+            app.UseHttpsRedirection();
+            {{/RequiresHttps}}
 
 
-        {{#Auth}}
-        app.UseAuthentication();
-        {{/Auth}}
+            {{#Auth}}
+            app.UseAuthentication();
+            {{/Auth}}
 
-        {{#Actuators}}
-        {{#CloudFoundry}}
-        app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
-        {{/CloudFoundry}}
-        {{^CloudFoundry}}
-        app.UseCloudFoundryActuators();
-        {{/CloudFoundry}}
-        {{/Actuators}}
+            {{#Actuators}}
+            {{#CloudFoundry}}
+            app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
+            {{/CloudFoundry}}
+            {{^CloudFoundry}}
+            app.UseCloudFoundryActuators();
+            {{/CloudFoundry}}
+            {{/Actuators}}
        
-        {{#Discovery}}
-        app.UseDiscoveryClient();
-        {{/Discovery}}
-        app.UseMvc();
+            {{#Discovery}}
+            app.UseDiscoveryClient();
+            {{/Discovery}}
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
     }
-  }
 }

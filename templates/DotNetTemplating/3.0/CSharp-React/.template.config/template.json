@@ -284,18 +284,10 @@
     "SteeltoeVersion": {
       "type": "parameter",
       "datatype": "choice",
-      "defaultValue": "2.3.0",
+      "defaultValue": "2.4.0",
       "description": "Target the appropriate Steeltoe version",
       "replaces": "SteeltoeVersion",
       "choices": [
-        {
-          "choice": "2.2.0",
-          "description": "Target Steeltoe version 2.2.0"
-        },
-        {
-          "choice": "2.3.0",
-          "description": "Target Steeltoe version 2.3.0"
-        },
         {
           "choice": "2.4.0",
           "description": "Target Steeltoe version 2.4.0"

@@ -164,6 +164,7 @@ namespace Steeltoe.Initializr.Services.Mustache
                         using (var entryStream = ef.Open())
                         using (var fileToCompress = new MemoryStream(Encoding.UTF8.GetBytes(value)))
                         {
+                            ef.ExternalAttributes = 27262976; // RW_(Owner)/R__(Group)/___(Other)
                             fileToCompress.CopyTo(entryStream);
                         }
                     }

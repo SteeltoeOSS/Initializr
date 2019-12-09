@@ -480,7 +480,7 @@ using System.Threading;", valuesController);
             });
 
             string fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
-            Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=""2.3.0""/>", fileContents);
+            Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=", fileContents);
 
             string programFileContents = files.Find(x => x.Key == "Program.cs").Value;
             Assert.Contains(@"using Steeltoe.Extensions.Logging;", programFileContents);
@@ -514,7 +514,7 @@ using System.Threading;", valuesController);
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "Actuators",
-                SteeltoeVersion = "2.2.0",
+                SteeltoeVersion = version == TemplateVersion.V2 ? "2.2.0" : "2.4.0",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -531,7 +531,7 @@ using System.Threading;", valuesController);
             var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
             {
                 Dependencies = "Actuators",
-                SteeltoeVersion = "2.3.0",
+                SteeltoeVersion = version == TemplateVersion.V2 ? "2.3.0" : "2.4.0",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -557,23 +557,22 @@ using System.Threading;", valuesController);
 
             Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
         }
-        ////[Fact]
-        ////public void CreateTemplate_actuators_v3()
-        ////{
-        ////    var templateService = new MustacheTemplateService(_logger);
 
-        ////    Assert.NotNull(templateService);
-
-        ////    var outFolder = templateService.GenerateProject("steeltoe", "testProject", new[] { "Actuators" }).Result;
-        ////    Console.WriteLine("outFolder " + outFolder);
-        ////    Assert.NotNull(outFolder);
-        ////    Assert.True(Directory.Exists(outFolder));
-        ////    var startupPath = Path.Combine(outFolder, "Startup.cs");
-        ////    Assert.True(File.Exists(startupPath));
-        ////    string startUpContents = File.ReadAllText(startupPath);
-        ////    Assert.Contains("services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.Actuator);", startUpContents);
-        ////    Assert.DoesNotContain("services.AddCloudFoundryActuators(Configuration);", startUpContents);
-        ////}
+        [Theory]
+        [ClassData(typeof(AllImplementationsAndTemplateNames))]
+        public void CreateTemplate_v3_invalid(ITemplateService templateService, string templateName)
+        {
+            Assert.ThrowsAsync<InvalidDataException>(async () =>
+            {
+                var files = await templateService.GenerateProjectFiles(new Models.GeneratorModel()
+                {
+                    Dependencies = "Actuators",
+                    SteeltoeVersion = "2.3.0",
+                    TemplateShortName = templateName,
+                    TemplateVersion = TemplateVersion.V3,
+                });
+            });
+        }
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]

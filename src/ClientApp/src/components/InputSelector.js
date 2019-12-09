@@ -4,18 +4,11 @@ export class InputSelector extends Component {
         super(props);
         
         this.handleChange = this.handleChange.bind(this);
-        this.state = { selectedValue: this.props.defaultValue };
-     //   console.log("in constructor ", this.props.name)
+        //this.state = { selectedValue: this.props.defaultValue };
+
     }
     handleChange(e) {
-        console.log('setting state from ' + this.state.selectedValue);
-
-        var selection = e.target.attributes['data-value'].value
-        this.setState({
-            selectedValue: selection
-        });
-        this.props.onChange(this.props.name, selection)
-        //console.log('to ' + this.selection);
+       this.props.onChange(this.props.name, e.target.attributes['data-value'].value)
     }
 
 
@@ -28,12 +21,12 @@ export class InputSelector extends Component {
                     <div className="radios">
                         {
                             this.props.values.map((item, i ) => {
-                                return <div key={ 'option'+i }  className={'radio ' + (this.state.selectedValue === item ? 'active' : '')} onClick={this.handleChange} >
+                                return <div key={ 'option'+i }  className={'radio ' + (this.props.selectedValue === item ? 'active' : '')} onClick={this.handleChange} >
                                     <a href={hrefLink} data-value={item}>{item}</a>
                                     </div>
                             })
                         }
-                        <input type="hidden" name={this.props.name} value={this.state.selectedValue} />
+                        <input type="hidden" name={this.props.name} value={this.props.selectedValue} />
                   
                     </div>
                 </div>

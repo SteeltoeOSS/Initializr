@@ -19,8 +19,9 @@ export class Home extends Component {
             showMore: false,
             templateType: ".NET Templates",
             level2SelectorType: "net",
-            lang: "C#"
-
+            lang: "C#",
+            steeltoeVersion: "2.4.0",
+            targetFrameworkVersion: "netcoreapp2.2"
         }
             
         this.toggleMore = this.toggleMore.bind(this);
@@ -64,11 +65,18 @@ export class Home extends Component {
     }
     handleInputChange(name, selectedValue) {
 
-        if (name === "templateType") {
-             this.setState({ level2SelectorType: selectedValue === ".NET Templates" ? "net" : "steeltoe"})
+        //if (name === "templateType") {
+        //     this.setState({ level2SelectorType: selectedValue === ".NET Templates" ? "net" : "steeltoe"})
+        //}
+        if (name == "targetFrameworkVersion" && selectedValue == "netcoreapp3.0" && this.state.steeltoeVersion == "2.3.0") {
+            this.setState({
+                "steeltoeVersion": "2.4.0",
+                [name]: selectedValue
+            })
         }
-
-        this.setState({ [name]: selectedValue });
+        else {
+            this.setState({ [name]: selectedValue });
+        }
         console.log("parent setting hanglechange" , name, selectedValue)
     }
    
@@ -80,8 +88,7 @@ export class Home extends Component {
         <div>
             <form name="form" action="/starter.zip" method="post" autoComplete="off" onSubmit={this.trackSubmitEvent} >
                 <div>
-                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={[ "2.3.0", "2.4.0"]} defaultValue="2.3.0" onChange={this.handleInputChange} />
-               
+                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.3.0", "2.4.0"]} defaultValue="2.4.0" selectedValue={this.state.steeltoeVersion} onChange={this.handleInputChange} />
 
                     <div className="line">
                         <div className="left">Project Metadata</div>
@@ -91,7 +98,7 @@ export class Home extends Component {
                                 <InputText title="Project Name" name="projectName" defaultValue="MyCompany.SteeltoeExample" tabIndex="1" required pattern="^(?:((?!\d)\w+(?:\.(?!\d)\w+)*)\.)?((?!\d)\w+)$" onInput={(e) => e.target.setCustomValidity("")} onInvalid={(e) => e.target.setCustomValidity("ProjectName must be a valid C# Identifier: ex. MyCompany.MyProject")} />
                                 <div id="more-block">
                                     <InputText title="Description" name="description" defaultValue="Demo project for Steeltoe" tabIndex="2" />
-                                    <RightInputSelector title='Target Framework' name="targetFrameworkVersion" values={["netcoreapp2.1", "netcoreapp2.2"]} defaultValue="netcoreapp2.2" />
+                                    <RightInputSelector title='Target Framework' name="targetFrameworkVersion" values={["netcoreapp2.1", "netcoreapp2.2", "netcoreapp3.0"]} defaultValue="netcoreapp2.2" selectedValue={this.state.targetFrameworkVersion}  onChange={this.handleInputChange} />
                                 </div>
                            
                             </div>

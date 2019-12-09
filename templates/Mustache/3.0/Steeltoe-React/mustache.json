@@ -146,12 +146,7 @@
     },
     {
       "Name": "AspNetCoreVersion",
-      "Expression": "TargetFrameworkVersion,netcoreapp3.0=3.0.0-preview8.19405.11,default=False",
-      "ExpressionType": "Case"
-    },
-    {
-      "Name": "TargetFrameworkVersion22",
-      "Expression": "TargetFrameworkVersion,netcoreapp2.2=true,default=False",
+      "Expression": "TargetFrameworkVersion,netcoreapp3.0=3.1.0,default=False",
       "ExpressionType": "Case"
     },
     {
@@ -177,16 +172,13 @@
   "Versions": [
     {
       "Name": "SteeltoeVersion",
-      "DefaultValue": "2.3.0",
+      "DefaultValue": "2.4.0",
       "Description": "Target the appropriate Steeltoe version",
       "choices": [
+        
         {
-          "choice": "2.2.0",
-          "Description": "Target Steeltoe version 2.2.0"
-        },
-        {
-          "choice": "2.3.0",
-          "Description": "Target Steeltoe version 2.3.0"
+          "choice": "3.0.0",
+          "Description": "Target Steeltoe version 3.0.0"
         },
         {
           "choice": "2.4.0",
@@ -212,7 +204,7 @@
 
     {
       "Name": "NpgSqlVersion",
-      "DefaultValue": "4.0.4"
+      "DefaultValue": "4.1.2"
     },
 
     {
