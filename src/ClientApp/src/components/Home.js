@@ -68,7 +68,7 @@ export class Home extends Component {
         //if (name === "templateType") {
         //     this.setState({ level2SelectorType: selectedValue === ".NET Templates" ? "net" : "steeltoe"})
         //}
-        if (name == "targetFrameworkVersion" && selectedValue == "netcoreapp3.0" && this.state.steeltoeVersion == "2.3.0") {
+        if (name == "targetFrameworkVersion" && selectedValue == "netcoreapp3.1" && this.state.steeltoeVersion == "2.3.0") {
             this.setState({
                 "steeltoeVersion": "2.4.0",
                 [name]: selectedValue
@@ -98,7 +98,7 @@ export class Home extends Component {
                                 <InputText title="Project Name" name="projectName" defaultValue="MyCompany.SteeltoeExample" tabIndex="1" required pattern="^(?:((?!\d)\w+(?:\.(?!\d)\w+)*)\.)?((?!\d)\w+)$" onInput={(e) => e.target.setCustomValidity("")} onInvalid={(e) => e.target.setCustomValidity("ProjectName must be a valid C# Identifier: ex. MyCompany.MyProject")} />
                                 <div id="more-block">
                                     <InputText title="Description" name="description" defaultValue="Demo project for Steeltoe" tabIndex="2" />
-                                    <RightInputSelector title='Target Framework' name="targetFrameworkVersion" values={["netcoreapp2.1", "netcoreapp2.2", "netcoreapp3.0"]} defaultValue="netcoreapp2.2" selectedValue={this.state.targetFrameworkVersion}  onChange={this.handleInputChange} />
+                                    <RightInputSelector title='Target Framework' name="targetFrameworkVersion" values={["netcoreapp2.1", "netcoreapp2.2", "netcoreapp3.1"]} defaultValue="netcoreapp2.2" selectedValue={this.state.targetFrameworkVersion}  onChange={this.handleInputChange} />
                                 </div>
                            
                             </div>

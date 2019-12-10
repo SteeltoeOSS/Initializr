@@ -51,7 +51,7 @@ namespace Steeltoe.Initializr.Models
             {
                 if (_templateVersion == null)
                 {
-                    return TargetFrameworkVersion == "netcoreapp3.0" ? TemplateVersion.V3 : TemplateVersion.V2;
+                    return TargetFrameworkVersion == "netcoreapp3.1" ? TemplateVersion.V3 : TemplateVersion.V2;
                 }
 
                 return _templateVersion.Value;

@@ -124,7 +124,7 @@
           "description": "Target netcoreapp2.1"
         }
       ],
-      "replaces": "netcoreapp2.2",
+      "replaces": "targetframeworkversion",
       "defaultValue": "netcoreapp2.2"
     },
     "AspNetCoreVersion": {

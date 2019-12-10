@@ -452,7 +452,7 @@ using System.Threading;", valuesController);
             });
 
             var fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
-            var aspnetCoreVersion = version == TemplateVersion.V3 ? "3.0.0-preview8.19405.11" : "2.2.0";
+            var aspnetCoreVersion = version == TemplateVersion.V3 ? "3.1.0" : "2.2.0";
 
             Assert.Contains($@"<PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""{aspnetCoreVersion}"" />", fileContents);
 
@@ -594,7 +594,7 @@ using System.Threading;", valuesController);
             Assert.DoesNotContain("AddCloudFoundryActuators", startUpContents);
 
             var projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
-            var targetFramework = version == TemplateVersion.V3 ? "netcoreapp3.0" : "netcoreapp2.2";
+            var targetFramework = version == TemplateVersion.V3 ? "netcoreapp3.1" : "netcoreapp2.2";
             Assert.Contains($"<TargetFramework>{targetFramework}</TargetFramework>", projectFile);
         }
 

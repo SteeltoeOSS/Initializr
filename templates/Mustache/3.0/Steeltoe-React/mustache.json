@@ -146,7 +146,7 @@
     },
     {
       "Name": "AspNetCoreVersion",
-      "Expression": "TargetFrameworkVersion,netcoreapp3.0=3.1.0,default=False",
+      "Expression": "TargetFrameworkVersion,netcoreapp3.1=3.1.0,default=3.1.0",
       "ExpressionType": "Case"
     },
     {
@@ -188,12 +188,16 @@
     },
     {
       "Name": "TargetFrameworkVersion",
-      "DefaultValue": "netcoreapp3.0",
+      "DefaultValue": "netcoreapp3.1",
       "Description": "Target the appropriate Dotnet framework version",
       "choices": [
         {
-          "Choice": "netcoreapp2.2",
-          "Description": "Target SDotnet framework version 2.2"
+          "Choice": "netcoreapp3.0",
+          "Description": "Target SDotnet framework version 3.0"
+        },
+        {
+          "Choice": "netcoreapp3.1",
+          "Description": "Target SDotnet framework version 3.1"
         }
       ]
     },
