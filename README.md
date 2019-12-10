@@ -18,12 +18,41 @@ The Web UI allows you to quickly generate a CSharp project with your choice of d
 
 
 ## Curl
+
+To get help:
+
+```
+curl https://start.steeltoe.io/
+
+          (                                                                                                                                     
+          )\ )    )           (     )                                                                                                           
+         (()/( ( /(   (    (  )\ ( /(        (                                                                                                  
+          /(_)))\()) ))\  ))\((_))\()) (    ))\                                                                                                 
+  ____   (_)) (_))/ /((_)/((_)_ (_))/  )\  /((_)__ __ __                                                                                        
+ / /\ \  / __|| |_ (_)) (_)) | || |_  ((_)(_))  \ \\ \\ \                                                                                       
+< <  > > \__ \|  _|/ -_)/ -_)| ||  _|/ _ \/ -_)  > >> >> >                                                                                      
+ \_\/_/  |___/ \__|\___|\___||_| \__|\___/\___| /_//_//_/                                                                                       
+                                                                                                                                                
+Dependencies:                                                                                                                                   
++----------------------------------------+----------------------------------------------------------------------------------------------------+ 
++ Title                                  + Description                                                                                        + 
++----------------------------------------+----------------------------------------------------------------------------------------------------+ 
++ Actuators                              + Add management endpoints for your application                                                      + 
++ Circuit Breakers                       + Add Circuit Breakers                                                                               + 
++ Cloud Foundry                          + Target CloudFoundry Hosting                                                                        + 
++ Discovery                              + Add Discovery Client                                                                               + 
++ DynamicLogger                          + Add Dynamic Logger                                                                                 + 
+... 
+```
+
+To generate projects: 
+
 ```
 curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -o myProject.zip
 
 or
 
-curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -d templateShortName=react -d projectName=MyCompany.MySample -o myProject.zip
+curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -d templateShortName=Steeltoe-React -d projectName=MyCompany.MySample -o myProject.zip
 ```
 
 To get a list of dependencies:
@@ -33,7 +62,7 @@ curl https://start.steeltoe.io/api/templates/dependencies
 
 To get a list of valid templates:
 ```
-curl https://startsteeeltoe.cfapps.io/api/templates/templates
+curl https://start.steeltoe.io/api/templates/templates
 ```
 ## Dotnet templates
 Install the Steeloe Templates 
