@@ -10,24 +10,28 @@ import ReactGA from 'react-ga';
 
 export class Home extends Component {
     static displayName = Home.name;
-  
+    static initialState  =  {
+        showMore: false,
+        templateType: ".NET Templates",
+        level2SelectorType: "net",
+        lang: "C#",
+        steeltoeVersion: "2.4.0",
+        steeltoeVersionInvalid: "",
+        targetFrameworkVersion: "netcoreapp2.2"
+    };
     constructor(props) {
         super(props);
         
 
-        this.state = {
-            showMore: false,
-            templateType: ".NET Templates",
-            level2SelectorType: "net",
-            lang: "C#",
-            steeltoeVersion: "2.4.0",
-            targetFrameworkVersion: "netcoreapp2.2"
-        }
-            
+        this.state = Home.initialState;
         this.toggleMore = this.toggleMore.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.trackSubmitEvent = this.trackSubmitEvent.bind(this);
+        this.OnSubmit = this.OnSubmit.bind(this);
          
+    }
+    OnSubmit(e){
+        this.setState(Home.initialState);
+        this.trackSubmitEvent(e);
     }
     trackSubmitEvent(e) {
         let i;
@@ -68,16 +72,27 @@ export class Home extends Component {
         //if (name === "templateType") {
         //     this.setState({ level2SelectorType: selectedValue === ".NET Templates" ? "net" : "steeltoe"})
         //}
-        if (name == "targetFrameworkVersion" && selectedValue == "netcoreapp3.1" && this.state.steeltoeVersion == "2.3.0") {
+        
+        if (name === "targetFrameworkVersion" && selectedValue === "netcoreapp3.1" && this.state.steeltoeVersion === "2.3.0") {
             this.setState({
                 "steeltoeVersion": "2.4.0",
-                [name]: selectedValue
+                [name]: selectedValue,
+                "steeltoeVersionInvalid": ""
+            })
+        }
+        else if(name === "steeltoeVersion" && selectedValue === "2.3.0" && this.state.targetFrameworkVersion === "netcoreapp3.1"){
+            this.setState({
+                "steeltoeVersion": "2.4.0",
+                "steeltoeVersionInvalid": "2.4.0 is the lowest version compatible with netcoreapp3.1",
             })
         }
         else {
-            this.setState({ [name]: selectedValue });
+            this.setState({ 
+                [name]: selectedValue,
+                "steeltoeVersionInvalid": ""
+            });
         }
-        console.log("parent setting hanglechange" , name, selectedValue)
+       // console.log("parent setting hanglechange" , name, selectedValue)
     }
    
   
@@ -86,10 +101,9 @@ export class Home extends Component {
     
     return (
         <div>
-            <form name="form" action="/starter.zip" method="post" autoComplete="off" onSubmit={this.trackSubmitEvent} >
+            <form name="form" action="/starter.zip" method="post" autoComplete="off" onSubmit={this.OnSubmit} >
                 <div>
-                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.3.0", "2.4.0"]} defaultValue="2.4.0" selectedValue={this.state.steeltoeVersion} onChange={this.handleInputChange} />
-
+                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.3.0", "2.4.0"]} defaultValue="2.4.0" selectedValue={this.state.steeltoeVersion} onChange={this.handleInputChange} invalidText={this.state.steeltoeVersionInvalid} />
                     <div className="line">
                         <div className="left">Project Metadata</div>
                         <div className="right">

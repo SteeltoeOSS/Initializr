@@ -8,7 +8,7 @@ export class InputSelector extends Component {
 
     }
     handleChange(e) {
-       this.props.onChange(this.props.name, e.target.attributes['data-value'].value)
+       this.props.onChange(this.props.name, e.target.attributes['data-value'].value);
     }
 
 
@@ -26,9 +26,11 @@ export class InputSelector extends Component {
                                     </div>
                             })
                         }
+                        
                         <input type="hidden" name={this.props.name} value={this.props.selectedValue} />
                   
                     </div>
+                    <span  style={{display: this.props.invalidText? "block": "none" , "color": "red"}} > {this.props.invalidText} </span>
                 </div>
             </div>
         );

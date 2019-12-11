@@ -51,8 +51,6 @@ namespace Steeltoe.Initializr.Controllers
         [IsCurlRequest]
         public ActionResult<string> CurlHelp()
         {
-            // get dependencies
-
             var result = new StringBuilder();
             result.Append(LOGO);
             result.Append(GetDependencies());
@@ -99,7 +97,7 @@ Get project:
 
         private string GetRow(string title, string description, int[] fieldWidths)
         {
-            return string.Format("+ {0}+ {1}+\n", title.PadRight(fieldWidths[0] - 1), description.PadRight(fieldWidths[1] - 1));
+            return $"| {title.PadRight(fieldWidths[0] - 1)}| {description.PadRight(fieldWidths[1] - 1)}|\n";
         }
 
         private string GetHorizontalBorder(int[] widths)
