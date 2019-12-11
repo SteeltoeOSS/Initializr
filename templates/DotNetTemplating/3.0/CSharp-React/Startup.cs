@@ -121,12 +121,6 @@ namespace Company.WebApplication1
                services.AddSqlServerConnection(Configuration);
 #endif
 
-#if (FrameworkVersion == "netcoreapp2.2")
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-#else
-            services.AddMvc();
-#endif
-
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -176,7 +170,6 @@ namespace Company.WebApplication1
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-           
 
             app.UseSpa(spa =>
             {

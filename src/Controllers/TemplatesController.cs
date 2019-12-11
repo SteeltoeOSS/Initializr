@@ -16,8 +16,10 @@ using Microsoft.AspNetCore.Mvc;
 using Steeltoe.Initializr.Models;
 using Steeltoe.Initializr.Services;
 using Steeltoe.Initializr.Services.Mustache;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
@@ -47,7 +49,7 @@ namespace Steeltoe.Initializr.Controllers
         [HttpGet]
         public Task<ActionResult> GenerateProjectGet([FromQuery] GeneratorModel model)
         {
-            return GenerateProject(model);
+           return GenerateProject(model);
         }
 
         [Route("dependencies")]
@@ -64,16 +66,24 @@ namespace Steeltoe.Initializr.Controllers
 
         private async Task<ActionResult> GenerateProject(GeneratorModel model)
         {
-            var archiveBytes = await _sttemplateService.GenerateProjectArchiveAsync(model);
-
-            var cd = new ContentDispositionHeaderValue("attachment")
+            try
             {
-                FileNameStar = model.ArchiveName,
-            };
+                var archiveBytes = await _sttemplateService.GenerateProjectArchiveAsync(model);
 
-            Response.Headers.Add("Content-Disposition", cd.ToString());
+                var cd = new ContentDispositionHeaderValue("attachment")
+                {
+                    FileNameStar = model.ArchiveName,
+                };
 
-            return File(archiveBytes, "application/zip");
+                Response.Headers.Add("Content-Disposition", cd.ToString());
+
+                return File(archiveBytes, "application/zip");
+            }
+            catch (Exception ex)
+            {
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Content(ex.Message);
+            }
         }
     }
 }

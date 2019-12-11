@@ -129,12 +129,7 @@ namespace {{ProjectNameSpace}}
 {{#SQLServer}}
              services.AddSqlServerConnection(Configuration);
 {{/SQLServer}}
-{{#TargetFrameworkVersion22}}
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-{{/TargetFrameworkVersion22}}
-{{^TargetFrameworkVersion22}}
-            services.AddMvc();
-{{/TargetFrameworkVersion22}}
+
 	        services.AddSpaStaticFiles(configuration =>
 	        {
 	            configuration.RootPath = "ClientApp/build";

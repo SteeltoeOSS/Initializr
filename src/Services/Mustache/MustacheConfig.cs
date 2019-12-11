@@ -89,6 +89,10 @@ namespace Steeltoe.Initializr.Services.Mustache
                     {
                         dataView[steeltoeVersionName] = model.SteeltoeVersion.ToLower();
                     }
+                    else
+                    {
+                        throw new InvalidDataException("SteeltoeVersion: InvalidParamValues");
+                    }
                 }
 
                 if (model.TargetFrameworkVersion != null)
