@@ -97,7 +97,7 @@ Get project:
 
         private string GetRow(string title, string description, int[] fieldWidths)
         {
-            return $"| {title.PadRight(fieldWidths[0] - 1)}| {description.PadRight(fieldWidths[1] - 1)}|\n";
+           return $"| {title.PadRight(fieldWidths[0] - 1)}| {description.PadRight(fieldWidths[1] - 1)}|\n";
         }
 
         private string GetHorizontalBorder(int[] widths)

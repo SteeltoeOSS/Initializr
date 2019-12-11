@@ -69,10 +69,7 @@ export class Home extends Component {
     }
     handleInputChange(name, selectedValue) {
 
-        //if (name === "templateType") {
-        //     this.setState({ level2SelectorType: selectedValue === ".NET Templates" ? "net" : "steeltoe"})
-        //}
-        
+       
         if (name === "targetFrameworkVersion" && selectedValue === "netcoreapp3.1" && this.state.steeltoeVersion === "2.3.0") {
             this.setState({
                 "steeltoeVersion": "2.4.0",
@@ -104,6 +101,7 @@ export class Home extends Component {
             <form name="form" action="/starter.zip" method="post" autoComplete="off" onSubmit={this.OnSubmit} >
                 <div>
                     <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.3.0", "2.4.0"]} defaultValue="2.4.0" selectedValue={this.state.steeltoeVersion} onChange={this.handleInputChange} invalidText={this.state.steeltoeVersionInvalid} />
+    
                     <div className="line">
                         <div className="left">Project Metadata</div>
                         <div className="right">

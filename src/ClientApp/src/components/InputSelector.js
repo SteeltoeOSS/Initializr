@@ -26,7 +26,7 @@ export class InputSelector extends Component {
                                     </div>
                             })
                         }
-                        
+
                         <input type="hidden" name={this.props.name} value={this.props.selectedValue} />
                   
                     </div>
