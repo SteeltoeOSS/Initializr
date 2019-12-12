@@ -87,7 +87,7 @@ Get project:
             result.Append(GetHorizontalBorder(fieldWidths));
             foreach (var dep in dependencies)
             {
-                result.Append(GetRow(dep.Name, dep.Description.Replace("Steeltoe: ", ""), fieldWidths));
+                result.Append(GetRow(dep.Name, dep.Description.Replace("Steeltoe: ", string.Empty), fieldWidths));
             }
 
             result.Append(GetHorizontalBorder(fieldWidths));

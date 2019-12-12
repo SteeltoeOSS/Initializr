@@ -49,7 +49,7 @@ namespace Steeltoe.Initializr.Controllers
         [HttpGet]
         public Task<ActionResult> GenerateProjectGet([FromQuery] GeneratorModel model)
         {
-           return GenerateProject(model);
+            return GenerateProject(model);
         }
 
         [Route("dependencies")]
@@ -82,7 +82,14 @@ namespace Steeltoe.Initializr.Controllers
             catch (Exception ex)
             {
                 HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Content(ex.Message);
+
+                var message = ex.Message;
+                if (model.TargetFrameworkVersion == "netcoreapp3.1" && model.SteeltoeVersion == "2.3.0")
+                {
+                    message = "2.4.0 is the lowest version of Steeltoe that works with netcoreapp3.1\n";
+                }
+
+                return Content(message);
             }
         }
     }
