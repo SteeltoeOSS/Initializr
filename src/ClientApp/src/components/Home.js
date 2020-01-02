@@ -17,7 +17,7 @@ export class Home extends Component {
         lang: "C#",
         steeltoeVersion: "2.4.0",
         steeltoeVersionInvalid: "",
-        targetFrameworkVersion: "netcoreapp2.2"
+        targetFrameworkVersion: "netcoreapp3.1"
     };
     constructor(props) {
         super(props);
@@ -30,7 +30,7 @@ export class Home extends Component {
          
     }
     OnSubmit(e){
-        this.setState(Home.initialState);
+      //  this.setState(Home.initialState);
         this.trackSubmitEvent(e);
     }
     trackSubmitEvent(e) {
