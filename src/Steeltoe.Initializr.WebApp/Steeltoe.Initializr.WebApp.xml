@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Steeltoe.Initializr</name>
+        <name>Steeltoe.Initializr.WebApp</name>
     </assembly>
     <members>
         <member name="T:Steeltoe.Initializr.Services.DotNetTemplateEngine.InitializrComponentManager">

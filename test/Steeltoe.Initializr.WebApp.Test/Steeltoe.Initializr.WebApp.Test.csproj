@@ -35,7 +35,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <ProjectReference Include="..\..\src\Steeltoe.Initializr\Steeltoe.Initializr.csproj" />
+    <ProjectReference Include="..\..\src\Steeltoe.Initializr.WebApp\Steeltoe.Initializr.WebApp.csproj" />
   </ItemGroup>
 
 </Project>
