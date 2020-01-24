@@ -1,5 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-  <Import Project="..\shared.props" />
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <Import Project="..\..\shared.props" />
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
@@ -17,18 +17,18 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-    
+
     <None Include="$(ProjectDir)..\templates\**\*.*" Exclude="$(ProjectDir)..\templates\**\TemplatePack.csproj;$(ProjectDir)..\templates\**\TemplatePack.sln;$(ProjectDir)..\templates\**\bin\**;$(ProjectDir)..\templates\**\obj\**;">
       <Link>templates\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
-    
+
   </ItemGroup>
   <ItemGroup>
     <None Remove="C:\Users\Hananiel\projects\SteeltoeOSS\initializr\src\..\templates\DotNetTemplating\2.x\.vs\TemplatePack\**" />
   </ItemGroup>
- 
+
 
 
   <ItemGroup>
@@ -43,21 +43,21 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-  
+
   </ItemGroup>
 
   <PropertyGroup>
     <!--
       Make sure any documentation comments which are included in code get checked for syntax during the build, but do
       not report warnings for missing comments.
-  
+
       CS1573: Parameter 'parameter' has no matching param tag in the XML comment for 'parameter' (but other parameters do)
       CS1591: Missing XML comment for publicly visible type or member 'Type_or_Member'
     -->
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
     <NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
   </PropertyGroup>
-  
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
@@ -69,9 +69,9 @@
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-   
+
   </Target>
-  
+
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <Exec Command="node --version" ContinueOnError="true">
@@ -93,7 +93,7 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
-  
+
 
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
