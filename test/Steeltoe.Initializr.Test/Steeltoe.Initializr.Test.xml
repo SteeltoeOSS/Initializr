@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Steeltoe.Initializr.Tests</name>
+        <name>Steeltoe.Initializr.Test</name>
     </assembly>
     <members>
         <member name="T:Steeltoe.Initializr.Tests.TemplateControllerTests">
