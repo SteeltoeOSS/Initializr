@@ -84,8 +84,6 @@ namespace Steeltoe.Initializr.Tests
             await CreateTemplate_Test(templateService, templateName, version, depString);
         }
 
-        // TODO: why is this failing after project restructure?
-
         [Theory]
         [MemberData(nameof(GetAllCombinations), typeof(TemplateService), "Steeltoe-WebApi", TemplateVersion.V2, 1, DisableDiscoveryEnumeration = true)]
         public async Task CreateTemplate_Dotnet_WebApi_V2_OneAtaTime_Test(ITemplateService templateService, string templateName, TemplateVersion version, string depString)
@@ -93,7 +91,6 @@ namespace Steeltoe.Initializr.Tests
             _testOutputHelper.WriteLine(depString);
             await CreateTemplate_Test(templateService, templateName, version, depString);
         }
-
 
         [Theory]
         [MemberData(nameof(GetAllCombinations), typeof(TemplateService), "Steeltoe-WebApi", TemplateVersion.V2, int.MaxValue, DisableDiscoveryEnumeration = true)]
