@@ -14,22 +14,20 @@
 
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Logging;
-using Steeltoe.Initializr.Models;
-using Steeltoe.Initializr.Services.Mustache;
-using Steeltoe.InitializrTests;
+using Steeltoe.Initializr.TemplateEngine.Models;
+using Steeltoe.Initializr.TemplateEngine.Services;
+using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Reflection;
-using System.Text;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Steeltoe.Initializr.Tests
+namespace Steeltoe.Initializr.WebApp.Test
 {
     /// <summary>
     /// Controller Tests for multiple templateService implementations.

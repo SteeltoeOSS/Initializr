@@ -15,12 +15,9 @@
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Routing;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace Steeltoe.Initializr.Controllers
+namespace Steeltoe.Initializr.WebApp.Controllers
 {
     public class IsCurlRequestAttribute : ActionMethodSelectorAttribute
     {

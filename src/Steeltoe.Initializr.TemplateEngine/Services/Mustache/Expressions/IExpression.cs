@@ -12,20 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Steeltoe.Initializr.WebApp.Test
+namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache.Expressions
 {
-    public class TestWebAppFactory<TStartup>
-        : WebApplicationFactory<TStartup>
-        where TStartup : class
+    public delegate string EvaluationExpression(Dictionary<string, string> dataView);
+
+    public interface IExpression
     {
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
-        {
-            builder.ConfigureServices(services =>
-            {
-            });
-        }
+        EvaluationExpression BuildEvaluationExpression(MustacheConfigSchema schema);
+
+        Task<string> EvaluateExpressionAsync(Dictionary<string, string> dataView);
     }
 }

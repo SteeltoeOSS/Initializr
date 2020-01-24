@@ -18,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		azure-pipelines.yml = azure-pipelines.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.Initializr.TemplateEngine", "src\Steeltoe.Initializr.TemplateEngine\Steeltoe.Initializr.TemplateEngine.csproj", "{6FD3B4A0-5EF2-4C0C-A039-781B287338A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steeltoe.Initializr.TemplateEngine.Test", "test\Steeltoe.Initializr.TemplateEngine.Test\Steeltoe.Initializr.TemplateEngine.Test.csproj", "{60E5F7E7-B412-4E52-B9D0-4FCA04311EC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +36,14 @@ Global
 		{69971BFE-F4F4-42D2-8AC8-6D9723EBE09F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69971BFE-F4F4-42D2-8AC8-6D9723EBE09F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69971BFE-F4F4-42D2-8AC8-6D9723EBE09F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FD3B4A0-5EF2-4C0C-A039-781B287338A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FD3B4A0-5EF2-4C0C-A039-781B287338A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FD3B4A0-5EF2-4C0C-A039-781B287338A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FD3B4A0-5EF2-4C0C-A039-781B287338A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60E5F7E7-B412-4E52-B9D0-4FCA04311EC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60E5F7E7-B412-4E52-B9D0-4FCA04311EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60E5F7E7-B412-4E52-B9D0-4FCA04311EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60E5F7E7-B412-4E52-B9D0-4FCA04311EC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

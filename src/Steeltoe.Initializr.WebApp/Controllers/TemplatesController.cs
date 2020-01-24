@@ -13,9 +13,9 @@
 // limitations under the License.
 
 using Microsoft.AspNetCore.Mvc;
-using Steeltoe.Initializr.Models;
-using Steeltoe.Initializr.Services;
-using Steeltoe.Initializr.Services.Mustache;
+using Steeltoe.Initializr.TemplateEngine.Models;
+using Steeltoe.Initializr.TemplateEngine.Services;
+using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +23,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Steeltoe.Initializr.Controllers
+namespace Steeltoe.Initializr.WebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

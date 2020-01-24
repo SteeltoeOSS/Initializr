@@ -4,7 +4,7 @@
         <name>Steeltoe.Initializr.WebApp.Test</name>
     </assembly>
     <members>
-        <member name="T:Steeltoe.Initializr.Tests.TemplateControllerTests">
+        <member name="T:Steeltoe.Initializr.WebApp.Test.TemplateControllerTests">
             <summary>
             Controller Tests for multiple templateService implementations.
             </summary>

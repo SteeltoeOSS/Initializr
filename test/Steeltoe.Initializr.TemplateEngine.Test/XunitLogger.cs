@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.Extensions.Logging;
 using System;
+using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace Steeltoe.Initializr.WebApp.Test
+namespace Steeltoe.Initializr.TemplateEngine.Test
 {
     public class XunitLogger : ILogger
     {

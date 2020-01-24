@@ -12,20 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Logging;
+using Xunit.Abstractions;
 
-namespace Steeltoe.Initializr.WebApp.Test
+namespace Steeltoe.Initializr.TemplateEngine.Test
 {
-    public class TestWebAppFactory<TStartup>
-        : WebApplicationFactory<TStartup>
-        where TStartup : class
+    public class XunitLoggerProvider : ILoggerProvider
     {
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        private readonly ITestOutputHelper _testOutputHelper;
+
+        public XunitLoggerProvider(ITestOutputHelper testOutputHelper)
         {
-            builder.ConfigureServices(services =>
-            {
-            });
+            _testOutputHelper = testOutputHelper;
+        }
+
+        public ILogger CreateLogger(string categoryName)
+            => new XunitLogger(_testOutputHelper, categoryName);
+
+        public void Dispose()
+        {
         }
     }
 }

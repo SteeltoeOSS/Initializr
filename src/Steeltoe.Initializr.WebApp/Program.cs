@@ -15,7 +15,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Steeltoe.Initializr
+namespace Steeltoe.Initializr.WebApp
 {
     public static class Program
     {

@@ -17,33 +17,26 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-
-    <None Include="$(ProjectDir)..\templates\**\*.*" Exclude="$(ProjectDir)..\templates\**\TemplatePack.csproj;$(ProjectDir)..\templates\**\TemplatePack.sln;$(ProjectDir)..\templates\**\bin\**;$(ProjectDir)..\templates\**\obj\**;">
-      <Link>templates\%(RecursiveDir)%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-    </None>
-
   </ItemGroup>
+
   <ItemGroup>
     <None Remove="C:\Users\Hananiel\projects\SteeltoeOSS\initializr\src\..\templates\DotNetTemplating\2.x\.vs\TemplatePack\**" />
   </ItemGroup>
 
-
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.1.0" />
-    <PackageReference Include="Microsoft.TemplateEngine.Edge" Version="0.2.3-alpha" />
-    <PackageReference Include="Microsoft.TemplateEngine.Orchestrator.RunnableProjects" Version="0.2.1-alpha" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Stubble.Core" Version="1.2.7" />
-    <PackageReference Include="Stubble.Extensions.JsonNet" Version="1.0.18" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
 
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\Steeltoe.Initializr.TemplateEngine\Steeltoe.Initializr.TemplateEngine.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

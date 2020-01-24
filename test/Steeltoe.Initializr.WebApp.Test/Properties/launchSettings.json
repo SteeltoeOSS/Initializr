@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Steeltoe.Initializr.Tests": {
+    "Steeltoe.Initializr.WebApp.Tests": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

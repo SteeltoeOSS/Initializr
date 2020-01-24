@@ -1,4 +1,4 @@
-﻿// Copyright 2017 the original author or authors.
+// Copyright 2020 the original author or authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,20 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-
-namespace Steeltoe.Initializr.WebApp.Test
+namespace Steeltoe.Initializr.TemplateEngine.Services
 {
-    public class TestWebAppFactory<TStartup>
-        : WebApplicationFactory<TStartup>
-        where TStartup : class
+    public enum TemplateVersion
     {
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
-        {
-            builder.ConfigureServices(services =>
-            {
-            });
-        }
+        V2,
+        V3,
     }
 }

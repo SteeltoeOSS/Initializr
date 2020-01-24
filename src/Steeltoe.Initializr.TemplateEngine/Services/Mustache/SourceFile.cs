@@ -12,20 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-
-namespace Steeltoe.Initializr.WebApp.Test
+namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 {
-    public class TestWebAppFactory<TStartup>
-        : WebApplicationFactory<TStartup>
-        where TStartup : class
+    public class SourceFile
     {
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
-        {
-            builder.ConfigureServices(services =>
-            {
-            });
-        }
+        public string Name { get; set; }
+
+        public string FullPath { get; set; }
+
+        public string Text { get; set; }
     }
 }

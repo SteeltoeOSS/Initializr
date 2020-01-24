@@ -15,7 +15,7 @@
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace Steeltoe.InitializrTests
+namespace Steeltoe.Initializr.WebApp.Test
 {
     public class XunitLoggerProvider : ILoggerProvider
     {
@@ -27,7 +27,7 @@ namespace Steeltoe.InitializrTests
         }
 
         public ILogger CreateLogger(string categoryName)
-            => new Initializr.Tests.XunitLogger(_testOutputHelper, categoryName);
+            => new WebApp.Test.XunitLogger(_testOutputHelper, categoryName);
 
         public void Dispose()
         {

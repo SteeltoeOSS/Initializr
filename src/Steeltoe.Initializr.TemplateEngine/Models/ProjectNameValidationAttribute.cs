@@ -12,20 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
+using System.ComponentModel.DataAnnotations;
 
-namespace Steeltoe.Initializr.WebApp.Test
+namespace Steeltoe.Initializr.TemplateEngine.Models
 {
-    public class TestWebAppFactory<TStartup>
-        : WebApplicationFactory<TStartup>
-        where TStartup : class
+    public class ProjectNameValidationAttribute : RegularExpressionAttribute
     {
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        public ProjectNameValidationAttribute()
+            : base(@"^(?:((?!\d)\w+(?:\.(?!\d)\w+)*)\.)?((?!\d)\w+)$")
         {
-            builder.ConfigureServices(services =>
-            {
-            });
+            ErrorMessage = "ProjectName must be a valid C# Identifier";
         }
     }
 }

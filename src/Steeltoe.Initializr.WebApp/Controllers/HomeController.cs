@@ -13,30 +13,26 @@
 // limitations under the License.
 
 using Microsoft.AspNetCore.Mvc;
-using Steeltoe.Initializr.Models;
-using Steeltoe.Initializr.Services;
-using Steeltoe.Initializr.Services.Mustache;
-using System;
+using Steeltoe.Initializr.TemplateEngine.Services;
+using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Steeltoe.Initializr.Controllers
+namespace Steeltoe.Initializr.WebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class HomeController : ControllerBase
     {
-        private const string LOGO = @"          (                                                
-          )\ )    )           (     )                      
-         (()/( ( /(   (    (  )\ ( /(        (             
-          /(_)))\()) ))\  ))\((_))\()) (    ))\            
-  ____   (_)) (_))/ /((_)/((_)_ (_))/  )\  /((_)__ __ __   
- / /\ \  / __|| |_ (_)) (_)) | || |_  ((_)(_))  \ \\ \\ \  
-< <  > > \__ \|  _|/ -_)/ -_)| ||  _|/ _ \/ -_)  > >> >> > 
- \_\/_/  |___/ \__|\___|\___||_| \__|\___/\___| /_//_//_/  
+        private const string LOGO = @"          (
+          )\ )    )           (     )
+         (()/( ( /(   (    (  )\ ( /(        (
+          /(_)))\()) ))\  ))\((_))\()) (    ))\
+  ____   (_)) (_))/ /((_)/((_)_ (_))/  )\  /((_)__ __ __
+ / /\ \  / __|| |_ (_)) (_)) | || |_  ((_)(_))  \ \\ \\ \
+< <  > > \__ \|  _|/ -_)/ -_)| ||  _|/ _ \/ -_)  > >> >> >
+ \_\/_/  |___/ \__|\___|\___||_| \__|\___/\___| /_//_//_/
                                                            ";
 
         private readonly MustacheTemplateService _templateService;
@@ -62,15 +58,15 @@ namespace Steeltoe.Initializr.Controllers
         private string GetExamples()
         {
             return @"
-Get Dependencies: 
+Get Dependencies:
     curl https://start.steeltoe.io/api/templates/dependencies | jq .
 
 Get Versions:
     curl https://start.steeeltoe.io/api/templates/templates | jq .
 
-Get project: 
+Get project:
     curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -o myProject.zip
- 
+
     curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -d templateShortName=Steeltoe-React -d targetFrameworkVersion=netcoreapp3.1 -d projectName=MyCompany.MySample -o myProject.zip
 ";
         }
