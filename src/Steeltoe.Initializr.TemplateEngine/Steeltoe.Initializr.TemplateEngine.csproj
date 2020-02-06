@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\shared.props" />
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(ProjectDir)..\templates\**\*.*" Exclude="$(ProjectDir)..\templates\**\TemplatePack.csproj;$(ProjectDir)..\templates\**\TemplatePack.sln;$(ProjectDir)..\templates\**\bin\**;$(ProjectDir)..\templates\**\obj\**;">
+      <Link>templates\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="Microsoft.TemplateEngine.Edge" Version="0.2.3-alpha" />
+    <PackageReference Include="Microsoft.TemplateEngine.Orchestrator.RunnableProjects" Version="0.2.1-alpha" />
+    <PackageReference Include="Stubble.Core" Version="1.2.7" />
+    <PackageReference Include="Stubble.Extensions.JsonNet" Version="1.0.18" />
+  </ItemGroup>
+</Project>
