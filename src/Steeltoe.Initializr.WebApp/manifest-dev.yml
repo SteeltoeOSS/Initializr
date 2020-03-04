@@ -1,0 +1,9 @@
+---
+applications:
+- name: startsteeltoe-stage
+  buildpacks:
+   - dotnet_core_buildpack
+  memory: 1024M
+  command: cd ${HOME} && ./Steeltoe.Initializr.WebApp
+  env:
+    ASPNETCORE_ENVIRONMENT: Production
