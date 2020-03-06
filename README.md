@@ -1,16 +1,15 @@
-# Steeltoe Initializr 
+# [Steeltoe Initializr](https://start.steeltoe.io)
 
 Master: ![image](https://dev.azure.com/SteeltoeOSS/Steeltoe/_apis/build/status/SteeltoeOSS.initializr?branchName=master)
 Dev: ![image](https://dev.azure.com/SteeltoeOSS/Steeltoe/_apis/build/status/SteeltoeOSS.initializr?branchName=dev)
 
-Steeltoe Initializr provides an extensible API to generate quickstart projects. It provides a simple web UI to configure the project to generate and endpoints that you can use via plain HTTP.
+Steeltoe Initializr [start.steeltoe.io](https://start.steeltoe.io) provides an extensible API to generate quickstart projects. It provides a simple web UI to configure the project to generate and endpoints that you can use via plain HTTP.
 
 Steeltoe Initializr also exposes an endpoint that serves its metadata in a well-known
 format to allow third-party clients to provide the necessary assistance.
 
 # How to use
 ## Web
-You can see a demo of app running on [Pivotal Web Services](https://startsteeltoe.cfapps.io).
 
 The Web UI allows you to quickly generate a CSharp project with your choice of dependencies
 
