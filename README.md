@@ -87,5 +87,5 @@ Clone and cd into repo and :
     dotnet run
 ```
 ## Add Your Project
-If you have a project you would like to see on [start.steeltoe.io](https://start.steeltoe.io). Be sure to read and follow the [Third Party Contributions Guidelines](THIRD-PARTY-CONTRIBUTIONS.md).  If your project fulfills the requirements, please create an issue and our team will help get you started.  
+Would you like have a library added to [start.steeltoe.io](https://start.steeltoe.io)? Please read and follow the [third party library contribution guidelines](THIRD-PARTY-CONTRIBUTIONS.md).  If the project fulfills the requirements, please create a new issue on this project and our team will help get you started.  
 
