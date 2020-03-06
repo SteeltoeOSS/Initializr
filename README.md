@@ -6,7 +6,7 @@ Dev: ![image](https://dev.azure.com/SteeltoeOSS/Steeltoe/_apis/build/status/Stee
 * [Overview](#overview)
 * [How to Use](#how-to-use)
 * [Build and Run](#build-and-run)
-* [Add Your Project](#add-your-project)
+* [Add A Library](#add-a-library)
 
 ## Overview
 Steeltoe Initializr [start.steeltoe.io](https://start.steeltoe.io) provides an extensible API to generate quickstart projects. It provides a simple web UI to configure the project to generate and endpoints that you can use via plain HTTP.
@@ -86,6 +86,6 @@ Clone and cd into repo and :
     cd src 
     dotnet run
 ```
-## Add Your Project
-Would you like have a library added to [start.steeltoe.io](https://start.steeltoe.io)? Please read and follow the [third party library contribution guidelines](THIRD-PARTY-CONTRIBUTIONS.md).  If the project fulfills the requirements, please create a new issue on this project and our team will help get you started.  
+## Add a Library
+Would you like have a library added to [start.steeltoe.io](https://start.steeltoe.io)?  Please read and follow the [third party library contribution guidelines](THIRD-PARTY-CONTRIBUTIONS.md).  If the project fulfills the requirements, please create a new issue on this project and our team will help get you started.  
 
