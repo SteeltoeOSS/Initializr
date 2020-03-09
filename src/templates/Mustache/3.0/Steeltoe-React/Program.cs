@@ -12,8 +12,10 @@ using Microsoft.Extensions.Logging;
 using Steeltoe.Extensions.Logging;
 {{/ActuatorsOrDynamicLogger}}
 {{#CloudFoundry}}
+{{^ConfigServer}}
 using Steeltoe.Extensions.Configuration;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
+{{/ConfigServer}}
 {{/CloudFoundry}}
 {{#ConfigServer}}
 using Steeltoe.Extensions.Configuration.ConfigServer;
@@ -46,11 +48,11 @@ namespace {{ProjectNameSpace}}
                 .UseCloudFoundryHosting() //Enable listening on a Env provided port
                 {{^ConfigServer}}
                 .AddCloudFoundry() //Add cloudfoundry environment variables as a configuration source
-                {{/ConfigServer}}   
+                {{/ConfigServer}}
                 {{/CloudFoundry}}
                 {{#ConfigServer}}
 			    .AddConfigServer()
-                {{/ConfigServer}} 
+                {{/ConfigServer}}
                 {{#PlaceholderConfig}}
                 .AddPlaceholderResolver()
                 {{/PlaceholderConfig}}
