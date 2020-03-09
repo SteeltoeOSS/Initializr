@@ -1,9 +1,9 @@
 # Guidelines for Contributing a 3rd Party Library
 
 ### Code of Conduct
-  * Anyone contributing to any of the projects in the Steeltoe portfolio, including Steeltoe Initializr, must adhere to our Contributor Guidelines and Governance Model.
+  * Anyone contributing to any of the projects in the Steeltoe portfolio, including Steeltoe Initializr, must adhere to our [Contributor Guidelines]9https://github.com/SteeltoeOSS/steeltoe#contributing) and [Governance Model](https://github.com/SteeltoeOSS/steeltoe#governance-model).
 ### Open sourced and available NuGet.org
-  * The library must be open sourced and available on NuGet.org. 
+  * The library must be open sourced and available on [NuGet.org](https://nuget.org). 
   * The library must be made available with an appropriate OSS license which is deemed compatible with the Apache 2.0 license
 ### Community
   * There should be a sizeable community, or an established organization, that is actively using and maintaining the library
@@ -22,7 +22,7 @@
      * PackageReleaseNotes
      * RepositoryUrl
      * RepositoryBranch
-  * For each library on Steeltoe Initializr, documentation must be publicly available at the project’s url or on the project’s repository.
+  * For each library on start.steeltoe.io, documentation must be publicly available at the project’s url or on the project’s repository.
   * Documentation should indicate which versions of .NET Core and Steeltoe are supported
 ### Other Dependencies:
   * The 3rd party library should not bring in any supporting dependencies that aren’t compatible with the Apache 2.0 license
