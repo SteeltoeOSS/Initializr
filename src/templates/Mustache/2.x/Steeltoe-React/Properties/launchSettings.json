@@ -19,7 +19,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Company.WebApplication1": {
+    "{{ProjectNameSpace}}": {
       "commandName": "Project",
       "launchBrowser": true,
       //#if(NoHttps)
