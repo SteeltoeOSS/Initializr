@@ -1,23 +1,28 @@
-# Steeltoe Initializr 
+# [Steeltoe Initializr](https://start.steeltoe.io)
 
 Master: ![image](https://dev.azure.com/SteeltoeOSS/Steeltoe/_apis/build/status/SteeltoeOSS.initializr?branchName=master)
 Dev: ![image](https://dev.azure.com/SteeltoeOSS/Steeltoe/_apis/build/status/SteeltoeOSS.initializr?branchName=dev)
 
-Steeltoe Initializr provides an extensible API to generate quickstart projects. It provides a simple web UI to configure the project to generate and endpoints that you can use via plain HTTP.
+* [Overview](#overview)
+* [How to Use](#how-to-use)
+* [Build and Run](#build-and-run)
+* [Add A Library](#add-a-library)
+
+## Overview
+Steeltoe Initializr [start.steeltoe.io](https://start.steeltoe.io) provides an extensible API to generate quickstart projects. It provides a simple web UI to configure the project to generate and endpoints that you can use via plain HTTP.
 
 Steeltoe Initializr also exposes an endpoint that serves its metadata in a well-known
 format to allow third-party clients to provide the necessary assistance.
 
-# How to use
-## Web
-You can see a demo of app running on [Pivotal Web Services](https://startsteeltoe.cfapps.io).
+## How to Use
+### Web
 
 The Web UI allows you to quickly generate a CSharp project with your choice of dependencies
 
  ![image](https://media.giphy.com/media/IdP0OiDeK0dTLIW1Qe/giphy.gif)
 
 
-## Curl
+### Curl
 
 To get help:
 
@@ -64,7 +69,7 @@ To get a list of valid templates:
 ```
 curl https://start.steeltoe.io/api/templates/templates
 ```
-## Dotnet templates
+### Dotnet templates
 Install the Steeloe Templates 
 ```
 dotnet new -i steeltoe.templates::2.2.1 --nuget-source https://www.myget.org/F/steeltoedev/api/v3/index.json
@@ -73,7 +78,7 @@ Generate project
 ```
 dotnet new Steeltoe-WebApi --Actuators --CloudFoundry
 ```
-# Developing 
+## Build and Run 
 
 Clone and cd into repo and :
 ``` dotnet build
@@ -81,4 +86,6 @@ Clone and cd into repo and :
     cd src 
     dotnet run
 ```
+## Add a Library
+Would you like have a library added to [start.steeltoe.io](https://start.steeltoe.io)?  Please read and follow the [third party library contribution guidelines](THIRD-PARTY-CONTRIBUTIONS.md).  If the project fulfills the requirements, please create a new issue on this project and our team will help get you started.  
 
