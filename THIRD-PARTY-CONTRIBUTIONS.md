@@ -1,7 +1,7 @@
 # Guidelines for Contributing a 3rd Party Library
 
 ### Code of Conduct
-  * Anyone contributing to any of the projects in the Steeltoe portfolio, including Steeltoe Initializr, must adhere to our [Contributor Guidelines]9https://github.com/SteeltoeOSS/steeltoe#contributing) and [Governance Model](https://github.com/SteeltoeOSS/steeltoe#governance-model).
+  * Anyone contributing to any of the projects in the Steeltoe portfolio, including Steeltoe Initializr, must adhere to our [Contributor Guidelines](https://github.com/SteeltoeOSS/steeltoe#contributing) and [Governance Model](https://github.com/SteeltoeOSS/steeltoe#governance-model).
 ### Open sourced and available NuGet.org
   * The library must be open sourced and available on [NuGet.org](https://nuget.org). 
   * The library must be made available with an appropriate OSS license which is deemed compatible with the Apache 2.0 license
