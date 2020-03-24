@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 #if (Actuators || DynamicLogger)
 using Steeltoe.Extensions.Logging;
 #endif
-#if (CloudFoundry)
+#if (CloudFoundry && !ConfigServer)
 using Steeltoe.Extensions.Configuration;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 #endif
