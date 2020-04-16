@@ -68,27 +68,26 @@ export class Home extends Component {
         this.setState(prevState => ({showMore: !prevState.showMore}))
     }
     handleInputChange(name, selectedValue) {
-
-
-        if (name === "targetFrameworkVersion" && selectedValue === "netcoreapp3.1" && this.state.steeltoeVersion === "2.3.0") {
-            this.setState({
-                "steeltoeVersion": "2.4.0",
-                [name]: selectedValue,
-                "steeltoeVersionInvalid": ""
-            })
-        }
-        else if(name === "steeltoeVersion" && selectedValue === "2.3.0" && this.state.targetFrameworkVersion === "netcoreapp3.1"){
-            this.setState({
-                "steeltoeVersion": "2.4.0",
-                "steeltoeVersionInvalid": "2.4.0 is the lowest version compatible with netcoreapp3.1",
-            })
-        }
-        else {
-            this.setState({
-                [name]: selectedValue,
-                "steeltoeVersionInvalid": ""
-            });
-        }
+        this.setState({
+            [name]: selectedValue,
+            "steeltoeVersionInvalid": ""
+        });
+        // if (name === "targetFrameworkVersion" && selectedValue === "netcoreapp3.1" && this.state.steeltoeVersion === "2.3.0") {
+        //     this.setState({
+        //         "steeltoeVersion": "2.4.0",
+        //         [name]: selectedValue,
+        //         "steeltoeVersionInvalid": ""
+        //     })
+        // }
+        // else if(name === "steeltoeVersion" && selectedValue === "2.3.0" && this.state.targetFrameworkVersion === "netcoreapp3.1"){
+        //     this.setState({
+        //         "steeltoeVersion": "2.4.0",
+        //         "steeltoeVersionInvalid": "2.4.0 is the lowest version compatible with netcoreapp3.1",
+        //     })
+        // }
+        // else {
+        // ....
+        // }
        // console.log("parent setting hanglechange" , name, selectedValue)
     }
 

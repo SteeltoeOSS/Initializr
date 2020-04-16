@@ -84,10 +84,10 @@ namespace Steeltoe.Initializr.WebApp.Controllers
                 HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
                 var message = ex.Message;
-                if (model.TargetFrameworkVersion == "netcoreapp3.1" && model.SteeltoeVersion == "2.3.0")
-                {
-                    message = "2.4.0 is the lowest version of Steeltoe that works with netcoreapp3.1\n";
-                }
+                // if (model.TargetFrameworkVersion == "netcoreapp3.1" && model.SteeltoeVersion == "2.3.0")
+                // {
+                    // message = "2.4.0 is the lowest version of Steeltoe that works with netcoreapp3.1\n";
+                // }
 
                 return Content(message);
             }

@@ -78,7 +78,7 @@ namespace Steeltoe.Initializr.WebApp.Test
         [Fact]
         public async void GetStarterZipValidationTest()
         {
-            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=123.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.3.0&TemplateVersion=V2&TargetFrameworkVersion=netcoreapp2.2&TemplateShortName=Steeltoe-WebApi");
+            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=123.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.4.3&TemplateVersion=V2&TargetFrameworkVersion=netcoreapp2.2&TemplateShortName=Steeltoe-WebApi");
 
             Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
 
