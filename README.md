@@ -17,6 +17,7 @@ Steeltoe Initializr also exposes an endpoint that serves its metadata in a well-
 format to allow third-party clients to provide the necessary assistance.
 
 ## How to Use
+
 ### Web
 
 The Web UI allows you to quickly generate a CSharp project with your choice of dependencies
@@ -71,7 +72,9 @@ To get a list of valid templates:
 ```
 curl https://start.steeltoe.io/api/templates/templates
 ```
+
 ### Dotnet templates
+
 Install the Steeloe Templates
 ```
 dotnet new -i steeltoe.templates::2.2.1 --nuget-source https://www.myget.org/F/steeltoedev/api/v3/index.json
@@ -80,14 +83,18 @@ Generate project
 ```
 dotnet new Steeltoe-WebApi --Actuators --CloudFoundry
 ```
+
 ## Build and Run
 
 Clone and cd into repo and :
-``` dotnet build
-    dotnet test
-    cd src
-    dotnet run
 ```
+dotnet build                                          # build
+dotnet test --filter "Category!=Integration"           # unit test suite
+dotnet test --filter "Category=Integration"            # integration test suite
+dotnet run --project src/Steeltoe.Initializr.WebApp   # run
+```
+
 ## Add a Library
+
 Would you like have a library added to [start.steeltoe.io](https://start.steeltoe.io)?  Please read and follow the [third party library contribution guidelines](THIRD-PARTY-CONTRIBUTIONS.md).  If the project fulfills the requirements, please create a new issue on this project and our team will help get you started.
 
