@@ -53,9 +53,9 @@ namespace Steeltoe.Initializr.WebApp.Controllers
         }
 
         [Route("dependencies")]
-        public ActionResult GetDependencies([FromQuery(Name = "templateShortName")] string templateShortName, [FromQuery(Name = "templateVersion")] TemplateVersion? templateVersion)
+        public ActionResult GetDependencies([FromQuery(Name = "templateShortName")] string templateShortName, [FromQuery(Name = "templateVersion")] DotnetTemplateVersion? templateVersion)
         {
-            return Ok(_sttemplateService.GetDependencies(templateShortName, templateVersion ?? TemplateVersion.V2));
+            return Ok(_sttemplateService.GetDependencies(templateShortName, templateVersion ?? DotnetTemplateVersion.V2));
         }
 
         [Route("templates")]

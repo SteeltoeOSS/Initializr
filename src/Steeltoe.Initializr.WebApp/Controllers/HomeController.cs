@@ -74,7 +74,7 @@ Get project:
         private string GetDependencies()
         {
             var result = new StringBuilder();
-            var dependencies = _templateService.GetDependencies(string.Empty, TemplateVersion.V3);
+            var dependencies = _templateService.GetDependencies(string.Empty, DotnetTemplateVersion.V3);
             var fieldWidths = new int[] { 40, 100 };
 
             result.Append("\nDependencies: \n");

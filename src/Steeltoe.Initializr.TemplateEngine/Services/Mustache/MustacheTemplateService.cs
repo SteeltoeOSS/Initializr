@@ -35,7 +35,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
     public class MustacheTemplateService : ITemplateService
     {
         private const string DefaultTemplateName = "Steeltoe-WebApi";
-        private const TemplateVersion DefaultVersion = TemplateVersion.V2;
+        private const DotnetTemplateVersion DefaultVersion = DotnetTemplateVersion.V2;
 
         private Dictionary<string, string> FriendlyNames { get; set; }
 
@@ -70,11 +70,11 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
         {
             var name = string.IsNullOrEmpty(model.TemplateShortName) ? DefaultTemplateName : model.TemplateShortName;
 
-            var templateKey = new TemplateKey(name, model.TemplateVersion);
+            var templateKey = new TemplateKey(name, model.DotnetTemplateVersion);
 
             if (!_mustacheConfig.GetTemplateKeys().Contains(templateKey))
             {
-                throw new InvalidDataException($"Template with Name: {name} and Version: {model.TemplateVersion} doesn't exist");
+                throw new InvalidDataException($"Template with Name: {name} and Version: {model.DotnetTemplateVersion} doesn't exist");
             }
 
             Dictionary<string, string> dataView;
@@ -112,14 +112,14 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                 {
                     Name = templateKey.Name,
                     ShortName = templateKey.Name,
-                    TemplateVersion = templateKey.Version,
+                    DotnetTemplateVersion = templateKey.Version,
                     Language = "C#",
                     Tags = "Web/Microservice",
                 })
                 .ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(string shortName, TemplateVersion version)
+        public List<ProjectDependency> GetDependencies(string shortName, DotnetTemplateVersion version)
         {
             shortName = string.IsNullOrEmpty(shortName) ? DefaultTemplateName : shortName;
             var list = GetAvailableTemplates();

@@ -35,7 +35,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
             var implementations = new ITemplateService[]
             {
-                new TemplateService(configuration, new MemoryCache(new MemoryCacheOptions()), new LoggerFactory().CreateLogger<TemplateService>()),
+                // new DotnetTemplateService(configuration, new MemoryCache(new MemoryCacheOptions()), new LoggerFactory().CreateLogger<DotnetTemplateService>()),
                 new MustacheTemplateService(configuration, new LoggerFactory().CreateLogger<MustacheTemplateService>()),
             };
             var templateNames = new string[]
@@ -43,7 +43,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
                 "Steeltoe-React",
                 "Steeltoe-WebApi",
             };
-            var templateVersions = (TemplateVersion[])Enum.GetValues(typeof(TemplateVersion));
+            var templateVersions = (DotnetTemplateVersion[])Enum.GetValues(typeof(DotnetTemplateVersion));
             var data = from implementation in implementations
                        from templateName in templateNames
                        from templateVersion in templateVersions
