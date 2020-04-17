@@ -70,11 +70,11 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
         {
             var name = string.IsNullOrEmpty(model.TemplateShortName) ? DefaultTemplateName : model.TemplateShortName;
 
-            var templateKey = new TemplateKey(name, model.DotnetTemplateVersion);
+            var templateKey = new TemplateKey(name, model.TemplateVersion);
 
             if (!_mustacheConfig.GetTemplateKeys().Contains(templateKey))
             {
-                throw new InvalidDataException($"Template with Name: {name} and Version: {model.DotnetTemplateVersion} doesn't exist");
+                throw new InvalidDataException($"Template with Name: {name} and Version: {model.TemplateVersion} doesn't exist");
             }
 
             Dictionary<string, string> dataView;

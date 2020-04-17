@@ -81,7 +81,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
                 Dependencies = "Actuators",
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -100,7 +100,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -115,7 +115,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "Discovery",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -133,7 +133,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "Actuators,CircuitBreaker",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -157,7 +157,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "MySql",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
@@ -187,7 +187,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "MySqlEFCore",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -203,7 +203,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "Postgres",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -229,7 +229,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "ConfigServer",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
@@ -256,7 +256,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "RandomValueConfig",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             Assert.Contains(files, file => file.Key.EndsWith("ValuesController.cs"));
@@ -282,7 +282,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "CloudFoundry",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             string programContents = files.Find(x => x.Key == "Program.cs").Value;
@@ -307,7 +307,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "PlaceholderConfig",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
@@ -335,7 +335,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "PostgresEFCore",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -352,7 +352,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "RabbitMQ",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -382,7 +382,7 @@ using System.Threading;", valuesController);
             {
                 Dependencies = "Redis",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -405,7 +405,7 @@ using System.Threading;", valuesController);
             {
                 Dependencies = "MongoDB",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -428,7 +428,7 @@ using System.Threading;", valuesController);
             {
                 Dependencies = "OAuthConnector",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -448,7 +448,7 @@ using System.Threading;", valuesController);
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
                 SteeltoeVersion = steeltoeVersion,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             var fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
@@ -476,7 +476,7 @@ using System.Threading;", valuesController);
                 Dependencies = "DynamicLogger",
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             string fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
@@ -498,7 +498,7 @@ using System.Threading;", valuesController);
             {
                 Dependencies = "CloudFoundry",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
             string programFileContents = files.Find(x => x.Key == "Program.cs").Value;
             Assert.Contains("using Steeltoe.Extensions.Configuration;", programFileContents);
@@ -516,7 +516,7 @@ using System.Threading;", valuesController);
                 Dependencies = "Actuators",
                 SteeltoeVersion = "2.4.3",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -533,7 +533,7 @@ using System.Threading;", valuesController);
                 Dependencies = "Actuators",
                 SteeltoeVersion = "2.4.3",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -550,7 +550,7 @@ using System.Threading;", valuesController);
                 Dependencies = "Actuators",
                 SteeltoeVersion = "2.4.3",
                 TemplateShortName = templateName,
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -569,7 +569,7 @@ using System.Threading;", valuesController);
                     Dependencies = "Actuators",
                     SteeltoeVersion = "2.4.2",
                     TemplateShortName = templateName,
-                    DotnetTemplateVersion = DotnetTemplateVersion.V3,
+                    TemplateVersion = DotnetTemplateVersion.V3,
                 });
             });
         }
@@ -584,7 +584,7 @@ using System.Threading;", valuesController);
             {
                 TemplateShortName = templateName,
                 ProjectName = "Foo.Bar",
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;

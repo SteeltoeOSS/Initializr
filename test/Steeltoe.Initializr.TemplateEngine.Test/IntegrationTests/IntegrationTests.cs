@@ -138,7 +138,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
                 Dependencies = depString,
                 TemplateShortName = templateName,
                 ProjectName = "Foo.Bar",
-                DotnetTemplateVersion = version,
+                TemplateVersion = version,
             });
 
             var zip = new ZipArchive(new MemoryStream(archive));

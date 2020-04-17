@@ -133,7 +133,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine
 
             var templateShortName = string.IsNullOrEmpty(model.TemplateShortName) ? DEFAULT_TEMPLATE : model.TemplateShortName;
 
-            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, model.DotnetTemplateVersion, EnvSettings);
+            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, model.TemplateVersion, EnvSettings);
             if (templateInfo == null)
             {
                 throw new Exception($"Could not find template with shortName: {templateShortName} ");

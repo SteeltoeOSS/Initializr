@@ -43,7 +43,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
             return string.IsNullOrEmpty(Dependencies) ? null : Dependencies.ToLower().Split(',');
         }
 
-        public DotnetTemplateVersion DotnetTemplateVersion
+        public DotnetTemplateVersion TemplateVersion
         {
             get
             {
