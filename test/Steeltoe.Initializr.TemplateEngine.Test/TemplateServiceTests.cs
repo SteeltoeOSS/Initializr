@@ -452,7 +452,7 @@ using System.Threading;", valuesController);
             });
 
             var fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
-            var aspnetCoreVersion = version == DotnetTemplateVersion.V3 ? "3.1.0" : "2.2.0";
+            var aspnetCoreVersion = version == DotnetTemplateVersion.V3 ? "3.1.0" : "2.1.1";
 
             Assert.Contains($@"<PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""{aspnetCoreVersion}"" />", fileContents);
 
@@ -594,7 +594,7 @@ using System.Threading;", valuesController);
             Assert.DoesNotContain("AddCloudFoundryActuators", startUpContents);
 
             var projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
-            var targetFramework = version == DotnetTemplateVersion.V3 ? "netcoreapp3.1" : "netcoreapp2.2";
+            var targetFramework = version == DotnetTemplateVersion.V3 ? "netcoreapp3.1" : "netcoreapp2.1";
             Assert.Contains($"<TargetFramework>{targetFramework}</TargetFramework>", projectFile);
         }
 
@@ -620,28 +620,5 @@ using System.Threading;", valuesController);
             string projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
             Assert.Contains("<TargetFramework>netcoreapp2.1</TargetFramework>", projectFile);
          }
-
-        [Theory]
-        [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_targetVersion22(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
-        {
-            if (version == DotnetTemplateVersion.V3)
-            {
-                return;
-            }
-
-            var files = await templateService.GenerateProjectFiles(new GeneratorModel()
-            {
-                TemplateShortName = templateName,
-                ProjectName = "Foo.Bar",
-                TargetFrameworkVersion = "netcoreapp2.2",
-            });
-
-            var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains("services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);", startUpContents);
-
-            var projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
-            Assert.Contains("<TargetFramework>netcoreapp2.2</TargetFramework>", projectFile);
-        }
     }
 }

@@ -133,11 +133,7 @@ namespace Company.WebApplication1
 #if (SQLServer)
              services.AddSqlServerConnection(Configuration);
 #endif
-#if (FrameworkVersion == "netcoreapp2.2")
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-#else
             services.AddMvc();
-#endif
 
         }
 

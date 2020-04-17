@@ -109,18 +109,18 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             };
             var dv = new Dictionary<string, string>
             {
-                { "TargetFrameworkVersion", "netcoreapp2.2" },
+                { "TargetFrameworkVersion", "netcoreapp2.1" },
             };
             var calcParam = new CalculatedParam
             {
                 Name = "AspNetCoreVersion",
-                Expression = "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp2.2\"? \"2.2.0\": null",
+                Expression = "dataView => dataView[\"TargetFrameworkVersion\"]==\"netcoreapp2.1\"? \"2.1.1\": null",
                 ExpressionType = ExpressionTypeEnum.Bool,
             };
 
             var expression = new StringExpression(_logger, calcParam, config);
             var result = await expression.EvaluateExpressionAsync(dv);
-            Assert.Equal("2.2.0", result);
+            Assert.Equal("2.1.1", result);
         }
 
         [Fact]
@@ -183,18 +183,18 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             };
             var dv = new Dictionary<string, string>
             {
-                { "TargetFrameworkVersion", "netcoreapp2.2" },
+                { "TargetFrameworkVersion", "netcoreapp2.1" },
             };
             var calcParam = new CalculatedParam
             {
                 Name = "AspNetCoreVersion",
-                Expression = "TargetFrameworkVersion,netcoreapp2.2=2.2.0,netcoreapp2.1=2.1.1,default=False",
+                Expression = "TargetFrameworkVersion,netcoreapp2.1=2.1.1,default=False",
                 ExpressionType = ExpressionTypeEnum.Case,
             };
 
             var expression = new CaseExpression(_logger, calcParam, config);
             var result = await expression.EvaluateExpressionAsync(dv);
-            Assert.Equal("2.2.0", result);
+            Assert.Equal("2.1.1", result);
         }
 
         [Fact]
