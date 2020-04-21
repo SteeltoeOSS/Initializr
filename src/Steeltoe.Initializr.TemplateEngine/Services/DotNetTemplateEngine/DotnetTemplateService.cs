@@ -29,7 +29,7 @@ using Steeltoe.Initializr.TemplateEngine.Models;
 
 namespace Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine
 {
-    public class TemplateService : ITemplateService
+    public class DotnetTemplateService : ITemplateService
     {
         public Dictionary<string, string> FriendlyNames { get; set; }
 
@@ -72,16 +72,16 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine
         private readonly string _hivePath;
         private readonly string _outPath;
         private IMemoryCache _memoryCache;
-        private ILogger<TemplateService> _logger;
+        private ILogger<DotnetTemplateService> _logger;
 
-        public TemplateService(IConfiguration configuration, IMemoryCache memoryCache, ILogger<TemplateService> logger)
+        public DotnetTemplateService(IConfiguration configuration, IMemoryCache memoryCache, ILogger<DotnetTemplateService> logger)
             : this(logger)
         {
             _memoryCache = memoryCache;
             configuration.Bind(this); // Get friendlyNames
         }
 
-        public TemplateService(ILogger<TemplateService> logger)
+        public DotnetTemplateService(ILogger<DotnetTemplateService> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -192,20 +192,20 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine
             {
                 Name = x.Name,
                 ShortName = x.ShortName,
-                TemplateVersion = x.Identity.EndsWith("2.0") ? TemplateVersion.V2 : TemplateVersion.V3,
+                DotnetTemplateVersion = x.Identity.EndsWith("2.0") ? DotnetTemplateVersion.V2 : DotnetTemplateVersion.V3,
                 Language = x.Parameters?.FirstOrDefault(p => p.Name == "language")?.DefaultValue,
                 Tags = x.Classifications.Aggregate((current, next) => current + "/" + next),
             });
             return items.ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(string shortName, TemplateVersion templateVersion = TemplateVersion.V2)
+        public List<ProjectDependency> GetDependencies(string shortName, DotnetTemplateVersion dotnetTemplateVersion = DotnetTemplateVersion.V2)
         {
             var list = GetAllTemplates();
 
             shortName = string.IsNullOrEmpty(shortName) ? DEFAULT_TEMPLATE : shortName;
 
-            var versionString = templateVersion == TemplateVersion.V2 ? "2.0" : "3.0";
+            var versionString = dotnetTemplateVersion == DotnetTemplateVersion.V2 ? "2.0" : "3.0";
             var selectedTemplate = list.FirstOrDefault(x => x.ShortName == shortName && x.Identity.EndsWith(versionString));
 
             if (selectedTemplate == null)
@@ -253,10 +253,10 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine
             return envSettings;
         }
 
-        private TemplateInfo FindTemplateByShortName(string shortName, TemplateVersion version, IEngineEnvironmentSettings envSettings)
+        private TemplateInfo FindTemplateByShortName(string shortName, DotnetTemplateVersion version, IEngineEnvironmentSettings envSettings)
         {
             var loader = (InitializrSettingsLoader)envSettings.SettingsLoader;
-            var versionString = version == TemplateVersion.V2 ? "2.0" : "3.0";
+            var versionString = version == DotnetTemplateVersion.V2 ? "2.0" : "3.0";
             return loader.UserTemplateCache
                 .TemplateInfo
                 .FirstOrDefault(ti => ti.ShortNameList.Contains(shortName) && ti.Identity.EndsWith(versionString));

@@ -56,7 +56,7 @@ namespace Steeltoe.Initializr.WebApp
             {
                 configuration.RootPath = "ClientApp/build";
             });
-            services.AddSingleton<ITemplateService, TemplateService>();
+            services.AddSingleton<ITemplateService, DotnetTemplateService>();
             services.AddSingleton<ITemplateService, MustacheTemplateService>();
         }
 

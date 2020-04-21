@@ -27,7 +27,7 @@ using Steeltoe.Management.Endpoint;
 using Steeltoe.Management.Hypermedia;
 {{/ActuatorsOrCloudFoundry}}
 {{#CloudFoundry}}
-using Steeltoe.Extensions.Configuration.CloudFoundry; 
+using Steeltoe.Extensions.Configuration.CloudFoundry;
 {{/CloudFoundry}}
 {{#CircuitBreaker}}
 using Steeltoe.CircuitBreaker.Hystrix;
@@ -131,12 +131,7 @@ namespace {{ProjectNameSpace}}
 {{#SQLServer}}
             services.AddSqlServerConnection(Configuration);
 {{/SQLServer}}
-{{#TargetFrameworkVersion22}}
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-{{/TargetFrameworkVersion22}}
-{{^TargetFrameworkVersion22}}
             services.AddMvc();
-{{/TargetFrameworkVersion22}}
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -165,7 +160,7 @@ namespace {{ProjectNameSpace}}
             app.UseCloudFoundryActuators();
             {{/CloudFoundry}}
             {{/Actuators}}
-           
+
             {{#Discovery}}
             app.UseDiscoveryClient();
             {{/Discovery}}

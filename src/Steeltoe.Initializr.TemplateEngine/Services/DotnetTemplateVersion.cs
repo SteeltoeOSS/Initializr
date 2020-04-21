@@ -14,7 +14,7 @@
 
 namespace Steeltoe.Initializr.TemplateEngine.Services
 {
-    public enum TemplateVersion
+    public enum DotnetTemplateVersion
     {
         V2,
         V3,

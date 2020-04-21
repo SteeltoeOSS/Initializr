@@ -240,16 +240,12 @@
       "datatype": "choice",
       "choices": [
         {
-          "choice": "netcoreapp2.2",
-          "description": "Target netcoreapp2.2"
-        },
-        {
           "choice": "netcoreapp2.1",
           "description": "Target netcoreapp2.1"
         }
       ],
       "replaces": "targetframeworkversion",
-      "defaultValue": "netcoreapp2.2"
+      "defaultValue": "netcoreapp2.1"
     },
     "AspNetCoreVersion": {
       "type": "generated",
@@ -262,10 +258,6 @@
           {
             "condition": "(Framework == 'netcoreapp2.1')",
             "value": "2.1.1"
-          },
-          {
-            "condition": "(Framework == 'netcoreapp2.2')",
-            "value": "2.2.0"
           }
         ]
       }
@@ -415,22 +407,13 @@
     "SteeltoeVersion": {
       "type": "parameter",
       "datatype": "choice",
-      "defaultValue": "2.3.0",
+      "defaultValue": "2.4.3",
       "description": "Target the appropriate Steeltoe version",
       "replaces": "SteeltoeVersion",
       "choices": [
-
         {
-          "choice": "2.2.0",
-          "description": "Target Steeltoe version 2.2.0"
-        },
-        {
-          "choice": "2.3.0",
-          "description": "Target Steeltoe version 2.3.0"
-        },
-        {
-          "choice": "2.4.0",
-          "description": "Target Steeltoe version 2.4.0"
+          "choice": "2.4.3",
+          "description": "Target Steeltoe version 2.4.3"
         }
       ]
     },

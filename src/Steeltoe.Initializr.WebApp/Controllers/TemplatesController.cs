@@ -53,9 +53,9 @@ namespace Steeltoe.Initializr.WebApp.Controllers
         }
 
         [Route("dependencies")]
-        public ActionResult GetDependencies([FromQuery(Name = "templateShortName")] string templateShortName, [FromQuery(Name = "templateVersion")] TemplateVersion? templateVersion)
+        public ActionResult GetDependencies([FromQuery(Name = "templateShortName")] string templateShortName, [FromQuery(Name = "templateVersion")] DotnetTemplateVersion? templateVersion)
         {
-            return Ok(_sttemplateService.GetDependencies(templateShortName, templateVersion ?? TemplateVersion.V2));
+            return Ok(_sttemplateService.GetDependencies(templateShortName, templateVersion ?? DotnetTemplateVersion.V2));
         }
 
         [Route("templates")]
@@ -84,10 +84,12 @@ namespace Steeltoe.Initializr.WebApp.Controllers
                 HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
                 var message = ex.Message;
+                /*
                 if (model.TargetFrameworkVersion == "netcoreapp3.1" && model.SteeltoeVersion == "2.3.0")
                 {
                     message = "2.4.0 is the lowest version of Steeltoe that works with netcoreapp3.1\n";
                 }
+                */
 
                 return Content(message);
             }

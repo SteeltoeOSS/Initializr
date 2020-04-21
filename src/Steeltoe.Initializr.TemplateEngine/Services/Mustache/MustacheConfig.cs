@@ -173,11 +173,11 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         private void LoadConfig(string templatePath)
         {
-            var versions = (TemplateVersion[])Enum.GetValues(typeof(TemplateVersion));
+            var versions = (DotnetTemplateVersion[])Enum.GetValues(typeof(DotnetTemplateVersion));
 
             foreach (var version in versions)
             {
-                var versionString = version == TemplateVersion.V2 ? "2.x" : "3.0";
+                var versionString = version == DotnetTemplateVersion.V2 ? "2.x" : "3.x";
                 var path = templatePath + Path.DirectorySeparatorChar + versionString;
                 foreach (var dir in new DirectoryInfo(path).EnumerateDirectories())
                 {

@@ -172,17 +172,12 @@
   "Versions": [
     {
       "Name": "SteeltoeVersion",
-      "DefaultValue": "2.4.0",
+      "DefaultValue": "2.4.3",
       "Description": "Target the appropriate Steeltoe version",
       "choices": [
-        
         {
-          "choice": "3.0.0",
-          "Description": "Target Steeltoe version 3.0.0"
-        },
-        {
-          "choice": "2.4.0",
-          "Description": "Target Steeltoe version 2.4.0"
+          "choice": "2.4.3",
+          "Description": "Target Steeltoe version 2.4.3"
         }
       ]
     },

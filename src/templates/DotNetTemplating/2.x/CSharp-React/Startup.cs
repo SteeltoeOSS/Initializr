@@ -18,7 +18,7 @@ using Microsoft.Extensions.Options;
 #if (Actuators || CloudFoundry)
 using Steeltoe.Management.CloudFoundry;
 using Steeltoe.Management.Endpoint;
-#if (SteeltoeVersion == "2.2.0" || SteeltoeVersion == "2.3.0" || SteeltoeVersion == "2.4.0")
+#if (SteeltoeVersion == "2.4.3")
 using Steeltoe.Management.Hypermedia;
 #endif
 #endif
@@ -72,7 +72,7 @@ namespace Company.WebApplication1
 #if (MySql)
             services.AddMySqlConnection(Configuration);
 #endif
-#if (SteeltoeVersion == "2.2.0" || SteeltoeVersion == "2.3.0" || SteeltoeVersion == "2.4.0")
+#if (SteeltoeVersion == "2.4.3")
 #if (Actuators && CloudFoundry)
 	        services.AddCloudFoundryActuators(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)
@@ -120,11 +120,7 @@ namespace Company.WebApplication1
              services.AddSqlServerConnection(Configuration);
 #endif
 
-#if (FrameworkVersion == "netcoreapp2.2")
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-#else
-            services.AddMvc();
-#endif
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -153,7 +149,7 @@ namespace Company.WebApplication1
 
 #endif
 
-#if (SteeltoeVersion == "2.2.0" || SteeltoeVersion == "2.3.0" || SteeltoeVersion == "2.4.0")
+#if (SteeltoeVersion == "2.4.3")
 #if (Actuators && CloudFoundry)
             app.UseCloudFoundryActuators(MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
 #elif (Actuators)

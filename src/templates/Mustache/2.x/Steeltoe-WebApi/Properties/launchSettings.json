@@ -2,12 +2,12 @@
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     {{#WindowsAuth}}
-    "windowsAuthentication": true, 
-    "anonymousAuthentication": false, 
+    "windowsAuthentication": true,
+    "anonymousAuthentication": false,
     {{/WindowsAuth}}
     {{^WindowsAuth}}
-    "windowsAuthentication": false, 
-    "anonymousAuthentication": true, 
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
     {{/WindowsAuth}}
     "iisExpress": {
       "applicationUrl": "http://localhost:8080",
@@ -28,7 +28,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Company.WebApplication1": {
+    "{{ProjectNameSpace}}": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",
