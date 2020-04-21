@@ -1,7 +1,14 @@
-.vs
-.vscode
-.idea
+# ignore build artifacts
 bin
 obj
-node_modules
+
+# ignore OS X state
 .DS_STORE
+
+# ignore vi/Vim state
+*.swp
+
+# ignore Rider state
+Steeltoe.Initializr.sln.DotSettings.user
+/.idea/
+Steeltoe.Initializr.sln.DotSettings.user
