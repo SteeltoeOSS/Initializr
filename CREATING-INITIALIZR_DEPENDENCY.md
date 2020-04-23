@@ -1,4 +1,4 @@
-## Creating an Initializr Dependency
+## Creating a 3rdparty Library Dependency
 
 Initializr uses a .NET templating engine called [Stubble](https://github.com/StubbleOrg/Stubble), an implementation of [Mustache](http://mustache.github.com/). 
 
