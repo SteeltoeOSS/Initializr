@@ -2,34 +2,37 @@
 
 Initializr uses a .NET templating engine called [Stubble](https://github.com/StubbleOrg/Stubble), an implementation of [Mustache](http://mustache.github.com/). 
 
-When adding a new 3rdparty library dependency, the templating allows a lot of flexibility.  There are many areas project that can be modified when your dependency has been selected and your project has been generated.
+When adding a new 3rdparty library dependency, the templating allows a lot of flexibility. There are many areas project that can be modified when your dependency has been selected and your project has been generated.
 
-Typical files that are modified:
+**In order to add your library dependency `PackageReference` you need to update the following `.csproj` and `.json` files:**
 
 + [Mustache.json](using-mustache%2E.json) - Describe the dependency parameters that the template engine will use to replace
-+ [ReplaceMe.csproj](using-replaceme%2Ecsproj) - Adding `PackageReference` to `csproj` file
++ [ReplaceMe.csproj](using-replaceme%2Ecsproj) - Adding `PackageReference` to `.csproj` file
+
+**Optional files that can be modified:**
+
 + [Startup.cs](using-startup%2Ecs) - Setting your services up to use the dependency
 + [Program.cs](using-program%2Ecs) - Adding the `Using` statements and webhost configuration
 
-Other files that can be modified:
+**Less typical files that can be modified:**
 
 + Root (/) Directory
-  - [Dockerfile](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-React/Dockerfile)
-  - [app.config](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-React/app.config)
-  - [appseetings.json](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-React/appsettings.json) 
+  - [Dockerfile](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-WebApi/Dockerfile)
+  - [app.config](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-WebApi/app.config)
+  - [appsettings.json](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-WebApi/appsettings.json) 
 + Controllers
-  - [ValuesController.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-React/Controllers/ValuesController.cs)
+  - [ValuesController.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-WebApi/Controllers/ValuesController.cs)
 + Models
-  - [ErrorViewModel.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-React/Models/ErrorViewModel.cs)
-  -  [InitializeContext.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-React/Models/InitializeContext.cs)
-  -  [SampleData.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-React/Models/SampleData.cs)
-  -  [TestContext.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-React/Models/TestContext.cs)
+  - [ErrorViewModel.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-WebApi/Models/ErrorViewModel.cs)
+  -  [InitializeContext.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-WebApi/Models/InitializeContext.cs)
+  -  [SampleData.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-WebApi/Models/SampleData.cs)
+  -  [TestContext.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-WebApi/Models/TestContext.cs)
 + Properties
-  - [launchSettings.json](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-React/Properties/launchSettings.json) 
+  - [launchSettings.json](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-WebApi/Properties/launchSettings.json) 
   
 
 ### Using Mustache.json
-The file [mustache.json](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-React/mustache.json) handles several areas related to the templating:
+The file [mustache.json](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-WebApi/mustache.json) handles several areas related to the templating:
 
 + Describing the dependency under the `Params` section
 + Grouping of dependencies by using `CalculatedParams`
@@ -37,7 +40,7 @@ The file [mustache.json](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/
 + Specifying `Versions` for the dependencies
 
 ### Using ReplaceMe.csproj
-The file [ReplaceMe.csproj](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-React/ReplaceMe.csproj) is used to add the `PackageReference`(s) for the dependency.
+The file [ReplaceMe.csproj](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-WebApi/ReplaceMe.csproj) is used to add the `PackageReference`(s) for the dependency.
 
 >Note: For this explanation we will name our example project `MyFirstProject`.
 
@@ -80,7 +83,7 @@ When `MySql` is selected from Initializr, the above snippet will be added to the
 </Project>
 ```
 ### Using Startup.cs
-The file [Startup.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-React/Startup.cs) is used to generate the Startup.cs file based on the selected dependencies. 
+The file [Startup.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-WebApi/Startup.cs) is used to generate the Startup.cs file based on the selected dependencies. 
 
 Some options include adding:
 
@@ -89,7 +92,7 @@ Some options include adding:
 + Application configuration to the [IApplicationBuilder](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.builder.iapplicationbuilder)
 
 ### Using Program.cs
-The file [Program.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-React/Program.cs) is used configure your `WebHostBuilder` with your selected dependency.
+The file [Program.cs](https://github.com/SteeltoeOSS/Initializr/blob/dev/src/templates/Mustache/3.x/Steeltoe-WebApi/Program.cs) is used configure your `WebHostBuilder` with your selected dependency.
 
 Some options include adding:
 
