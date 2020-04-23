@@ -6,13 +6,13 @@ When adding a new 3rdparty library dependency, the templating allows a lot of fl
 
 **In order to add your library dependency `PackageReference` you need to update the following `.csproj` and `.json` files:**
 
-+ [Mustache.json](using-mustache%2E.json) - Describe the dependency parameters that the template engine will use to replace
-+ [ReplaceMe.csproj](using-replaceme%2Ecsproj) - Adding `PackageReference` to `.csproj` file
++ [Mustache.json](using-mustachejson) - Describe the dependency parameters that the template engine will use to replace
++ [ReplaceMe.csproj](using-replacemecsproj) - Adding `PackageReference` to `.csproj` file
 
 **Optional files that can be modified:**
 
-+ [Startup.cs](using-startup%2Ecs) - Setting your services up to use the dependency
-+ [Program.cs](using-program%2Ecs) - Adding the `Using` statements and webhost configuration
++ [Startup.cs](using-startupcs) - Setting your services up to use the dependency
++ [Program.cs](using-programcs) - Adding the `Using` statements and webhost configuration
 
 **Less typical files that can be modified:**
 
