@@ -6,9 +6,9 @@
       "Description": "Steeltoe: Add management endpoints for your application"
     },
     {
-        "Name": "Auth",
-        "DefaultValue": false,
-        "Description": "Add Authentication"
+      "Name": "Auth",
+      "DefaultValue": false,
+      "Description": "Add Authentication"
     },
     {
       "Name": "CircuitBreaker",
@@ -28,9 +28,9 @@
       "Description": "Steeltoe: Add Discovery Client"
     },
     {
-        "Name": "DynamicLogger",
-        "DefaultValue": false,
-        "Description": "Steeltoe: Add Dynamic Logger"
+      "Name": "DynamicLogger",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Dynamic Logger"
     },
     {
       "Name": "AzureSpringCloud",
