@@ -48,9 +48,6 @@ namespace {{ProjectNameSpace}}
         {
             var builder = WebHost.CreateDefaultBuilder(args)
                 .UseDefaultServiceProvider(configure => configure.ValidateScopes = false)
-                {{#AzureSpringCloud}}
-                .UseAzureSpringCloudService()
-                {{/AzureSpringCloud}}
                 {{#CloudFoundry}}
                 .UseCloudFoundryHosting() //Enable listening on a Env provided port
                 {{^ConfigServer}}
@@ -66,6 +63,9 @@ namespace {{ProjectNameSpace}}
                 {{#RandomValueConfig}}
                 .ConfigureAppConfiguration((b) => b.AddRandomValueSource())
                 {{/RandomValueConfig}}
+                {{#AzureSpringCloud}}
+                .UseAzureSpringCloudService()
+                {{/AzureSpringCloud}}
                 .UseStartup<Startup>();
 {{#ActuatorsOrDynamicLogger}}
             builder.ConfigureLogging((hostingContext, loggingBuilder) =>
