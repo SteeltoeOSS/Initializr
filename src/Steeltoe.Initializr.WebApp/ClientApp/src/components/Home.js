@@ -15,7 +15,7 @@ export class Home extends Component {
         templateType: ".NET Templates",
         level2SelectorType: "net",
         lang: "C#",
-        steeltoeVersion: "2.4.3",
+        steeltoeVersion: "2.4.4",
         steeltoeVersionInvalid: "",
         targetFrameworkVersion: "netcoreapp3.1"
     };
@@ -99,7 +99,7 @@ export class Home extends Component {
         <div>
             <form name="form" action="/starter.zip" method="post" autoComplete="off" onSubmit={this.OnSubmit} >
                 <div>
-                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.4.3"]} defaultValue="2.4.3" selectedValue={this.state.steeltoeVersion} onChange={this.handleInputChange} invalidText={this.state.steeltoeVersionInvalid} />
+                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.4.4"]} defaultValue="2.4.4" selectedValue={this.state.steeltoeVersion} onChange={this.handleInputChange} invalidText={this.state.steeltoeVersionInvalid} />
 
                     <div className="line">
                         <div className="left">Project Metadata</div>
