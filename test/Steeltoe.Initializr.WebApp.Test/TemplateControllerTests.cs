@@ -53,7 +53,7 @@ namespace Steeltoe.Initializr.WebApp.Test
         [Fact]
         public async void GetStarterZipTest()
         {
-            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=TestCompany.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.4.3&TemplateVersion=V2&TargetFrameworkVersion=netcoreapp2.1&TemplateShortName=Steeltoe-WebApi");
+            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=TestCompany.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.4.4&TemplateVersion=V2&TargetFrameworkVersion=netcoreapp2.1&TemplateShortName=Steeltoe-WebApi");
 
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
 
@@ -78,7 +78,7 @@ namespace Steeltoe.Initializr.WebApp.Test
         [Fact]
         public async void GetStarterZipValidationTest()
         {
-            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=123.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.4.3&TemplateVersion=V2&TargetFrameworkVersion=netcoreapp2.1&TemplateShortName=Steeltoe-WebApi");
+            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=123.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.4.4&TemplateVersion=V2&TargetFrameworkVersion=netcoreapp2.1&TemplateShortName=Steeltoe-WebApi");
 
             Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
 
@@ -94,7 +94,7 @@ namespace Steeltoe.Initializr.WebApp.Test
                 Dependencies = "Actuator,MySql",
                 Description = "TestDescription",
                 ProjectName = "123.TestProject",
-                SteeltoeVersion = "2.4.3",
+                SteeltoeVersion = "2.4.4",
                 TargetFrameworkVersion = "netcoreapp2.1",
                 TemplateShortName = "Steeltoe-WebApi",
                 TemplateVersion = DotnetTemplateVersion.V2,
@@ -120,7 +120,7 @@ namespace Steeltoe.Initializr.WebApp.Test
                 Dependencies = "Actuator,MySql",
                 Description = "TestDescription",
                 ProjectName = "TestCompany.TestProject",
-                SteeltoeVersion = "2.4.3",
+                SteeltoeVersion = "2.4.4",
                 TargetFrameworkVersion = "netcoreapp2.1",
                 TemplateShortName = "Steeltoe-WebApi",
                 TemplateVersion = DotnetTemplateVersion.V2,
