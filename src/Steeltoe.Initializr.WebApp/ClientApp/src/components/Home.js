@@ -115,7 +115,7 @@ export class Home extends Component {
                             </div>
                         </div>
                     </div>
-                    <DependenciesSelector id="deps" />
+                    <DependenciesSelector id="deps" targetFrameworkVersion={this.state.targetFrameworkVersion}/>
                     <br/>
                 </div>
                 <div className="line row-action">

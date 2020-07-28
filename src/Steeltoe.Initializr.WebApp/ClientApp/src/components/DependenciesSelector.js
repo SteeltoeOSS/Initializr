@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { Typeahead } from 'react-bootstrap-typeahead'; 
+import { Typeahead } from 'react-bootstrap-typeahead';
 import './DependenciesSelector.css'
 import { DependencyViewSelector } from './DependencyViewSelector';
 
 export class DependenciesSelector extends Component {
-   
+
     constructor(props) {
-        
+
         super(props);
         this.MAX_ITEMS = 5;
         this.handleSelection = this.handleSelection.bind(this);
@@ -16,23 +16,44 @@ export class DependenciesSelector extends Component {
             dependencies:[],
             selected_deps: [],
             activeView: 'quicksearch',
+            currentTargetFrameworkVersion: null,
             hover: [false, false, false, false, false]
         }
-        
+
     }
-    componentDidMount() {
-        fetch('/api/templates/dependencies')
+
+    _populateDependencies() {
+        if (this.state.currentTargetFrameworkVersion === this.props.targetFrameworkVersion) {
+            return
+        }
+        this.state.currentTargetFrameworkVersion = this.props.targetFrameworkVersion
+        var depsPath = '/api/templates/dependencies'
+        switch (this.state.currentTargetFrameworkVersion) {
+            case 'netcoreapp2.1':
+                depsPath += '?templateVersion=V2'
+                break
+            case 'netcoreapp3.1':
+                depsPath += '?templateVersion=V3'
+                break
+            default:
+                break
+        }
+        fetch(depsPath)
             .then(response => response.json())
             .then(data => {
                 this.setState({
                     dependencies: data
                 })
             })
-
     }
+
+    componentDidMount() {
+        this._populateDependencies()
+    }
+
     handleViewChange(e) {
         this.setState({ activeView: e })
-    }   
+    }
 
     handleSelection(currentSelection) {
         var nextDeps =  this.state.dependencies.map(x => {
@@ -74,8 +95,9 @@ export class DependenciesSelector extends Component {
             </div>
         ];
     }
- 
+
     render() {
+       this._populateDependencies()
        return (
             <div className="line">
                 <div className="left">
@@ -108,7 +130,7 @@ export class DependenciesSelector extends Component {
                             <div className="col" id="col-dep" >
                                Selected dependencies
                             <div className="dependencies-list dependencies-list-checked" id="list-added">
-                               
+
                                 {
                                     this.state.dependencies.filter(d => d.selected === true).map((item) => {
                                         return <a  href="/#" className="dependency-item checked" onClick={() => { this.handleSelection(item) }}>
@@ -116,7 +138,7 @@ export class DependenciesSelector extends Component {
                                                     <strong> {item.name} </strong>
                                                     <br/>
                                                 <span className="description"> {item.description} </span>
-                                                    
+
                                                 <span className="icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512" className="icon-times"><path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg><svg aria-hidden="true" focusable="false" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="icon-check"><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg></span>
                                                 </div>
                                                 </a>
@@ -145,11 +167,11 @@ export class DependenciesSelector extends Component {
                                         </a>
                                     })
                                 }
-                                
+
                                 </div>
                             </div>
                         </div>
-                    }   
+                    }
                 </div>
             </div>
 
