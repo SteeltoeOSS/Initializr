@@ -68,26 +68,21 @@ export class Home extends Component {
         this.setState(prevState => ({showMore: !prevState.showMore}))
     }
     handleInputChange(name, selectedValue) {
-        this.setState({
-            [name]: selectedValue,
-            "steeltoeVersionInvalid": ""
-        });
-        // if (name === "targetFrameworkVersion" && selectedValue === "netcoreapp3.1" && this.state.steeltoeVersion === "2.3.0") {
-        //     this.setState({
-        //         "steeltoeVersion": "2.4.0",
-        //         [name]: selectedValue,
-        //         "steeltoeVersionInvalid": ""
-        //     })
-        // }
-        // else if(name === "steeltoeVersion" && selectedValue === "2.3.0" && this.state.targetFrameworkVersion === "netcoreapp3.1"){
-        //     this.setState({
-        //         "steeltoeVersion": "2.4.0",
-        //         "steeltoeVersionInvalid": "2.4.0 is the lowest version compatible with netcoreapp3.1",
-        //     })
-        // }
-        // else {
-        // ....
-        // }
+        if (name === "steeltoeVersion" && selectedValue === "3.0.0-m3" && this.state.targetFrameworkVersion === "netcoreapp2.1") {
+            this.setState({
+                "steeltoeVersionInvalid": "3.0.0-m3 is not compatible with netcoreapp2.1",
+            })
+        }
+        else if (name === "targetFrameworkVersion" && selectedValue === "netcoreapp2.1" && this.state.steeltoeVersion === "3.0.0-m3") {
+            this.setState({
+                "steeltoeVersionInvalid": "3.0.0-m3 is not compatible with netcoreapp2.1",
+            })
+        } else {
+            this.setState({
+                [name]: selectedValue,
+                "steeltoeVersionInvalid": ""
+            });
+        }
        // console.log("parent setting hanglechange" , name, selectedValue)
     }
 
@@ -99,7 +94,7 @@ export class Home extends Component {
         <div>
             <form name="form" action="/starter.zip" method="post" autoComplete="off" onSubmit={this.OnSubmit} >
                 <div>
-                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.4.4"]} defaultValue="2.4.4" selectedValue={this.state.steeltoeVersion} onChange={this.handleInputChange} invalidText={this.state.steeltoeVersionInvalid} />
+                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.4.4", "3.0.0-m3"]} defaultValue="2.4.4" selectedValue={this.state.steeltoeVersion} onChange={this.handleInputChange} invalidText={this.state.steeltoeVersionInvalid} />
 
                     <div className="line">
                         <div className="left">Project Metadata</div>

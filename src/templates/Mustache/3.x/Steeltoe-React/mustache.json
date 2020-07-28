@@ -178,6 +178,10 @@
         {
           "choice": "2.4.4",
           "Description": "Target Steeltoe version 2.4.4"
+        },
+        {
+            "choice": "3.0.0-m2",
+            "Description": "Target Steeltoe version 3.0.0-m3"
         }
       ]
     },
