@@ -15,17 +15,18 @@ export class RightInputSelector extends Component {
         let hrefLink = '#';
         return (
             <div className="control"><label>{this.props.title}</label>
-            <div className="radios">
-                        {
-                            this.props.values.map((item, i ) => {
-                                return <div id={"rdio" + i} key= { "rdio"+i }  className={'radio ' + (this.props.selectedValue === item ? 'active' : '')} onClick={this.handleChange}>
-                                            <a href={hrefLink} data-value={item}>{item}</a>
-                                        </div>
+                <div className="radios">
+                    {
+                        this.props.values.map((item, i ) => {
+                            return <div id={"rdio" + i} key= { "rdio"+i }  className={'radio ' + (this.props.selectedValue === item ? 'active' : '')} onClick={this.handleChange}>
+                                <a href={hrefLink} data-value={item}>{item}</a>
+                            </div>
                             })
                     }
                     <input type="hidden" name={this.props.name} value={this.props.selectedValue} />
-                    </div>
                 </div>
+                <span  style={{display: this.props.invalidText? "block": "none" , "color": "red"}} > {this.props.invalidText} </span>
+            </div>
         );
     }
 }
