@@ -62,7 +62,7 @@ Get Dependencies:
     curl https://start.steeltoe.io/api/templates/dependencies | jq .
 
 Get Versions:
-    curl https://start.steeeltoe.io/api/templates/templates | jq .
+    curl https://start.steeltoe.io/api/templates/templates | jq .
 
 Get project:
     curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -o myProject.zip
