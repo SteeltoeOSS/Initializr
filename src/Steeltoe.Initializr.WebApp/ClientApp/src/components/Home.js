@@ -68,9 +68,9 @@ export class Home extends Component {
         this.setState(prevState => ({showMore: !prevState.showMore}))
     }
     handleInputChange(name, selectedValue) {
-        if (name === "steeltoeVersion" && selectedValue === "3.0.0-m3" && this.state.targetFrameworkVersion === "netcoreapp2.1") {
+        if (name === "steeltoeVersion" && selectedValue.startsWith("3.") && this.state.targetFrameworkVersion !== "netcoreapp3.1") {
             this.setState({
-                "steeltoeVersionInvalid": "3.0.0-m3 is not compatible with netcoreapp2.1",
+                "steeltoeVersionInvalid": "Steeltoe 3.x versions require netcoreapp3.1",
             })
         }
         else if (name === "targetFrameworkVersion" && selectedValue === "netcoreapp2.1" && this.state.steeltoeVersion === "3.0.0-m3") {
