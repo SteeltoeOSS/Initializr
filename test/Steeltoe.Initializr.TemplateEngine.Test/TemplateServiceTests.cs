@@ -440,7 +440,7 @@ using System.Threading;", valuesController);
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_SqlServer(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
         {
-            var steeltoeVersion = "2.4.3";
+            var steeltoeVersion = "2.4.4";
 
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
@@ -514,7 +514,7 @@ using System.Threading;", valuesController);
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
-                SteeltoeVersion = "2.4.3",
+                SteeltoeVersion = "2.4.4",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -531,7 +531,7 @@ using System.Threading;", valuesController);
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
-                SteeltoeVersion = "2.4.3",
+                SteeltoeVersion = "2.4.4",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
@@ -548,7 +548,7 @@ using System.Threading;", valuesController);
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
-                SteeltoeVersion = "2.4.3",
+                SteeltoeVersion = "2.4.4",
                 TemplateShortName = templateName,
                 TemplateVersion = version,
             });
