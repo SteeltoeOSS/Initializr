@@ -99,7 +99,7 @@ export class Home extends Component {
                     <InputSelector id="steeltoeVersion"
                                    title="Steeltoe Version"
                                    name="steeltoeVersion"
-                                   values={["2.4.4", "3.0.0-m3"]}
+                                   values={["2.4.4", "3.0.0-rc1"]}
                                    defaultValue="2.4.4"
                                    selectedValue={this.state.steeltoeVersion}
                                    onChange={this.handleInputChange}

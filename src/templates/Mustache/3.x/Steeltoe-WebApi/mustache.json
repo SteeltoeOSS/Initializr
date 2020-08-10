@@ -184,6 +184,10 @@
         {
           "choice": "2.4.4",
           "Description": "Target Steeltoe version 2.4.4"
+        },
+        {
+            "choice": "3.0.0-rc1",
+            "Description": "Target Steeltoe version 3.0.0-rc1"
         }
       ]
     },
@@ -192,10 +196,6 @@
       "DefaultValue": "netcoreapp3.1",
       "Description": "Target the appropriate Dotnet framework version",
       "choices": [
-        {
-          "Choice": "netcoreapp3.0",
-          "Description": "Target Dotnet framework version 3.0"
-        },
         {
           "Choice": "netcoreapp3.1",
           "Description": "Target Dotnet framework version 3.1"
