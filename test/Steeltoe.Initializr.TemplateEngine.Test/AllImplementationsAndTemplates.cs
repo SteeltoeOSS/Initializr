@@ -40,7 +40,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             };
             var templateNames = new string[]
             {
-                "Steeltoe-React",
+                // "Steeltoe-React",
                 "Steeltoe-WebApi",
             };
             var templateVersions = (DotnetTemplateVersion[])Enum.GetValues(typeof(DotnetTemplateVersion));

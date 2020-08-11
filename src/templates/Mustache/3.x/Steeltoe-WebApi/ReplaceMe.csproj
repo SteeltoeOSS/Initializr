@@ -21,63 +21,71 @@
     {{#RequiresHttps}}
     <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="{{AspNetCoreVersion}}" />
     {{/RequiresHttps}}
-    {{#AzureSpringCloud}}
-    <PackageReference Include="Microsoft.Azure.SpringCloud.Client" Version="1.0.0-alpha.1" />
-    {{/AzureSpringCloud}}
-    {{#CloudFoundry}}
-    <PackageReference Include="Steeltoe.Extensions.Configuration.CloudFoundryCore"  Version="{{SteeltoeVersion}}" />
-    {{/CloudFoundry}}
-    {{#ConfigServer}}
-    <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="{{SteeltoeVersion}}" />
-    {{/ConfigServer}}
-    {{#PlaceholderConfig}}
-    <PackageReference Include="Steeltoe.Extensions.Configuration.PlaceholderCore" Version="{{SteeltoeVersion}}" />
-    {{/PlaceholderConfig}}
-    {{#RandomValueConfig}}
-    <PackageReference Include="Steeltoe.Extensions.Configuration.RandomValueBase" Version="{{SteeltoeVersion}}" />
-    {{/RandomValueConfig}}
-    {{#ActuatorsOrCloudFoundry}}
-    <PackageReference Include="Steeltoe.Management.ExporterCore"  Version="{{SteeltoeVersion}}"/>
-    <PackageReference Include="Steeltoe.Management.CloudFoundryCore" Version="{{SteeltoeVersion}}" />
-    {{/ActuatorsOrCloudFoundry}}
-    {{#CircuitBreaker}}
-    <PackageReference Include="Steeltoe.CircuitBreaker.HystrixCore" Version="{{SteeltoeVersion}}" />
-    {{/CircuitBreaker}}
+    {{#AnyEFCore}}
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="{{AspNetCoreVersion}}" />
+    {{/AnyEFCore}}
+    {{#MongoDB}}
+    <PackageReference Include="MongoDB.Driver" Version="{{MongoDBVersion}}" />
+    {{/MongoDB}}
     {{#MySql}}
     <PackageReference Include="MySql.Data" Version="{{MySqlVersion}}" />
     {{/MySql}}
     {{#Postgres}}
     <PackageReference Include="Npgsql" Version="{{NpgSqlVersion}}" />
     {{/Postgres}}
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    {{#CircuitBreaker}}
+    <PackageReference Include="Steeltoe.CircuitBreaker.HystrixCore" Version="{{SteeltoeVersion}}" />
+    {{/CircuitBreaker}}
+    {{#CloudFoundry}}
+    <PackageReference Include="Steeltoe.Common.Hosting"  Version="{{SteeltoeVersion}}" />
+    {{/CloudFoundry}}
+    {{#AnyConnector}}
+    <PackageReference Include="Steeltoe.Connector.ConnectorCore"  Version="{{SteeltoeVersion}}"/>
+    <PackageReference Include="Steeltoe.Connector.CloudFoundry"  Version="{{SteeltoeVersion}}"/>
+    {{/AnyConnector}}
+    {{#AnyEFCore}}
+    <PackageReference Include="Steeltoe.Connector.EFCore"  Version="{{SteeltoeVersion}}" />
+    {{/AnyEFCore}}
+    {{#SQLServer}}
+    <PackageReference Include="Steeltoe.Connector.EFCore"  Version="{{SteeltoeVersion}}" />
+    {{/SQLServer}}
     {{#Discovery}}
     <PackageReference Include="Steeltoe.Discovery.ClientCore" Version="{{SteeltoeVersion}}"/>
     {{/Discovery}}
-    {{#SQLServer}}
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="{{AspNetCoreVersion}}" />
-    {{/SQLServer}}
+    {{#CloudFoundry}}
+    <PackageReference Include="Steeltoe.Extensions.Configuration.CloudFoundryCore"  Version="{{SteeltoeVersion}}" />
+    {{/CloudFoundry}}
+    {{#PlaceholderConfig}}
+    <PackageReference Include="Steeltoe.Extensions.Configuration.PlaceholderCore" Version="{{SteeltoeVersion}}" />
+    {{/PlaceholderConfig}}
+    {{#ActuatorsOrCloudFoundry}}
+    <PackageReference Include="Steeltoe.Extensions.Logging.DynamicSerilogCore" Version="{{SteeltoeVersion}}" />
+    {{/ActuatorsOrCloudFoundry}}
+    {{#DynamicLogger}}
+    <PackageReference Include="Steeltoe.Extensions.Logging.DynamicSerilogCore" Version="{{SteeltoeVersion}}" />
+    {{/DynamicLogger}}
+    {{#ActuatorsOrCloudFoundry}}
+    <PackageReference Include="Steeltoe.Management.CloudFoundryCore" Version="{{SteeltoeVersion}}" />
+    {{/ActuatorsOrCloudFoundry}}
+    {{#ConfigServer}}
+    <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="{{SteeltoeVersion}}" />
+    {{/ConfigServer}}
+    {{#RandomValueConfig}}
+    <PackageReference Include="Steeltoe.Extensions.Configuration.RandomValueBase" Version="{{SteeltoeVersion}}" />
+    {{/RandomValueConfig}}
+    {{#AzureSpringCloud}}
+    <PackageReference Include="Microsoft.Azure.SpringCloud.Client" Version="1.0.0-alpha.1" />
+    {{/AzureSpringCloud}}
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     {{#Redis}}
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="3.1.0" />
     {{/Redis}}
-    {{#AnyEFCore}}
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="{{AspNetCoreVersion}}" />
-    <PackageReference Include="Steeltoe.CloudFoundry.Connector.EFCore"  Version="{{SteeltoeVersion}}" />
-    {{/AnyEFCore}}
-    {{#AnyConnector}}
-    <PackageReference Include="Steeltoe.CloudFoundry.ConnectorCore"  Version="{{SteeltoeVersion}}"/>
-    {{/AnyConnector}}
     {{#PostgresEFCore}}
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"  Version="3.1.0" />
     {{/PostgresEFCore}}
-    {{#MongoDB}}
-    <PackageReference Include="MongoDB.Driver" Version="{{MongoDBVersion}}" />
-    {{/MongoDB}}
     {{#RabbitMQ}}
     <PackageReference Include="RabbitMQ.Client"  Version="{{RabbitMQVersion}}" />
     {{/RabbitMQ}}
-    {{#DynamicLogger}}
-    <PackageReference Include="Steeltoe.Extensions.Logging.DynamicLogger" Version="{{SteeltoeVersion}}"/>
-    {{/DynamicLogger}}
   </ItemGroup>
   {{#CircuitBreaker}}
   <ItemGroup Condition="'$(BUILD)' == ''">

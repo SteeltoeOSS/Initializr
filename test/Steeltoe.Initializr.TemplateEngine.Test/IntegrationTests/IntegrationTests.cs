@@ -21,6 +21,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Steeltoe.Initializr.TemplateEngine.Models;
 using Steeltoe.Initializr.TemplateEngine.Services;
 using Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine;
@@ -129,16 +130,72 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
             return returnValue;
         }
 
-        private async Task CreateTemplate_Test(ITemplateService templateService, string templateName, DotnetTemplateVersion version, string depString)
+        /*
+        [Theory]
+        [InlineData("Actuators")]
+        [InlineData("CircuitBreaker")]
+        [InlineData("CloudFoundry")]
+        [InlineData("Discovery")]
+        [InlineData("DynamicLogger")]
+        [InlineData("MongoDB")]
+        [InlineData("MySql")]
+        [InlineData("MySqlEFCore")]
+        [InlineData("OAuthConnector")]
+        [InlineData("Postgres")]
+        [InlineData("PostgresEFCore")]
+        [InlineData("RabbitMQ")]
+        [InlineData("Redis")]
+        [InlineData("SQLServer")]
+        [InlineData("ConfigServer")]
+        [InlineData("PlaceholderConfig")]
+        [InlineData("RandomValueConfig")]
+        [InlineData("Dockerfile")]
+        public async Task TestBuildSteeltoe2(string dependency)
         {
-            _testOutputHelper.WriteLine($"testing  dep: --" + depString);
+            var templateService = new MustacheTemplateService(new NullLogger<MustacheTemplateService>());
+            await CreateTemplate_Test(templateService, "Steeltoe-WebApi", DotnetTemplateVersion.V2, dependency);
+        }
+        */
 
-            var archive = await templateService.GenerateProjectArchiveAsync(new GeneratorModel()
+        /*
+        [Theory]
+        [InlineData("Actuators")]
+        [InlineData("CircuitBreaker")]
+        [InlineData("AzureSpringCloud")]
+        [InlineData("CloudFoundry")]
+        [InlineData("Discovery")]
+        [InlineData("DynamicLogger")]
+        [InlineData("MongoDB")]
+        [InlineData("MySql")]
+        [InlineData("MySqlEFCore")]
+        [InlineData("OAuthConnector")]
+        [InlineData("Postgres")]
+        [InlineData("PostgresEFCore")]
+        [InlineData("RabbitMQ")]
+        [InlineData("Redis")]
+        [InlineData("SQLServer")]
+        [InlineData("ConfigServer")]
+        [InlineData("PlaceholderConfig")]
+        [InlineData("RandomValueConfig")]
+        [InlineData("Dockerfile")]
+        public async Task TestBuildSteeltoe3(string dependency)
+        {
+            var templateService = new MustacheTemplateService(new NullLogger<MustacheTemplateService>());
+            await CreateTemplate_Test(templateService, "Steeltoe-WebApi", DotnetTemplateVersion.V3, dependency, "3.0.0-rc1");
+        }
+        */
+
+        private async Task CreateTemplate_Test(ITemplateService service, string template, DotnetTemplateVersion dotnet, string dependency, string steeltoe = "2.4.4")
+        {
+            _testOutputHelper.WriteLine($"testing Steeltoe {steeltoe} with {dependency}");
+
+            var archive = await service.GenerateProjectArchiveAsync(new GeneratorModel()
             {
-                Dependencies = depString,
-                TemplateShortName = templateName,
+                Dependencies = dependency,
+                TemplateShortName = template,
                 ProjectName = "Foo.Bar",
-                TemplateVersion = version,
+                TemplateVersion = dotnet,
+                SteeltoeVersion = steeltoe,
             });
 
             var zip = new ZipArchive(new MemoryStream(archive));
@@ -158,7 +215,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
             var output = process.StandardOutput.ReadToEnd();
             Assert.True(
                 output.Contains("Build succeeded."),
-                $"Error compiling {depString}. \n {output}");
+                $"Error compiling {dependency}. \n {output}");
         }
     }
 }

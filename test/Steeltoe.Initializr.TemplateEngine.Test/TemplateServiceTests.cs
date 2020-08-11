@@ -86,9 +86,12 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
-            Assert.Contains("using Steeltoe.Management.Hypermedia;", startUpContents);
-            Assert.Contains("using Steeltoe.Management.Endpoint;", startUpContents);
             Assert.Contains("using Steeltoe.Management.CloudFoundry;", startUpContents);
+            if (!version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains("using Steeltoe.Management.Endpoint;", startUpContents);
+                Assert.Contains("using Steeltoe.Management.Hypermedia;", startUpContents);
+            }
             Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
         }
 
@@ -161,7 +164,14 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             });
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
-            Assert.Contains("using Steeltoe.CloudFoundry.Connector.MySql;", startUpContents);
+            if (version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains("using Steeltoe.Connector.MySql;", startUpContents);
+            }
+            else
+            {
+                Assert.Contains("using Steeltoe.CloudFoundry.Connector.MySql;", startUpContents);
+            }
 
             Assert.Contains(".AddMySqlConnection(", startUpContents);
 
@@ -191,8 +201,16 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains("using Steeltoe.CloudFoundry.Connector.MySql;", startUpContents);
-            Assert.Contains("using Steeltoe.CloudFoundry.Connector.MySql.EFCore;", startUpContents);
+            if (version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains("using Steeltoe.Connector.MySql;", startUpContents);
+                Assert.Contains("using Steeltoe.Connector.MySql.EFCore;", startUpContents);
+            }
+            else
+            {
+                Assert.Contains("using Steeltoe.CloudFoundry.Connector.MySql;", startUpContents);
+                Assert.Contains("using Steeltoe.CloudFoundry.Connector.MySql.EFCore;", startUpContents);
+            }
         }
 
         [Theory]
@@ -207,7 +225,14 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains("using Steeltoe.CloudFoundry.Connector.PostgreSql;", startUpContents);
+            if (version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains("using Steeltoe.Connector.PostgreSql;", startUpContents);
+            }
+            else
+            {
+                Assert.Contains("using Steeltoe.CloudFoundry.Connector.PostgreSql;", startUpContents);
+            }
             Assert.Contains("services.AddPostgresConnection(Configuration);", startUpContents);
 
             string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
@@ -286,11 +311,19 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             });
 
             string programContents = files.Find(x => x.Key == "Program.cs").Value;
-            Assert.Contains(".UseCloudFoundryHosting()", programContents);
-            Assert.Contains(".AddCloudFoundry()", programContents);
+
+            if (version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains(".UseCloudHosting()", programContents);
+                Assert.Contains(".AddCloudFoundryConfiguration()", programContents);
+            }
+            else
+            {
+                Assert.Contains(".UseCloudFoundryHosting()", programContents);
+                Assert.Contains(".AddCloudFoundry()", programContents);
+            }
 
             string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
-            Assert.Contains("using Steeltoe.Extensions.Configuration.CloudFoundry;", valuesController);
             Assert.Contains("using Microsoft.Extensions.Options;", valuesController);
 
             Assert.Contains(@"public ValuesController(ILogger<ValuesController> logger, IOptions<CloudFoundryApplicationOptions> appOptions, IOptions<CloudFoundryServicesOptions> serviceOptions)", valuesController);
@@ -314,7 +347,14 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             Assert.Contains(files, file => file.Key.EndsWith("ValuesController.cs"));
 
             string programContents = files.Find(x => x.Key == "Program.cs").Value;
-            Assert.Contains("using Steeltoe.Extensions.Configuration.PlaceholderCore;", programContents);
+            if (version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains("using Steeltoe.Extensions.Configuration.Placeholder;", programContents);
+            }
+            else
+            {
+                Assert.Contains("using Steeltoe.Extensions.Configuration.PlaceholderCore;", programContents);
+            }
 
             string valuesController =
                 files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
@@ -339,7 +379,14 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains("using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;", startUpContents);
+            if (version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains("using Steeltoe.Connector.PostgreSql.EFCore;", startUpContents);
+            }
+            else
+            {
+                Assert.Contains("using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;", startUpContents);
+            }
 
             Assert.Contains("services.AddDbContext<MyDbContext>(options => options.UseNpgsql(Configuration));", startUpContents);
         }
@@ -356,7 +403,14 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains("using Steeltoe.CloudFoundry.Connector.RabbitMQ;", startUpContents);
+            if (version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains("using Steeltoe.Connector.RabbitMQ;", startUpContents);
+            }
+            else
+            {
+                Assert.Contains("using Steeltoe.CloudFoundry.Connector.RabbitMQ;", startUpContents);
+            }
             Assert.Contains("services.AddRabbitMQConnection(Configuration);", startUpContents);
 
             string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
@@ -386,7 +440,14 @@ using System.Threading;", valuesController);
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains("using Steeltoe.CloudFoundry.Connector.Redis", startUpContents);
+            if (version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains("using Steeltoe.Connector.Redis", startUpContents);
+            }
+            else
+            {
+                Assert.Contains("using Steeltoe.CloudFoundry.Connector.Redis", startUpContents);
+            }
             Assert.Contains("services.AddDistributedRedisCache(Configuration);", startUpContents);
             Assert.Contains("// services.AddRedisConnectionMultiplexer(Configuration);", startUpContents);
 
@@ -409,7 +470,14 @@ using System.Threading;", valuesController);
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains("using Steeltoe.CloudFoundry.Connector.MongoDb;", startUpContents);
+            if (version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains("using Steeltoe.Connector.MongoDb;", startUpContents);
+            }
+            else
+            {
+                Assert.Contains("using Steeltoe.CloudFoundry.Connector.MongoDb;", startUpContents);
+            }
             Assert.Contains("services.AddMongoClient(Configuration);", startUpContents);
 
             string valuesController = files.Find(x => x.Key == $"Controllers{Path.DirectorySeparatorChar}ValuesController.cs").Value;
@@ -432,7 +500,14 @@ using System.Threading;", valuesController);
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains("using Steeltoe.CloudFoundry.Connector.OAuth;", startUpContents);
+            if (version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains("using Steeltoe.Connector.OAuth;", startUpContents);
+            }
+            else
+            {
+                Assert.Contains("using Steeltoe.CloudFoundry.Connector.OAuth;", startUpContents);
+            }
             Assert.Contains("services.AddOAuthServiceOptions(Configuration);", startUpContents);
         }
 
@@ -453,12 +528,18 @@ using System.Threading;", valuesController);
 
             var fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
             var aspnetCoreVersion = version == DotnetTemplateVersion.V3 ? "3.1.0" : "2.1.1";
-
-            Assert.Contains($@"<PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""{aspnetCoreVersion}"" />", fileContents);
-
             var startup = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains(@"using Steeltoe.CloudFoundry.Connector.SqlServer;", startup);
-            Assert.Contains(@"services.AddSqlServerConnection(Configuration);", startup);
+
+            if (version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains(@"using Steeltoe.Connector.SqlServer.EFCore;", startup);
+            }
+            else
+            {
+                Assert.Contains($@"<PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""{aspnetCoreVersion}"" />", fileContents);
+                Assert.Contains(@"using Steeltoe.CloudFoundry.Connector.SqlServer;", startup);
+                Assert.Contains(@"services.AddSqlServerConnection(Configuration);", startup);
+            }
 
             if (!templateName.Contains("React"))
             { // TODO: Add demo for react app
@@ -480,12 +561,20 @@ using System.Threading;", valuesController);
             });
 
             string fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
-            Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=", fileContents);
-
             string programFileContents = files.Find(x => x.Key == "Program.cs").Value;
-            Assert.Contains(@"using Steeltoe.Extensions.Logging;", programFileContents);
-            Assert.Contains(@"loggingBuilder.AddConfiguration(hostingContext.Configuration.GetSection(""Logging""));", programFileContents);
-            Assert.Contains(@"loggingBuilder.AddDynamicConsole();", programFileContents);
+            if (version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicSerilogCore"" Version=", fileContents);
+                Assert.Contains(@"using Steeltoe.Extensions.Logging.DynamicSerilog", programFileContents);
+                Assert.Contains(@"ConfigureLogging((context, builder) => builder.AddSerilogDynamicConsole())", programFileContents);
+            }
+            else
+            {
+                Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=", fileContents);
+                Assert.Contains(@"using Steeltoe.Extensions.Logging;", programFileContents);
+                Assert.Contains(@"loggingBuilder.AddConfiguration(hostingContext.Configuration.GetSection(""Logging""));", programFileContents);
+                Assert.Contains(@"loggingBuilder.AddDynamicConsole();", programFileContents);
+            }
         }
 
         [Theory]
@@ -501,9 +590,17 @@ using System.Threading;", valuesController);
                 TemplateVersion = version,
             });
             string programFileContents = files.Find(x => x.Key == "Program.cs").Value;
-            Assert.Contains("using Steeltoe.Extensions.Configuration;", programFileContents);
+            if (version.Equals(DotnetTemplateVersion.V3))
+            {
+                Assert.Contains("using Steeltoe.Common.Hosting;", programFileContents);
+                Assert.Contains(".UseCloudHosting(", programFileContents);
+            }
+            else
+            {
+                Assert.Contains("using Steeltoe.Extensions.Configuration;", programFileContents);
+                Assert.Contains(".UseCloudFoundryHosting(", programFileContents);
+            }
             Assert.Contains("using Steeltoe.Extensions.Configuration.CloudFoundry;", programFileContents);
-            Assert.Contains(".UseCloudFoundryHosting(", programFileContents);
             Assert.Contains(".AddCloudFoundry", programFileContents);
         }
 
