@@ -177,7 +177,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
             foreach (var version in versions)
             {
-                var versionString = version == DotnetTemplateVersion.V2 ? "2.x" : "3.x";
+                var versionString = version == DotnetTemplateVersion.V2 ? "netcoreapp2.1" : "netcoreapp3.1";
                 var path = templatePath + Path.DirectorySeparatorChar + versionString;
                 foreach (var dir in new DirectoryInfo(path).EnumerateDirectories())
                 {
