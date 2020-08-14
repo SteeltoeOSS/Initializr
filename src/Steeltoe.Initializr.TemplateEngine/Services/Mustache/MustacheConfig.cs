@@ -96,17 +96,17 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                     }
                 }
 
-                if (model.TargetFrameworkVersion != null)
+                if (model.TargetFramework != null)
                 {
                     const string targetFrameworkName = "TargetFrameworkVersion";
                     var targetFramework = mustacheConfig.Versions.FirstOrDefault(v => v.Name == targetFrameworkName);
 
                     var validChoice =
-                        targetFramework?.Choices.Any(choice => model.TargetFrameworkVersion.ToLower() == choice.Choice);
+                        targetFramework?.Choices.Any(choice => model.TargetFramework.ToLower() == choice.Choice);
 
                     if (validChoice == true)
                     {
-                        dataView[targetFrameworkName] = model.TargetFrameworkVersion;
+                        dataView[targetFrameworkName] = model.TargetFramework;
                     }
                 }
 
@@ -132,7 +132,8 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
             return dataView;
         }
 
-        public IEnumerable<SourceFile> GetFilteredSourceSets(Dictionary<string, string> dataView, TemplateKey templateKey)
+        public IEnumerable<SourceFile> GetFilteredSourceSets(Dictionary<string, string> dataView,
+            TemplateKey templateKey)
         {
             var settings = _templateSettings[templateKey];
             var files = settings.SourceSets;
@@ -173,25 +174,27 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         private void LoadConfig(string templatePath)
         {
-            var versions = (DotnetFramework[])Enum.GetValues(typeof(DotnetFramework));
+            var frameworks = new[] {"netcoreapp2.1", "netcoreapp3.1"};
 
-            foreach (var version in versions)
+            foreach (var framework in frameworks)
             {
-                var versionString = version == DotnetFramework.NetCoreApp21 ? "netcoreapp2.1" : "netcoreapp3.1";
-                var path = Path.Join(templatePath, "2.4", versionString);
+                var path = Path.Join(templatePath, "2.4", framework);
                 foreach (var dir in new DirectoryInfo(path).EnumerateDirectories())
                 {
                     var mustacheTemplateSetting = new MustacheTemplateSettings(_logger, dir.FullName);
-                    _templateSettings.Add(new TemplateKey(dir.Name, version), mustacheTemplateSetting);
+                    var frameworkEnum = Enum.Parse<DotnetFramework>(framework.Replace(".", ""), true);
+                    _templateSettings.Add(new TemplateKey(dir.Name, frameworkEnum), mustacheTemplateSetting);
                 }
             }
         }
 
-        private List<InclusionExpression> GetInclusionExpressions(Dictionary<string, string> dataView, MustacheConfigSchema schema) =>
+        private List<InclusionExpression> GetInclusionExpressions(Dictionary<string, string> dataView,
+            MustacheConfigSchema schema) =>
             schema.ConditionalInclusions
                 .Select(x => new InclusionExpression(
                     expression: x.InclusionExpression,
-                    matchesView: dataView.ContainsKey(x.Name) && (dataView[x.Name] is string stringValue && stringValue == "True")))
+                    matchesView: dataView.ContainsKey(x.Name) &&
+                                 (dataView[x.Name] is string stringValue && stringValue == "True")))
                 .ToList();
     }
 }

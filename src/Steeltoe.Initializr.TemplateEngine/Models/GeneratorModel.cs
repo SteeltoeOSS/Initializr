@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Steeltoe.Initializr.TemplateEngine.Services;
 
@@ -21,12 +23,15 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
     public class GeneratorModel
     {
         private string _projectName;
-        private DotnetFramework? _templateVersion;
 
         public string Dependencies { get; set; }
 
         [ProjectNameValidation]
-        public string ProjectName { get => _projectName ?? "steeltoeProject"; set => _projectName = value; }
+        public string ProjectName
+        {
+            get => _projectName ?? "steeltoeProject";
+            set => _projectName = value;
+        }
 
         public string TemplateShortName { get; set; }
 
@@ -36,26 +41,13 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
 
         public string ArchiveName => ProjectName + ".zip";
 
-        public string TargetFrameworkVersion { get; set; }
+        public string TargetFramework { get; set; } = "netcoreapp3.1";
+
+        public DotnetFramework TargetFrameworkEnum => Enum.Parse<DotnetFramework>(TargetFramework.Replace(".", ""), true);
 
         public string[] GetDependencies()
         {
             return string.IsNullOrEmpty(Dependencies) ? null : Dependencies.ToLower().Split(',');
-        }
-
-        public DotnetFramework Framework
-        {
-            get
-            {
-                if (_templateVersion == null)
-                {
-                    return TargetFrameworkVersion == "netcoreapp3.1" ? DotnetFramework.NetCoreApp31 : DotnetFramework.NetCoreApp21;
-                }
-
-                return _templateVersion.Value;
-            }
-
-            set => _templateVersion = value;
         }
 
         public IEnumerable<string> GetTemplateParameters()

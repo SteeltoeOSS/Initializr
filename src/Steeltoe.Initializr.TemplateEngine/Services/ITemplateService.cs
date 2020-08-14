@@ -26,7 +26,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services
 
         List<TemplateViewModel> GetAvailableTemplates();
 
-        List<ProjectDependency> GetDependencies(string shortName = null, DotnetFramework dotnetFramework = DotnetFramework.NetCoreApp21);
+        List<ProjectDependency> GetDependencies(string shortName = null, DotnetFramework framework = DotnetFramework.NetCoreApp21);
 
         void ClearCache();
     }

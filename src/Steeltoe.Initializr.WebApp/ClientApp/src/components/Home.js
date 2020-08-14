@@ -17,8 +17,8 @@ export class Home extends Component {
         lang: "C#",
         steeltoeVersion: "2.4.4",
         steeltoeVersionInvalid: "",
-        targetFrameworkVersion: "netcoreapp3.1",
-        targetFrameworkVersionInvalid: "",
+        framework: "netcoreapp3.1",
+        frameworkInvalid: "",
     };
     constructor(props) {
         super(props);
@@ -51,7 +51,7 @@ export class Home extends Component {
         ReactGA.event({
             category: 'Generated Project',
             action: 'Net-Framework',
-            label: elements["targetFrameworkVersion"].value
+            label: elements["framework"].value
         });
         //Send events for dependencies
         const deps = elements["dependencies"].value;
@@ -69,20 +69,20 @@ export class Home extends Component {
         this.setState(prevState => ({showMore: !prevState.showMore}))
     }
     handleInputChange(name, selectedValue) {
-        if (name === "steeltoeVersion" && selectedValue.startsWith("3.") && this.state.targetFrameworkVersion !== "netcoreapp3.1") {
+        if (name === "steeltoeVersion" && selectedValue.startsWith("3.") && this.state.framework !== "netcoreapp3.1") {
             this.setState({
                 "steeltoeVersionInvalid": "Steeltoe 3.x requires netcoreapp3.1",
             })
         }
-        else if (name === "targetFrameworkVersion" && selectedValue === "netcoreapp2.1" && !this.state.steeltoeVersion.startsWith("2.")) {
+        else if (name === "framework" && selectedValue === "netcoreapp2.1" && !this.state.steeltoeVersion.startsWith("2.")) {
             this.setState({
-                "targetFrameworkVersionInvalid": "netcoreapp2.1 requires Steeltoe 2.x",
+                "frameworkInvalid": "netcoreapp2.1 requires Steeltoe 2.x",
             })
         } else {
             this.setState({
                 [name]: selectedValue,
                 "steeltoeVersionInvalid": "",
-                "targetFrameworkVersionInvalid": "",
+                "frameworkInvalid": "",
             });
         }
        // console.log("parent setting hanglechange" , name, selectedValue)
@@ -122,17 +122,17 @@ export class Home extends Component {
                                                defaultValue="Demo project for Steeltoe"
                                                tabIndex="2" />
                                     <RightInputSelector title='Target Framework'
-                                                        name="targetFrameworkVersion"
+                                                        name="framework"
                                                         values={["netcoreapp2.1", "netcoreapp3.1"]}
                                                         defaultValue="netcoreapp3.1"
-                                                        selectedValue={this.state.targetFrameworkVersion}
+                                                        selectedValue={this.state.framework}
                                                         onChange={this.handleInputChange}
-                                                        invalidText={this.state.targetFrameworkVersionInvalid} />
+                                                        invalidText={this.state.frameworkInvalid} />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <DependenciesSelector id="deps" targetFrameworkVersion={this.state.targetFrameworkVersion}/>
+                    <DependenciesSelector id="deps" framework={this.state.framework}/>
                     <br/>
                 </div>
                 <div className="line row-action">

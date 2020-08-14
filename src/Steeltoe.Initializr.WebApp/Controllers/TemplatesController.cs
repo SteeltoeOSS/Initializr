@@ -34,7 +34,7 @@ namespace Steeltoe.Initializr.WebApp.Controllers
 
         public TemplatesController(IEnumerable<ITemplateService> services)
         {
-          // _templateService = services.OfType<TemplateService>().FirstOrDefault();
+            // _templateService = services.OfType<TemplateService>().FirstOrDefault();
             _sttemplateService = services.OfType<MustacheTemplateService>().FirstOrDefault();
         }
 
@@ -53,13 +53,17 @@ namespace Steeltoe.Initializr.WebApp.Controllers
         }
 
         [Route("dependencies")]
-        public ActionResult GetDependencies([FromQuery(Name = "templateShortName")] string templateShortName, [FromQuery(Name = "templateVersion")] DotnetFramework? templateVersion)
+        public ActionResult GetDependencies(
+            [FromQuery(Name = "templateShortName")] string templateShortName,
+            [FromQuery(Name = "framework")] string framework = "netcoreapp3.1")
         {
-            return Ok(_sttemplateService.GetDependencies(templateShortName, templateVersion ?? DotnetFramework.NetCoreApp21));
+            var frameworkEnum = Enum.Parse<DotnetFramework>(framework.Replace(".", string.Empty), true);
+            return Ok(_sttemplateService.GetDependencies(templateShortName, frameworkEnum));
         }
 
         [Route("templates")]
-        public ActionResult<IEnumerable<TemplateViewModel>> GetTemplates([FromQuery(Name = "Mustache")] bool useMustache)
+        public ActionResult<IEnumerable<TemplateViewModel>> GetTemplates(
+            [FromQuery(Name = "Mustache")] bool useMustache)
         {
             return _sttemplateService.GetAvailableTemplates();
         }
@@ -81,7 +85,7 @@ namespace Steeltoe.Initializr.WebApp.Controllers
             }
             catch (Exception ex)
             {
-                HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                HttpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
 
                 var message = ex.Message;
                 /*

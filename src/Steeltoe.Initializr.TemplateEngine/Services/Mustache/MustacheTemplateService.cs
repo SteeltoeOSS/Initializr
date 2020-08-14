@@ -56,8 +56,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                 .Configure(settings => settings.AddJsonNet())
                 .Build();
             _logger = logger;
-            _templatePath = AppDomain.CurrentDomain.BaseDirectory + "templates" + Path.DirectorySeparatorChar +
-                            "Mustache";
+            _templatePath = Path.Join(AppDomain.CurrentDomain.BaseDirectory, "templates", "Mustache");
             _mustacheConfig = new MustacheConfig(_logger, _templatePath);
         }
 
@@ -70,11 +69,11 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
         {
             var name = string.IsNullOrEmpty(model.TemplateShortName) ? DefaultTemplateName : model.TemplateShortName;
 
-            var templateKey = new TemplateKey(name, model.Framework);
+            var templateKey = new TemplateKey(name, model.TargetFrameworkEnum);
 
             if (!_mustacheConfig.GetTemplateKeys().Contains(templateKey))
             {
-                throw new InvalidDataException($"Template with Name: {name} and Version: {model.Framework} doesn't exist");
+                throw new InvalidDataException($"Template with Name[{name}] and Framework[{model.TargetFramework}] doesn't exist");
             }
 
             Dictionary<string, string> dataView;
@@ -119,7 +118,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                 .ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(string shortName, DotnetFramework version)
+        public List<ProjectDependency> GetDependencies(string shortName, DotnetFramework framework)
         {
             shortName = string.IsNullOrEmpty(shortName) ? DefaultTemplateName : shortName;
             var list = GetAvailableTemplates();
@@ -131,7 +130,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
             }
 
             // var templatePath = _templatePath + Path.DirectorySeparatorChar + selectedTemplate.Name;
-            var config = _mustacheConfig.GetSchema(new TemplateKey(selectedTemplate.Name, version));
+            var config = _mustacheConfig.GetSchema(new TemplateKey(selectedTemplate.Name, framework));
 
             return config.Params
                 .Where(p => p.Description.ToLower().Contains("steeltoe"))

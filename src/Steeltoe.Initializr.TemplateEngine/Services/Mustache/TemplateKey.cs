@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 {
     public class TemplateKey

@@ -16,28 +16,18 @@ export class DependenciesSelector extends Component {
             dependencies:[],
             selected_deps: [],
             activeView: 'quicksearch',
-            currentTargetFrameworkVersion: null,
+            currentFramework: null,
             hover: [false, false, false, false, false]
         }
 
     }
 
     _populateDependencies() {
-        if (this.state.currentTargetFrameworkVersion === this.props.targetFrameworkVersion) {
+        if (this.state.currentFramework === this.props.framework) {
             return
         }
-        this.state.currentTargetFrameworkVersion = this.props.targetFrameworkVersion
-        var depsPath = '/api/templates/dependencies'
-        switch (this.state.currentTargetFrameworkVersion) {
-            case 'netcoreapp2.1':
-                depsPath += '?templateVersion=V2'
-                break
-            case 'netcoreapp3.1':
-                depsPath += '?templateVersion=V3'
-                break
-            default:
-                break
-        }
+        this.state.currentFramework = this.props.framework
+        var depsPath = '/api/templates/dependencies?framework=' + this.state.currentFramework
         fetch(depsPath)
             .then(response => response.json())
             .then(data => {

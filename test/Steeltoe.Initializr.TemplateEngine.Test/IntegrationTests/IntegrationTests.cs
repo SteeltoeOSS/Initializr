@@ -71,18 +71,18 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
 
         [Theory]
         [MemberData(nameof(GetAllCombinations), typeof(MustacheTemplateService), "Steeltoe-WebApi", DotnetFramework.NetCoreApp21, 1,  DisableDiscoveryEnumeration = true)]
-        public async Task CreateTemplate_Mustache_WebApi_V2_OneAtaTime_Test(ITemplateService templateService, string templateName, DotnetFramework version, string depString)
+        public async Task CreateTemplate_Mustache_WebApi_V2_OneAtaTime_Test(ITemplateService templateService, string templateName, string framework, string depString)
         {
             _testOutputHelper.WriteLine(depString);
-            await CreateTemplate_Test(templateService, templateName, version, depString);
+            await CreateTemplate_Test(templateService, templateName, framework, depString);
         }
 
         [Theory]
         [MemberData(nameof(GetAllCombinations), typeof(MustacheTemplateService), "Steeltoe-WebApi", DotnetFramework.NetCoreApp21, int.MaxValue,  DisableDiscoveryEnumeration = true)]
-        public async Task CreateTemplate_Mustache_WebApi_V2_All_Test(ITemplateService templateService, string templateName, DotnetFramework version, string depString)
+        public async Task CreateTemplate_Mustache_WebApi_V2_All_Test(ITemplateService templateService, string templateName, string framework, string depString)
         {
             _testOutputHelper.WriteLine(depString);
-            await CreateTemplate_Test(templateService, templateName, version, depString);
+            await CreateTemplate_Test(templateService, templateName, framework, depString);
         }
 
         // [Theory]
@@ -185,7 +185,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
         }
         */
 
-        private async Task CreateTemplate_Test(ITemplateService service, string template, DotnetFramework dotnet, string dependency, string steeltoe = "2.4.4")
+        private async Task CreateTemplate_Test(ITemplateService service, string template, string framework, string dependency, string steeltoe = "2.4.4")
         {
             _testOutputHelper.WriteLine($"testing Steeltoe {steeltoe} with {dependency}");
 
@@ -194,7 +194,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
                 Dependencies = dependency,
                 TemplateShortName = template,
                 ProjectName = "Foo.Bar",
-                Framework = dotnet,
+                TargetFramework = framework,
                 SteeltoeVersion = steeltoe,
             });
 

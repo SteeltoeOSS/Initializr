@@ -126,14 +126,14 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine
                 }
             }
 
-            if (!string.IsNullOrEmpty(model.TargetFrameworkVersion))
+            if (!string.IsNullOrEmpty(model.TargetFramework))
             {
-                iParams.Add("Framework", model.TargetFrameworkVersion);
+                iParams.Add("Framework", model.TargetFramework);
             }
 
             var templateShortName = string.IsNullOrEmpty(model.TemplateShortName) ? DEFAULT_TEMPLATE : model.TemplateShortName;
 
-            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, model.Framework, EnvSettings);
+            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, model.TargetFrameworkEnum, EnvSettings);
             if (templateInfo == null)
             {
                 throw new Exception($"Could not find template with shortName: {templateShortName} ");
@@ -199,13 +199,13 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine
             return items.ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(string shortName, DotnetFramework dotnetFramework = DotnetFramework.NetCoreApp21)
+        public List<ProjectDependency> GetDependencies(string shortName, DotnetFramework framework = DotnetFramework.NetCoreApp21)
         {
             var list = GetAllTemplates();
 
             shortName = string.IsNullOrEmpty(shortName) ? DEFAULT_TEMPLATE : shortName;
 
-            var versionString = dotnetFramework == DotnetFramework.NetCoreApp21 ? "2.0" : "3.0";
+            var versionString = framework == DotnetFramework.NetCoreApp21 ? "2.0" : "3.0";
             var selectedTemplate = list.FirstOrDefault(x => x.ShortName == shortName && x.Identity.EndsWith(versionString));
 
             if (selectedTemplate == null)
