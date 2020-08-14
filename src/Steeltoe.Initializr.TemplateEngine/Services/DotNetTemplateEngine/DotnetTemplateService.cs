@@ -133,7 +133,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine
 
             var templateShortName = string.IsNullOrEmpty(model.TemplateShortName) ? DEFAULT_TEMPLATE : model.TemplateShortName;
 
-            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, model.TemplateVersion, EnvSettings);
+            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, model.Framework, EnvSettings);
             if (templateInfo == null)
             {
                 throw new Exception($"Could not find template with shortName: {templateShortName} ");
@@ -192,20 +192,20 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine
             {
                 Name = x.Name,
                 ShortName = x.ShortName,
-                DotnetTemplateVersion = x.Identity.EndsWith("2.0") ? DotnetTemplateVersion.V2 : DotnetTemplateVersion.V3,
+                DotnetFramework = x.Identity.EndsWith("2.0") ? DotnetFramework.NetCoreApp21 : DotnetFramework.NetCoreApp31,
                 Language = x.Parameters?.FirstOrDefault(p => p.Name == "language")?.DefaultValue,
                 Tags = x.Classifications.Aggregate((current, next) => current + "/" + next),
             });
             return items.ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(string shortName, DotnetTemplateVersion dotnetTemplateVersion = DotnetTemplateVersion.V2)
+        public List<ProjectDependency> GetDependencies(string shortName, DotnetFramework dotnetFramework = DotnetFramework.NetCoreApp21)
         {
             var list = GetAllTemplates();
 
             shortName = string.IsNullOrEmpty(shortName) ? DEFAULT_TEMPLATE : shortName;
 
-            var versionString = dotnetTemplateVersion == DotnetTemplateVersion.V2 ? "2.0" : "3.0";
+            var versionString = dotnetFramework == DotnetFramework.NetCoreApp21 ? "2.0" : "3.0";
             var selectedTemplate = list.FirstOrDefault(x => x.ShortName == shortName && x.Identity.EndsWith(versionString));
 
             if (selectedTemplate == null)
@@ -253,10 +253,10 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine
             return envSettings;
         }
 
-        private TemplateInfo FindTemplateByShortName(string shortName, DotnetTemplateVersion version, IEngineEnvironmentSettings envSettings)
+        private TemplateInfo FindTemplateByShortName(string shortName, DotnetFramework version, IEngineEnvironmentSettings envSettings)
         {
             var loader = (InitializrSettingsLoader)envSettings.SettingsLoader;
-            var versionString = version == DotnetTemplateVersion.V2 ? "2.0" : "3.0";
+            var versionString = version == DotnetFramework.NetCoreApp21 ? "2.0" : "3.0";
             return loader.UserTemplateCache
                 .TemplateInfo
                 .FirstOrDefault(ti => ti.ShortNameList.Contains(shortName) && ti.Identity.EndsWith(versionString));

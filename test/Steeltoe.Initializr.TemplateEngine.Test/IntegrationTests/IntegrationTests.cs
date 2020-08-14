@@ -47,7 +47,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
             _loggerFactory = new LoggerFactory();
         }
 
-        public static IEnumerable<object[]> GetAllCombinations(Type templateServiceType, string templateName, DotnetTemplateVersion version, int take)
+        public static IEnumerable<object[]> GetAllCombinations(Type templateServiceType, string templateName, DotnetFramework version, int take)
         {
             ITemplateService templateService;
             if (templateServiceType == typeof(MustacheTemplateService))
@@ -70,16 +70,16 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
         }
 
         [Theory]
-        [MemberData(nameof(GetAllCombinations), typeof(MustacheTemplateService), "Steeltoe-WebApi", DotnetTemplateVersion.V2, 1,  DisableDiscoveryEnumeration = true)]
-        public async Task CreateTemplate_Mustache_WebApi_V2_OneAtaTime_Test(ITemplateService templateService, string templateName, DotnetTemplateVersion version, string depString)
+        [MemberData(nameof(GetAllCombinations), typeof(MustacheTemplateService), "Steeltoe-WebApi", DotnetFramework.NetCoreApp21, 1,  DisableDiscoveryEnumeration = true)]
+        public async Task CreateTemplate_Mustache_WebApi_V2_OneAtaTime_Test(ITemplateService templateService, string templateName, DotnetFramework version, string depString)
         {
             _testOutputHelper.WriteLine(depString);
             await CreateTemplate_Test(templateService, templateName, version, depString);
         }
 
         [Theory]
-        [MemberData(nameof(GetAllCombinations), typeof(MustacheTemplateService), "Steeltoe-WebApi", DotnetTemplateVersion.V2, int.MaxValue,  DisableDiscoveryEnumeration = true)]
-        public async Task CreateTemplate_Mustache_WebApi_V2_All_Test(ITemplateService templateService, string templateName, DotnetTemplateVersion version, string depString)
+        [MemberData(nameof(GetAllCombinations), typeof(MustacheTemplateService), "Steeltoe-WebApi", DotnetFramework.NetCoreApp21, int.MaxValue,  DisableDiscoveryEnumeration = true)]
+        public async Task CreateTemplate_Mustache_WebApi_V2_All_Test(ITemplateService templateService, string templateName, DotnetFramework version, string depString)
         {
             _testOutputHelper.WriteLine(depString);
             await CreateTemplate_Test(templateService, templateName, version, depString);
@@ -185,7 +185,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
         }
         */
 
-        private async Task CreateTemplate_Test(ITemplateService service, string template, DotnetTemplateVersion dotnet, string dependency, string steeltoe = "2.4.4")
+        private async Task CreateTemplate_Test(ITemplateService service, string template, DotnetFramework dotnet, string dependency, string steeltoe = "2.4.4")
         {
             _testOutputHelper.WriteLine($"testing Steeltoe {steeltoe} with {dependency}");
 
@@ -194,7 +194,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
                 Dependencies = dependency,
                 TemplateShortName = template,
                 ProjectName = "Foo.Bar",
-                TemplateVersion = dotnet,
+                Framework = dotnet,
                 SteeltoeVersion = steeltoe,
             });
 

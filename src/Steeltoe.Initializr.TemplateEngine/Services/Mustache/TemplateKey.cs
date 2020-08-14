@@ -18,9 +18,9 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
     {
         public string Name { get; }
 
-        public DotnetTemplateVersion Version { get; }
+        public DotnetFramework Version { get; }
 
-        public TemplateKey(string name, DotnetTemplateVersion version)
+        public TemplateKey(string name, DotnetFramework version)
         {
             Name = name;
             Version = version;

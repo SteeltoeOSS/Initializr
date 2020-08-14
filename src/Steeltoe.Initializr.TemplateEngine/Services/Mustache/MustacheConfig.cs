@@ -173,12 +173,12 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         private void LoadConfig(string templatePath)
         {
-            var versions = (DotnetTemplateVersion[])Enum.GetValues(typeof(DotnetTemplateVersion));
+            var versions = (DotnetFramework[])Enum.GetValues(typeof(DotnetFramework));
 
             foreach (var version in versions)
             {
-                var versionString = version == DotnetTemplateVersion.V2 ? "netcoreapp2.1" : "netcoreapp3.1";
-                var path = templatePath + Path.DirectorySeparatorChar + versionString;
+                var versionString = version == DotnetFramework.NetCoreApp21 ? "netcoreapp2.1" : "netcoreapp3.1";
+                var path = Path.Join(templatePath, "2.4", versionString);
                 foreach (var dir in new DirectoryInfo(path).EnumerateDirectories())
                 {
                     var mustacheTemplateSetting = new MustacheTemplateSettings(_logger, dir.FullName);

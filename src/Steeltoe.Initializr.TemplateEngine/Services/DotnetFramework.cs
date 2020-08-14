@@ -14,9 +14,9 @@
 
 namespace Steeltoe.Initializr.TemplateEngine.Services
 {
-    public enum DotnetTemplateVersion
+    public enum DotnetFramework
     {
-        V2,
-        V3,
+        NetCoreApp21,
+        NetCoreApp31,
     }
 }

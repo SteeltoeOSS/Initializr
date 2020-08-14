@@ -43,17 +43,17 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             Assert.NotNull(templates);
             Assert.NotEmpty(templates);
 
-            Assert.Contains(templates, x => x.ShortName == "Steeltoe-WebApi" && x.DotnetTemplateVersion == DotnetTemplateVersion.V2);
-            Assert.Contains(templates, x => x.ShortName == "Steeltoe-WebApi" && x.DotnetTemplateVersion == DotnetTemplateVersion.V3);
-            Assert.Contains(templates, x => x.ShortName == "Steeltoe-React" && x.DotnetTemplateVersion == DotnetTemplateVersion.V2);
-            Assert.Contains(templates, x => x.ShortName == "Steeltoe-React" && x.DotnetTemplateVersion == DotnetTemplateVersion.V3);
+            Assert.Contains(templates, x => x.ShortName == "Steeltoe-WebApi" && x.DotnetFramework == DotnetFramework.NetCoreApp21);
+            Assert.Contains(templates, x => x.ShortName == "Steeltoe-WebApi" && x.DotnetFramework == DotnetFramework.NetCoreApp31);
+            Assert.Contains(templates, x => x.ShortName == "Steeltoe-React" && x.DotnetFramework == DotnetFramework.NetCoreApp21);
+            Assert.Contains(templates, x => x.ShortName == "Steeltoe-React" && x.DotnetFramework == DotnetFramework.NetCoreApp31);
         }
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public void GetDependencies(ITemplateService templateService, string templateName, DotnetTemplateVersion dotnetTemplateVersion)
+        public void GetDependencies(ITemplateService templateService, string templateName, DotnetFramework dotnetFramework)
         {
-            var deps = templateService.GetDependencies(templateName, dotnetTemplateVersion);
+            var deps = templateService.GetDependencies(templateName, dotnetFramework);
             Assert.NotNull(deps);
             Assert.NotEmpty(deps);
 
@@ -62,9 +62,9 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public void GetDependencies_WithFriendlyNames(ITemplateService templateService, string templateName, DotnetTemplateVersion dotnetTemplateVersion)
+        public void GetDependencies_WithFriendlyNames(ITemplateService templateService, string templateName, DotnetFramework dotnetFramework)
         {
-            var deps = templateService.GetDependencies(templateName, dotnetTemplateVersion);
+            var deps = templateService.GetDependencies(templateName, dotnetFramework);
 
             Assert.NotNull(deps);
             Assert.NotEmpty(deps);
@@ -74,20 +74,20 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_actuators(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
             Assert.Contains("using Steeltoe.Management.CloudFoundry;", startUpContents);
-            if (!version.Equals(DotnetTemplateVersion.V3))
+            if (!version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains("using Steeltoe.Management.Endpoint;", startUpContents);
                 Assert.Contains("using Steeltoe.Management.Hypermedia;", startUpContents);
@@ -97,13 +97,13 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_react(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_react(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -112,13 +112,13 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_discovery(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_discovery(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Discovery",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -130,13 +130,13 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_circuitbreakers(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_actuators_circuitbreakers(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators,CircuitBreaker",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -154,17 +154,17 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_MySql(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_MySql(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "MySql",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
-            if (version.Equals(DotnetTemplateVersion.V3))
+            if (version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains("using Steeltoe.Connector.MySql;", startUpContents);
             }
@@ -191,17 +191,17 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_MySql_EFCore(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_MySql_EFCore(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "MySqlEFCore",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (version.Equals(DotnetTemplateVersion.V3))
+            if (version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains("using Steeltoe.Connector.MySql;", startUpContents);
                 Assert.Contains("using Steeltoe.Connector.MySql.EFCore;", startUpContents);
@@ -215,17 +215,17 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_postgresql(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_postgresql(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Postgres",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (version.Equals(DotnetTemplateVersion.V3))
+            if (version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains("using Steeltoe.Connector.PostgreSql;", startUpContents);
             }
@@ -245,7 +245,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_ConfigServer(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_ConfigServer(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var configuration = TestHelper.GetConfiguration();
             var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
@@ -254,7 +254,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "ConfigServer",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
@@ -272,7 +272,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_Randomvalue(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_Randomvalue(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var configuration = TestHelper.GetConfiguration();
             var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
@@ -281,7 +281,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "RandomValueConfig",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             Assert.Contains(files, file => file.Key.EndsWith("ValuesController.cs"));
@@ -298,7 +298,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_Cloudfoundry(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_Cloudfoundry(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var configuration = TestHelper.GetConfiguration();
             var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
@@ -307,12 +307,12 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "CloudFoundry",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             string programContents = files.Find(x => x.Key == "Program.cs").Value;
 
-            if (version.Equals(DotnetTemplateVersion.V3))
+            if (version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains(".UseCloudHosting()", programContents);
                 Assert.Contains(".AddCloudFoundryConfiguration()", programContents);
@@ -331,7 +331,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_Placeholderconfig(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_Placeholderconfig(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var configuration = TestHelper.GetConfiguration();
             var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
@@ -340,14 +340,14 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "PlaceholderConfig",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
             Assert.Contains(files, file => file.Key.EndsWith("ValuesController.cs"));
 
             string programContents = files.Find(x => x.Key == "Program.cs").Value;
-            if (version.Equals(DotnetTemplateVersion.V3))
+            if (version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains("using Steeltoe.Extensions.Configuration.Placeholder;", programContents);
             }
@@ -369,17 +369,17 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_postgresEFCore(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_postgresEFCore(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "PostgresEFCore",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (version.Equals(DotnetTemplateVersion.V3))
+            if (version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains("using Steeltoe.Connector.PostgreSql.EFCore;", startUpContents);
             }
@@ -393,17 +393,17 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_RabbitMQ(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_RabbitMQ(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "RabbitMQ",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (version.Equals(DotnetTemplateVersion.V3))
+            if (version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains("using Steeltoe.Connector.RabbitMQ;", startUpContents);
             }
@@ -430,17 +430,17 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_Redis(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_Redis(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Redis",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (version.Equals(DotnetTemplateVersion.V3))
+            if (version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains("using Steeltoe.Connector.Redis", startUpContents);
             }
@@ -460,17 +460,17 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_MongoDB(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_MongoDB(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "MongoDB",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (version.Equals(DotnetTemplateVersion.V3))
+            if (version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains("using Steeltoe.Connector.MongoDb;", startUpContents);
             }
@@ -490,17 +490,17 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_OauthConnector(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_OauthConnector(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "OAuthConnector",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (version.Equals(DotnetTemplateVersion.V3))
+            if (version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains("using Steeltoe.Connector.OAuth;", startUpContents);
             }
@@ -513,7 +513,7 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_SqlServer(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_SqlServer(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var steeltoeVersion = "2.4.4";
 
@@ -523,14 +523,14 @@ using System.Threading;", valuesController);
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
                 SteeltoeVersion = steeltoeVersion,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             var fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
-            var aspnetCoreVersion = version == DotnetTemplateVersion.V3 ? "3.1.0" : "2.1.1";
+            var aspnetCoreVersion = version == DotnetFramework.NetCoreApp31 ? "3.1.0" : "2.1.1";
             var startup = files.Find(x => x.Key == "Startup.cs").Value;
 
-            if (version.Equals(DotnetTemplateVersion.V3))
+            if (version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains(@"using Steeltoe.Connector.SqlServer.EFCore;", startup);
             }
@@ -550,19 +550,19 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_DynamicLogger(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_DynamicLogger(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "DynamicLogger",
                 ProjectName = "testProject",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             string fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
             string programFileContents = files.Find(x => x.Key == "Program.cs").Value;
-            if (version.Equals(DotnetTemplateVersion.V3))
+            if (version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicSerilogCore"" Version=", fileContents);
                 Assert.Contains(@"using Steeltoe.Extensions.Logging.DynamicSerilog", programFileContents);
@@ -579,7 +579,7 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_cloudFoundry(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_actuators_cloudFoundry(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             Assert.NotNull(templateService);
 
@@ -587,10 +587,10 @@ using System.Threading;", valuesController);
             {
                 Dependencies = "CloudFoundry",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
             string programFileContents = files.Find(x => x.Key == "Program.cs").Value;
-            if (version.Equals(DotnetTemplateVersion.V3))
+            if (version.Equals(DotnetFramework.NetCoreApp31))
             {
                 Assert.Contains("using Steeltoe.Common.Hosting;", programFileContents);
                 Assert.Contains(".UseCloudHosting(", programFileContents);
@@ -606,14 +606,14 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_v22(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_actuators_v22(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
                 SteeltoeVersion = "2.4.4",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -623,14 +623,14 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_23(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_actuators_23(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
                 SteeltoeVersion = "2.4.4",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -640,14 +640,14 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_24(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_actuators_24(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
                 SteeltoeVersion = "2.4.4",
                 TemplateShortName = templateName,
-                TemplateVersion = version,
+                Framework = version,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -666,14 +666,14 @@ using System.Threading;", valuesController);
                     Dependencies = "Actuators",
                     SteeltoeVersion = "2.4.2",
                     TemplateShortName = templateName,
-                    TemplateVersion = DotnetTemplateVersion.V3,
+                    Framework = DotnetFramework.NetCoreApp31,
                 });
             });
         }
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_empty(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_empty(ITemplateService templateService, string templateName, DotnetFramework version)
         {
             Assert.NotNull(templateService);
 
@@ -681,7 +681,7 @@ using System.Threading;", valuesController);
             {
                 TemplateShortName = templateName,
                 ProjectName = "Foo.Bar",
-                TemplateVersion = version,
+                Framework = version,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -691,15 +691,15 @@ using System.Threading;", valuesController);
             Assert.DoesNotContain("AddCloudFoundryActuators", startUpContents);
 
             var projectFile = files.Find(x => x.Key == "Foo.Bar.csproj").Value;
-            var targetFramework = version == DotnetTemplateVersion.V3 ? "netcoreapp3.1" : "netcoreapp2.1";
+            var targetFramework = version == DotnetFramework.NetCoreApp31 ? "netcoreapp3.1" : "netcoreapp2.1";
             Assert.Contains($"<TargetFramework>{targetFramework}</TargetFramework>", projectFile);
         }
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_targetVersion21(ITemplateService templateService, string templateName, DotnetTemplateVersion version)
+        public async Task CreateTemplate_targetVersion21(ITemplateService templateService, string templateName, DotnetFramework version)
         {
-            if (version == DotnetTemplateVersion.V3)
+            if (version == DotnetFramework.NetCoreApp31)
             {
                 return;
             }

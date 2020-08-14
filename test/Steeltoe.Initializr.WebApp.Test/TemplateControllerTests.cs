@@ -97,7 +97,7 @@ namespace Steeltoe.Initializr.WebApp.Test
                 SteeltoeVersion = "2.4.4",
                 TargetFrameworkVersion = "netcoreapp2.1",
                 TemplateShortName = "Steeltoe-WebApi",
-                TemplateVersion = DotnetTemplateVersion.V2,
+                Framework = DotnetFramework.NetCoreApp21,
             };
 
             var props = model.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -123,7 +123,7 @@ namespace Steeltoe.Initializr.WebApp.Test
                 SteeltoeVersion = "2.4.4",
                 TargetFrameworkVersion = "netcoreapp2.1",
                 TemplateShortName = "Steeltoe-WebApi",
-                TemplateVersion = DotnetTemplateVersion.V2,
+                Framework = DotnetFramework.NetCoreApp21,
             };
 
             var props = model.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);

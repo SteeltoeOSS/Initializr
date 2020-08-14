@@ -21,7 +21,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
     public class GeneratorModel
     {
         private string _projectName;
-        private DotnetTemplateVersion? _templateVersion;
+        private DotnetFramework? _templateVersion;
 
         public string Dependencies { get; set; }
 
@@ -43,13 +43,13 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
             return string.IsNullOrEmpty(Dependencies) ? null : Dependencies.ToLower().Split(',');
         }
 
-        public DotnetTemplateVersion TemplateVersion
+        public DotnetFramework Framework
         {
             get
             {
                 if (_templateVersion == null)
                 {
-                    return TargetFrameworkVersion == "netcoreapp3.1" ? DotnetTemplateVersion.V3 : DotnetTemplateVersion.V2;
+                    return TargetFrameworkVersion == "netcoreapp3.1" ? DotnetFramework.NetCoreApp31 : DotnetFramework.NetCoreApp21;
                 }
 
                 return _templateVersion.Value;
