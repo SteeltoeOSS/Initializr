@@ -67,9 +67,9 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         public async Task<List<KeyValuePair<string, string>>> GenerateProjectFiles(GeneratorModel model)
         {
-            var template = string.IsNullOrEmpty(model.Template) ? DefaultTemplateName : model.Template;
             var framework = DotNetFrameworkParser.Parse(model.TargetFramework);
-            var templateKey = new TemplateKey(template, framework);
+            var template = string.IsNullOrEmpty(model.Template) ? DefaultTemplateName : model.Template;
+            var templateKey = new TemplateKey(framework, template);
             if (!_mustacheConfig.GetTemplateKeys().Contains(templateKey))
             {
                 throw new InvalidDataException($"Template with Name[{template}] and Framework[{model.TargetFramework}] doesn't exist");
@@ -108,9 +108,9 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
             return _mustacheConfig.GetTemplateKeys()
                 .Select(templateKey => new TemplateViewModel
                 {
-                    Name = templateKey.Name,
-                    ShortName = templateKey.Name,
-                    DotnetFramework = templateKey.Version,
+                    Name = templateKey.Template,
+                    ShortName = templateKey.Template,
+                    DotnetFramework = templateKey.Framework,
                     Language = "C#",
                     Tags = "Web/Microservice",
                 })
@@ -129,8 +129,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
             }
 
             // var templatePath = _templatePath + Path.DirectorySeparatorChar + selectedTemplate.Name;
-            var config = _mustacheConfig.GetSchema(new TemplateKey(selectedTemplate.Name, framework));
-
+            var config = _mustacheConfig.GetSchema(new TemplateKey(framework, selectedTemplate.Name));
             return config.Params
                 .Where(p => p.Description.ToLower().Contains("steeltoe"))
                 .Select(p => new ProjectDependency

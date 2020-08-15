@@ -84,7 +84,7 @@ namespace Steeltoe.Initializr.WebApp.Controllers
             }
             catch (Exception ex)
             {
-                HttpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
                 var message = ex.Message;
                 /*

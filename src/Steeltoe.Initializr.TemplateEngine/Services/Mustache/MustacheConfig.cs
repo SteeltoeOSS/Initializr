@@ -181,9 +181,9 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                 var path = Path.Join(templatePath, "2.4", frameworkName);
                 foreach (var dir in new DirectoryInfo(path).EnumerateDirectories())
                 {
-                    var dotnetTemplate = dir.Name;
+                    var template = dir.Name;
                     var mustacheTemplateSetting = new MustacheTemplateSettings(_logger, dir.FullName);
-                    _templateSettings.Add(new TemplateKey(dotnetTemplate, framework), mustacheTemplateSetting);
+                    _templateSettings.Add(new TemplateKey(framework, template), mustacheTemplateSetting);
                 }
             }
         }
