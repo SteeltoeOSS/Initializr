@@ -54,11 +54,10 @@ namespace Steeltoe.Initializr.WebApp.Controllers
 
         [Route("dependencies")]
         public ActionResult GetDependencies(
-            [FromQuery(Name = "templateShortName")] string templateShortName,
-            [FromQuery(Name = "framework")] string framework = "netcoreapp3.1")
+            [FromQuery(Name = "dotNetTemplate")] string template,
+            [FromQuery(Name = "dotNetFramework")] string framework = "netcoreapp3.1")
         {
-            var frameworkEnum = Enum.Parse<DotnetFramework>(framework.Replace(".", string.Empty), true);
-            return Ok(_sttemplateService.GetDependencies(templateShortName, frameworkEnum));
+            return Ok(_sttemplateService.GetDependencies(template, DotNetFrameworkParser.Parse(framework)));
         }
 
         [Route("templates")]

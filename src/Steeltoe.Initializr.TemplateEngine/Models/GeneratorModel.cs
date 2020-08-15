@@ -33,7 +33,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
             set => _projectName = value;
         }
 
-        public string TemplateShortName { get; set; }
+        public string Template { get; set; }
 
         public string Description { get; set; }
 
@@ -42,8 +42,6 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
         public string ArchiveName => ProjectName + ".zip";
 
         public string TargetFramework { get; set; } = "netcoreapp3.1";
-
-        public DotnetFramework TargetFrameworkEnum => Enum.Parse<DotnetFramework>(TargetFramework.Replace(".", ""), true);
 
         public string[] GetDependencies()
         {

@@ -174,16 +174,16 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         private void LoadConfig(string templatePath)
         {
-            var frameworks = new[] {"netcoreapp2.1", "netcoreapp3.1"};
-
-            foreach (var framework in frameworks)
+            var frameworkNames = new[] {"netcoreapp2.1", "netcoreapp3.1"};
+            foreach (var frameworkName in frameworkNames)
             {
-                var path = Path.Join(templatePath, "2.4", framework);
+                var framework = DotNetFrameworkParser.Parse(frameworkName);
+                var path = Path.Join(templatePath, "2.4", frameworkName);
                 foreach (var dir in new DirectoryInfo(path).EnumerateDirectories())
                 {
+                    var dotnetTemplate = dir.Name;
                     var mustacheTemplateSetting = new MustacheTemplateSettings(_logger, dir.FullName);
-                    var frameworkEnum = Enum.Parse<DotnetFramework>(framework.Replace(".", ""), true);
-                    _templateSettings.Add(new TemplateKey(dir.Name, frameworkEnum), mustacheTemplateSetting);
+                    _templateSettings.Add(new TemplateKey(dotnetTemplate, framework), mustacheTemplateSetting);
                 }
             }
         }

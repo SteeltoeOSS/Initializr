@@ -27,7 +27,7 @@ export class DependenciesSelector extends Component {
             return
         }
         this.state.currentFramework = this.props.framework
-        var depsPath = '/api/templates/dependencies?framework=' + this.state.currentFramework
+        var depsPath = '/api/templates/dependencies?dotNetFramework=' + this.state.currentFramework
         fetch(depsPath)
             .then(response => response.json())
             .then(data => {

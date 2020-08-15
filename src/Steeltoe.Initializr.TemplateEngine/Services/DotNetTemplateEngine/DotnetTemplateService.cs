@@ -131,9 +131,9 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine
                 iParams.Add("Framework", model.TargetFramework);
             }
 
-            var templateShortName = string.IsNullOrEmpty(model.TemplateShortName) ? DEFAULT_TEMPLATE : model.TemplateShortName;
-
-            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, model.TargetFrameworkEnum, EnvSettings);
+            var templateShortName = string.IsNullOrEmpty(model.Template) ? DEFAULT_TEMPLATE : model.Template;
+            var framework = DotNetFrameworkParser.Parse(model.TargetFramework);
+            TemplateInfo templateInfo = FindTemplateByShortName(templateShortName, framework, EnvSettings);
             if (templateInfo == null)
             {
                 throw new Exception($"Could not find template with shortName: {templateShortName} ");

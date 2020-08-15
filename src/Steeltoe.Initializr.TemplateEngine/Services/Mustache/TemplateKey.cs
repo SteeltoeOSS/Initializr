@@ -22,10 +22,11 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         public DotnetFramework Version { get; }
 
-        public TemplateKey(string name, DotnetFramework version)
+        // public TemplateKey(DotnetFramework framework, string template)
+        public TemplateKey(string template, DotnetFramework framework)
         {
-            Name = name;
-            Version = version;
+            Version = framework;
+            Name = template;
         }
 
         public override int GetHashCode()

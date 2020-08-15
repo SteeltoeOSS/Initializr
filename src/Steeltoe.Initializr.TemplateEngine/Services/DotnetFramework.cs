@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace Steeltoe.Initializr.TemplateEngine.Services
 {
     public enum DotnetFramework
@@ -19,4 +21,13 @@ namespace Steeltoe.Initializr.TemplateEngine.Services
         NetCoreApp21,
         NetCoreApp31,
     }
+
+    public static class DotNetFrameworkParser
+    {
+        public static DotnetFramework Parse(string s)
+        {
+            return Enum.Parse<DotnetFramework>(s.Replace(".", string.Empty), true);
+        }
+    }
+
 }

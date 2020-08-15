@@ -192,7 +192,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
             var archive = await service.GenerateProjectArchiveAsync(new GeneratorModel()
             {
                 Dependencies = dependency,
-                TemplateShortName = template,
+                Template = template,
                 ProjectName = "Foo.Bar",
                 TargetFramework = framework,
                 SteeltoeVersion = steeltoe,

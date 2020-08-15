@@ -67,13 +67,12 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         public async Task<List<KeyValuePair<string, string>>> GenerateProjectFiles(GeneratorModel model)
         {
-            var name = string.IsNullOrEmpty(model.TemplateShortName) ? DefaultTemplateName : model.TemplateShortName;
-
-            var templateKey = new TemplateKey(name, model.TargetFrameworkEnum);
-
+            var template = string.IsNullOrEmpty(model.Template) ? DefaultTemplateName : model.Template;
+            var framework = DotNetFrameworkParser.Parse(model.TargetFramework);
+            var templateKey = new TemplateKey(template, framework);
             if (!_mustacheConfig.GetTemplateKeys().Contains(templateKey))
             {
-                throw new InvalidDataException($"Template with Name[{name}] and Framework[{model.TargetFramework}] doesn't exist");
+                throw new InvalidDataException($"Template with Name[{template}] and Framework[{model.TargetFramework}] doesn't exist");
             }
 
             Dictionary<string, string> dataView;

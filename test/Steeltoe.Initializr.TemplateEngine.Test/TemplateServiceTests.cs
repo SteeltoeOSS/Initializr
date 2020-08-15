@@ -70,7 +70,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             {
                 Dependencies = "Actuators",
                 ProjectName = "testProject",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -92,7 +92,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 ProjectName = "testProject",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -107,7 +107,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Discovery",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -125,7 +125,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators,CircuitBreaker",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -149,7 +149,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "MySql",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -186,7 +186,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "MySqlEFCore",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -210,7 +210,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Postgres",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -243,7 +243,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "ConfigServer",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -270,7 +270,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "RandomValueConfig",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -296,7 +296,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "CloudFoundry",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -329,7 +329,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "PlaceholderConfig",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -364,7 +364,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "PostgresEFCore",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -388,7 +388,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "RabbitMQ",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -425,7 +425,7 @@ using System.Threading;", valuesController);
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Redis",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -455,7 +455,7 @@ using System.Threading;", valuesController);
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "MongoDB",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -485,7 +485,7 @@ using System.Threading;", valuesController);
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "OAuthConnector",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -511,7 +511,7 @@ using System.Threading;", valuesController);
             {
                 Dependencies = "SQLServer",
                 ProjectName = "testProject",
-                TemplateShortName = templateName,
+                Template = templateName,
                 SteeltoeVersion = steeltoeVersion,
                 TargetFramework = framework,
             });
@@ -546,7 +546,7 @@ using System.Threading;", valuesController);
             {
                 Dependencies = "DynamicLogger",
                 ProjectName = "testProject",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -576,7 +576,7 @@ using System.Threading;", valuesController);
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "CloudFoundry",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
             string programFileContents = files.Find(x => x.Key == "Program.cs").Value;
@@ -602,7 +602,7 @@ using System.Threading;", valuesController);
             {
                 Dependencies = "Actuators",
                 SteeltoeVersion = "2.4.4",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -619,7 +619,7 @@ using System.Threading;", valuesController);
             {
                 Dependencies = "Actuators",
                 SteeltoeVersion = "2.4.4",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -636,7 +636,7 @@ using System.Threading;", valuesController);
             {
                 Dependencies = "Actuators",
                 SteeltoeVersion = "2.4.4",
-                TemplateShortName = templateName,
+                Template = templateName,
                 TargetFramework = framework,
             });
 
@@ -655,7 +655,7 @@ using System.Threading;", valuesController);
                 {
                     Dependencies = "Actuators",
                     SteeltoeVersion = "2.4.2",
-                    TemplateShortName = templateName,
+                    Template = templateName,
                     TargetFramework = "netcoreapp3.1",
                 });
             });
@@ -669,7 +669,7 @@ using System.Threading;", valuesController);
 
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
-                TemplateShortName = templateName,
+                Template = templateName,
                 ProjectName = "Foo.Bar",
                 TargetFramework = framework,
             });
