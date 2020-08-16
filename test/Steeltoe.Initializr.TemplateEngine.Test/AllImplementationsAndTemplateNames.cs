@@ -16,11 +16,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.TemplateEngine.Services;
-using Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine;
 using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 
 namespace Steeltoe.Initializr.TemplateEngine.Test

@@ -22,7 +22,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.TemplateEngine.Services;
-using Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine;
 using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 
 namespace Steeltoe.Initializr.WebApp

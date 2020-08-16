@@ -14,12 +14,10 @@
 
 using System;
 using System.IO;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.TemplateEngine.Models;
 using Steeltoe.Initializr.TemplateEngine.Services;
-using Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine;
 using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 using Xunit;
 using Xunit.Abstractions;

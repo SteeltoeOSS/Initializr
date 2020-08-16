@@ -21,10 +21,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Steeltoe.Initializr.TemplateEngine.Models;
 using Steeltoe.Initializr.TemplateEngine.Services;
-using Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine;
 using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 using Xunit;
 using Xunit.Abstractions;
@@ -58,10 +56,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
             }
             else
             {
-                templateService = new DotnetTemplateService(
-                    TestHelper.GetConfiguration(),
-                    new MemoryCache(new MemoryCacheOptions()),
-                    new LoggerFactory().CreateLogger<DotnetTemplateService>());
+                throw new ArgumentOutOfRangeException(nameof(templateServiceType));
             }
 
             var dependencies = templateService.GetDependencies(templateName, version);
