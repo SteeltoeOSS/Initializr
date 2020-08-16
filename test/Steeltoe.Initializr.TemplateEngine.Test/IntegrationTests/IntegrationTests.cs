@@ -59,7 +59,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
                 throw new ArgumentOutOfRangeException(nameof(templateServiceType));
             }
 
-            var dependencies = templateService.GetDependencies(templateName, version);
+            var dependencies = templateService.GetDependencies(version, templateName);
             return from deps in GetCombinations(dependencies.Select(d => d.ShortName), take)
                 select new object[] { templateService, templateName, version, string.Join(",", deps) };
         }

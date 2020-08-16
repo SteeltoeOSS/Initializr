@@ -117,7 +117,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                 .ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(string shortName, DotnetFramework framework)
+        public List<ProjectDependency> GetDependencies(DotnetFramework framework, string shortName)
         {
             shortName = string.IsNullOrEmpty(shortName) ? DefaultTemplateName : shortName;
             var list = GetAvailableTemplates();
