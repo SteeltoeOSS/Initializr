@@ -75,10 +75,10 @@
       "Description": "Steeltoe: Add Redis connectors"
     },
     {
-      "Name": "SQLServerEFCore",
+      "Name": "SQLServer",
       "DefaultValue": false,
       "Description": "Steeltoe: Add Microsoft SQL Server connectors",
-      "friendlyName": "SQL Server EFCore"
+      "friendlyName": "SQL Server"
     },
     {
       "Name": "ConfigServer",

@@ -9,24 +9,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Controllers\ValuesController.cs">
-      <Link>templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Controllers\ValuesController.cs</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Models\ConfigServerData.cs">
-      <Link>templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Models\ConfigServerData.cs</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Models\ErrorViewModel.cs">
-      <Link>templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Models\ErrorViewModel.cs</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Models\InitializeContext.cs">
-      <Link>templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Models\InitializeContext.cs</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Models\SampleData.cs">
-      <Link>templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Models\SampleData.cs</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Models\TestContext.cs">
-      <Link>templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Models\TestContext.cs</Link>
-    </None>
     <None Update="..\templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Properties\launchSettings.json">
       <Link>templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Properties\launchSettings.json</Link>
     </None>
@@ -45,32 +27,8 @@
     <None Update="..\templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\mustache.json">
       <Link>templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\mustache.json</Link>
     </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\MyCircuitBreakerCommand.cs">
-      <Link>templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\MyCircuitBreakerCommand.cs</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Program.cs">
-      <Link>templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Program.cs</Link>
-    </None>
     <None Update="..\templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\ReplaceMe.csproj">
       <Link>templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\ReplaceMe.csproj</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Startup.cs">
-      <Link>templates\Mustache\2.4\netcoreapp2.1\Steeltoe-WebApi\Startup.cs</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Controllers\ValuesController.cs">
-      <Link>templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Controllers\ValuesController.cs</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Models\ErrorViewModel.cs">
-      <Link>templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Models\ErrorViewModel.cs</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Models\InitializeContext.cs">
-      <Link>templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Models\InitializeContext.cs</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Models\SampleData.cs">
-      <Link>templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Models\SampleData.cs</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Models\TestContext.cs">
-      <Link>templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Models\TestContext.cs</Link>
     </None>
     <None Update="..\templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Properties\launchSettings.json">
       <Link>templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Properties\launchSettings.json</Link>
@@ -90,17 +48,8 @@
     <None Update="..\templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\mustache.json">
       <Link>templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\mustache.json</Link>
     </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\MyCircuitBreakerCommand.cs">
-      <Link>templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\MyCircuitBreakerCommand.cs</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Program.cs">
-      <Link>templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Program.cs</Link>
-    </None>
     <None Update="..\templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\ReplaceMe.csproj">
       <Link>templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\ReplaceMe.csproj</Link>
-    </None>
-    <None Include="..\templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Startup.cs">
-      <Link>templates\Mustache\2.4\netcoreapp3.1\Steeltoe-WebApi\Startup.cs</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
