@@ -39,8 +39,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public void GetDependencies(ITemplateService templateService, string templateName, string framework)
         {
-            var frameworkEnum = Enum.Parse<DotnetFramework>(framework.Replace(".", ""), true);
-            var deps = templateService.GetDependencies(frameworkEnum, templateName);
+            var deps = templateService.GetDependencies(framework, templateName);
             Assert.NotNull(deps);
             Assert.NotEmpty(deps);
 
@@ -51,8 +50,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public void GetDependencies_WithFriendlyNames(ITemplateService templateService, string templateName, string framework)
         {
-            var frameworkEnum = Enum.Parse<DotnetFramework>(framework.Replace(".", ""), true);
-            var deps = templateService.GetDependencies(frameworkEnum, templateName);
+            var deps = templateService.GetDependencies(framework, templateName);
 
             Assert.NotNull(deps);
             Assert.NotEmpty(deps);

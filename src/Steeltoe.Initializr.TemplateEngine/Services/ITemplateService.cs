@@ -26,7 +26,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services
 
         List<TemplateViewModel> GetAvailableTemplates();
 
-        List<ProjectDependency> GetDependencies(DotnetFramework framework, string template);
+        List<ProjectDependency> GetDependencies(string framework, string template);
 
         void ClearCache();
     }

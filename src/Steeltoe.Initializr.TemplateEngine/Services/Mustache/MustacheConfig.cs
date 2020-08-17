@@ -174,11 +174,10 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         private void LoadConfig(string templatePath)
         {
-            var frameworkNames = new[] {"netcoreapp2.1", "netcoreapp3.1"};
-            foreach (var frameworkName in frameworkNames)
+            var frameworks = new[] {"netcoreapp2.1", "netcoreapp3.1"};
+            foreach (var framework in frameworks)
             {
-                var framework = DotNetFrameworkParser.Parse(frameworkName);
-                var path = Path.Join(templatePath, "2.4", frameworkName);
+                var path = Path.Join(templatePath, "2.4", framework);
                 foreach (var dir in new DirectoryInfo(path).EnumerateDirectories())
                 {
                     var template = dir.Name;

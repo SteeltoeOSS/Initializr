@@ -42,7 +42,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
         [Fact]
         public void Scratch()
         {
-            var argsList = GetArgs(typeof(MustacheTemplateService), DotnetFramework.NetCoreApp31, "Steeltoe-WebApi");
+            var argsList = GetArgs(typeof(MustacheTemplateService), "netcoreapp3.1", "Steeltoe-WebApi");
             foreach (var args in argsList)
             {
                 _testOutputHelper.WriteLine($"dotnet {args[1]}, template {args[2]}, dependency {args[3]}");
@@ -50,27 +50,27 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
         }
 
         [Theory]
-        [MemberData(nameof(GetArgs), typeof(MustacheTemplateService), DotnetFramework.NetCoreApp21, "Steeltoe-WebApi")]
-        public async Task Steeltoe24Dotnet21(ITemplateService service, DotnetFramework dotNet, string template, string dependency)
+        [MemberData(nameof(GetArgs), typeof(MustacheTemplateService), "netcoreapp2.1", "Steeltoe-WebApi")]
+        public async Task Steeltoe24Dotnet21(ITemplateService service, string framework, string template, string dependency)
         {
-            await GenerateAndBuildProject(service, dotNet, template, dependency);
+            await GenerateAndBuildProject(service, framework, template, dependency);
         }
 
         [Theory]
-        [MemberData(nameof(GetArgs), typeof(MustacheTemplateService), DotnetFramework.NetCoreApp31, "Steeltoe-WebApi")]
-        public async Task Steeltoe24Dotnet31(ITemplateService service, DotnetFramework dotNet,
+        [MemberData(nameof(GetArgs), typeof(MustacheTemplateService), "netcoreapp3.1", "Steeltoe-WebApi")]
+        public async Task Steeltoe24Dotnet31(ITemplateService service, string framework,
             string template, string dependency)
         {
-            await GenerateAndBuildProject(service, dotNet, template, dependency);
+            await GenerateAndBuildProject(service, framework, template, dependency);
         }
 
-        [Theory]
-        [MemberData(nameof(GetArgs), typeof(MustacheTemplateService), DotnetFramework.NetCoreApp31, "Steeltoe-WebApi")]
-        public async Task Steeltoe30Dotnet31(ITemplateService service, DotnetFramework dotNet,
-            string template, string dependency)
-        {
-            await GenerateAndBuildProject(service, dotNet, template, dependency);
-        }
+        // [Theory]
+        // [MemberData(nameof(GetArgs), typeof(MustacheTemplateService), "netcoreapp3.1", "Steeltoe-WebApi")]
+        // public async Task Steeltoe30Dotnet31(ITemplateService service, string framework,
+            // string template, string dependency)
+        // {
+            // await GenerateAndBuildProject(service, framework, template, dependency);
+        // }
 
         // TODO: test Steeltoe 3
 
@@ -78,19 +78,19 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
 
         private async Task GenerateAndBuildProject(
             ITemplateService service,
-            DotnetFramework dotNet,
+            string framework,
             string template,
             string dependency,
             string steeltoe = "2.4.4")
         {
             _testOutputHelper.WriteLine(
-                $"Generating and Building: Steeltoe {steeltoe}, DotNet {dotNet}, Template {template}, dependency {dependency}");
+                $"Generating and Building: Steeltoe {steeltoe}, Framework {framework}, Template {template}, dependency {dependency}");
             var archive = await service.GenerateProjectArchiveAsync(new GeneratorModel()
             {
                 Dependencies = dependency,
                 Template = template,
                 ProjectName = "Foo.Bar",
-                TargetFramework = dotNet == DotnetFramework.NetCoreApp21 ? "netcoreapp2.1" : "netcoreapp3.1",
+                TargetFramework = framework,
                 SteeltoeVersion = steeltoe,
             });
 
@@ -114,12 +114,12 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
                 $"Error compiling {dependency}. \n {output}");
         }
 
-        public static IEnumerable<object[]> GetArgs(Type templateServiceType, DotnetFramework dotNet, string template)
+        public static IEnumerable<object[]> GetArgs(Type templateServiceType, string framework, string template)
 
         {
             var service = BuildTemplateService(templateServiceType);
-            var deps = service.GetDependencies(dotNet, template).Select(dep => dep.ShortName.ToLower());
-            return from dep in deps select new object[] {service, dotNet, template, dep};
+            var deps = service.GetDependencies(framework, template).Select(dep => dep.ShortName.ToLower());
+            return from dep in deps select new object[] {service, framework, template, dep};
         }
 
         static ITemplateService BuildTemplateService(Type type)

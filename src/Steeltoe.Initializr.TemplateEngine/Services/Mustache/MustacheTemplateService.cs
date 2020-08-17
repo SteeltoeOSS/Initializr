@@ -34,8 +34,8 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
     /// </summary>
     public class MustacheTemplateService : ITemplateService
     {
-        private const string DefaultTemplateName = "Steeltoe-WebApi";
-        private const DotnetFramework DefaultVersion = DotnetFramework.NetCoreApp21;
+        private const string DefaultTemplate = "Steeltoe-WebApi";
+        private const string DefaultFramework = "netcoreapp2.1";
 
         private Dictionary<string, string> FriendlyNames { get; set; }
 
@@ -67,9 +67,8 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         public async Task<List<KeyValuePair<string, string>>> GenerateProjectFiles(GeneratorModel model)
         {
-            var framework = DotNetFrameworkParser.Parse(model.TargetFramework);
-            var template = string.IsNullOrEmpty(model.Template) ? DefaultTemplateName : model.Template;
-            var templateKey = new TemplateKey(framework, template);
+            var template = string.IsNullOrEmpty(model.Template) ? DefaultTemplate : model.Template;
+            var templateKey = new TemplateKey(model.TargetFramework, template);
             if (!_mustacheConfig.GetTemplateKeys().Contains(templateKey))
             {
                 throw new InvalidDataException($"Template with Name[{template}] and Framework[{model.TargetFramework}] doesn't exist");
@@ -117,9 +116,9 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                 .ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(DotnetFramework framework, string shortName)
+        public List<ProjectDependency> GetDependencies(string framework, string shortName)
         {
-            shortName = string.IsNullOrEmpty(shortName) ? DefaultTemplateName : shortName;
+            shortName = string.IsNullOrEmpty(shortName) ? DefaultTemplate : shortName;
             var list = GetAvailableTemplates();
             var selectedTemplate = list.FirstOrDefault(x => x.ShortName == shortName);
 

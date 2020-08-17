@@ -20,9 +20,9 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
     {
         public string Template { get; }
 
-        public DotnetFramework Framework { get; }
+        public string Framework { get; }
 
-        public TemplateKey(DotnetFramework framework, string template)
+        public TemplateKey(string framework, string template)
         {
             Framework = framework;
             Template = template;

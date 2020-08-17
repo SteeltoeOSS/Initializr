@@ -33,52 +33,61 @@
       "Description": "Steeltoe: Add Dynamic Logger"
     },
     {
+      "Name": "AzureSpringCloud",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Target Microsoft Azure Spring Cloud Hosting",
+      "FriendlyName": "Microsoft Azure Spring Cloud"
+    },
+    {
       "Name": "MongoDB",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add MongoDB connectors"
+      "Description": "Steeltoe: Add MongoDB connnectors"
     },
     {
       "Name": "MySql",
       "DefaultValue": "false",
-      "Description": "Steeltoe: Add MySql connectors"
+      "Description": "Steeltoe: Add MySql connnectors"
     },
     {
       "Name": "MySqlEFCore",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add MySQL EFCore connectors",
-      "friendlyName": "MySql EFCore"
+      "Description": "Steeltoe: Add MySQL EFCore connnectors"
     },
     {
       "Name": "OAuthConnector",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add OAuth connectors"
+      "Description": "Steeltoe: Add OAuth connnectors"
     },
     {
       "Name": "Postgres",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add Postgres connectors"
+      "Description": "Steeltoe: Add Postgres connnectors"
     },
     {
       "Name": "PostgresEFCore",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add Postgres EFCore connectors",
-      "friendlyName": "Postgres EFCore"
+      "Description": "Steeltoe: Add PostgresEFCore connnectors"
     },
     {
       "Name": "RabbitMQ",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add RabbitMQ connectors"
+      "Description": "Steeltoe: Add RabbitMQ connnectors"
     },
     {
       "Name": "Redis",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add Redis connectors"
+      "Description": "Steeltoe: Add Redis connnectors"
     },
     {
-      "Name": "SQLServerEFCore",
+      "Name": "SQLServer",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add Microsoft SQL Server connectors",
-      "friendlyName": "SQL Server EFCore"
+      "Description": "Steeltoe: Add Microsoft SQL Server connnectors",
+      "friendlyName": "SQL Server"
+    },
+    {
+      "Name": "ProjectNameSpace",
+      "DefaultValue": "SteeltoeExample",
+      "Description": "Change the namespace "
     },
     {
       "Name": "ConfigServer",
@@ -97,11 +106,6 @@
       "DefaultValue": false,
       "Description": "Steeltoe: Add RandomValue Configuration Source",
       "friendlyName": "RandomValue Configuration Source"
-    },
-    {
-      "Name": "ProjectNameSpace",
-      "DefaultValue": "SteeltoeExample",
-      "Description": "Change the namespace "
     },
     {
       "Name": "Dockerfile",
@@ -142,23 +146,18 @@
       "ExpressionType": "MoreThanOne"
     },
     {
-      "Name": "AnySqlData",
-      "Expression": "SQLServer,MySql,Postgres,MongoDB",
-      "ExpressionType": "Any"
-    },
-    {
-      "Name": "AnyConnector",
-      "Expression": "MySql,Postgres,SQLServer,Redis,MongoDB,RabbitMQ,OAuthConnector",
-      "ExpressionType": "Any"
-    },
-    {
       "Name": "AnyConfigSource",
       "Expression": "ConfigServer,PlaceholderConfig,RandomValueConfig",
       "ExpressionType": "Any"
     },
     {
+      "Name": "AnyConnector",
+      "Expression": "MySql,Postgres,Redis,MongoDB,RabbitMQ,OAuthConnector",
+      "ExpressionType": "Any"
+    },
+    {
       "Name": "AspNetCoreVersion",
-      "Expression": "TargetFrameworkVersion,netcoreapp2.1=2.1.1,default=False",
+      "Expression": "TargetFrameworkVersion,netcoreapp3.1=3.1.0,default=3.1.0",
       "ExpressionType": "Case"
     }
   ],
@@ -185,17 +184,21 @@
         {
           "choice": "2.4.4",
           "Description": "Target Steeltoe version 2.4.4"
+        },
+        {
+            "choice": "3.0.0-rc1",
+            "Description": "Target Steeltoe version 3.0.0-rc1"
         }
       ]
     },
     {
       "Name": "TargetFrameworkVersion",
-      "DefaultValue": "netcoreapp2.1",
+      "DefaultValue": "netcoreapp3.1",
       "Description": "Target the appropriate Dotnet framework version",
       "choices": [
         {
-          "Choice": "netcoreapp2.1",
-          "Description": "Target Dotnet framework version 2.1"
+          "Choice": "netcoreapp3.1",
+          "Description": "Target Dotnet framework version 3.1"
         }
       ]
     },
@@ -206,7 +209,7 @@
 
     {
       "Name": "NpgSqlVersion",
-      "DefaultValue": "4.0.4"
+      "DefaultValue": "4.1.2"
     },
 
     {

@@ -35,48 +35,50 @@
     {
       "Name": "MongoDB",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add MongoDB connnectors"
+      "Description": "Steeltoe: Add MongoDB connectors"
     },
     {
       "Name": "MySql",
       "DefaultValue": "false",
-      "Description": "Steeltoe: Add MySql connnectors"
+      "Description": "Steeltoe: Add MySql connectors"
     },
     {
       "Name": "MySqlEFCore",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add MySQL EFCore connnectors"
+      "Description": "Steeltoe: Add MySQL EFCore connectors",
+      "friendlyName": "MySql EFCore"
     },
     {
       "Name": "OAuthConnector",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add OAuth connnectors"
+      "Description": "Steeltoe: Add OAuth connectors"
     },
     {
       "Name": "Postgres",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add Postgres connnectors"
+      "Description": "Steeltoe: Add Postgres connectors"
     },
     {
       "Name": "PostgresEFCore",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add PostgresEFCore connnectors"
+      "Description": "Steeltoe: Add Postgres EFCore connectors",
+      "friendlyName": "Postgres EFCore"
     },
     {
       "Name": "RabbitMQ",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add RabbitMQ connnectors"
+      "Description": "Steeltoe: Add RabbitMQ connectors"
     },
     {
       "Name": "Redis",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add Redis connnectors"
+      "Description": "Steeltoe: Add Redis connectors"
     },
     {
-      "Name": "SQLServer",
+      "Name": "SQLServerEFCore",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add Microsoft SQL Server connnectors",
-      "friendlyName": "SQL Server"
+      "Description": "Steeltoe: Add Microsoft SQL Server connectors",
+      "friendlyName": "SQL Server EFCore"
     },
     {
       "Name": "ProjectNameSpace",
