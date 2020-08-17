@@ -530,21 +530,11 @@ using System.Threading;", valuesController);
             var aspnetCoreVersion = framework.Equals("netcoreapp3.1") ? "3.1.0" : "2.1.1";
             var startup = files.Find(x => x.Key == "Startup.cs").Value;
 
-            if (steeltoe.Equals(Constants.Steeltoe30))
-            {
-                Assert.Contains(@"using Steeltoe.Connector.SqlServer.EFCore;", startup);
-            }
-            else
+            if (framework.Equals(Constants.NetCoreApp21))
             {
                 Assert.Contains($@"<PackageReference Include=""Microsoft.EntityFrameworkCore.SqlServer"" Version=""{aspnetCoreVersion}"" />", fileContents);
                 Assert.Contains(@"using Steeltoe.CloudFoundry.Connector.SqlServer;", startup);
                 Assert.Contains(@"services.AddSqlServerConnection(Configuration);", startup);
-            }
-
-            if (!template.Contains("React"))
-            { // TODO: Add demo for react app
-                var valuesController = files.Find(x => x.Key.EndsWith("ValuesController.cs")).Value;
-                Assert.Contains(@" public ValuesController([FromServices] SqlConnection dbConnection)", valuesController);
             }
         }
 

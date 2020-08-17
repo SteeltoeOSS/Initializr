@@ -39,15 +39,15 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
             _testOutputHelper = testOutputHelper;
         }
 
-        [Fact]
-        public void Scratch()
-        {
-            var argsList = GetArgs(typeof(MustacheTemplateService), Constants.Steeltoe30, Constants.NetCoreApp31, "webapi");
-            foreach (var args in argsList)
-            {
-                _testOutputHelper.WriteLine($"steeltoe {args[1]}, dotnet {args[2]}, template {args[3]}, dependency {args[4]}");
-            }
-        }
+        // [Fact]
+        // public void Scratch()
+        // {
+            // var argsList = GetArgs(typeof(MustacheTemplateService), Constants.Steeltoe30, Constants.NetCoreApp31, "webapi");
+            // foreach (var args in argsList)
+            // {
+                // _testOutputHelper.WriteLine($"steeltoe {args[1]}, dotnet {args[2]}, template {args[3]}, dependency {args[4]}");
+            // }
+        // }
 
         [Theory]
         [MemberData(nameof(GetArgs), typeof(MustacheTemplateService), Constants.Steeltoe24, Constants.NetCoreApp21, "webapi")]
