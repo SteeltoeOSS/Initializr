@@ -8,6 +8,9 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+{{#AzureSpringCloud}}
+using Microsoft.Azure.SpringCloud.Client;
+{{/AzureSpringCloud}}
 {{#ActuatorsOrDynamicLogger}}
 using Steeltoe.Extensions.Logging;
 {{/ActuatorsOrDynamicLogger}}
@@ -52,7 +55,7 @@ namespace {{ProjectNameSpace}}
                 {{/ConfigServer}}
                 {{/CloudFoundry}}
                 {{#ConfigServer}}
-			    .AddConfigServer()
+                .AddConfigServer()
                 {{/ConfigServer}}
                 {{#PlaceholderConfig}}
                 .AddPlaceholderResolver()
@@ -60,6 +63,9 @@ namespace {{ProjectNameSpace}}
                 {{#RandomValueConfig}}
                 .ConfigureAppConfiguration((b) => b.AddRandomValueSource())
                 {{/RandomValueConfig}}
+                {{#AzureSpringCloud}}
+                .UseAzureSpringCloudService()
+                {{/AzureSpringCloud}}
                 .UseStartup<Startup>();
 {{#ActuatorsOrDynamicLogger}}
             builder.ConfigureLogging((hostingContext, loggingBuilder) =>

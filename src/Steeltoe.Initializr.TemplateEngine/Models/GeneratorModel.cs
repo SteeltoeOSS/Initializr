@@ -27,7 +27,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
         [ProjectNameValidation]
         public string ProjectName
         {
-            get => _projectName ?? "steeltoeProject";
+            get => _projectName ?? "SteeltoeProject";
             set => _projectName = value;
         }
 
@@ -35,11 +35,11 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
 
         public string ArchiveName => ProjectName + ".zip";
 
-        public string SteeltoeVersion { get; set; }
+        public string SteeltoeVersion { get; set; } = Constants.Steeltoe24;
 
-        public string TargetFramework { get; set; } = "netcoreapp3.1";
+        public string TargetFramework { get; set; } = Constants.NetCoreApp31;
 
-        public string Template { get; set; }
+        public string Template { get; set; } = Constants.WebApi;
 
         public string Dependencies { get; set; }
 

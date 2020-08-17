@@ -21,6 +21,9 @@
     {{#RequiresHttps}}
     <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="{{AspNetCoreVersion}}" />
     {{/RequiresHttps}}
+    {{#AzureSpringCloud}}
+    <PackageReference Include="Microsoft.Azure.SpringCloud.Client" Version="1.0.0-alpha.1" />
+    {{/AzureSpringCloud}}
     {{#CloudFoundry}}
     <PackageReference Include="Steeltoe.Extensions.Configuration.CloudFoundryCore"  Version="{{SteeltoeVersion}}" />
     {{/CloudFoundry}}
@@ -52,6 +55,7 @@
     {{/Discovery}}
     {{#SQLServer}}
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="{{AspNetCoreVersion}}" />
+    <PackageReference Include="Steeltoe.CloudFoundry.Connector.EFCore"  Version="{{SteeltoeVersion}}" />
     {{/SQLServer}}
     {{#Redis}}
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="3.1.0" />

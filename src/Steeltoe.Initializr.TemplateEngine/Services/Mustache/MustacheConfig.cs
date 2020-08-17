@@ -174,15 +174,22 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         private void LoadConfig(string templatePath)
         {
-            var frameworks = new[] {"netcoreapp2.1", "netcoreapp3.1"};
-            foreach (var framework in frameworks)
+            var configs = new[]
             {
-                var path = Path.Join(templatePath, "2.4", framework);
+                new[] {Constants.Steeltoe24, Constants.NetCoreApp21},
+                new[] {Constants.Steeltoe24, Constants.NetCoreApp31},
+                new[] {Constants.Steeltoe30, Constants.NetCoreApp31},
+            };
+            foreach (var config in configs)
+            {
+                var steeltoe = config[0];
+                var framework = config[1];
+                var path = Path.Join(templatePath, steeltoe, framework);
                 foreach (var dir in new DirectoryInfo(path).EnumerateDirectories())
                 {
                     var template = dir.Name;
                     var mustacheTemplateSetting = new MustacheTemplateSettings(_logger, dir.FullName);
-                    _templateSettings.Add(new TemplateKey(framework, template), mustacheTemplateSetting);
+                    _templateSettings.Add(new TemplateKey(steeltoe, framework, template), mustacheTemplateSetting);
                 }
             }
         }

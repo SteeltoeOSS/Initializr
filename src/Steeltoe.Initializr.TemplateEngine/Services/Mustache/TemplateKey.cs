@@ -18,24 +18,32 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 {
     public class TemplateKey
     {
+        public string Steeltoe { get; }
+
         public string Template { get; }
 
         public string Framework { get; }
 
-        public TemplateKey(string framework, string template)
+        public TemplateKey(string steeltoe, string framework, string template)
         {
+            Steeltoe = steeltoe;
             Framework = framework;
             Template = template;
         }
 
         public override int GetHashCode()
         {
-            return Template.GetHashCode() ^ Framework.GetHashCode();
+            return Steeltoe.GetHashCode() ^ Template.GetHashCode() ^ Framework.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
-            return obj is TemplateKey key && (Template.Equals(key.Template) && Framework.Equals(key.Framework));
+            return obj is TemplateKey key && Steeltoe.Equals(key.Steeltoe) && Template.Equals(key.Template) && Framework.Equals(key.Framework);
+        }
+
+        public override string ToString()
+        {
+            return $"TemplateKey[{Steeltoe},{Framework},{Template}]";
         }
     }
 }

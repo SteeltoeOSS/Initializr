@@ -24,6 +24,6 @@ namespace Steeltoe.Initializr.TemplateEngine.Services
 
         Task<byte[]> GenerateProjectArchiveAsync(GeneratorModel model);
 
-        List<ProjectDependency> GetDependencies(string framework, string template);
+        List<ProjectDependency> GetDependencies(string steeltoe, string framework, string template);
     }
 }

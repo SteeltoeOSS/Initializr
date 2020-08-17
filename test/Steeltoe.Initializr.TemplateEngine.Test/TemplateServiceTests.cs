@@ -39,7 +39,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public void GetDependencies(ITemplateService templateService, string templateName, string framework)
         {
-            var deps = templateService.GetDependencies(framework, templateName);
+            var deps = templateService.GetDependencies(Constants.Steeltoe24, framework, templateName);
             Assert.NotNull(deps);
             Assert.NotEmpty(deps);
 
@@ -50,7 +50,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public void GetDependencies_WithFriendlyNames(ITemplateService templateService, string templateName, string framework)
         {
-            var deps = templateService.GetDependencies(framework, templateName);
+            var deps = templateService.GetDependencies(Constants.Steeltoe24, framework, templateName);
 
             Assert.NotNull(deps);
             Assert.NotEmpty(deps);
@@ -501,7 +501,7 @@ using System.Threading;", valuesController);
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_SqlServer(ITemplateService templateService, string templateName, string framework)
         {
-            var steeltoeVersion = "2.4.4";
+            var steeltoeVersion = Constants.Steeltoe24;
 
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
@@ -597,7 +597,7 @@ using System.Threading;", valuesController);
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
-                SteeltoeVersion = "2.4.4",
+                SteeltoeVersion = Constants.Steeltoe24,
                 Template = templateName,
                 TargetFramework = framework,
             });
@@ -614,7 +614,7 @@ using System.Threading;", valuesController);
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
-                SteeltoeVersion = "2.4.4",
+                SteeltoeVersion = Constants.Steeltoe24,
                 Template = templateName,
                 TargetFramework = framework,
             });
@@ -631,7 +631,7 @@ using System.Threading;", valuesController);
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
-                SteeltoeVersion = "2.4.4",
+                SteeltoeVersion = Constants.Steeltoe24,
                 Template = templateName,
                 TargetFramework = framework,
             });
@@ -650,7 +650,7 @@ using System.Threading;", valuesController);
                 var files = await templateService.GenerateProjectFiles(new GeneratorModel()
                 {
                     Dependencies = "Actuators",
-                    SteeltoeVersion = "2.4.2",
+                    SteeltoeVersion = Constants.Steeltoe24,
                     Template = templateName,
                     TargetFramework = "netcoreapp3.1",
                 });

@@ -33,52 +33,56 @@
       "Description": "Steeltoe: Add Dynamic Logger"
     },
     {
+      "Name": "AzureSpringCloud",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Target Microsoft Azure Spring Cloud Hosting",
+      "FriendlyName": "Microsoft Azure Spring Cloud"
+    },
+    {
       "Name": "MongoDB",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add MongoDB connectors"
+      "Description": "Steeltoe: Add MongoDB connnectors"
     },
     {
       "Name": "MySql",
       "DefaultValue": "false",
-      "Description": "Steeltoe: Add MySql connectors"
+      "Description": "Steeltoe: Add MySql connnectors"
     },
     {
       "Name": "MySqlEFCore",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add MySQL EFCore connectors",
-      "friendlyName": "MySql EFCore"
+      "Description": "Steeltoe: Add MySQL EFCore connnectors"
     },
     {
       "Name": "OAuthConnector",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add OAuth connectors"
+      "Description": "Steeltoe: Add OAuth connnectors"
     },
     {
       "Name": "Postgres",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add Postgres connectors"
+      "Description": "Steeltoe: Add Postgres connnectors"
     },
     {
       "Name": "PostgresEFCore",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add Postgres EFCore connectors",
-      "friendlyName": "Postgres EFCore"
+      "Description": "Steeltoe: Add PostgresEFCore connnectors"
     },
     {
       "Name": "RabbitMQ",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add RabbitMQ connectors"
+      "Description": "Steeltoe: Add RabbitMQ connnectors"
     },
     {
       "Name": "Redis",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add Redis connectors"
+      "Description": "Steeltoe: Add Redis connnectors"
     },
     {
-      "Name": "SQLServerEFCore",
+      "Name": "SQLServer",
       "DefaultValue": false,
-      "Description": "Steeltoe: Add Microsoft SQL Server connectors",
-      "friendlyName": "SQL Server EFCore"
+      "Description": "Steeltoe: Add Microsoft SQL Server connnectors",
+      "friendlyName": "SQL Server"
     },
     {
       "Name": "ProjectNameSpace",
@@ -188,10 +192,6 @@
       "DefaultValue": "netcoreapp3.1",
       "Description": "Target the appropriate Dotnet framework version",
       "choices": [
-        {
-          "Choice": "netcoreapp3.0",
-          "Description": "Target Dotnet framework version 3.0"
-        },
         {
           "Choice": "netcoreapp3.1",
           "Description": "Target Dotnet framework version 3.1"

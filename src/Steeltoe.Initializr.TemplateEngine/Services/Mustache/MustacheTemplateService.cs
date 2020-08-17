@@ -64,7 +64,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         public async Task<List<KeyValuePair<string, string>>> GenerateProjectFiles(GeneratorModel model)
         {
-            var templateKey = new TemplateKey(model.TargetFramework, model.Template);
+            var templateKey = new TemplateKey(model.SteeltoeVersion, model.TargetFramework, model.Template);
             if (!_mustacheConfig.GetTemplateKeys().Contains(templateKey))
             {
                 throw new InvalidDataException($"Template with Name[{model.Template}] and Framework[{model.TargetFramework}] doesn't exist");
@@ -112,7 +112,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                 .ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(string framework, string template)
+        public List<ProjectDependency> GetDependencies(string steeltoe, string framework, string template)
         {
             var list = GetAvailableTemplates();
             var selectedTemplate = list.FirstOrDefault(x => x.ShortName == template);
@@ -123,7 +123,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
             }
 
             // var templatePath = _templatePath + Path.DirectorySeparatorChar + selectedTemplate.Name;
-            var config = _mustacheConfig.GetSchema(new TemplateKey(framework, selectedTemplate.Name));
+            var config = _mustacheConfig.GetSchema(new TemplateKey(Constants.Steeltoe24, framework, selectedTemplate.Name));
             return config.Params
                 .Where(p => p.Description.ToLower().Contains("steeltoe"))
                 .Select(p => new ProjectDependency

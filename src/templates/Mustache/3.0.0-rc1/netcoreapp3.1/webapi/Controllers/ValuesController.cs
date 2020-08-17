@@ -61,7 +61,7 @@ namespace {{ProjectNameSpace}}.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
             List<string> tables = new List<string>();
-        
+
             _dbConnection.Open();
             DataTable dt = _dbConnection.GetSchema("Tables");
             _dbConnection.Close();
@@ -85,7 +85,7 @@ namespace {{ProjectNameSpace}}.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
             List<string> tables = new List<string>();
-        
+
             _dbConnection.Open();
             DataTable dt = _dbConnection.GetSchema("Tables");
             _dbConnection.Close();
@@ -164,7 +164,7 @@ namespace {{ProjectNameSpace}}.Controllers
             _logger = logger;
             _factory = factory;
         }
-        
+
         // GET api/values
         [HttpGet]
         public ActionResult<string> Get()
@@ -208,7 +208,7 @@ namespace {{ProjectNameSpace}}.Controllers
         {
             _config = config;
         }
-        
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
@@ -272,7 +272,7 @@ namespace {{ProjectNameSpace}}.Controllers
             _appOptions = appOptions.Value;
             _serviceOptions = serviceOptions.Value;
         }
-       
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()

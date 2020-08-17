@@ -24,6 +24,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using Steeltoe.Initializr.TemplateEngine;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -53,7 +54,7 @@ namespace Steeltoe.Initializr.WebApp.Test
         [Fact]
         public async void GetStarterZipTest()
         {
-            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=TestCompany.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.4.4&TargetFramework=netcoreapp2.1&TemplateShortName=Steeltoe-WebApi");
+            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=TestCompany.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.4.4&DotNetFramework=netcoreapp2.1&Template=webapi");
 
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
 
@@ -119,9 +120,9 @@ namespace Steeltoe.Initializr.WebApp.Test
                 Dependencies = "Actuator,MySql",
                 Description = "TestDescription",
                 ProjectName = "TestCompany.TestProject",
-                SteeltoeVersion = "2.4.4",
-                TargetFramework = "netcoreapp2.1",
-                Template = "Steeltoe-WebApi",
+                SteeltoeVersion = Constants.Steeltoe24,
+                TargetFramework = Constants.NetCoreApp21,
+                Template = Constants.WebApi,
             };
 
             var props = model.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);

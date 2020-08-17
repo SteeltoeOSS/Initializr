@@ -74,7 +74,7 @@ Get project:
         private string GetDependencies()
         {
             var result = new StringBuilder();
-            var dependencies = _templateService.GetDependencies("netcoreapp3.1", string.Empty);
+            var dependencies = _templateService.GetDependencies("2.4.4", "netcoreapp3.1", string.Empty);
             var fieldWidths = new int[] { 40, 100 };
 
             result.Append("\nDependencies: \n");
