@@ -54,8 +54,8 @@ namespace Steeltoe.Initializr.WebApp.Controllers
 
         [Route("dependencies")]
         public ActionResult GetDependencies(
-            [FromQuery(Name = "dotNetTemplate")] string template,
-            [FromQuery(Name = "dotNetFramework")] string framework = "netcoreapp3.1")
+            [FromQuery(Name = "dotNetFramework")] string framework = "netcoreapp3.1",
+            [FromQuery(Name = "template")] string template = "webapi")
         {
             return Ok(_sttemplateService.GetDependencies("2.4.4", framework, template));
         }

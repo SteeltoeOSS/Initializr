@@ -16,6 +16,7 @@ export class DependenciesSelector extends Component {
             dependencies:[],
             selected_deps: [],
             activeView: 'quicksearch',
+            currentSteeltoeVersion: null,
             currentFramework: null,
             hover: [false, false, false, false, false]
         }
@@ -23,11 +24,14 @@ export class DependenciesSelector extends Component {
     }
 
     _populateDependencies() {
-        if (this.state.currentFramework === this.props.framework) {
+        if ((this.state.currentSteeltoeVersion === this.props.SteeltoeVersion)
+            && (this.state.currentFramework === this.props.framework))
+        {
             return
         }
+        this.state.currentSteeltoeVersion = this.props.steeltoeVersion
         this.state.currentFramework = this.props.framework
-        var depsPath = '/api/templates/dependencies?dotNetFramework=' + this.state.currentFramework
+        var depsPath = '/api/templates/dependencies?steeltoeVersion=' + this.state.currentSteeltoeVersion + '&dotNetFramework=' + this.state.currentFramework
         fetch(depsPath)
             .then(response => response.json())
             .then(data => {

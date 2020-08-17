@@ -103,9 +103,10 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
             return _mustacheConfig.GetTemplateKeys()
                 .Select(templateKey => new TemplateViewModel
                 {
+                    SteeltoeVersion = templateKey.Steeltoe,
+                    TargetFramework = templateKey.Framework,
                     Name = templateKey.Template,
                     ShortName = templateKey.Template,
-                    TargetFramework = templateKey.Framework,
                     Language = "C#",
                     Tags = "Web/Microservice",
                 })
@@ -122,8 +123,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                 throw new InvalidDataException($"Could not find template with name {template} ");
             }
 
-            // var templatePath = _templatePath + Path.DirectorySeparatorChar + selectedTemplate.Name;
-            var config = _mustacheConfig.GetSchema(new TemplateKey(Constants.Steeltoe24, framework, selectedTemplate.Name));
+            var config = _mustacheConfig.GetSchema(new TemplateKey(steeltoe, framework, template));
             return config.Params
                 .Where(p => p.Description.ToLower().Contains("steeltoe"))
                 .Select(p => new ProjectDependency

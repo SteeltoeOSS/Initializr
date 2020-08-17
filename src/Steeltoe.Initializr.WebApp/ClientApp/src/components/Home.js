@@ -132,7 +132,7 @@ export class Home extends Component {
                             </div>
                         </div>
                     </div>
-                    <DependenciesSelector id="deps" framework={this.state.framework}/>
+                    <DependenciesSelector id="deps" steeltoeVersion={this.steeltoeVersion} framework={this.state.framework}/>
                     <br/>
                 </div>
                 <div className="line row-action">
