@@ -13,12 +13,12 @@
 // limitations under the License.
 
 using Microsoft.AspNetCore.Mvc;
+using Steeltoe.Initializr.TemplateEngine;
 using Steeltoe.Initializr.TemplateEngine.Services;
 using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Steeltoe.Initializr.TemplateEngine;
 
 namespace Steeltoe.Initializr.WebApp.Controllers
 {
