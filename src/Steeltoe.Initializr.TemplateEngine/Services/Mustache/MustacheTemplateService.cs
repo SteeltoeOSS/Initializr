@@ -34,9 +34,6 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
     /// </summary>
     public class MustacheTemplateService : ITemplateService
     {
-        private const string DefaultTemplate = "Steeltoe-WebApi";
-        private const string DefaultFramework = "netcoreapp2.1";
-
         private Dictionary<string, string> FriendlyNames { get; set; }
 
         private readonly StubbleVisitorRenderer _stubble;
@@ -67,11 +64,10 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         public async Task<List<KeyValuePair<string, string>>> GenerateProjectFiles(GeneratorModel model)
         {
-            var template = string.IsNullOrEmpty(model.Template) ? DefaultTemplate : model.Template;
-            var templateKey = new TemplateKey(model.TargetFramework, template);
+            var templateKey = new TemplateKey(model.TargetFramework, model.Template);
             if (!_mustacheConfig.GetTemplateKeys().Contains(templateKey))
             {
-                throw new InvalidDataException($"Template with Name[{template}] and Framework[{model.TargetFramework}] doesn't exist");
+                throw new InvalidDataException($"Template with Name[{model.Template}] and Framework[{model.TargetFramework}] doesn't exist");
             }
 
             Dictionary<string, string> dataView;
@@ -109,22 +105,21 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                 {
                     Name = templateKey.Template,
                     ShortName = templateKey.Template,
-                    DotnetFramework = templateKey.Framework,
+                    TargetFramework = templateKey.Framework,
                     Language = "C#",
                     Tags = "Web/Microservice",
                 })
                 .ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(string framework, string shortName)
+        public List<ProjectDependency> GetDependencies(string framework, string template)
         {
-            shortName = string.IsNullOrEmpty(shortName) ? DefaultTemplate : shortName;
             var list = GetAvailableTemplates();
-            var selectedTemplate = list.FirstOrDefault(x => x.ShortName == shortName);
+            var selectedTemplate = list.FirstOrDefault(x => x.ShortName == template);
 
             if (selectedTemplate == null)
             {
-                throw new InvalidDataException($"Could not find template with name {shortName} ");
+                throw new InvalidDataException($"Could not find template with name {template} ");
             }
 
             // var templatePath = _templatePath + Path.DirectorySeparatorChar + selectedTemplate.Name;
@@ -137,11 +132,6 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                     ShortName = p.Name,
                     Description = p.Description,
                 }).ToList();
-        }
-
-        public void ClearCache()
-        {
-            throw new NotImplementedException();
         }
 
         private async Task<byte[]> GenerateProjectArchive(GeneratorModel model)

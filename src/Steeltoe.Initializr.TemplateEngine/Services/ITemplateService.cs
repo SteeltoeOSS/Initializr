@@ -24,10 +24,6 @@ namespace Steeltoe.Initializr.TemplateEngine.Services
 
         Task<byte[]> GenerateProjectArchiveAsync(GeneratorModel model);
 
-        List<TemplateViewModel> GetAvailableTemplates();
-
         List<ProjectDependency> GetDependencies(string framework, string template);
-
-        void ClearCache();
     }
 }

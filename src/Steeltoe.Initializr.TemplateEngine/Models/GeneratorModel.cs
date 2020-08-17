@@ -24,8 +24,6 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
     {
         private string _projectName;
 
-        public string Dependencies { get; set; }
-
         [ProjectNameValidation]
         public string ProjectName
         {
@@ -33,15 +31,17 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
             set => _projectName = value;
         }
 
-        public string Template { get; set; }
-
         public string Description { get; set; }
-
-        public string SteeltoeVersion { get; set; }
 
         public string ArchiveName => ProjectName + ".zip";
 
+        public string SteeltoeVersion { get; set; }
+
         public string TargetFramework { get; set; } = "netcoreapp3.1";
+
+        public string Template { get; set; }
+
+        public string Dependencies { get; set; }
 
         public string[] GetDependencies()
         {

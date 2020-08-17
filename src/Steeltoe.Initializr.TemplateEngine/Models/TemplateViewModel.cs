@@ -28,6 +28,6 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
 
         public string Tags { get; set; }
 
-        public string DotnetFramework { get; set; }
+        public string TargetFramework { get; set; }
     }
 }
