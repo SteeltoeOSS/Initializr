@@ -37,7 +37,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             };
             var templates = new string[]
             {
-                "Steeltoe-WebApi",
+                Constants.WebApi,
             };
             var data = from implementation in implementations
                        from template in templates

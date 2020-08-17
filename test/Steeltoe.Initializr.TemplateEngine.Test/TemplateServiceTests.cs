@@ -37,9 +37,9 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public void GetDependencies(ITemplateService templateService, string templateName, string framework)
+        public void GetDependencies(ITemplateService templateService, string steeltoe, string framework, string template)
         {
-            var deps = templateService.GetDependencies(Constants.Steeltoe24, framework, templateName);
+            var deps = templateService.GetDependencies(steeltoe, framework, template);
             Assert.NotNull(deps);
             Assert.NotEmpty(deps);
 
@@ -48,9 +48,9 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public void GetDependencies_WithFriendlyNames(ITemplateService templateService, string templateName, string framework)
+        public void GetDependencies_WithFriendlyNames(ITemplateService templateService, string steeltoe, string framework, string template)
         {
-            var deps = templateService.GetDependencies(Constants.Steeltoe24, framework, templateName);
+            var deps = templateService.GetDependencies(steeltoe, framework, template);
 
             Assert.NotNull(deps);
             Assert.NotEmpty(deps);
@@ -60,14 +60,15 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_actuators(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
                 ProjectName = "testProject",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -83,13 +84,14 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_react(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_react(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 ProjectName = "testProject",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -98,13 +100,14 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_discovery(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_discovery(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Discovery",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -116,13 +119,14 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_circuitbreakers(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_actuators_circuitbreakers(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators,CircuitBreaker",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -140,17 +144,18 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_MySql(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_MySql(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "MySql",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
 
-            if (framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals(Constants.Steeltoe30))
             {
                 Assert.Contains("using Steeltoe.Connector.MySql;", startUpContents);
             }
@@ -177,17 +182,18 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_MySql_EFCore(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_MySql_EFCore(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "MySqlEFCore",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals(Constants.Steeltoe30))
             {
                 Assert.Contains("using Steeltoe.Connector.MySql;", startUpContents);
                 Assert.Contains("using Steeltoe.Connector.MySql.EFCore;", startUpContents);
@@ -201,17 +207,18 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_postgresql(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_postgresql(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Postgres",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals(Constants.Steeltoe30))
             {
                 Assert.Contains("using Steeltoe.Connector.PostgreSql;", startUpContents);
             }
@@ -231,7 +238,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_ConfigServer(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_ConfigServer(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var configuration = TestHelper.GetConfiguration();
             var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
@@ -239,8 +246,9 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "ConfigServer",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
@@ -258,7 +266,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_Randomvalue(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_Randomvalue(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var configuration = TestHelper.GetConfiguration();
             var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
@@ -266,8 +274,9 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "RandomValueConfig",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             Assert.Contains(files, file => file.Key.EndsWith("ValuesController.cs"));
@@ -284,7 +293,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_Cloudfoundry(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_Cloudfoundry(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var configuration = TestHelper.GetConfiguration();
             var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
@@ -292,13 +301,14 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "CloudFoundry",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             string programContents = files.Find(x => x.Key == "Program.cs").Value;
 
-            if (framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals(Constants.Steeltoe30))
             {
                 Assert.Contains(".UseCloudHosting()", programContents);
                 Assert.Contains(".AddCloudFoundryConfiguration()", programContents);
@@ -317,7 +327,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_Placeholderconfig(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_Placeholderconfig(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var configuration = TestHelper.GetConfiguration();
             var logger = new LoggerFactory().CreateLogger<MustacheTemplateService>();
@@ -325,15 +335,16 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "PlaceholderConfig",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             Assert.DoesNotContain(files, file => file.Key.EndsWith("SampleData.cs"));
             Assert.Contains(files, file => file.Key.EndsWith("ValuesController.cs"));
 
             string programContents = files.Find(x => x.Key == "Program.cs").Value;
-            if (framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals(Constants.Steeltoe30))
             {
                 Assert.Contains("using Steeltoe.Extensions.Configuration.Placeholder;", programContents);
             }
@@ -355,17 +366,18 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_postgresEFCore(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_postgresEFCore(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "PostgresEFCore",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals(Constants.Steeltoe30))
             {
                 Assert.Contains("using Steeltoe.Connector.PostgreSql.EFCore;", startUpContents);
             }
@@ -379,17 +391,18 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_RabbitMQ(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_RabbitMQ(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "RabbitMQ",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals(Constants.Steeltoe30))
             {
                 Assert.Contains("using Steeltoe.Connector.RabbitMQ;", startUpContents);
             }
@@ -416,17 +429,18 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_Redis(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_Redis(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Redis",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals(Constants.Steeltoe30))
             {
                 Assert.Contains("using Steeltoe.Connector.Redis", startUpContents);
             }
@@ -446,17 +460,18 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_MongoDB(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_MongoDB(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "MongoDB",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals(Constants.Steeltoe30))
             {
                 Assert.Contains("using Steeltoe.Connector.MongoDb;", startUpContents);
             }
@@ -476,17 +491,18 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_OauthConnector(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_OauthConnector(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "OAuthConnector",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            if (framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals(Constants.Steeltoe30))
             {
                 Assert.Contains("using Steeltoe.Connector.OAuth;", startUpContents);
             }
@@ -499,24 +515,22 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_SqlServer(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_SqlServer(ITemplateService templateService, string steeltoe, string framework, string template)
         {
-            var steeltoeVersion = Constants.Steeltoe24;
-
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "SQLServer",
                 ProjectName = "testProject",
-                Template = templateName,
-                SteeltoeVersion = steeltoeVersion,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             var fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
             var aspnetCoreVersion = framework.Equals("netcoreapp3.1") ? "3.1.0" : "2.1.1";
             var startup = files.Find(x => x.Key == "Startup.cs").Value;
 
-            if (framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals(Constants.Steeltoe30))
             {
                 Assert.Contains(@"using Steeltoe.Connector.SqlServer.EFCore;", startup);
             }
@@ -527,7 +541,7 @@ using System.Threading;", valuesController);
                 Assert.Contains(@"services.AddSqlServerConnection(Configuration);", startup);
             }
 
-            if (!templateName.Contains("React"))
+            if (!template.Contains("React"))
             { // TODO: Add demo for react app
                 var valuesController = files.Find(x => x.Key.EndsWith("ValuesController.cs")).Value;
                 Assert.Contains(@" public ValuesController([FromServices] SqlConnection dbConnection)", valuesController);
@@ -536,19 +550,20 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_DynamicLogger(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_DynamicLogger(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "DynamicLogger",
                 ProjectName = "testProject",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             string fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
             string programFileContents = files.Find(x => x.Key == "Program.cs").Value;
-            if (framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals(Constants.Steeltoe30))
             {
                 Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicSerilogCore"" Version=", fileContents);
                 Assert.Contains(@"using Steeltoe.Extensions.Logging.DynamicSerilog", programFileContents);
@@ -565,18 +580,19 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_cloudFoundry(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_actuators_cloudFoundry(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             Assert.NotNull(templateService);
 
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "CloudFoundry",
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
             string programFileContents = files.Find(x => x.Key == "Program.cs").Value;
-            if (framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals(Constants.Steeltoe30))
             {
                 Assert.Contains("using Steeltoe.Common.Hosting;", programFileContents);
                 Assert.Contains(".UseCloudHosting(", programFileContents);
@@ -592,14 +608,14 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_v22(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_actuators_v22(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
-                SteeltoeVersion = Constants.Steeltoe24,
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -609,14 +625,14 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_23(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_actuators_23(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
-                SteeltoeVersion = Constants.Steeltoe24,
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -626,14 +642,14 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_24(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_actuators_24(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
                 Dependencies = "Actuators",
-                SteeltoeVersion = Constants.Steeltoe24,
-                Template = templateName,
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
@@ -659,15 +675,16 @@ using System.Threading;", valuesController);
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_empty(ITemplateService templateService, string templateName, string framework)
+        public async Task CreateTemplate_empty(ITemplateService templateService, string steeltoe, string framework, string template)
         {
             Assert.NotNull(templateService);
 
             var files = await templateService.GenerateProjectFiles(new GeneratorModel()
             {
-                Template = templateName,
                 ProjectName = "Foo.Bar",
+                SteeltoeVersion = steeltoe,
                 TargetFramework = framework,
+                Template = template,
             });
 
             var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;

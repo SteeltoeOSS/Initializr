@@ -30,21 +30,13 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
         public AllImplementationsAndTemplates()
         {
             IConfigurationRoot configuration = TestHelper.GetConfiguration();
-
-            var implementations = new ITemplateService[]
+            var implementation = new MustacheTemplateService(configuration, new LoggerFactory().CreateLogger<MustacheTemplateService>());
+            _data = new []
             {
-                new MustacheTemplateService(configuration, new LoggerFactory().CreateLogger<MustacheTemplateService>()),
-            };
-            var templates = new string[]
-            {
-                "Steeltoe-WebApi",
-            };
-            var frameworks = new[] {"netcoreapp2.1", "netcoreapp3.1"};
-            var data = from implementation in implementations
-                from template in templates
-                from framework in frameworks
-                select new object[] {implementation, template, framework};
-            _data = data.ToList();
+                new object[] { implementation, Constants.Steeltoe24, Constants.NetCoreApp21, Constants.WebApi},
+                new object[] { implementation, Constants.Steeltoe24, Constants.NetCoreApp31, Constants.WebApi},
+                new object[] { implementation, Constants.Steeltoe30, Constants.NetCoreApp31, Constants.WebApi},
+            }.ToList();
         }
 
         public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
