@@ -57,31 +57,11 @@ To generate projects:
 
 ```
 curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -o myProject.zip
-
-or
-
-curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -d templateShortName=Steeltoe-React -d projectName=MyCompany.MySample -o myProject.zip
 ```
 
 To get a list of dependencies:
 ```
 curl https://start.steeltoe.io/api/templates/dependencies
-```
-
-To get a list of valid templates:
-```
-curl https://start.steeltoe.io/api/templates/templates
-```
-
-### Dotnet templates
-
-Install the Steeloe Templates
-```
-dotnet new -i steeltoe.templates::2.2.1 --nuget-source https://www.myget.org/F/steeltoedev/api/v3/index.json
-```
-Generate project
-```
-dotnet new Steeltoe-WebApi --Actuators --CloudFoundry
 ```
 
 ## Build and Run

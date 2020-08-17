@@ -18,6 +18,7 @@ using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Steeltoe.Initializr.TemplateEngine;
 
 namespace Steeltoe.Initializr.WebApp.Controllers
 {
@@ -67,14 +68,15 @@ Get Versions:
 Get project:
     curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -o myProject.zip
 
-    curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -d templateShortName=Steeltoe-React -d targetFrameworkVersion=netcoreapp3.1 -d projectName=MyCompany.MySample -o myProject.zip
+    curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -d steeltoeVersion=2.4.4 -d dotNetFramework=netcoreapp3.1 -d projectName=MyCompany.MySample -o myProject.zip
 ";
         }
 
         private string GetDependencies()
         {
             var result = new StringBuilder();
-            var dependencies = _templateService.GetDependencies("2.4.4", "netcoreapp3.1", string.Empty);
+            var dependencies =
+                _templateService.GetDependencies(Constants.Steeltoe24, Constants.NetCoreApp31, Constants.WebApi);
             var fieldWidths = new int[] { 40, 100 };
 
             result.Append("\nDependencies: \n");
