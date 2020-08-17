@@ -79,12 +79,6 @@
       "Description": "Steeltoe: Add Redis connnectors"
     },
     {
-      "Name": "SQLServer",
-      "DefaultValue": false,
-      "Description": "Steeltoe: Add Microsoft SQL Server connnectors",
-      "friendlyName": "SQL Server"
-    },
-    {
       "Name": "ProjectNameSpace",
       "DefaultValue": "SteeltoeExample",
       "Description": "Change the namespace "
@@ -137,12 +131,12 @@
     },
     {
       "Name": "ValuesControllerWithArgs",
-      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker,CloudFoundry",
+      "Expression": "MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker,CloudFoundry",
       "ExpressionType": "Any"
     },
     {
       "Name": "MoreThanOneValuesControllerWithArgs",
-      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker,CloudFoundry",
+      "Expression": "MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker,CloudFoundry",
       "ExpressionType": "MoreThanOne"
     },
     {

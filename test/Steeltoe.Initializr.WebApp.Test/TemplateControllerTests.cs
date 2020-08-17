@@ -14,8 +14,8 @@
 
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Logging;
+using Steeltoe.Initializr.TemplateEngine;
 using Steeltoe.Initializr.TemplateEngine.Models;
-using Steeltoe.Initializr.TemplateEngine.Services;
 using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 using System.Collections.Generic;
 using System.IO;
@@ -24,7 +24,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using Steeltoe.Initializr.TemplateEngine;
 using Xunit;
 using Xunit.Abstractions;
 
