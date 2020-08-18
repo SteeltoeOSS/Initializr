@@ -45,7 +45,7 @@ namespace Steeltoe.Initializr.WebApp.Controllers
 
         [Route("/")]
         [HttpGet]
-        [IsCurlRequest]
+        [IsNotHtmlRequest]
         public ActionResult<string> CurlHelp()
         {
             var result = new StringBuilder();
@@ -60,10 +60,8 @@ namespace Steeltoe.Initializr.WebApp.Controllers
         {
             return @"
 Get Dependencies:
-    curl https://start.steeltoe.io/api/templates/dependencies | jq .
-
-Get Versions:
-    curl https://start.steeltoe.io/api/templates/templates | jq .
+    http https://start.steeltoe.io/api/templates/dependencies
+    http https://start.steeltoe.io/api/templates/dependencies?steeltoeVersion=2.4.4
 
 Get project:
     curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -o myProject.zip

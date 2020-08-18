@@ -19,12 +19,12 @@ using System.Linq;
 
 namespace Steeltoe.Initializr.WebApp.Controllers
 {
-    public class IsCurlRequestAttribute : ActionMethodSelectorAttribute
+    public class IsNotHtmlRequestAttribute : ActionMethodSelectorAttribute
     {
         public override bool IsValidForRequest(RouteContext routeContext, ActionDescriptor action)
         {
-            var headers = routeContext.HttpContext.Request.Headers;
-            return headers["User-Agent"].Any(h => h.ToLower().Contains("curl"));
+            return !routeContext.HttpContext.Request.Headers["Accept"].Any(
+                h => h.Split(",").Contains("text/html"));
         }
     }
 }
