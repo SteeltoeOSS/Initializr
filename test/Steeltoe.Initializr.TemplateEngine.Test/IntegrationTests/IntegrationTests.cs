@@ -57,11 +57,23 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
             await GenerateAndBuildProject(service, steeltoe, framework, template, dependency);
         }
 
+        [Fact]
+        public async Task Steeltoe24Dotnet21All()
+        {
+            await GenerateAndBuildProjectAllDeps(Constants.Steeltoe24, Constants.NetCoreApp21, Constants.WebApi);
+        }
+
         [Theory]
         [MemberData(nameof(GetArgs), typeof(MustacheTemplateService), Constants.Steeltoe24, Constants.NetCoreApp31, "webapi")]
         public async Task Steeltoe24Dotnet31(ITemplateService service, string steeltoe, string framework, string template, string dependency)
         {
             await GenerateAndBuildProject(service, steeltoe, framework, template, dependency);
+        }
+
+        [Fact]
+        public async Task Steeltoe24Dotnet31All()
+        {
+            await GenerateAndBuildProjectAllDeps(Constants.Steeltoe24, Constants.NetCoreApp31, Constants.WebApi);
         }
 
         [Theory]
@@ -71,9 +83,11 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
             await GenerateAndBuildProject(service, steeltoe, framework, template, dependency);
         }
 
-        // TODO: test Steeltoe 3
-
-        // TODO: test uber projects
+        [Fact]
+        public async Task Steeltoe30Dotnet31All()
+        {
+            await GenerateAndBuildProjectAllDeps(Constants.Steeltoe30, Constants.NetCoreApp31, Constants.WebApi);
+        }
 
         private async Task GenerateAndBuildProject(
             ITemplateService service,
@@ -111,6 +125,13 @@ namespace Steeltoe.Initializr.TemplateEngine.Test.IntegrationTests
             Assert.True(
                 output.Contains("Build succeeded."),
                 $"Error compiling {dependency}. \n {output}");
+        }
+
+        private async Task GenerateAndBuildProjectAllDeps(string steeltoe, string framework, string template)
+        {
+            var service = BuildTemplateService(typeof(MustacheTemplateService));
+            var deps = service.GetDependencies(steeltoe, framework, template).Select(dep => dep.ShortName);
+            await GenerateAndBuildProject(service, steeltoe, framework, template, string.Join(",", deps));
         }
 
         public static IEnumerable<object[]> GetArgs(Type templateServiceType, string steeltoe, string framework, string template)
