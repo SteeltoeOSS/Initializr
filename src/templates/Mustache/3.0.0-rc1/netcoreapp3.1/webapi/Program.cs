@@ -7,8 +7,8 @@ using Microsoft.Azure.SpringCloud.Client;
 using Steeltoe.Extensions.Logging.DynamicSerilog;
 {{/ActuatorsOrDynamicLogger}}
 {{#CloudFoundry}}
-{{^ConfigServer}}
 using Steeltoe.Common.Hosting;
+{{^ConfigServer}}
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 {{/ConfigServer}}
 {{/CloudFoundry}}

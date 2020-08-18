@@ -78,12 +78,7 @@ namespace {{ProjectNameSpace}}
             services.AddMySqlConnection(Configuration);
 {{/MySql}}
 {{#Actuators}}
-{{#CloudFoundry}}
-	        services.ConfigureCloudFoundryOptions(Configuration, MediaTypeVersion.V2, ActuatorContext.ActuatorAndCloudFoundry);
-{{/CloudFoundry}}
-{{^CloudFoundry}}
             services.AddCloudFoundryActuators(Configuration);
-{{/CloudFoundry}}
 {{/Actuators}}
 {{#Discovery}}
             services.AddDiscoveryClient(Configuration);
