@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.TemplateEngine.Models;
@@ -182,11 +183,12 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
             };
             foreach (var config in configs)
             {
-                var steeltoe = config[0];
+                var steeltoe = Regex.Match(config[0], @"(\d+\.\d+).*").Groups[1].Value;
                 var framework = config[1];
                 var path = Path.Join(templatePath, steeltoe, framework);
                 foreach (var dir in new DirectoryInfo(path).EnumerateDirectories())
                 {
+                    _logger.LogInformation($"Loading {dir}");
                     var template = dir.Name;
                     var mustacheTemplateSetting = new MustacheTemplateSettings(_logger, dir.FullName);
                     _templateSettings.Add(new TemplateKey(steeltoe, framework, template), mustacheTemplateSetting);

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Text.RegularExpressions;
 
 namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 {
@@ -26,7 +27,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         public TemplateKey(string steeltoe, string framework, string template)
         {
-            Steeltoe = steeltoe;
+            Steeltoe = Regex.Match(steeltoe, @"(\d+\.\d+).*").Groups[1].Value;
             Framework = framework;
             Template = template;
         }
