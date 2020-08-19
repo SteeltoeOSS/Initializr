@@ -180,8 +180,8 @@
           "Description": "Target Steeltoe version 2.4.4"
         },
         {
-            "choice": "3.0.0-rc1",
-            "Description": "Target Steeltoe version 3.0.0-rc1"
+            "choice": "3.0.0",
+            "Description": "Target Steeltoe version 3.0.0"
         }
       ]
     },
