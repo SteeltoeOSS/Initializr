@@ -13,7 +13,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
         [Fact]
         public void Steeltoe30()
         {
-            Assert.Equal("3.0.0-rc1", Constants.Steeltoe30);
+            Assert.Equal("3.0.0", Constants.Steeltoe30);
         }
 
         [Fact]
