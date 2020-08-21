@@ -1,0 +1,223 @@
+{
+  "Params": [
+    {
+      "Name": "Actuators",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add management endpoints for your application"
+    },
+    {
+      "Name": "Auth",
+      "DefaultValue": false,
+      "Description": "Add Authentication"
+    },
+    {
+      "Name": "CircuitBreaker",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Circuit Breakers",
+      "FriendlyName": "Circuit Breakers"
+    },
+    {
+      "Name": "CloudFoundry",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Target CloudFoundry Hosting",
+      "FriendlyName": "Cloud Foundry"
+    },
+    {
+      "Name": "Discovery",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Discovery Client"
+    },
+    {
+      "Name": "DynamicLogger",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Dynamic Logger"
+    },
+    {
+      "Name": "MongoDB",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add MongoDB connectors"
+    },
+    {
+      "Name": "MySql",
+      "DefaultValue": "false",
+      "Description": "Steeltoe: Add MySql connectors"
+    },
+    {
+      "Name": "MySqlEFCore",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add MySQL EFCore connectors",
+      "friendlyName": "MySql EFCore"
+    },
+    {
+      "Name": "OAuthConnector",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add OAuth connectors"
+    },
+    {
+      "Name": "Postgres",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Postgres connectors"
+    },
+    {
+      "Name": "PostgresEFCore",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Postgres EFCore connectors",
+      "friendlyName": "Postgres EFCore"
+    },
+    {
+      "Name": "RabbitMQ",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add RabbitMQ connectors"
+    },
+    {
+      "Name": "Redis",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Redis connectors"
+    },
+    {
+      "Name": "SQLServer",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Microsoft SQL Server connectors",
+      "friendlyName": "SQL Server"
+    },
+    {
+      "Name": "ConfigServer",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add ConfigServer Configuration Source",
+      "friendlyName": "Config Server"
+    },
+    {
+      "Name": "PlaceholderConfig",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Placeholder Configuration Source",
+      "friendlyName": "Placeholder Configuration Source"
+    },
+    {
+      "Name": "RandomValueConfig",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add RandomValue Configuration Source",
+      "friendlyName": "RandomValue Configuration Source"
+    },
+    {
+      "Name": "ProjectNameSpace",
+      "DefaultValue": "SteeltoeExample",
+      "Description": "Change the namespace "
+    },
+    {
+      "Name": "Dockerfile",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Add Dockerfile",
+      "friendlyName": "Dockerfile"
+    }
+  ],
+  "CalculatedParams": [
+    {
+      "Name": "ActuatorsOrCloudFoundry",
+      "Expression": "Actuators,CloudFoundry",
+      "ExpressionType": "Any"
+    },
+    {
+      "Name": "AnyEFCore",
+      "Expression": "PostgresEFCore,MySqlEFCore",
+      "ExpressionType": "Any"
+    },
+    {
+      "Name": "MySqlOrMySqlEFCore",
+      "Expression": "MySql,MySqlEFCore",
+      "ExpressionType": "Any"
+    },
+    {
+      "Name": "ActuatorsOrDynamicLogger",
+      "Expression": "Actuators,DynamicLogger",
+      "ExpressionType": "Any"
+    },
+    {
+      "Name": "ValuesControllerWithArgs",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker,CloudFoundry",
+      "ExpressionType": "Any"
+    },
+    {
+      "Name": "MoreThanOneValuesControllerWithArgs",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB,RabbitMQ,Redis,ConfigServer,PlaceholderConfig,RandomValueConfig,CircuitBreaker,CloudFoundry",
+      "ExpressionType": "MoreThanOne"
+    },
+    {
+      "Name": "AnySqlData",
+      "Expression": "SQLServer,MySql,Postgres,MongoDB",
+      "ExpressionType": "Any"
+    },
+    {
+      "Name": "AnyConnector",
+      "Expression": "MySql,Postgres,SQLServer,Redis,MongoDB,RabbitMQ,OAuthConnector",
+      "ExpressionType": "Any"
+    },
+    {
+      "Name": "AnyConfigSource",
+      "Expression": "ConfigServer,PlaceholderConfig,RandomValueConfig",
+      "ExpressionType": "Any"
+    },
+    {
+      "Name": "AspNetCoreVersion",
+      "Expression": "TargetFrameworkVersion,netcoreapp2.1=2.1.1,default=False",
+      "ExpressionType": "Case"
+    }
+  ],
+  "ConditionalInclusions": [
+    {
+      "Name": "AnyEFCore",
+      "InclusionExpression": "Models/**"
+    },
+    {
+      "Name": "CircuitBreaker",
+      "InclusionExpression": "MyCircuitBreakerCommand.cs"
+    },
+    {
+      "Name": "Dockerfile",
+      "InclusionExpression": "Dockerfile"
+    }
+  ],
+  "Versions": [
+    {
+      "Name": "SteeltoeVersion",
+      "DefaultValue": "2.4.4",
+      "Description": "Target the appropriate Steeltoe version",
+      "choices": [
+        {
+          "choice": "2.4.4",
+          "Description": "Target Steeltoe version 2.4.4"
+        }
+      ]
+    },
+    {
+      "Name": "TargetFrameworkVersion",
+      "DefaultValue": "netcoreapp2.1",
+      "Description": "Target the appropriate Dotnet framework version",
+      "choices": [
+        {
+          "Choice": "netcoreapp2.1",
+          "Description": "Target Dotnet framework version 2.1"
+        }
+      ]
+    },
+    {
+      "Name": "MySqlVersion",
+      "DefaultValue": "8.0.16"
+    },
+
+    {
+      "Name": "NpgSqlVersion",
+      "DefaultValue": "4.0.4"
+    },
+
+    {
+      "Name": "MongoDBVersion",
+      "DefaultValue": "2.8.1"
+    },
+
+    {
+      "Name": "RabbitMQVersion",
+      "DefaultValue": "5.1.0"
+    }
+  ]
+
+}

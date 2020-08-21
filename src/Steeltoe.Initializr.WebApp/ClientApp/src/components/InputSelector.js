@@ -2,7 +2,7 @@
 export class InputSelector extends Component {
     constructor(props) {
         super(props);
-        
+
         this.handleChange = this.handleChange.bind(this);
         //this.state = { selectedValue: this.props.defaultValue };
 
@@ -26,9 +26,7 @@ export class InputSelector extends Component {
                                     </div>
                             })
                         }
-
                         <input type="hidden" name={this.props.name} value={this.props.selectedValue} />
-                  
                     </div>
                     <span  style={{display: this.props.invalidText? "block": "none" , "color": "red"}} > {this.props.invalidText} </span>
                 </div>

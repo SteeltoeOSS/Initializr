@@ -12,28 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using System.Text.RegularExpressions;
+
 namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 {
     public class TemplateKey
     {
-        public string Name { get; }
+        public string Steeltoe { get; }
 
-        public DotnetTemplateVersion Version { get; }
+        public string Template { get; }
 
-        public TemplateKey(string name, DotnetTemplateVersion version)
+        public string Framework { get; }
+
+        public TemplateKey(string steeltoe, string framework, string template)
         {
-            Name = name;
-            Version = version;
+            Steeltoe = Regex.Match(steeltoe, @"(\d+\.\d+).*").Groups[1].Value;
+            Framework = framework;
+            Template = template;
         }
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode() ^ Version.GetHashCode();
+            return Steeltoe.GetHashCode() ^ Template.GetHashCode() ^ Framework.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
-            return obj is TemplateKey key && (Name.Equals(key.Name) && Version.Equals(key.Version));
+            return obj is TemplateKey key && Steeltoe.Equals(key.Steeltoe) && Template.Equals(key.Template) && Framework.Equals(key.Framework);
+        }
+
+        public override string ToString()
+        {
+            return $"TemplateKey[{Steeltoe},{Framework},{Template}]";
         }
     }
 }

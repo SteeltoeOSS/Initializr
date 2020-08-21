@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.TemplateEngine.Models;
@@ -96,17 +97,17 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                     }
                 }
 
-                if (model.TargetFrameworkVersion != null)
+                if (model.TargetFramework != null)
                 {
                     const string targetFrameworkName = "TargetFrameworkVersion";
                     var targetFramework = mustacheConfig.Versions.FirstOrDefault(v => v.Name == targetFrameworkName);
 
                     var validChoice =
-                        targetFramework?.Choices.Any(choice => model.TargetFrameworkVersion.ToLower() == choice.Choice);
+                        targetFramework?.Choices.Any(choice => model.TargetFramework.ToLower() == choice.Choice);
 
                     if (validChoice == true)
                     {
-                        dataView[targetFrameworkName] = model.TargetFrameworkVersion;
+                        dataView[targetFrameworkName] = model.TargetFramework;
                     }
                 }
 
@@ -132,7 +133,8 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
             return dataView;
         }
 
-        public IEnumerable<SourceFile> GetFilteredSourceSets(Dictionary<string, string> dataView, TemplateKey templateKey)
+        public IEnumerable<SourceFile> GetFilteredSourceSets(Dictionary<string, string> dataView,
+            TemplateKey templateKey)
         {
             var settings = _templateSettings[templateKey];
             var files = settings.SourceSets;
@@ -173,25 +175,34 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         private void LoadConfig(string templatePath)
         {
-            var versions = (DotnetTemplateVersion[])Enum.GetValues(typeof(DotnetTemplateVersion));
-
-            foreach (var version in versions)
+            var configs = new[]
             {
-                var versionString = version == DotnetTemplateVersion.V2 ? "2.x" : "3.x";
-                var path = templatePath + Path.DirectorySeparatorChar + versionString;
+                new[] {Constants.Steeltoe24, Constants.NetCoreApp21},
+                new[] {Constants.Steeltoe24, Constants.NetCoreApp31},
+                new[] {Constants.Steeltoe30, Constants.NetCoreApp31},
+            };
+            foreach (var config in configs)
+            {
+                var steeltoe = Regex.Match(config[0], @"(\d+\.\d+).*").Groups[1].Value;
+                var framework = config[1];
+                var path = Path.Join(templatePath, steeltoe, framework);
                 foreach (var dir in new DirectoryInfo(path).EnumerateDirectories())
                 {
+                    _logger.LogInformation($"Loading {dir}");
+                    var template = dir.Name;
                     var mustacheTemplateSetting = new MustacheTemplateSettings(_logger, dir.FullName);
-                    _templateSettings.Add(new TemplateKey(dir.Name, version), mustacheTemplateSetting);
+                    _templateSettings.Add(new TemplateKey(steeltoe, framework, template), mustacheTemplateSetting);
                 }
             }
         }
 
-        private List<InclusionExpression> GetInclusionExpressions(Dictionary<string, string> dataView, MustacheConfigSchema schema) =>
+        private List<InclusionExpression> GetInclusionExpressions(Dictionary<string, string> dataView,
+            MustacheConfigSchema schema) =>
             schema.ConditionalInclusions
                 .Select(x => new InclusionExpression(
                     expression: x.InclusionExpression,
-                    matchesView: dataView.ContainsKey(x.Name) && (dataView[x.Name] is string stringValue && stringValue == "True")))
+                    matchesView: dataView.ContainsKey(x.Name) &&
+                                 (dataView[x.Name] is string stringValue && stringValue == "True")))
                 .ToList();
     }
 }

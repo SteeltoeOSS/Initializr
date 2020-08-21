@@ -16,11 +16,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.TemplateEngine.Services;
-using Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine;
 using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 
 namespace Steeltoe.Initializr.TemplateEngine.Test
@@ -32,23 +30,13 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
         public AllImplementationsAndTemplates()
         {
             IConfigurationRoot configuration = TestHelper.GetConfiguration();
-
-            var implementations = new ITemplateService[]
+            var implementation = new MustacheTemplateService(configuration, new LoggerFactory().CreateLogger<MustacheTemplateService>());
+            _data = new []
             {
-                // new DotnetTemplateService(configuration, new MemoryCache(new MemoryCacheOptions()), new LoggerFactory().CreateLogger<DotnetTemplateService>()),
-                new MustacheTemplateService(configuration, new LoggerFactory().CreateLogger<MustacheTemplateService>()),
-            };
-            var templateNames = new string[]
-            {
-                "Steeltoe-React",
-                "Steeltoe-WebApi",
-            };
-            var templateVersions = (DotnetTemplateVersion[])Enum.GetValues(typeof(DotnetTemplateVersion));
-            var data = from implementation in implementations
-                       from templateName in templateNames
-                       from templateVersion in templateVersions
-                       select new object[] { implementation, templateName, templateVersion };
-            _data = data.ToList();
+                new object[] { implementation, Constants.Steeltoe24, Constants.NetCoreApp21, Constants.WebApi},
+                new object[] { implementation, Constants.Steeltoe24, Constants.NetCoreApp31, Constants.WebApi},
+                new object[] { implementation, Constants.Steeltoe30, Constants.NetCoreApp31, Constants.WebApi},
+            }.ToList();
         }
 
         public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();

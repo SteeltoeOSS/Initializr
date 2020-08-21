@@ -14,8 +14,8 @@
 
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Logging;
+using Steeltoe.Initializr.TemplateEngine;
 using Steeltoe.Initializr.TemplateEngine.Models;
-using Steeltoe.Initializr.TemplateEngine.Services;
 using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 using System.Collections.Generic;
 using System.IO;
@@ -53,8 +53,7 @@ namespace Steeltoe.Initializr.WebApp.Test
         [Fact]
         public async void GetStarterZipTest()
         {
-            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=TestCompany.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.4.4&TemplateVersion=V2&TargetFrameworkVersion=netcoreapp2.1&TemplateShortName=Steeltoe-WebApi");
-
+            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=TestCompany.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.4.4&DotNetFramework=netcoreapp2.1&Template=webapi");
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
 
             Dictionary<string, string> files = new Dictionary<string, string>();
@@ -78,8 +77,7 @@ namespace Steeltoe.Initializr.WebApp.Test
         [Fact]
         public async void GetStarterZipValidationTest()
         {
-            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=123.TestProject&Dependencies=Actuator,MySql&Description=Test%20Description&SteeltoeVersion=2.4.4&TemplateVersion=V2&TargetFrameworkVersion=netcoreapp2.1&TemplateShortName=Steeltoe-WebApi");
-
+            var result = await _client.GetAsync("https://localhost/starter.zip?ProjectName=123.TestProject");
             Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
 
             var responseString = await result.Content.ReadAsStringAsync();
@@ -95,9 +93,8 @@ namespace Steeltoe.Initializr.WebApp.Test
                 Description = "TestDescription",
                 ProjectName = "123.TestProject",
                 SteeltoeVersion = "2.4.4",
-                TargetFrameworkVersion = "netcoreapp2.1",
-                TemplateShortName = "Steeltoe-WebApi",
-                TemplateVersion = DotnetTemplateVersion.V2,
+                TargetFramework = "netcoreapp2.1",
+                Template = "Steeltoe-WebApi",
             };
 
             var props = model.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -120,10 +117,9 @@ namespace Steeltoe.Initializr.WebApp.Test
                 Dependencies = "Actuator,MySql",
                 Description = "TestDescription",
                 ProjectName = "TestCompany.TestProject",
-                SteeltoeVersion = "2.4.4",
-                TargetFrameworkVersion = "netcoreapp2.1",
-                TemplateShortName = "Steeltoe-WebApi",
-                TemplateVersion = DotnetTemplateVersion.V2,
+                SteeltoeVersion = Constants.Steeltoe24,
+                TargetFramework = Constants.NetCoreApp21,
+                Template = Constants.WebApi,
             };
 
             var props = model.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
