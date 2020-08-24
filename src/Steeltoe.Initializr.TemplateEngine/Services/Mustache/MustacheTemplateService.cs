@@ -34,9 +34,6 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
     /// </summary>
     public class MustacheTemplateService : ITemplateService
     {
-        private const string DefaultTemplateName = "Steeltoe-WebApi";
-        private const DotnetTemplateVersion DefaultVersion = DotnetTemplateVersion.V2;
-
         private Dictionary<string, string> FriendlyNames { get; set; }
 
         private readonly StubbleVisitorRenderer _stubble;
@@ -56,8 +53,7 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                 .Configure(settings => settings.AddJsonNet())
                 .Build();
             _logger = logger;
-            _templatePath = AppDomain.CurrentDomain.BaseDirectory + "templates" + Path.DirectorySeparatorChar +
-                            "Mustache";
+            _templatePath = Path.Join(AppDomain.CurrentDomain.BaseDirectory, "templates", "Mustache");
             _mustacheConfig = new MustacheConfig(_logger, _templatePath);
         }
 
@@ -68,13 +64,10 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
 
         public async Task<List<KeyValuePair<string, string>>> GenerateProjectFiles(GeneratorModel model)
         {
-            var name = string.IsNullOrEmpty(model.TemplateShortName) ? DefaultTemplateName : model.TemplateShortName;
-
-            var templateKey = new TemplateKey(name, model.TemplateVersion);
-
+            var templateKey = new TemplateKey(model.SteeltoeVersion, model.TargetFramework, model.Template);
             if (!_mustacheConfig.GetTemplateKeys().Contains(templateKey))
             {
-                throw new InvalidDataException($"Template with Name: {name} and Version: {model.TemplateVersion} doesn't exist");
+                throw new InvalidDataException($"Template with Name[{model.Template}] and Framework[{model.TargetFramework}] doesn't exist");
             }
 
             Dictionary<string, string> dataView;
@@ -110,29 +103,27 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
             return _mustacheConfig.GetTemplateKeys()
                 .Select(templateKey => new TemplateViewModel
                 {
-                    Name = templateKey.Name,
-                    ShortName = templateKey.Name,
-                    DotnetTemplateVersion = templateKey.Version,
+                    SteeltoeVersion = templateKey.Steeltoe,
+                    TargetFramework = templateKey.Framework,
+                    Name = templateKey.Template,
+                    ShortName = templateKey.Template,
                     Language = "C#",
                     Tags = "Web/Microservice",
                 })
                 .ToList();
         }
 
-        public List<ProjectDependency> GetDependencies(string shortName, DotnetTemplateVersion version)
+        public List<ProjectDependency> GetDependencies(string steeltoe, string framework, string template)
         {
-            shortName = string.IsNullOrEmpty(shortName) ? DefaultTemplateName : shortName;
             var list = GetAvailableTemplates();
-            var selectedTemplate = list.FirstOrDefault(x => x.ShortName == shortName);
+            var selectedTemplate = list.FirstOrDefault(x => x.ShortName == template);
 
             if (selectedTemplate == null)
             {
-                throw new InvalidDataException($"Could not find template with name {shortName} ");
+                throw new InvalidDataException($"Could not find template with name {template} ");
             }
 
-            // var templatePath = _templatePath + Path.DirectorySeparatorChar + selectedTemplate.Name;
-            var config = _mustacheConfig.GetSchema(new TemplateKey(selectedTemplate.Name, version));
-
+            var config = _mustacheConfig.GetSchema(new TemplateKey(steeltoe, framework, template));
             return config.Params
                 .Where(p => p.Description.ToLower().Contains("steeltoe"))
                 .Select(p => new ProjectDependency
@@ -141,11 +132,6 @@ namespace Steeltoe.Initializr.TemplateEngine.Services.Mustache
                     ShortName = p.Name,
                     Description = p.Description,
                 }).ToList();
-        }
-
-        public void ClearCache()
-        {
-            throw new NotImplementedException();
         }
 
         private async Task<byte[]> GenerateProjectArchive(GeneratorModel model)

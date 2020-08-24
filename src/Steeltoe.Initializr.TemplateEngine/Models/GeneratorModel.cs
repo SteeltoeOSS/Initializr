@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Steeltoe.Initializr.TemplateEngine.Services;
 
@@ -21,41 +23,29 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
     public class GeneratorModel
     {
         private string _projectName;
-        private DotnetTemplateVersion? _templateVersion;
-
-        public string Dependencies { get; set; }
 
         [ProjectNameValidation]
-        public string ProjectName { get => _projectName ?? "steeltoeProject"; set => _projectName = value; }
-
-        public string TemplateShortName { get; set; }
+        public string ProjectName
+        {
+            get => _projectName ?? "SteeltoeProject";
+            set => _projectName = value;
+        }
 
         public string Description { get; set; }
 
-        public string SteeltoeVersion { get; set; }
-
         public string ArchiveName => ProjectName + ".zip";
 
-        public string TargetFrameworkVersion { get; set; }
+        public string SteeltoeVersion { get; set; } = Constants.Steeltoe24;
+
+        public string TargetFramework { get; set; } = Constants.NetCoreApp31;
+
+        public string Template { get; set; } = Constants.WebApi;
+
+        public string Dependencies { get; set; }
 
         public string[] GetDependencies()
         {
             return string.IsNullOrEmpty(Dependencies) ? null : Dependencies.ToLower().Split(',');
-        }
-
-        public DotnetTemplateVersion TemplateVersion
-        {
-            get
-            {
-                if (_templateVersion == null)
-                {
-                    return TargetFrameworkVersion == "netcoreapp3.1" ? DotnetTemplateVersion.V3 : DotnetTemplateVersion.V2;
-                }
-
-                return _templateVersion.Value;
-            }
-
-            set => _templateVersion = value;
         }
 
         public IEnumerable<string> GetTemplateParameters()

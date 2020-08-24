@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using Microsoft.AspNetCore.Mvc;
+using Steeltoe.Initializr.TemplateEngine;
 using Steeltoe.Initializr.TemplateEngine.Services;
 using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace Steeltoe.Initializr.WebApp.Controllers
 
         [Route("/")]
         [HttpGet]
-        [IsCurlRequest]
+        [IsNotHtmlRequest]
         public ActionResult<string> CurlHelp()
         {
             var result = new StringBuilder();
@@ -59,22 +60,21 @@ namespace Steeltoe.Initializr.WebApp.Controllers
         {
             return @"
 Get Dependencies:
-    curl https://start.steeltoe.io/api/templates/dependencies | jq .
-
-Get Versions:
-    curl https://start.steeltoe.io/api/templates/templates | jq .
+    http https://start.steeltoe.io/api/templates/dependencies
+    http https://start.steeltoe.io/api/templates/dependencies?steeltoeVersion=2.4.4
 
 Get project:
     curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -o myProject.zip
 
-    curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -d templateShortName=Steeltoe-React -d targetFrameworkVersion=netcoreapp3.1 -d projectName=MyCompany.MySample -o myProject.zip
+    curl https://start.steeltoe.io/starter.zip -d dependencies=actuators,cloudfoundry -d steeltoeVersion=2.4.4 -d dotNetFramework=netcoreapp3.1 -d projectName=MyCompany.MySample -o myProject.zip
 ";
         }
 
         private string GetDependencies()
         {
             var result = new StringBuilder();
-            var dependencies = _templateService.GetDependencies(string.Empty, DotnetTemplateVersion.V3);
+            var dependencies =
+                _templateService.GetDependencies(Constants.Steeltoe24, Constants.NetCoreApp31, Constants.WebApi);
             var fieldWidths = new int[] { 40, 100 };
 
             result.Append("\nDependencies: \n");

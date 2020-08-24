@@ -12,18 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Steeltoe.Initializr.TemplateEngine.Models;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using Microsoft.AspNetCore.Routing;
+using System.Linq;
 
-namespace Steeltoe.Initializr.TemplateEngine.Services
+namespace Steeltoe.Initializr.WebApp.Controllers
 {
-    public interface ITemplateService
+    public class IsNotHtmlRequestAttribute : ActionMethodSelectorAttribute
     {
-        Task<List<KeyValuePair<string, string>>> GenerateProjectFiles(GeneratorModel model);
-
-        Task<byte[]> GenerateProjectArchiveAsync(GeneratorModel model);
-
-        List<ProjectDependency> GetDependencies(string steeltoe, string framework, string template);
+        public override bool IsValidForRequest(RouteContext routeContext, ActionDescriptor action)
+        {
+            return !routeContext.HttpContext.Request.Headers["Accept"].Any(
+                h => h.Split(",").Contains("text/html"));
+        }
     }
 }

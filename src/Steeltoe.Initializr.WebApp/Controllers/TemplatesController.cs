@@ -34,7 +34,7 @@ namespace Steeltoe.Initializr.WebApp.Controllers
 
         public TemplatesController(IEnumerable<ITemplateService> services)
         {
-          // _templateService = services.OfType<TemplateService>().FirstOrDefault();
+            // _templateService = services.OfType<TemplateService>().FirstOrDefault();
             _sttemplateService = services.OfType<MustacheTemplateService>().FirstOrDefault();
         }
 
@@ -53,13 +53,16 @@ namespace Steeltoe.Initializr.WebApp.Controllers
         }
 
         [Route("dependencies")]
-        public ActionResult GetDependencies([FromQuery(Name = "templateShortName")] string templateShortName, [FromQuery(Name = "templateVersion")] DotnetTemplateVersion? templateVersion)
+        public ActionResult GetDependencies(
+            [FromQuery(Name = "dotNetFramework")] string framework = "netcoreapp3.1",
+            [FromQuery(Name = "template")] string template = "webapi")
         {
-            return Ok(_sttemplateService.GetDependencies(templateShortName, templateVersion ?? DotnetTemplateVersion.V2));
+            return Ok(_sttemplateService.GetDependencies("2.4.4", framework, template));
         }
 
         [Route("templates")]
-        public ActionResult<IEnumerable<TemplateViewModel>> GetTemplates([FromQuery(Name = "Mustache")] bool useMustache)
+        public ActionResult<IEnumerable<TemplateViewModel>> GetTemplates(
+            [FromQuery(Name = "Mustache")] bool useMustache)
         {
             return _sttemplateService.GetAvailableTemplates();
         }

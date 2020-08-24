@@ -24,10 +24,12 @@ namespace Steeltoe.Initializr.TemplateEngine.Models
 
         public string ShortName { get; set; }
 
+        public string SteeltoeVersion { get; set; }
+
+        public string TargetFramework { get; set; }
+
         public string Language { get; set; }
 
         public string Tags { get; set; }
-
-        public DotnetTemplateVersion DotnetTemplateVersion { get; set; }
     }
 }

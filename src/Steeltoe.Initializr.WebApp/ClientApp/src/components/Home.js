@@ -17,7 +17,8 @@ export class Home extends Component {
         lang: "C#",
         steeltoeVersion: "2.4.4",
         steeltoeVersionInvalid: "",
-        targetFrameworkVersion: "netcoreapp3.1"
+        framework: "netcoreapp3.1",
+        frameworkInvalid: "",
     };
     constructor(props) {
         super(props);
@@ -50,7 +51,7 @@ export class Home extends Component {
         ReactGA.event({
             category: 'Generated Project',
             action: 'Net-Framework',
-            label: elements["targetFrameworkVersion"].value
+            label: elements["framework"].value
         });
         //Send events for dependencies
         const deps = elements["dependencies"].value;
@@ -68,26 +69,22 @@ export class Home extends Component {
         this.setState(prevState => ({showMore: !prevState.showMore}))
     }
     handleInputChange(name, selectedValue) {
-        this.setState({
-            [name]: selectedValue,
-            "steeltoeVersionInvalid": ""
-        });
-        // if (name === "targetFrameworkVersion" && selectedValue === "netcoreapp3.1" && this.state.steeltoeVersion === "2.3.0") {
-        //     this.setState({
-        //         "steeltoeVersion": "2.4.0",
-        //         [name]: selectedValue,
-        //         "steeltoeVersionInvalid": ""
-        //     })
-        // }
-        // else if(name === "steeltoeVersion" && selectedValue === "2.3.0" && this.state.targetFrameworkVersion === "netcoreapp3.1"){
-        //     this.setState({
-        //         "steeltoeVersion": "2.4.0",
-        //         "steeltoeVersionInvalid": "2.4.0 is the lowest version compatible with netcoreapp3.1",
-        //     })
-        // }
-        // else {
-        // ....
-        // }
+        if (name === "steeltoeVersion" && selectedValue.startsWith("3.") && this.state.framework !== "netcoreapp3.1") {
+            this.setState({
+                "steeltoeVersionInvalid": "Steeltoe 3.x requires netcoreapp3.1",
+            })
+        }
+        else if (name === "framework" && selectedValue === "netcoreapp2.1" && !this.state.steeltoeVersion.startsWith("2.")) {
+            this.setState({
+                "frameworkInvalid": "netcoreapp2.1 requires Steeltoe 2.x",
+            })
+        } else {
+            this.setState({
+                [name]: selectedValue,
+                "steeltoeVersionInvalid": "",
+                "frameworkInvalid": "",
+            });
+        }
        // console.log("parent setting hanglechange" , name, selectedValue)
     }
 
@@ -99,23 +96,43 @@ export class Home extends Component {
         <div>
             <form name="form" action="/starter.zip" method="post" autoComplete="off" onSubmit={this.OnSubmit} >
                 <div>
-                    <InputSelector id="steeltoeVersion" title="Steeltoe Version" name="steeltoeVersion" values={["2.4.4"]} defaultValue="2.4.4" selectedValue={this.state.steeltoeVersion} onChange={this.handleInputChange} invalidText={this.state.steeltoeVersionInvalid} />
+                    <InputSelector id="steeltoeVersion"
+                                   title="Steeltoe Version"
+                                   name="steeltoeVersion"
+                                   values={["2.4.4", "3.0.0"]}
+                                   defaultValue="2.4.4"
+                                   selectedValue={this.state.steeltoeVersion}
+                                   onChange={this.handleInputChange}
+                                   invalidText={this.state.steeltoeVersionInvalid} />
 
                     <div className="line">
                         <div className="left">Project Metadata</div>
                         <div className="right">
                             <div className="project-metadata">
-
-                                <InputText title="Project Name" name="projectName" defaultValue="MyCompany.SteeltoeExample" tabIndex="1" required pattern="^(?:((?!\d)\w+(?:\.(?!\d)\w+)*)\.)?((?!\d)\w+)$" onInput={(e) => e.target.setCustomValidity("")} onInvalid={(e) => e.target.setCustomValidity("ProjectName must be a valid C# Identifier: ex. MyCompany.MyProject")} />
+                                <InputText title="Project Name"
+                                           name="projectName"
+                                           defaultValue="MyCompany.SteeltoeExample"
+                                           tabIndex="1"
+                                           required pattern="^(?:((?!\d)\w+(?:\.(?!\d)\w+)*)\.)?((?!\d)\w+)$"
+                                           onInput={(e) => e.target.setCustomValidity("")}
+                                           onInvalid={(e) => e.target.setCustomValidity("ProjectName must be a valid C# Identifier: ex. MyCompany.MyProject")} />
                                 <div id="more-block">
-                                    <InputText title="Description" name="description" defaultValue="Demo project for Steeltoe" tabIndex="2" />
-                                    <RightInputSelector title='Target Framework' name="targetFrameworkVersion" values={["netcoreapp2.1", "netcoreapp3.1"]} defaultValue="netcoreapp3.1" selectedValue={this.state.targetFrameworkVersion}  onChange={this.handleInputChange} />
+                                    <InputText title="Description"
+                                               name="description"
+                                               defaultValue="Demo project for Steeltoe"
+                                               tabIndex="2" />
+                                    <RightInputSelector title='Target Framework'
+                                                        name="framework"
+                                                        values={["netcoreapp2.1", "netcoreapp3.1"]}
+                                                        defaultValue="netcoreapp3.1"
+                                                        selectedValue={this.state.framework}
+                                                        onChange={this.handleInputChange}
+                                                        invalidText={this.state.frameworkInvalid} />
                                 </div>
-
                             </div>
                         </div>
                     </div>
-                    <DependenciesSelector id="deps" />
+                    <DependenciesSelector id="deps" steeltoeVersion={this.steeltoeVersion} framework={this.state.framework}/>
                     <br/>
                 </div>
                 <div className="line row-action">

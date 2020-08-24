@@ -16,11 +16,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Initializr.TemplateEngine.Services;
-using Steeltoe.Initializr.TemplateEngine.Services.DotNetTemplateEngine;
 using Steeltoe.Initializr.TemplateEngine.Services.Mustache;
 
 namespace Steeltoe.Initializr.TemplateEngine.Test
@@ -35,18 +33,15 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
 
             var implementations = new ITemplateService[]
             {
-                // new DotnetTemplateService(configuration, new MemoryCache(new MemoryCacheOptions()), new LoggerFactory().CreateLogger<DotnetTemplateService>()),
                 new MustacheTemplateService(configuration, new LoggerFactory().CreateLogger<MustacheTemplateService>()),
             };
-            var templateNames = new string[]
+            var templates = new string[]
             {
-                "Steeltoe-React",
-                "Steeltoe-WebApi",
+                Constants.WebApi,
             };
-            var templateVersions = (DotnetTemplateVersion[])Enum.GetValues(typeof(DotnetTemplateVersion));
             var data = from implementation in implementations
-                       from templateName in templateNames
-                       select new object[] { implementation, templateName };
+                       from template in templates
+                       select new object[] { implementation, template };
             _data = data.ToList();
         }
 
