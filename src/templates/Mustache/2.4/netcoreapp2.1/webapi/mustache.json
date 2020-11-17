@@ -108,6 +108,12 @@
       "DefaultValue": false,
       "Description": "Steeltoe: Add Dockerfile",
       "friendlyName": "Dockerfile"
+    },
+    {
+        "Name": "DistributedTracing",
+        "DefaultValue": false,
+        "Description": "Steeltoe: Add Distributed Tracing",
+        "friendlyName": "Distributed Tracing"
     }
   ],
   "CalculatedParams": [

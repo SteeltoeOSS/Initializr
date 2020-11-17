@@ -32,12 +32,12 @@
       "DefaultValue": false,
       "Description": "Steeltoe: Add Dynamic Logger"
     },
-      {
-          "Name": "AzureSpringCloud",
-          "DefaultValue": false,
-          "Description": "Steeltoe: Target Microsoft Azure Spring Cloud Hosting",
-          "FriendlyName": "Microsoft Azure Spring Cloud"
-      },
+    {
+      "Name": "AzureSpringCloud",
+      "DefaultValue": false,
+      "Description": "Steeltoe: Target Microsoft Azure Spring Cloud Hosting",
+      "FriendlyName": "Microsoft Azure Spring Cloud"
+    },
     {
       "Name": "MongoDB",
       "DefaultValue": false,

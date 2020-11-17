@@ -31,12 +31,14 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
         {
             IConfigurationRoot configuration = TestHelper.GetConfiguration();
             var implementation = new MustacheTemplateService(configuration, new LoggerFactory().CreateLogger<MustacheTemplateService>());
-            _data = new []
+
+            _data = new[]
             {
-                new object[] { implementation, Constants.Steeltoe24, Constants.NetCoreApp21, Constants.WebApi},
-                new object[] { implementation, Constants.Steeltoe24, Constants.NetCoreApp31, Constants.WebApi},
-                new object[] { implementation, Constants.Steeltoe30, Constants.NetCoreApp31, Constants.WebApi},
+                new object[] {implementation, Constants.Steeltoe24, Constants.NetCoreApp21, Constants.WebApi},
+                new object[] {implementation, Constants.Steeltoe24, Constants.NetCoreApp31, Constants.WebApi},
+                new object[] {implementation, Constants.Steeltoe30, Constants.NetCoreApp31, Constants.WebApi},
             }.ToList();
+
         }
 
         public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();

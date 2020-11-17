@@ -59,14 +59,20 @@
     <PackageReference Include="Steeltoe.Extensions.Configuration.PlaceholderCore" Version="{{SteeltoeVersion}}" />
     {{/PlaceholderConfig}}
     {{#ActuatorsOrCloudFoundry}}
-    <PackageReference Include="Steeltoe.Extensions.Logging.DynamicSerilogCore" Version="{{SteeltoeVersion}}" />
+    <PackageReference Include="Steeltoe.Extensions.Logging.DynamicLogger" Version="{{SteeltoeVersion}}" />
     {{/ActuatorsOrCloudFoundry}}
     {{#DynamicLogger}}
-    <PackageReference Include="Steeltoe.Extensions.Logging.DynamicSerilogCore" Version="{{SteeltoeVersion}}" />
+    <PackageReference Include="Steeltoe.Extensions.Logging.DynamicLogger" Version="{{SteeltoeVersion}}" />
+    {{^Actuators}}
+    <PackageReference Include="Steeltoe.Management.EndpointCore" Version="{{SteeltoeVersion}}" />
+    {{/Actuators}}
     {{/DynamicLogger}}
-    {{#ActuatorsOrCloudFoundry}}
+    {{#Actuators}}
+    <PackageReference Include="Steeltoe.Management.EndpointCore" Version="{{SteeltoeVersion}}" />
+    {{/Actuators}}
+    {{#CloudFoundry}}
     <PackageReference Include="Steeltoe.Management.CloudFoundryCore" Version="{{SteeltoeVersion}}" />
-    {{/ActuatorsOrCloudFoundry}}
+    {{/CloudFoundry}}
     {{#ConfigServer}}
     <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="{{SteeltoeVersion}}" />
     {{/ConfigServer}}

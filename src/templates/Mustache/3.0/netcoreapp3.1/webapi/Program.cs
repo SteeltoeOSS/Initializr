@@ -3,15 +3,31 @@ using Microsoft.AspNetCore.Hosting;
 {{#AzureSpringCloud}}
 using Microsoft.Azure.SpringCloud.Client;
 {{/AzureSpringCloud}}
-{{#ActuatorsOrDynamicLogger}}
+{{#DynamicSerilog}}
 using Steeltoe.Extensions.Logging.DynamicSerilog;
-{{/ActuatorsOrDynamicLogger}}
+{{/DynamicSerilog}}
+{{#DynamicLogger}}
+    using Steeltoe.Extensions.Logging;
+{{/DynamicLogger}}
 {{#CloudFoundry}}
 using Steeltoe.Common.Hosting;
-{{^ConfigServer}}
+    {{^ConfigServer}}
 using Steeltoe.Extensions.Configuration.CloudFoundry;
-{{/ConfigServer}}
+    {{/ConfigServer}}
+    {{#Actuators}}
+using Steeltoe.Management.CloudFoundry;
+    {{/Actuators}}
 {{/CloudFoundry}}
+{{^CloudFoundry}}
+    {{#Actuators}}
+    using Steeltoe.Management.Endpoint;
+    {{/Actuators}}
+{{/CloudFoundry}}
+{{^Actuators}}
+    {{#DynamicLogger}}
+    using Steeltoe.Management.Endpoint;
+    {{/DynamicLogger}}
+{{/Actuators}}
 {{#ConfigServer}}
 using Steeltoe.Extensions.Configuration.ConfigServer;
 {{/ConfigServer}}
@@ -42,9 +58,17 @@ namespace {{ProjectNameSpace}}
                 .UseDefaultServiceProvider(configure => configure.ValidateScopes = false)
 {{#CloudFoundry}}
                 .UseCloudHosting() //Enable listening on a Env provided port
+                {{#Actuators}}
+                .AddCloudFoundryActuators()
+                {{/Actuators}}
 {{^ConfigServer}}
                 .AddCloudFoundryConfiguration() //Add cloudfoundry environment variables as a configuration source
 {{/ConfigServer}}
+{{/CloudFoundry}}
+{{^CloudFoundry}}
+    {{#Actuators}}
+                .AddAllActuators()
+    {{/Actuators}}
 {{/CloudFoundry}}
 {{#ConfigServer}}
                 .AddConfigServer()
@@ -58,9 +82,16 @@ namespace {{ProjectNameSpace}}
 {{#AzureSpringCloud}}
                 .UseAzureSpringCloudService()
 {{/AzureSpringCloud}}
-{{#ActuatorsOrDynamicLogger}}
-                .ConfigureLogging((context, builder) => builder.AddSerilogDynamicConsole())
-{{/ActuatorsOrDynamicLogger}}
+
+{{#DynamicSerilog}}
+                .ConfigureLogging((context, loggingBuilder) => loggingBuilder.AddSerilogDynamicConsole())
+{{/DynamicSerilog}}
+{{#DynamicLogger}}
+        {{^ActuatorsOrCloudFoundry}}
+        .AddLoggersActuator()
+        .ConfigureLogging((context, loggingBuilder) => loggingBuilder.AddDynamicConsole())
+        {{/ActuatorsOrCloudFoundry}}
+{{/DynamicLogger}}
                 .UseStartup<Startup>();
             return builder;
         }

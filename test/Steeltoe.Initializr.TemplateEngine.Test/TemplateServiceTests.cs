@@ -71,17 +71,63 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
                 Template = template,
             });
 
-            string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-
-            Assert.Contains("using Steeltoe.Management.CloudFoundry;", startUpContents);
-            if (!framework.Equals("netcoreapp3.1"))
+            if (steeltoe.Equals("3.0.0"))
             {
-                Assert.Contains("using Steeltoe.Management.Endpoint;", startUpContents);
-                Assert.Contains("using Steeltoe.Management.Hypermedia;", startUpContents);
+                var programFileContents = files.Find(x => x.Key == "Program.cs").Value;
+                Assert.Contains("using Steeltoe.Management.Endpoint;", programFileContents);
+                Assert.Contains(".AddAllActuators()", programFileContents);
+
             }
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
+            else
+            {
+                string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
+
+                Assert.Contains("using Steeltoe.Management.CloudFoundry;", startUpContents);
+                if (!framework.Equals("netcoreapp3.1"))
+                {
+                    Assert.Contains("using Steeltoe.Management.Endpoint;", startUpContents);
+                    Assert.Contains("using Steeltoe.Management.Hypermedia;", startUpContents);
+                }
+
+                Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
+
+            }
         }
 
+        [Theory]
+        [ClassData(typeof(AllImplementationsAndTemplates))]
+        public async Task CreateTemplate_cfActuators(ITemplateService templateService, string steeltoe,
+            string framework, string template)
+        {
+            var files = await templateService.GenerateProjectFiles(new GeneratorModel()
+            {
+                Dependencies = "Actuators,CloudFoundry",
+                ProjectName = "testProject",
+                SteeltoeVersion = steeltoe,
+                TargetFramework = framework,
+                Template = template,
+            });
+
+            if (steeltoe.Equals("3.0.0"))
+            {
+                var programFile = files.Find(x => x.Key == "Program.cs").Value;
+                Assert.Contains("using Steeltoe.Management.CloudFoundry;", programFile);
+
+            }
+            else
+            {
+                var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
+
+                Assert.Contains("using Steeltoe.Management.CloudFoundry;", startUpContents);
+                if (!framework.Equals("netcoreapp3.1"))
+                {
+                    Assert.Contains("using Steeltoe.Management.Endpoint;", startUpContents);
+                    Assert.Contains("using Steeltoe.Management.Hypermedia;", startUpContents);
+                }
+
+                Assert.Contains("services.AddCloudFoundryActuators", startUpContents);
+            }
+        }
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplates))]
         public async Task CreateTemplate_react(ITemplateService templateService, string steeltoe, string framework, string template)
@@ -130,7 +176,16 @@ namespace Steeltoe.Initializr.TemplateEngine.Test
             });
 
             string startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
+            if (steeltoe != "3.0.0")
+            {
+                Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
+            }
+            else
+            {
+                string programFile = files.Find(x => x.Key == "Program.cs").Value;
+                Assert.Contains("AddAllActuators", programFile);
+            }
+
             Assert.Contains("using Steeltoe.CircuitBreaker.Hystrix;", startUpContents);
 
             Assert.Contains(files, file => file.Key.EndsWith("MyCircuitBreakerCommand.cs"));
@@ -551,20 +606,17 @@ using System.Threading;", valuesController);
                 Template = template,
             });
 
-            string fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
-            string programFileContents = files.Find(x => x.Key == "Program.cs").Value;
-            if (steeltoe.Equals(Constants.Steeltoe30))
+            var fileContents = files.Find(x => x.Key == "testProject.csproj").Value;
+            var programFileContents = files.Find(x => x.Key == "Program.cs").Value;
+
+            Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=", fileContents);
+            Assert.Contains(@"using Steeltoe.Extensions.Logging;", programFileContents);
+            Assert.Contains(@"loggingBuilder.AddDynamicConsole()", programFileContents);
+            if (!steeltoe.Equals(Constants.Steeltoe30))
             {
-                Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicSerilogCore"" Version=", fileContents);
-                Assert.Contains(@"using Steeltoe.Extensions.Logging.DynamicSerilog", programFileContents);
-                Assert.Contains(@"ConfigureLogging((context, builder) => builder.AddSerilogDynamicConsole())", programFileContents);
-            }
-            else
-            {
-                Assert.Contains(@"<PackageReference Include=""Steeltoe.Extensions.Logging.DynamicLogger"" Version=", fileContents);
-                Assert.Contains(@"using Steeltoe.Extensions.Logging;", programFileContents);
-                Assert.Contains(@"loggingBuilder.AddConfiguration(hostingContext.Configuration.GetSection(""Logging""));", programFileContents);
-                Assert.Contains(@"loggingBuilder.AddDynamicConsole();", programFileContents);
+                Assert.Contains(
+                    @"loggingBuilder.AddConfiguration(hostingContext.Configuration.GetSection(""Logging""));",
+                    programFileContents);
             }
         }
 
@@ -596,56 +648,7 @@ using System.Threading;", valuesController);
             Assert.Contains(".AddCloudFoundry", programFileContents);
         }
 
-        [Theory]
-        [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_v22(ITemplateService templateService, string steeltoe, string framework, string template)
-        {
-            var files = await templateService.GenerateProjectFiles(new GeneratorModel()
-            {
-                Dependencies = "Actuators",
-                SteeltoeVersion = steeltoe,
-                TargetFramework = framework,
-                Template = template,
-            });
 
-            var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
-        }
-
-        [Theory]
-        [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_23(ITemplateService templateService, string steeltoe, string framework, string template)
-        {
-            var files = await templateService.GenerateProjectFiles(new GeneratorModel()
-            {
-                Dependencies = "Actuators",
-                SteeltoeVersion = steeltoe,
-                TargetFramework = framework,
-                Template = template,
-            });
-
-            var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
-        }
-
-        [Theory]
-        [ClassData(typeof(AllImplementationsAndTemplates))]
-        public async Task CreateTemplate_actuators_24(ITemplateService templateService, string steeltoe, string framework, string template)
-        {
-            var files = await templateService.GenerateProjectFiles(new GeneratorModel()
-            {
-                Dependencies = "Actuators",
-                SteeltoeVersion = steeltoe,
-                TargetFramework = framework,
-                Template = template,
-            });
-
-            var startUpContents = files.Find(x => x.Key == "Startup.cs").Value;
-
-            Assert.Contains("services.AddCloudFoundryActuators(Configuration);", startUpContents);
-        }
 
         [Theory]
         [ClassData(typeof(AllImplementationsAndTemplateNames))]

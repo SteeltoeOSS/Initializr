@@ -33,9 +33,6 @@ using Steeltoe.Connector.SqlServer.EFCore;
 {{#Discovery}}
 using Steeltoe.Discovery.Client;
 {{/Discovery}}
-{{#Actuators}}
-using Steeltoe.Management.CloudFoundry;
-{{/Actuators}}
 {{#RequiresHttps}}
 using Microsoft.AspNetCore.HttpsPolicy;
 {{/RequiresHttps}}
@@ -51,7 +48,9 @@ using Microsoft.AspNetCore.Authentication.AzureADB2C.UI;
 {{#CircuitBreaker}}
 using Steeltoe.CircuitBreaker.Hystrix;
 {{/CircuitBreaker}}
-
+{{#DistributedTracing}}
+using Steeltoe.Management.Tracing;
+{{/DistributedTracing}}
 namespace {{ProjectNameSpace}}
 {
     public class Startup
@@ -77,9 +76,6 @@ namespace {{ProjectNameSpace}}
 {{#MySql}}
             services.AddMySqlConnection(Configuration);
 {{/MySql}}
-{{#Actuators}}
-            services.AddCloudFoundryActuators(Configuration);
-{{/Actuators}}
 {{#Discovery}}
             services.AddDiscoveryClient(Configuration);
 {{/ Discovery}}
@@ -108,6 +104,9 @@ namespace {{ProjectNameSpace}}
             // Add Context and use Postgres as provider ... provider will be configured from VCAP_ info
             // services.AddDbContext<MyDbContext>(options => options.UseNpgsql(Configuration));
 {{/PostgresEFCore}}
+{{#DistributedTracing}}
+            services.AddDistributedTracing(Configuration, builder => builder.UseZipkinWithTraceOptions(services));
+{{/DistributedTracing}}
             services.AddControllers();
         }
 
