@@ -10,5 +10,5 @@ obj
 
 # ignore Rider state
 Steeltoe.Initializr.sln.DotSettings.user
-/.idea/
+**/.idea/*
 Steeltoe.Initializr.sln.DotSettings.user
