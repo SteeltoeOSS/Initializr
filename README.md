@@ -1,3 +1,9 @@
+# :bangbang: This repository is for the old Initializr site.  Future work is being performed in the following repos [InitializrWeb - Front-end UI](https://github.com/SteeltoeOSS/InitializrWeb), [InitializrApi - Backend Api](https://github.com/SteeltoeOSS/InitializrApi), and [InitializrConfig - Configuration and Dependency Templates](https://github.com/SteeltoeOSS/InitializrConfig). 
+## You can open issues in any of the above repositories, or use [InitializrWeb](https://github.com/SteeltoeOSS/InitializrWeb) and the team can move them around.
+
+
+----
+
 # [Steeltoe Initializr](https://start.steeltoe.io)
 
 | Branch   | Build Status |
